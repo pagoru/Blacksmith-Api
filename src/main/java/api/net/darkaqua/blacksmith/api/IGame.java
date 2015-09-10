@@ -1,5 +1,5 @@
 package net.darkaqua.blacksmith.api;
 
-public interface Game {
+public interface IGame {
 
 }

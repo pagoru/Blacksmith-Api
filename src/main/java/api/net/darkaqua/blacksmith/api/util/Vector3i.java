@@ -1,5 +1,10 @@
 package net.darkaqua.blacksmith.api.util;
 
+/**
+ * 
+ * @author cout970
+ *
+ */
 public class Vector3i {
 
 	public static final Vector3i NULL_VECTOR = new Vector3i(0, 0, 0);

@@ -1,5 +1,5 @@
 package net.darkaqua.blacksmith.api.world;
 
-public interface World extends IWorldAccess {
+public interface IWorldAccess {
 
 }
