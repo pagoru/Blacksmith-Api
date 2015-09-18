@@ -42,4 +42,17 @@ public enum Direction {
 	public Vector3i toVecInt() {
 		return offsets.copy();
 	}
+	
+	//anti-clockwise
+    public Direction step(Direction axix) {
+        return Direction.getDirection(rotation[axix.ordinal()][ordinal()]);
+    }
+
+    public boolean isPerpendicular(Direction dir) {
+        return Math.abs(dir.getOffsetX()) != Math.abs(getOffsetX()) || Math.abs(dir.getOffsetY()) != Math.abs(getOffsetY()) || Math.abs(dir.getOffsetZ()) != Math.abs(getOffsetZ());
+    }
+
+    public boolean isParallel(Direction dir) {
+        return !isPerpendicular(dir);
+    }
 }

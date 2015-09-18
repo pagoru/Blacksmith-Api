@@ -1,8 +1,16 @@
 package net.darkaqua.blacksmith.api.block;
 
-import net.minecraft.block.state.IBlockState;
+import net.darkaqua.blacksmith.api.block.properties.IBlockCreativeTabHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockHarvestHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockLightHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockPhysicsHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockRedstoneHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockRenderHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockStateHandler;
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.minecraft.util.BlockPos;
-import net.minecraft.world.IWorldAccess;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 
 /**
  * 
@@ -22,26 +30,23 @@ public interface IBlock {
 	/**
 	 * @return if the block is complete or not, used in slabs and stairs
 	 */
-	boolean isCompleteBlock();
 	
-	/**
-	 * values from 0 to 255 inclusive
-	 * @return the amount of light that is absorbed by the block
-	 */
-	int getOpacity();
+	IBlockLightHandler getLightProperties();
 	
+	IBlockStateHandler getBlockStateHandler();
 	
-	boolean isTranslucent();
+	IBlockPhysicsHandler getPhysicsHandler();
 	
-	/**
-	 * values from 0 to 15 inclusive
-	 * @return the amount of light that this block emits
-	 */
-	int getLightEmited();
+	IBlockRenderHandler getRenderhandler();
 	
-	IBlockState getStateFromMeta(int meta);
+	IBlockHarvestHandler getHarvestHandler();
 	
-	int getMetaFromState(IBlockState state);
+	IBlockRedstoneHandler getRedstoneHandler();
 	
-	IBlockState getActualState(IBlockState state, IWorldAccess worldIn, BlockPos pos);
+	IBlockCreativeTabHandler getCreativeTabHandler();
+	
+	IItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos);
+	
+	IItemStack toItemStack(IBlockState state);
+	
 }
