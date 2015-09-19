@@ -8,9 +8,6 @@ import net.darkaqua.blacksmith.api.block.properties.IBlockRedstoneHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockStateHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
 
 /**
  * 
@@ -27,10 +24,6 @@ public interface IBlock {
 	
 	String getLocalizedName();
 	
-	/**
-	 * @return if the block is complete or not, used in slabs and stairs
-	 */
-	
 	IBlockLightHandler getLightProperties();
 	
 	IBlockStateHandler getBlockStateHandler();
@@ -44,8 +37,6 @@ public interface IBlock {
 	IBlockRedstoneHandler getRedstoneHandler();
 	
 	IBlockCreativeTabHandler getCreativeTabHandler();
-	
-	IItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos);
 	
 	IItemStack toItemStack(IBlockState state);
 	

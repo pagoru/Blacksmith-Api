@@ -1,41 +1,41 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
+import net.darkaqua.blacksmith.api.block.IBlockState;
+import net.darkaqua.blacksmith.api.entity.Entity;
 import net.darkaqua.blacksmith.api.util.BlockPos;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.world.IBlockAccess;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
+import net.darkaqua.blacksmith.api.world.World;
 
 public interface IBlockPhysicsHandler {
 
 	IBlock getBlock();
 	
-	default boolean isAir(IBlockAccess world, BlockPos pos){return false;};
+	boolean isAir(IBlockAccess world, BlockPos pos);
 	
-	default boolean isSolidBlock(){return true;};
+	boolean isSolidBlock();
 	
-	default boolean isNormalBlock(){return true;};
+	boolean isNormalBlock();
 	
-	default boolean isFullBlock(){return true;};
+	boolean isFullBlock();
 	
-	default boolean isCompleteBlock(){return true;};
+	boolean isCompleteBlock();
 	
-	default boolean isSideSolid(IBlockAccess world, BlockPos pos, Direction side){return true;};
+	boolean isSideSolid(IBlockAccess world, BlockPos pos, Direction side);
 	
-	default boolean isTraspasable(IBlockAccess world, BlockPos pos){return false;};
+	boolean isTraspasable(IBlockAccess world, BlockPos pos);
 	
-	default boolean canCollide(IBlockState state, boolean hitIfIsLiquid){return true;};
+	boolean canCollide(IBlockState state, boolean hitIfIsLiquid);
 	
-	default void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){};
+	void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity);
 	
-	default void setBlockBounds(Cube boundingBox){};
+	void setBlockBounds(Cube blockBounds);
 	
-	default Cube getBlockBounds(){return Cube.fullBlock();};
+	Cube getBlockBounds();
 	
-	default Cube getColisionBox(){return Cube.fullBlock();};
+	Cube getColisionBox();
 	
-	default Cube getSelectionBox(){return Cube.fullBlock();};
+	Cube getSelectionBox();
 }

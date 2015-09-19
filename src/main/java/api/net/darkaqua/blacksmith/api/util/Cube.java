@@ -10,15 +10,26 @@ public class Cube {
 		end = new Vector3d(x1, y1, z1);
 	}
 
-	
-	public Cube(Vector3d start, Vector3d end){
+	public Cube(Vector3d start, Vector3d end) {
 		this.start = start.copy();
 		this.end = end.copy();
 	}
 
-
 	public static Cube fullBlock() {
 		return new Cube(0, 0, 0, 1, 1, 1);
 	}
+
+	public Cube copy() {
+		return new Cube(start, end);
+	}
+
+	public Vector3d min() {
+		return new Vector3d(Math.min(start.getX(), end.getX()), Math.min(start.getY(), end.getY()),
+				Math.min(start.getZ(), end.getZ()));
+	}
 	
+	public Vector3d max() {
+		return new Vector3d(Math.max(start.getX(), end.getX()), Math.max(start.getY(), end.getY()),
+				Math.max(start.getZ(), end.getZ()));
+	}
 }

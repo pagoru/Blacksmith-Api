@@ -1,9 +1,9 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.IWorldAccess;
+import net.darkaqua.blacksmith.api.block.IBlockState;
+import net.darkaqua.blacksmith.api.util.BlockPos;
+import net.darkaqua.blacksmith.api.world.IWorldAccess;
 
 public interface IBlockStateHandler {
 	
@@ -13,9 +13,9 @@ public interface IBlockStateHandler {
 
 	IBlockState getActualState(IBlockState state, IWorldAccess worldIn, BlockPos pos);
 	
+	IBlockState getStateForEntityRender(IBlockState state);
+	
 	IBlockState getStateFromMeta(int meta);
 	
 	int getMetaFromState(IBlockState state);
-
-	IBlockState getStateForEntityRender(IBlockState state);
 }

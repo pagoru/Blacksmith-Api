@@ -1,11 +1,12 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.darkaqua.blacksmith.api.block.IBlockState;
+import net.darkaqua.blacksmith.api.util.BlockPos;
+import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.world.IBlockAccess;
+import net.darkaqua.blacksmith.api.world.World;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public interface IBlockRenderHandler {
 
@@ -21,5 +22,8 @@ public interface IBlockRenderHandler {
 	
 	int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass);
 	
-	//boolean canRenderInLayer(EnumWorldBlockLayer layer)
+	//TODO change int to an enum
+	int getBlockRenderLayer();
+	
+	boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, Direction side);
 }
