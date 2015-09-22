@@ -31,11 +31,6 @@ public class SimpleBlockStateHandler implements IBlockStateHandler{
 	public IBlockState getActualState(IBlockState state, IWorldAccess worldIn, BlockPos pos) {
 		return state;
 	}
-	
-	@Override
-	public IBlockState getStateForEntityRender(IBlockState state) {
-		return state;
-	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {

@@ -19,6 +19,11 @@ public class Cube {
 		return new Cube(0, 0, 0, 1, 1, 1);
 	}
 
+	public static Cube infinite() {
+		return new Cube(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
+				Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+	}
+
 	public Cube copy() {
 		return new Cube(start, end);
 	}
@@ -27,7 +32,7 @@ public class Cube {
 		return new Vector3d(Math.min(start.getX(), end.getX()), Math.min(start.getY(), end.getY()),
 				Math.min(start.getZ(), end.getZ()));
 	}
-	
+
 	public Vector3d max() {
 		return new Vector3d(Math.max(start.getX(), end.getX()), Math.max(start.getY(), end.getY()),
 				Math.max(start.getZ(), end.getZ()));

@@ -82,10 +82,4 @@ public class SimpleBlockPhysicsHandler implements IBlockPhysicsHandler{
 	public Cube getColisionBox() {
 		return blockBounds;
 	}
-
-	@Override
-	public Cube getSelectionBox() {
-		return blockBounds;
-	}
-
 }

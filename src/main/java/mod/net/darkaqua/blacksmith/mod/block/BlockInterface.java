@@ -4,11 +4,12 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-public class BlockHolder extends Block{
+public class BlockInterface extends Block{
 
 	public IBlock block;
 
-	protected BlockHolder(Material materialIn) {
-		super(materialIn);
-	}
+	protected BlockInterface(IBlock block) {
+		super(Material.iron);//TODO change material
+		this.block = block;
+	}	
 }

@@ -34,16 +34,6 @@ public class SimpleBlockLightHandler implements IBlockLightHandler{
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue() {
-		return isOpaque() ? 0.2F : 1.0F;
-	}
-
-	@Override
-	public boolean isTransparent() {
-		return false;
-	}
-
-	@Override
 	public boolean isOpaque() {
 		return true;
 	}

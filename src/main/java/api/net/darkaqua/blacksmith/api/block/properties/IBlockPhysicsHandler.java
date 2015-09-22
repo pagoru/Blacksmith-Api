@@ -36,6 +36,4 @@ public interface IBlockPhysicsHandler {
 	Cube getBlockBounds();
 	
 	Cube getColisionBox();
-	
-	Cube getSelectionBox();
 }

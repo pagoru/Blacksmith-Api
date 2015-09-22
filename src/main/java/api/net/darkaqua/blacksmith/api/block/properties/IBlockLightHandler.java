@@ -14,9 +14,5 @@ public interface IBlockLightHandler {
 	
 	float getLightEmited();
 	
-	float getAmbientOcclusionLightValue();
-	
-	boolean isTransparent();
-	
 	boolean isOpaque();
 }

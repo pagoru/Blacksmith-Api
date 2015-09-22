@@ -13,8 +13,6 @@ public interface IBlockStateHandler {
 
 	IBlockState getActualState(IBlockState state, IWorldAccess worldIn, BlockPos pos);
 	
-	IBlockState getStateForEntityRender(IBlockState state);
-	
 	IBlockState getStateFromMeta(int meta);
 	
 	int getMetaFromState(IBlockState state);

@@ -1,12 +1,13 @@
 package net.darkaqua.blacksmith.api.block;
 
-import net.darkaqua.blacksmith.api.block.properties.IBlockCreativeTabHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockClientHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockHarvestHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockLightHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockPhysicsHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockRedstoneHandler;
-import net.darkaqua.blacksmith.api.block.properties.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockStateHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockTickHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockTileEntityHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 
 /**
@@ -24,19 +25,21 @@ public interface IBlock {
 	
 	String getLocalizedName();
 	
-	IBlockLightHandler getLightProperties();
+	IBlockLightHandler getLightHandler();
 	
-	IBlockStateHandler getBlockStateHandler();
+	IBlockStateHandler getStateHandler();
 	
 	IBlockPhysicsHandler getPhysicsHandler();
-	
-	IBlockRenderHandler getRenderhandler();
 	
 	IBlockHarvestHandler getHarvestHandler();
 	
 	IBlockRedstoneHandler getRedstoneHandler();
 	
-	IBlockCreativeTabHandler getCreativeTabHandler();
+	IBlockClientHandler getClientHandler();
+	
+	IBlockTileEntityHandler getTileEntityHandler();
+	
+	IBlockTickHandler getTickHandler();
 	
 	IItemStack toItemStack(IBlockState state);
 	
