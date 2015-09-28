@@ -1,24 +1,24 @@
 package net.darkaqua.blacksmith.api.block.properties.base;
 
 import java.util.List;
+import java.util.Random;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockState;
-import net.darkaqua.blacksmith.api.block.properties.IBlockClientHandler;
+import net.darkaqua.blacksmith.api.block.IIBlockState;
+import net.darkaqua.blacksmith.api.block.properties.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
 import net.darkaqua.blacksmith.api.item.Item;
-import net.darkaqua.blacksmith.api.util.BlockPos;
+import net.darkaqua.blacksmith.api.util.BlockLoc;
 import net.darkaqua.blacksmith.api.util.Color;
-import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.world.IBlockAccess;
-import net.darkaqua.blacksmith.api.world.World;
+import net.darkaqua.blacksmith.api.world.IWorld;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.MovingObjectPosition;
 
-public class SimpleBlockClientHandler implements IBlockClientHandler{
+public class SimpleBlockClientHandler implements IBlockRenderHandler{
 
 	protected IBlock block;
 
@@ -42,17 +42,12 @@ public class SimpleBlockClientHandler implements IBlockClientHandler{
 	}
 
 	@Override
-	public IItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
-		return getBlock().toItemStack(world.getBlockState(pos));
-	}
-
-	@Override
-	public boolean addDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer) {
+	public boolean addDestroyEffects(IWorld world, BlockLoc pos, EffectRenderer effectRenderer) {
 		return false;
 	}
 
 	@Override
-	public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+	public boolean addHitEffects(IWorld worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
 		return false;
 	}
 
@@ -62,12 +57,12 @@ public class SimpleBlockClientHandler implements IBlockClientHandler{
 	}
 
 	@Override
-	public Color getRenderColor(IBlockState state) {
+	public Color getRenderColor(IIBlockState state) {
 		return new Color(0xFFFFFF);
 	}
 
 	@Override
-	public Color colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+	public Color colorMultiplier(IBlockAccess worldIn, BlockLoc pos, int renderPass) {
 		return new Color(0xFFFFFF);
 	}
 
@@ -77,17 +72,12 @@ public class SimpleBlockClientHandler implements IBlockClientHandler{
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, Direction side) {
+	public boolean shouldSideBeRendered(IBlockAccess world, BlockLoc pos, Direction side) {
 		return true;//TODO fix this method when IBlockAcces allow to get a block
 	}
 
 	@Override
-	public Cube getSelectionBox() {
-		return getBlock().getPhysicsHandler().getBlockBounds();
-	}
-
-	@Override
-	public IBlockState getStateForEntityRender(IBlockState state) {
+	public IIBlockState getStateForEntityRender(IIBlockState state) {
 		return state;
 	}
 	
@@ -100,4 +90,7 @@ public class SimpleBlockClientHandler implements IBlockClientHandler{
 	public boolean isTransparent() {
 		return false;
 	}
+
+	@Override
+	public void randomRenderTick(IWorld world, BlockLoc pos, IIBlockState state, Random rand) {}
 }

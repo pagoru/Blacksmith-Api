@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.api.block.properties.base;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.properties.IBlockLightHandler;
-import net.darkaqua.blacksmith.api.util.BlockPos;
+import net.darkaqua.blacksmith.api.util.BlockLoc;
 import net.darkaqua.blacksmith.api.world.IBlockAccess;
 
 public class SimpleBlockLightHandler implements IBlockLightHandler{
@@ -24,7 +24,7 @@ public class SimpleBlockLightHandler implements IBlockLightHandler{
 	}
 
 	@Override
-	public float getLightOpacity(IBlockAccess world, BlockPos pos) {
+	public float getLightOpacity(IBlockAccess world, BlockLoc pos) {
 		return getLightOpacity();
 	}
 

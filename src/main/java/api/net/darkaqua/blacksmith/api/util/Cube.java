@@ -2,17 +2,16 @@ package net.darkaqua.blacksmith.api.util;
 
 public class Cube {
 
-	protected Vector3d start;
-	protected Vector3d end;
+	protected Vector3d min;
+	protected Vector3d max;
 
 	public Cube(double x0, double y0, double z0, double x1, double y1, double z1) {
-		start = new Vector3d(x0, y0, z0);
-		end = new Vector3d(x1, y1, z1);
+		min = new Vector3d(Math.min(x0, x1), Math.min(y0, y1), Math.min(z0, z1));
+		max = new Vector3d(Math.max(x0, x1), Math.max(y0, y1), Math.max(z0, z1));
 	}
 
 	public Cube(Vector3d start, Vector3d end) {
-		this.start = start.copy();
-		this.end = end.copy();
+		this(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
 	}
 
 	public static Cube fullBlock() {
@@ -25,16 +24,61 @@ public class Cube {
 	}
 
 	public Cube copy() {
-		return new Cube(start, end);
+		return new Cube(min, max);
 	}
 
 	public Vector3d min() {
-		return new Vector3d(Math.min(start.getX(), end.getX()), Math.min(start.getY(), end.getY()),
-				Math.min(start.getZ(), end.getZ()));
+		return min.copy();
 	}
 
 	public Vector3d max() {
-		return new Vector3d(Math.max(start.getX(), end.getX()), Math.max(start.getY(), end.getY()),
-				Math.max(start.getZ(), end.getZ()));
+		return max.copy();
+	}
+
+	public double minX() {
+		return min.getX();
+	}
+
+	public double minY() {
+		return min.getY();
+	}
+
+	public double minZ() {
+		return min.getZ();
+	}
+
+	public double maxX() {
+		return max.getX();
+	}
+
+	public double maxY() {
+		return max.getY();
+	}
+
+	public double maxZ() {
+		return max.getZ();
+	}
+
+	public Cube translate(Vector3d pos) {
+		return new Cube(min.copy().add(pos), max.copy().add(pos));
+	}
+
+	public Cube expand(Vector3d pos) {
+		return new Cube(min.copy().substract(pos), max.copy().add(pos));
+	}
+
+	public Cube union(Cube box) {
+		return new Cube(Math.min(minX(), box.minX()),
+				Math.min(minY(), box.minY()),
+				Math.min(minZ(), box.minZ()),
+				Math.max(maxX(), box.maxX()),
+				Math.max(maxY(), box.maxY()),
+				Math.max(maxZ(), box.maxZ()));
+	}
+
+	public boolean intersect(Cube box) {
+		return box.maxX() > minX() && box.minX() < maxX()
+				&& box.maxY() > minY() && box.minY() < maxY()
+				&& box.maxZ() > minZ() && box.minZ() < maxZ();
 	}
 }

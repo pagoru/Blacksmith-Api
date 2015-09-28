@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.api.block;
 
-import net.darkaqua.blacksmith.api.block.properties.IBlockClientHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockRenderHandler;
+import net.darkaqua.blacksmith.api.block.properties.IBlockEventHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockHarvestHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockLightHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockPhysicsHandler;
@@ -9,6 +10,7 @@ import net.darkaqua.blacksmith.api.block.properties.IBlockStateHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockTickHandler;
 import net.darkaqua.blacksmith.api.block.properties.IBlockTileEntityHandler;
 import net.darkaqua.blacksmith.api.block.properties.base.SimpleBlockClientHandler;
+import net.darkaqua.blacksmith.api.block.properties.base.SimpleBlockEventHandler;
 import net.darkaqua.blacksmith.api.block.properties.base.SimpleBlockHarvestHandler;
 import net.darkaqua.blacksmith.api.block.properties.base.SimpleBlockLightHandler;
 import net.darkaqua.blacksmith.api.block.properties.base.SimpleBlockPhysicsHandler;
@@ -19,7 +21,7 @@ import net.darkaqua.blacksmith.api.block.properties.base.SinmpleBlockRedstoneHan
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
 
-public class SimpleBlock implements IBlock{
+public class SimpleBlock implements IBlock {
 
 	private String blockName;
 	protected IBlockLightHandler lightHandler;
@@ -27,19 +29,20 @@ public class SimpleBlock implements IBlock{
 	protected IBlockPhysicsHandler physicsHandler;
 	protected IBlockHarvestHandler harvestHandler;
 	protected IBlockRedstoneHandler redstoneHandler;
-	protected IBlockClientHandler clientHandler;
+	protected IBlockRenderHandler clientHandler;
 	protected IBlockTileEntityHandler tileEntityHandler;
 	protected IBlockTickHandler tickHandler;
-	
-	public SimpleBlock(){
+	protected IBlockEventHandler eventHandler;
+
+	public SimpleBlock() {
 		initBlock();
 	}
-	
-	protected void setBlockName(String name){
+
+	protected void setBlockName(String name) {
 		blockName = name;
 	}
-	
-	public void initBlock(){
+
+	public void initBlock() {
 		lightHandler = new SimpleBlockLightHandler(this);
 		stateHandler = new SimpleBlockStateHandler(this);
 		physicsHandler = new SimpleBlockPhysicsHandler(this);
@@ -48,16 +51,17 @@ public class SimpleBlock implements IBlock{
 		clientHandler = new SimpleBlockClientHandler(this);
 		tileEntityHandler = new SimpleBlockTileEntityHandler(this);
 		tickHandler = new SimpleBlockTickHandler(this);
+		eventHandler = new SimpleBlockEventHandler(this);
 	}
-	
+
 	@Override
 	public String getUnlocalizedName() {
-		return "tile."+blockName;
+		return "tile." + blockName;
 	}
 
 	@Override
 	public String getLocalizedName() {
-		return null;//Implement a way to translate names
+		return null;// Implement a way to translate names
 	}
 
 	@Override
@@ -86,7 +90,7 @@ public class SimpleBlock implements IBlock{
 	}
 
 	@Override
-	public IBlockClientHandler getClientHandler() {
+	public IBlockRenderHandler getRenderHandler() {
 		return clientHandler;
 	}
 
@@ -101,8 +105,12 @@ public class SimpleBlock implements IBlock{
 	}
 
 	@Override
-	public IItemStack toItemStack(IBlockState state) {
-		return ItemStackFactory.create(this);
+	public IBlockEventHandler getEventHandler() {
+		return eventHandler;
 	}
 
+	@Override
+	public IItemStack toItemStack(IIBlockState state) {
+		return ItemStackFactory.create(this);
+	}
 }

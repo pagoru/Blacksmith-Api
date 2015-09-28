@@ -1,22 +1,22 @@
 package net.darkaqua.blacksmith.api.tileentity;
 
-import net.darkaqua.blacksmith.api.block.IBlockState;
+import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.storage.IDataTagCompound;
-import net.darkaqua.blacksmith.api.util.BlockPos;
+import net.darkaqua.blacksmith.api.util.BlockLoc;
 import net.darkaqua.blacksmith.api.util.ClientSideOnly;
 import net.darkaqua.blacksmith.api.util.Cube;
-import net.darkaqua.blacksmith.api.world.World;
+import net.darkaqua.blacksmith.api.world.IWorld;
 import net.minecraft.network.Packet;
 
 public interface ITileEntity {
 
-	World getWorld();
+	IWorld getWorld();
 	
-	void setWorld(World world);
+	void setWorld(IWorld world);
 	
-	BlockPos getBlockPos();
+	BlockLoc getBlockPos();
 	
-	void setBlockPos(BlockPos pos);
+	void setBlockPos(BlockLoc pos);
 	
 	boolean isValid();
 	
@@ -34,7 +34,7 @@ public interface ITileEntity {
 	
 	void onChunkUnload();
 	
-	boolean shouldRecreate(World world, BlockPos pos, IBlockState oldState, IBlockState newSate);
+	boolean shouldRecreate(IWorld world, BlockLoc pos, IIBlockState oldState, IIBlockState newSate);
 	
 	void onBlockChange();
 	

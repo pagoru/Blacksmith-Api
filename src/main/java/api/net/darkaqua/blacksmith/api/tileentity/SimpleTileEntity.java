@@ -1,36 +1,36 @@
 package net.darkaqua.blacksmith.api.tileentity;
 
-import net.darkaqua.blacksmith.api.block.IBlockState;
+import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.storage.IDataTagCompound;
-import net.darkaqua.blacksmith.api.util.BlockPos;
+import net.darkaqua.blacksmith.api.util.BlockLoc;
 import net.darkaqua.blacksmith.api.util.Cube;
-import net.darkaqua.blacksmith.api.world.World;
+import net.darkaqua.blacksmith.api.world.IWorld;
 import net.minecraft.network.Packet;
 
 public class SimpleTileEntity implements ITileEntity{
 
-	private World world;
-	private BlockPos pos;
+	private IWorld world;
+	private BlockLoc pos;
 	private boolean valid;
-	protected IBlockState blockCache;
+	protected IIBlockState blockCache;
 	
 	@Override
-	public World getWorld() {
+	public IWorld getWorld() {
 		return world;
 	}
 
 	@Override
-	public void setWorld(World world) {
+	public void setWorld(IWorld world) {
 		this.world = world;
 	}
 
 	@Override
-	public BlockPos getBlockPos() {
+	public BlockLoc getBlockPos() {
 		return pos.copy();
 	}
 
 	@Override
-	public void setBlockPos(BlockPos pos) {
+	public void setBlockPos(BlockLoc pos) {
 		pos = pos.copy();
 	}
 
@@ -51,7 +51,7 @@ public class SimpleTileEntity implements ITileEntity{
 
 	@Override
 	public void loadData(IDataTagCompound tag) {
-		pos = new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+		pos = new BlockLoc(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class SimpleTileEntity implements ITileEntity{
 	public void onChunkUnload() {}
 
 	@Override
-	public boolean shouldRecreate(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+	public boolean shouldRecreate(IWorld world, BlockLoc pos, IIBlockState oldState, IIBlockState newSate) {
 		return false;
 	}
 
@@ -94,7 +94,7 @@ public class SimpleTileEntity implements ITileEntity{
 		return false;
 	}
 	
-	public IBlockState getBlockState(){
+	public IIBlockState getBlockState(){
 		if(blockCache == null){
 			blockCache = world.getBlockState(pos);
 		}

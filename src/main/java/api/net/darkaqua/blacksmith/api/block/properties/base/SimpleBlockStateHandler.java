@@ -1,16 +1,16 @@
 package net.darkaqua.blacksmith.api.block.properties.base;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockState;
+import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.block.SimpleBlockState;
 import net.darkaqua.blacksmith.api.block.properties.IBlockStateHandler;
-import net.darkaqua.blacksmith.api.util.BlockPos;
-import net.darkaqua.blacksmith.api.world.IWorldAccess;
+import net.darkaqua.blacksmith.api.util.BlockLoc;
+import net.darkaqua.blacksmith.api.world.IBlockAccess;
 
 public class SimpleBlockStateHandler implements IBlockStateHandler{
 
 	protected IBlock block;
-	protected IBlockState blockState;
+	protected IIBlockState blockState;
 
 	public SimpleBlockStateHandler(IBlock block){
 		this.block = block;
@@ -23,22 +23,24 @@ public class SimpleBlockStateHandler implements IBlockStateHandler{
 	}
 
 	@Override
-	public IBlockState getDefaultState() {
+	public IIBlockState getDefaultState() {
 		return blockState;
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IWorldAccess worldIn, BlockPos pos) {
+	public IIBlockState getActualState(IIBlockState state, IBlockAccess worldIn, BlockLoc pos) {
 		return state;
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IIBlockState getStateFromMeta(int meta) {
 		return blockState;
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(IIBlockState state) {
 		return 0;
 	}
+
+	
 }

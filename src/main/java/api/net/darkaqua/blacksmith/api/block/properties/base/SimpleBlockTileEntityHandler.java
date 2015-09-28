@@ -1,10 +1,10 @@
 package net.darkaqua.blacksmith.api.block.properties.base;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockState;
+import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.block.properties.IBlockTileEntityHandler;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
-import net.darkaqua.blacksmith.api.world.World;
+import net.darkaqua.blacksmith.api.world.IWorld;
 
 public class SimpleBlockTileEntityHandler implements IBlockTileEntityHandler{
 
@@ -19,12 +19,12 @@ public class SimpleBlockTileEntityHandler implements IBlockTileEntityHandler{
 	}
 	
 	@Override
-	public boolean canProvideTileEntity(IBlockState state) {
+	public boolean canProvideTileEntity(IIBlockState state) {
 		return false;
 	}
 
 	@Override
-	public ITileEntity createTileEntity(World world, IBlockState state) {
+	public ITileEntity createTileEntity(IWorld world, IIBlockState state) {
 		return null;
 	}
 

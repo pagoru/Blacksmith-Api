@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.block;
 
-public class SimpleBlockState implements IBlockState{
+public class SimpleBlockState implements IIBlockState{
 
 	private IBlock block;
 
