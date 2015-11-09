@@ -6,11 +6,12 @@ import java.util.Random;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.item.Item;
-import net.darkaqua.blacksmith.api.util.BlockLoc;
+import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.world.IBlockAccess;
+import net.darkaqua.blacksmith.api.util.Vector3i;
+import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 import net.darkaqua.blacksmith.api.world.IWorld;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.MovingObjectPosition;
@@ -21,9 +22,9 @@ public interface IBlockRenderHandler {
 
 	CreativeTabs getCreativeTab();
 
-	void getSubBlocks(Item itemIn, CreativeTabs tab, List<IItemStack> list);
+	void getSubBlocks(IItem itemIn, CreativeTabs tab, List<IItemStack> list);
 
-	boolean addDestroyEffects(IWorld world, BlockLoc pos, net.minecraft.client.particle.EffectRenderer effectRenderer);
+	boolean addDestroyEffects(WorldRef ref, net.minecraft.client.particle.EffectRenderer effectRenderer);
 
 	boolean addHitEffects(IWorld worldObj, MovingObjectPosition target, net.minecraft.client.particle.EffectRenderer effectRenderer);
 
@@ -31,14 +32,14 @@ public interface IBlockRenderHandler {
 
 	Color getRenderColor(IIBlockState state);
 
-	Color colorMultiplier(IBlockAccess world, BlockLoc pos, int renderPass);
+	Color colorMultiplier(IIBlockAccess world, Vector3i pos, int renderPass);
 
 	// TODO change int to an enum
 	int getBlockRenderLayer();
 
-	boolean shouldSideBeRendered(IBlockAccess world, BlockLoc pos, Direction side);
+	boolean shouldSideBeRendered(IIBlockAccess world, Vector3i pos, Direction side);
 	
-	void randomRenderTick(IWorld world, BlockLoc pos, IIBlockState state, Random rand);
+	void randomRenderTick(WorldRef ref, IIBlockState state, Random rand);
 
 	boolean isTransparent();
 

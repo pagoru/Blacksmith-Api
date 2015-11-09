@@ -1,8 +1,8 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.util.BlockLoc;
-import net.darkaqua.blacksmith.api.world.IBlockAccess;
+import net.darkaqua.blacksmith.api.util.Vector3i;
+import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 
 public interface IBlockLightHandler {
 
@@ -10,7 +10,7 @@ public interface IBlockLightHandler {
 	
 	float getLightOpacity();
 	
-	float getLightOpacity(IBlockAccess world, BlockLoc pos);
+	float getLightOpacity(IIBlockAccess world, Vector3i pos);
 	
 	float getLightEmited();
 	

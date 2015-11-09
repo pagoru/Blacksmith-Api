@@ -5,17 +5,17 @@ import java.util.List;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.entity.IEntity;
-import net.darkaqua.blacksmith.api.util.BlockLoc;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.world.IBlockAccess;
-import net.darkaqua.blacksmith.api.world.IWorld;
+import net.darkaqua.blacksmith.api.util.Vector3i;
+import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 
 public interface IBlockPhysicsHandler {
 
 	IBlock getBlock();
 	
-	boolean isAir(IBlockAccess world, BlockLoc pos);
+	boolean isAir(IIBlockAccess world, Vector3i pos);
 	
 	boolean isSolidBlock();
 	
@@ -25,9 +25,9 @@ public interface IBlockPhysicsHandler {
 	
 	boolean isCompleteBlock();
 	
-	boolean isSideSolid(IBlockAccess world, BlockLoc pos, Direction side);
+	boolean isSideSolid(IIBlockAccess world, Vector3i pos, Direction side);
 	
-	boolean isTraspasable(IBlockAccess world, BlockLoc pos);
+	boolean isTraspasable(IIBlockAccess world, Vector3i pos);
 	
 	boolean canCollide(IIBlockState state, boolean hitIfIsLiquid);
 	
@@ -35,9 +35,9 @@ public interface IBlockPhysicsHandler {
 	
 	Cube getBlockBounds();
 	
-	Cube getColisionBox(IWorld world, BlockLoc pos, IIBlockState state);
+	Cube getColisionBox(WorldRef ref, IIBlockState state);
 
-	Cube getSelectionBox(IWorld world, BlockLoc pos);
+	Cube getSelectionBox(WorldRef ref);
 	
-	List<Cube> getCollidingCubes(IWorld world, BlockLoc pos, IIBlockState state, Cube mask, IEntity entity);
+	List<Cube> getCollidingCubes(WorldRef ref, IIBlockState state, Cube mask, IEntity entity);
 }

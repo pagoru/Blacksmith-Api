@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IIBlockState;
-import net.darkaqua.blacksmith.api.util.BlockLoc;
+import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
 public interface IBlockTickHandler {
@@ -13,9 +13,9 @@ public interface IBlockTickHandler {
 	
 	boolean needsRandomTick();
 	
-	void randomTick(IWorld world, BlockLoc pos, IIBlockState state, Random rand);
+	void randomTick(WorldRef ref, IIBlockState state, Random rand);
 	
-	void updateTick(IWorld world, BlockLoc pos, IIBlockState state, Random rand);
+	void updateTick(WorldRef ref, IIBlockState state, Random rand);
 
 	int tickRate(IWorld world);
 }

@@ -1,0 +1,16 @@
+[
+{
+  "modid": "Blacksmith",
+  "name": "Blacksmith",
+  "description": "Blacksmith is an open source api to allow the creation of mods with very low dependency on forge",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["cout970"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

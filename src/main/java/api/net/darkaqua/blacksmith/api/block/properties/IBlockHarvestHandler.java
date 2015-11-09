@@ -7,10 +7,10 @@ import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.ToolType;
-import net.darkaqua.blacksmith.api.util.BlockLoc;
 import net.darkaqua.blacksmith.api.util.ClientSideOnly;
-import net.darkaqua.blacksmith.api.world.IBlockAccess;
-import net.darkaqua.blacksmith.api.world.IWorld;
+import net.darkaqua.blacksmith.api.util.Vector3i;
+import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -26,26 +26,26 @@ public interface IBlockHarvestHandler {
 	
 	ToolType getHarvestTool(IIBlockState state);
 	
-	int getExpDrop(IBlockAccess world, BlockLoc pos, int fortune);
+	int getExpDrop(IIBlockAccess world, Vector3i pos, int fortune);
 	
-	boolean canEntityDestroy(IBlockAccess world, BlockLoc pos, IEntity entity);
+	boolean canEntityDestroy(IIBlockAccess world, Vector3i pos, IEntity entity);
 		
-	boolean canSilkHarvest(IWorld world, BlockLoc pos, IIBlockState state, EntityPlayer player);
+	boolean canSilkHarvest(WorldRef ref, IIBlockState state, EntityPlayer player);
 	
-	boolean canHarvestBlock(IBlockAccess world, BlockLoc pos, EntityPlayer player);
+	boolean canHarvestBlock(IIBlockAccess world, Vector3i pos, EntityPlayer player);
 	
 	boolean canDropFromExplosion(Explosion explosionIn);
 	
-	boolean isReplaceable(IWorld world, BlockLoc pos);
+	boolean isReplaceable(WorldRef ref);
 	
-	float getBlockHardness(IWorld world, BlockLoc pos);
+	float getBlockHardness(WorldRef ref);
 	
-	float getBlockHardness(EntityPlayer player, IWorld world, BlockLoc pos);
+	float getBlockHardness(EntityPlayer player, WorldRef ref);
 	
-	float getExplosionResistance(IWorld world, BlockLoc pos, IEntity exploder, Explosion explosion);
+	float getExplosionResistance(WorldRef ref, IEntity exploder, Explosion explosion);
 	
-	List<IItemStack> getDrops(IBlockAccess world, BlockLoc pos, IIBlockState state, int fortune);
+	List<IItemStack> getDrops(IIBlockAccess world, Vector3i pos, IIBlockState state, int fortune);
 	
 	@ClientSideOnly
-	IItemStack getPickBlock(MovingObjectPosition target, IWorld world, BlockLoc pos);
+	IItemStack getPickBlock(MovingObjectPosition target, WorldRef ref);
 }

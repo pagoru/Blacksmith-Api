@@ -1,21 +1,21 @@
 package net.darkaqua.blacksmith.api.inventory;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.item.Item;
+import net.darkaqua.blacksmith.api.item.IItem;
 
 public abstract class ItemStackFactory {
 
 	protected static ItemStackFactory INSTANCE;
 
-	public static IItemStack create(Item item) {
+	public static IItemStack create(IItem item) {
 		return INSTANCE.newItemStack(item, 1, 0);
 	}
 
-	public static IItemStack create(Item item, int amount) {
+	public static IItemStack create(IItem item, int amount) {
 		return INSTANCE.newItemStack(item, amount, 0);
 	}
 
-	public static IItemStack create(Item item, int amount, int metadata) {
+	public static IItemStack create(IItem item, int amount, int metadata) {
 		return INSTANCE.newItemStack(item, amount, metadata);
 	}
 
@@ -31,8 +31,8 @@ public abstract class ItemStackFactory {
 		return INSTANCE.newItemStack(block, amount, metadata);
 	}
 
-	protected abstract IItemStack newItemStack(Item item, int amount, int metadata);
+	protected abstract IItemStack newItemStack(IItem item, int amount, int metadata);
 
-	protected abstract IItemStack newItemStack(IBlock item, int amount, int metadata);
+	protected abstract IItemStack newItemStack(IBlock block, int amount, int metadata);
 
 }
