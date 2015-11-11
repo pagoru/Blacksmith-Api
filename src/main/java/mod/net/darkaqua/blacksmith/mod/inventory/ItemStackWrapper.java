@@ -17,4 +17,9 @@ public class ItemStackWrapper implements IItemStack{
     public ItemStack getItemStack(){
         return stack;
     }
+
+    @Override
+    public Object getInternalItemStack() {
+        return stack;
+    }
 }

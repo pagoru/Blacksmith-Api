@@ -51,7 +51,7 @@ public class BlockWrapper implements IBlock {
 			}
 
 			@Override
-			public float getLightEmited() {
+			public float getLightEmitted() {
 				return block.getLightValue();
 			}
 
@@ -130,5 +130,10 @@ public class BlockWrapper implements IBlock {
 	@Override
 	public IItem getItemBlock() {
 		return MCInterface.fromItem(net.minecraft.item.Item.getItemFromBlock(block));
+	}
+
+	@Override
+	public Object getInternalBlock() {
+		return block;
 	}
 }

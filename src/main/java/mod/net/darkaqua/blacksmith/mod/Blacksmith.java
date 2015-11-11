@@ -5,6 +5,7 @@ import net.darkaqua.blacksmith.api.event.EventBus;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.Log;
+import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.event.modloader.InitEvent;
 import net.darkaqua.blacksmith.mod.event.modloader.PostInitEvent;
@@ -42,8 +43,9 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         INSTANCE = this;
         BS_Log.init();
         BS_ItemStackFactory.init();
+        BS_CreativeTabFactory.init();
         BS_EventBus.init();
-        StaticAccess.game = Game.INSTANCE;
+        StaticAccess.GAME = Game.INSTANCE;
     }
 
     //  Events code

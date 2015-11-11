@@ -6,6 +6,7 @@ package net.darkaqua.blacksmith.api.registry;
 public final class StaticAccess {
 
     private StaticAccess(){}
-    public static IGame game;
+
+    public static IGame GAME;
 
 }

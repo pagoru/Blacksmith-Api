@@ -72,7 +72,7 @@ public class BS_EventBus extends EventBus{
         if (listeners.containsKey(eventType)) {
             list = listeners.get(eventType);
         } else {
-            list = new ArrayList<SubscribedMethod>();
+            list = new ArrayList<>();
             listeners.put(eventType, list);
         }
         SubscribedMethod caller = new SubscribedMethod(o, m);

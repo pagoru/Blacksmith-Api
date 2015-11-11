@@ -12,7 +12,7 @@ public interface IBlockLightHandler {
 	
 	float getLightOpacity(IIBlockAccess world, Vector3i pos);
 	
-	float getLightEmited();
+	float getLightEmitted();
 	
 	boolean isOpaque();
 }

@@ -24,4 +24,9 @@ public class IBlockStateWrapper implements IIBlockState{
     public IBlock getBlock() {
         return MCInterface.fromBlock(state.getBlock());
     }
+
+    @Override
+    public Object getInternalBlockState() {
+        return state;
+    }
 }

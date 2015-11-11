@@ -4,5 +4,5 @@ public interface IIBlockState {
 
 	IBlock getBlock();
 
-
+	Object getInternalBlockState();
 }
