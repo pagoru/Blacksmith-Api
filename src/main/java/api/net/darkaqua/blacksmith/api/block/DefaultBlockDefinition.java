@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.api.block;
 
 import net.darkaqua.blacksmith.api.creativetab.CreativeTabFactory;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
+import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.util.Cube;
 
 /**
@@ -48,5 +49,10 @@ public class DefaultBlockDefinition implements IBlockDefinition{
     @Override
     public ICreativeTab getCreativeTab() {
         return CreativeTabFactory.BLOCKS_TAB;
+    }
+
+    @Override
+    public IBlockRenderHandler getBlockRenderHandler() {
+        return null;
     }
 }

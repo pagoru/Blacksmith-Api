@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.api.block;
 
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
+import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.util.Cube;
 
 /**
@@ -66,4 +67,10 @@ public interface IBlockDefinition {
      * @return the creative tab where this block will appear
      */
     ICreativeTab getCreativeTab();
+
+    /**
+     *
+     * @return the render handler that renders this block
+     */
+    IBlockRenderHandler getBlockRenderHandler();
 }

@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.mod.world;
 
 import net.darkaqua.blacksmith.api.block.IIBlockState;
+import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
@@ -24,5 +25,10 @@ public class WorldWrapper implements IWorld{
     @Override
     public IIBlockState getBlockState(Vector3i pos) {
         return MCInterface.fromIBlockState(world.getBlockState(MCInterface.toBlockPos(pos)));
+    }
+
+    @Override
+    public ITileEntity getTileEntity(Vector3i position) {
+        return MCInterface.fromTileEntity(world.getTileEntity(MCInterface.toBlockPos(position)));
     }
 }

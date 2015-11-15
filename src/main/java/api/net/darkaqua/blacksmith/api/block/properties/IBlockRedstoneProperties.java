@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public interface IBlockRedstoneHandler {
+public interface IBlockRedstoneProperties {
 	
 	IBlock getBlock();
 

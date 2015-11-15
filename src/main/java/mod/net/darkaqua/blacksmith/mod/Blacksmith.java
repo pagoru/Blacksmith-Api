@@ -13,6 +13,7 @@ import net.darkaqua.blacksmith.mod.event.modloader.PreInitEvent;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.registry.Game;
+import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.objectweb.asm.Type;
 
@@ -53,6 +55,10 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
+
+        GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
+
+
         EventBus.postEvent(new PreInitEvent(event));
         Log.info("PreInitEvent done");
     }

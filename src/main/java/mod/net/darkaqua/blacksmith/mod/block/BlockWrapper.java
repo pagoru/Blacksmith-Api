@@ -32,9 +32,9 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public IBlockLightHandler getLightHandler() {
+	public IBlockLightProperties getLightProperties() {
 
-		return new IBlockLightHandler() {
+		return new IBlockLightProperties() {
 			@Override
 			public IBlock getBlock() {
 				return BlockWrapper.this;
@@ -63,8 +63,8 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public IBlockStateHandler getStateHandler() {
-		return new IBlockStateHandler() {
+	public IBlockStateProperties getBlockStateProperties() {
+		return new IBlockStateProperties() {
 			@Override
 			public IBlock getBlock() {
 				return BlockWrapper.this;
@@ -93,32 +93,32 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public IBlockPhysicsHandler getPhysicsHandler() {
+	public IBlockPhysicsProperties getPhysicsProperties() {
 		return null;
 	}
 
 	@Override
-	public IBlockHarvestHandler getHarvestHandler() {
+	public IBlockHarvestProperties getHarvestProperties() {
 		return null;
 	}
 
 	@Override
-	public IBlockRedstoneHandler getRedstoneHandler() {
+	public IBlockRedstoneProperties getRedstoneProperties() {
 		return null;
 	}
 
 	@Override
-	public IBlockRenderHandler getRenderHandler() {
+	public IBlockRenderProperties getRenderProperties() {
 		return null;
 	}
 
 	@Override
-	public IBlockTileEntityHandler getTileEntityHandler() {
+	public IBlockTileEntityProperties getTileEntityProperties() {
 		return null;
 	}
 
 	@Override
-	public IBlockTickHandler getTickHandler() {
+	public IBlockTickProperties getTickProperties() {
 		return null;
 	}
 

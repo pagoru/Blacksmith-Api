@@ -1,7 +1,5 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
-import java.util.List;
-
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.entity.IEntity;
@@ -15,7 +13,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 
-public interface IBlockHarvestHandler {
+import java.util.List;
+
+public interface IBlockHarvestProperties {
 	
 	IBlock getBlock();
 

@@ -1,8 +1,5 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
-import java.util.List;
-import java.util.Random;
-
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
@@ -16,7 +13,10 @@ import net.darkaqua.blacksmith.api.world.IWorld;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.MovingObjectPosition;
 
-public interface IBlockRenderHandler {
+import java.util.List;
+import java.util.Random;
+
+public interface IBlockRenderProperties {
 
 	IBlock getBlock();
 

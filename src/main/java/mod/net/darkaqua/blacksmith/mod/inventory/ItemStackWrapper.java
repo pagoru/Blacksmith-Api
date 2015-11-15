@@ -1,6 +1,9 @@
 package net.darkaqua.blacksmith.mod.inventory;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.item.IItem;
+import net.darkaqua.blacksmith.api.storage.IDataCompound;
+import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -16,6 +19,46 @@ public class ItemStackWrapper implements IItemStack{
 
     public ItemStack getItemStack(){
         return stack;
+    }
+
+    @Override
+    public IItem getItem() {
+        return MCInterface.fromItem(stack.getItem());
+    }
+
+    @Override
+    public void setItem(IItem item) {
+        stack.setItem(MCInterface.toItem(item));
+    }
+
+    @Override
+    public int getAmount() {
+        return stack.stackSize;
+    }
+
+    @Override
+    public void setAmount(int amount) {
+        stack.stackSize = amount;
+    }
+
+    @Override
+    public int getDamage() {
+        return stack.getItemDamage();
+    }
+
+    @Override
+    public void setDamage(int damage) {
+    stack.setItemDamage(damage);
+    }
+
+    @Override
+    public IDataCompound getDataCompound() {
+        return MCInterface.fromNBTCompound(stack.getTagCompound());
+    }
+
+    @Override
+    public void setDataCompound(IDataCompound cmp) {
+        stack.setTagCompound(MCInterface.toNBTCompound(cmp));
     }
 
     @Override

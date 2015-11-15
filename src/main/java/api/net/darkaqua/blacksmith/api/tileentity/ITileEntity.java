@@ -8,11 +8,14 @@ import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.minecraft.network.Packet;
 
 public interface ITileEntity {
-	
+
+	/**
+	 * Returns the world and the position of the tileEntity
+     */
 	WorldRef getWorldRef();
-	
+
 	void setWorldRef(WorldRef ref);
-	
+
 	boolean isValid();
 	
 	void setValid(boolean valid);
@@ -24,8 +27,6 @@ public interface ITileEntity {
 	void saveData(IDataCompound tag);
 	
 	Packet getDescriptionPacket();
-	
-	void onDescriptionPackArrives(Packet packet);
 	
 	void onChunkUnload();
 	
@@ -46,4 +47,6 @@ public interface ITileEntity {
 	
 	@ClientSideOnly
 	boolean canRenderBreaking();
+
+	Object getInternalTileEntity();
 }

@@ -6,4 +6,6 @@ package net.darkaqua.blacksmith.api.registry;
 public interface IGame {
 
     IBlockRegistry getBlockRegistry();
+
+    ITileEntityRegistry getTileEntityRegistry();
 }

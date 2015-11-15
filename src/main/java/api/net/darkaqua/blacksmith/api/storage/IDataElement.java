@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.api.storage;
 
 public interface IDataElement {
 
-	public byte getID();
+	byte getID();
 	
-	public IDataElement copy();
+	IDataElement copy();
 }

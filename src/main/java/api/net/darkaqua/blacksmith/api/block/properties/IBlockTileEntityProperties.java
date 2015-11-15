@@ -5,7 +5,7 @@ import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
-public interface IBlockTileEntityHandler {
+public interface IBlockTileEntityProperties {
 
 	IBlock getBlock();
 	

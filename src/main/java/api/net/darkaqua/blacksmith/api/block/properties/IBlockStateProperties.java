@@ -5,7 +5,7 @@ import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 
-public interface IBlockStateHandler {
+public interface IBlockStateProperties {
 	
 	IBlock getBlock();
 	

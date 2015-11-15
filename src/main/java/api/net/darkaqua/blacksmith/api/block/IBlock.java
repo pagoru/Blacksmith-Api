@@ -27,42 +27,42 @@ public interface IBlock {
 	/**
 	 * Light Related stuff
      */
-	IBlockLightHandler getLightHandler();
+	IBlockLightProperties getLightProperties();
 
 	/**
 	 * Block States and metadata related stuff
      */
-	IBlockStateHandler getStateHandler();
+	IBlockStateProperties getBlockStateProperties();
 
 	/**
 	 * Different properties about the block structure or about collision boxes
      */
-	IBlockPhysicsHandler getPhysicsHandler();
+	IBlockPhysicsProperties getPhysicsProperties();
 
 	/**
 	 * Stuff related with block drops and block harvesting
      */
-	IBlockHarvestHandler getHarvestHandler();
+	IBlockHarvestProperties getHarvestProperties();
 
 	/**
 	 * Stuff related with redstone
      */
-	IBlockRedstoneHandler getRedstoneHandler();
+	IBlockRedstoneProperties getRedstoneProperties();
 
 	/**
 	 * Stuff related with render and client only things
      */
-	IBlockRenderHandler getRenderHandler();
+	IBlockRenderProperties getRenderProperties();
 
 	/**
 	 * Stuff about TileEntities
      */
-	IBlockTileEntityHandler getTileEntityHandler();
+	IBlockTileEntityProperties getTileEntityProperties();
 
 	/**
 	 * Stuff about blocks random tick
      */
-	IBlockTickHandler getTickHandler();
+	IBlockTickProperties getTickProperties();
 
 	/**
 	 * Stuff about events like right click, on break or on added

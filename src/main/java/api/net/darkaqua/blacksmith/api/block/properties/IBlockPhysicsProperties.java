@@ -1,7 +1,5 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
-import java.util.List;
-
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.entity.IEntity;
@@ -11,7 +9,9 @@ import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 
-public interface IBlockPhysicsHandler {
+import java.util.List;
+
+public interface IBlockPhysicsProperties {
 
 	IBlock getBlock();
 	

@@ -4,8 +4,12 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IIBlockState;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
+import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
+import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
+import net.darkaqua.blacksmith.api.storage.IDataCompound;
+import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vector3i;
@@ -14,17 +18,24 @@ import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.block.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
+import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
+import net.darkaqua.blacksmith.mod.network.packet.DescriptionPacketWrapper;
+import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
 import net.darkaqua.blacksmith.mod.world.IBlockAccessWrapper;
 import net.darkaqua.blacksmith.mod.world.WorldWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -148,6 +159,47 @@ public class MCInterface {
         if(tab instanceof CreativeTabWrapper){
             return ((CreativeTabWrapper) tab).getCreativeTab();
         }
+        return null;
+    }
+
+    public static IDataCompound fromNBTCompound(NBTTagCompound tag){
+        return null;
+    }
+
+    public static NBTTagCompound toNBTCompound(IDataCompound tag) {
+        return null;
+    }
+
+    public static ITileEntity fromTileEntity(TileEntity tile) {
+        if(tile == null) return null;
+        return new TileEntityWrapper(tile);
+    }
+
+    public static  TileEntity toTileEntity(ITileEntity tile){
+        if(tile instanceof TileEntityWrapper)
+            return ((TileEntityWrapper) tile).getTileEntity();
+        return null;
+    }
+
+    public static IDescriptionPacket toDescriptionPacket(S35PacketUpdateTileEntity pack){
+        if(pack == null) return null;
+        return new DescriptionPacketWrapper(pack);
+    }
+
+    public static S35PacketUpdateTileEntity fromDescriptionPacket(IDescriptionPacket pack) {
+        if(pack instanceof DescriptionPacketWrapper)
+            return ((DescriptionPacketWrapper) pack).getPacket();
+        return null;
+    }
+
+    public static IPlayer toPlayer(EntityPlayer player){
+        if(player == null) return null;
+        return new EntityPlayerWrapper(player);
+    }
+
+    public static EntityPlayer fromPlayer(IPlayer player) {
+    if(player instanceof EntityPlayerWrapper)
+        return ((EntityPlayerWrapper) player).getPlayer();
         return null;
     }
 }

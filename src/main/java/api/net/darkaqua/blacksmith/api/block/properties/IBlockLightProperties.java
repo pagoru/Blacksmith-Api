@@ -4,7 +4,7 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 
-public interface IBlockLightHandler {
+public interface IBlockLightProperties {
 
 	IBlock getBlock();
 	
