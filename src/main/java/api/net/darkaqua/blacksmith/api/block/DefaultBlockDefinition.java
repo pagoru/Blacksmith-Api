@@ -55,4 +55,9 @@ public class DefaultBlockDefinition implements IBlockDefinition{
     public IBlockRenderHandler getBlockRenderHandler() {
         return null;
     }
+
+    @Override
+    public int getNumMetadataStates() {
+        return 1;
+    }
 }

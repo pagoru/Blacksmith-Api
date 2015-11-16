@@ -8,4 +8,8 @@ public interface IGame {
     IBlockRegistry getBlockRegistry();
 
     ITileEntityRegistry getTileEntityRegistry();
+
+    boolean isClient();
+
+    boolean isServer();
 }

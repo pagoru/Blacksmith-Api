@@ -1,17 +1,14 @@
 package net.darkaqua.blacksmith.mod;
 
 import com.google.common.eventbus.Subscribe;
-import net.darkaqua.blacksmith.api.event.EventBus;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.Log;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
-import net.darkaqua.blacksmith.mod.event.modloader.InitEvent;
-import net.darkaqua.blacksmith.mod.event.modloader.PostInitEvent;
-import net.darkaqua.blacksmith.mod.event.modloader.PreInitEvent;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
+import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.Game;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
@@ -48,6 +45,13 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_CreativeTabFactory.init();
         BS_EventBus.init();
         StaticAccess.GAME = Game.INSTANCE;
+        //debug();
+    }
+
+    private static void debug(){
+        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+
+        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     }
 
     //  Events code
@@ -57,23 +61,26 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         Log.info("Starting PreInitEvent");
 
         GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
+        ModLoaderManager.firePreInit(event);
 
-
-        EventBus.postEvent(new PreInitEvent(event));
         Log.info("PreInitEvent done");
     }
 
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-        EventBus.postEvent(new InitEvent(event));
+
+        ModLoaderManager.fireInit(event);
+
         Log.info("InitEvent done");
     }
 
     @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
         Log.info("Starting PostInitEvent");
-        EventBus.postEvent(new PostInitEvent(event));
+
+        ModLoaderManager.firePostInit(event);
+
         Log.info("PostInitEvent done");
     }
 

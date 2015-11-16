@@ -73,4 +73,6 @@ public interface IBlockDefinition {
      * @return the render handler that renders this block
      */
     IBlockRenderHandler getBlockRenderHandler();
+
+    int getNumMetadataStates();
 }

@@ -3,6 +3,8 @@ package net.darkaqua.blacksmith.mod.event;
 import net.darkaqua.blacksmith.api.event.EventBus;
 import net.darkaqua.blacksmith.api.event.EventSubscribe;
 import net.darkaqua.blacksmith.api.event.IEvent;
+import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
+import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,6 +23,10 @@ public class BS_EventBus extends EventBus{
 
     public static void init() {
         INSTANCE = new BS_EventBus();
+    }
+
+    public static HashMap<Class<?>, ArrayList<SubscribedMethod>> getEventListeners(){
+        return listeners;
     }
 
     @Override
@@ -75,18 +81,32 @@ public class BS_EventBus extends EventBus{
             list = new ArrayList<>();
             listeners.put(eventType, list);
         }
-        SubscribedMethod caller = new SubscribedMethod(o, m);
+        SubscribedMethod caller = new SubscribedMethod(o, m, ModLoaderManager.getActiveMod());
         list.add(caller);
     }
 
-    private class SubscribedMethod {
+    public static class SubscribedMethod {
 
         private Object obj;
         private Method method;
+        private BlacksmithModContainer owner;
 
-        public SubscribedMethod(Object o, Method m) {
+        public SubscribedMethod(Object o, Method m, BlacksmithModContainer owner) {
             obj = o;
             method = m;
+            this.owner = owner;
+        }
+
+        public Object getInstance() {
+            return obj;
+        }
+
+        public Method getMethod() {
+            return method;
+        }
+
+        public BlacksmithModContainer getModOwner() {
+            return owner;
         }
 
         public void call(Object arg) {

@@ -1,14 +1,16 @@
 package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
+import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
+import net.darkaqua.blacksmith.mod.render.ModelUtils;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
@@ -35,8 +37,6 @@ public class BlockRegistry implements IBlockRegistry {
         if (identifier == null)
             throw new NullPointerException("BlockRegistry cannot use a null identifier to create a new block");
 
-
-
         Block result = null;
         if(definition instanceof IBlockContainerDefinition){
             BS_BlockContainer block = new BS_BlockContainer((IBlockContainerDefinition) definition);
@@ -50,6 +50,12 @@ public class BlockRegistry implements IBlockRegistry {
             Item item = Item.getItemFromBlock(result);
             if(item instanceof BS_ItemBlock) {
                 ((BS_ItemBlock) item).setBlockDefinition(definition);
+            }
+
+            if(definition.getBlockRenderHandler() != null) {
+                for (int i = 0; i < definition.getNumMetadataStates(); i++) {
+                    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, i, ModelUtils.getModelResourceLocation(item, i, definition));
+                }
             }
         }
         return MCInterface.fromBlock(result);
