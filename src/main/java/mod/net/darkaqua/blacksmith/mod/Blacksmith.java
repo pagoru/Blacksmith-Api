@@ -9,9 +9,14 @@ import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
+import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelManager;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModContainerFactory;
@@ -32,7 +37,7 @@ import java.util.Map;
 public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     public static Blacksmith INSTANCE;
-    public static final String MOD_ID = "Blacksmith";
+    public static final String MOD_ID = "blacksmith";
     public static final String MOD_NAME = "Blacksmith";
     public static final String MOD_VERSION = "0.0.0";
 
@@ -50,7 +55,9 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     private static void debug(){
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-
+        ModelManager manager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager();
+        IBakedModel model = manager.getModel(new ModelResourceLocation("blacksmith:computer/computer#inventory"));
+        Log.debug(model);
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     }
 
@@ -69,9 +76,8 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-
+        BlockRegistry.registerRenders();
         ModLoaderManager.fireInit(event);
-
         Log.info("InitEvent done");
     }
 

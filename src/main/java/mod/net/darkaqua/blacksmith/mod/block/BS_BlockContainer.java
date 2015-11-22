@@ -29,6 +29,10 @@ public class BS_BlockContainer extends BlockContainer{
         setResistance(def.getBlockResistance());
     }
 
+    public int getRenderType(){
+        return 0;
+    }
+
     private void setBlockBounds(Cube c){
         setBlockBounds((float)c.minX(), (float)c.minY(), (float)c.minZ(), (float)c.maxX(), (float)c.maxY(), (float)c.maxZ());
     }

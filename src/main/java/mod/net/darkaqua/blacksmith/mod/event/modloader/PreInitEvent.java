@@ -36,4 +36,9 @@ public class PreInitEvent implements IPreInitEvent{
     public EventResult getEventResult() {
         return EventResult.DEFAULT;
     }
+
+    @Override
+    public Object getForgeEvent() {
+        return event;
+    }
 }

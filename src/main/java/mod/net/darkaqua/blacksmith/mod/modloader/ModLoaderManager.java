@@ -24,7 +24,9 @@ public class ModLoaderManager {
 
 	public static void registerPlugin(BlacksmithModContainer container, Object instance) {
 		loadedMods.add(container);
+		activeMod = container;
 		EventBus.registerEventListener(instance);
+		activeMod = null;
 	}
 
 	public static String findName(Object plugin) {

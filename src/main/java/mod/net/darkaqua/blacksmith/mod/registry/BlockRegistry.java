@@ -4,6 +4,7 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
+import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
@@ -11,6 +12,8 @@ import net.darkaqua.blacksmith.mod.render.ModelUtils;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
@@ -27,8 +30,15 @@ public class BlockRegistry implements IBlockRegistry {
     public static final BlockRegistry INSTANCE = new BlockRegistry();
 
     private static final List<IBlockDefinition> blockDefinitions = new LinkedList<>();
+    private static final List<RenderRegistration> renders = new LinkedList<>();
 
     private BlockRegistry() {}
+
+    public static void registerRenders(){
+        for(RenderRegistration render : renders){
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(render.getItem(), render.getMeta(), render.getModel());
+        }
+    }
 
     @Override
     public IBlock registerBlockDefinition(IBlockDefinition definition, String identifier) {
@@ -51,10 +61,13 @@ public class BlockRegistry implements IBlockRegistry {
             if(item instanceof BS_ItemBlock) {
                 ((BS_ItemBlock) item).setBlockDefinition(definition);
             }
-
-            if(definition.getBlockRenderHandler() != null) {
-                for (int i = 0; i < definition.getNumMetadataStates(); i++) {
-                    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, i, ModelUtils.getModelResourceLocation(item, i, definition));
+            if(StaticAccess.GAME.isClient()) {
+                if (definition.getBlockRenderHandler() != null) {
+                    for (int i = 0; i < definition.getNumMetadataStates(); i++) {
+                        RenderRegistration render = new RenderRegistration(item, i, ModelUtils.getModelResourceLocation(item, i, definition, identifier));
+                        renders.add(render);
+                        ModelBakery.addVariantName(render.getItem(), render.getModel().getResourceDomain()+":"+render.getModel().getResourcePath());
+                    }
                 }
             }
         }
@@ -85,5 +98,29 @@ public class BlockRegistry implements IBlockRegistry {
             i = (net.minecraft.block.Block) net.minecraft.block.Block.blockRegistry.getObject(new ResourceLocation(domain, name));
         }
         return MCInterface.fromBlock(i);
+    }
+
+    private class RenderRegistration{
+        private Item item;
+        private int meta;
+        private ModelResourceLocation model;
+
+        public RenderRegistration(Item item, int meta, ModelResourceLocation model) {
+            this.item = item;
+            this.meta = meta;
+            this.model = model;
+        }
+
+        public Item getItem() {
+            return item;
+        }
+
+        public int getMeta() {
+            return meta;
+        }
+
+        public ModelResourceLocation getModel() {
+            return model;
+        }
     }
 }

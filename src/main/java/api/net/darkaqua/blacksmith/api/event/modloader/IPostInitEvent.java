@@ -1,9 +1,9 @@
 package net.darkaqua.blacksmith.api.event.modloader;
 
-import net.darkaqua.blacksmith.api.event.IEvent;
+import net.darkaqua.blacksmith.api.event.IForgeEvent;
 
 /**
  * Created by cout970 on 08/11/2015.
  */
-public interface IPostInitEvent extends IEvent{
+public interface IPostInitEvent extends IForgeEvent {
 }

@@ -20,4 +20,8 @@ public class TextureLocation {
     public String getPath() {
         return path;
     }
+
+    public String toString(){
+        return getDomain()+":"+getPath();
+    }
 }
