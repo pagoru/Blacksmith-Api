@@ -1,41 +1,22 @@
-
-#eclipse
-.project
-.classpath
-.metadata
-org.*
+# eclipse
 bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-#idea
-.idea
-*.iml
+# idea
+out
 *.ipr
 *.iws
-out
+*.iml
+.idea
 
-#gradle
+# gradle
 build
 .gradle
 
-#runtime
+# other
 eclipse
 run
-
-#mac
-.DS_Store
-*.command
-
-#default values
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
