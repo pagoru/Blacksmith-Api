@@ -5,6 +5,7 @@ import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
+import net.darkaqua.blacksmith.api.util.Log;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
@@ -16,7 +17,6 @@ import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -38,7 +38,7 @@ public class BlockRegistry implements IBlockRegistry {
 
     private BlockRegistry() {}
 
-    public void registerRenders(ModelBakeEvent event){
+    public void registerRenders(){
         for(RenderRegistration render : renders){
             Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(render.getItem(), render.getMeta(), render.getModel());
         }
@@ -73,6 +73,9 @@ public class BlockRegistry implements IBlockRegistry {
                     RenderRegistration render = new RenderRegistration(item, i, ModelUtils.getModelResourceLocation(item, i, definition, identifier));
                     renders.add(render);
                     ModelBakery.addVariantName(render.getItem(), render.getModel().getResourceDomain()+":"+render.getModel().getResourcePath());
+                    Log.debug("BLOCK REGISTRY ==========================================================================================================================");
+                    Log.debug(render.getModel().getResourceDomain()+":"+render.getModel().getResourcePath());
+                    Log.debug("BLOCK REGISTRY ==========================================================================================================================");
                 }
             }
         }

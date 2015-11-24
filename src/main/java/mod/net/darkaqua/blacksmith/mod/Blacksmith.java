@@ -11,9 +11,11 @@ import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
+import net.darkaqua.blacksmith.mod.render.BS_ModelLoader;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
@@ -48,13 +50,12 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_CreativeTabFactory.init();
         BS_EventBus.init();
         StaticAccess.GAME = Game.INSTANCE;
-
         //debug();
     }
 
     public static void debug(ModelResourceLocation location){
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-//        ItemModelMesher manager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+//        ItemModelMesherForge manager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 //        ModelManager m = manager.getModelManager();
 //        Log.debug(location);
 //        IBakedModel model = m.getModel(location);
@@ -83,6 +84,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
         MinecraftForge.EVENT_BUS.register(BlockRegistry.INSTANCE);
+        ModelLoaderRegistry.registerLoader(BS_ModelLoader.INSTANCE);
         GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
         ModLoaderManager.firePreInit(event);
         Log.info("PreInitEvent done");
@@ -91,6 +93,8 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
+        if(Game.INSTANCE.isClient())
+        BlockRegistry.INSTANCE.registerRenders();
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }
