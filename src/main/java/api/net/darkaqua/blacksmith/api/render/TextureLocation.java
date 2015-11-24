@@ -8,7 +8,7 @@ public class TextureLocation {
     private String domain;
     private String path;
 
-    public TextureLocation( String domain, String fileName) {
+    public TextureLocation(String domain, String fileName) {
         this.path = fileName;
         this.domain = domain;
     }

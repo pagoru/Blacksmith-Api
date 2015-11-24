@@ -1,16 +1,16 @@
 package net.darkaqua.blacksmith.api.render;
 
+import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
+import net.darkaqua.blacksmith.api.world.IIBlockAccess;
+
 /**
  * Created by cout970 on 15/11/2015.
  */
 public interface IBlockRenderHandler {
 
-    /**
-     * Returns the ITextureLocationProvider that provides textures for this block, the args:
-     * type will be 0, and metadata will the block metadata
-     * @return the TextureLocationProvider that provide the block textures
-     */
-    ITextureLocationProvider getTextureProvider();
 
-    IBlockModel getBlockModel();
+    IBlockModel getBlockModel(IIBlockAccess state);
+
+    ITileEntityModel getTileEntityModel(ITileEntity tileEntity);
+
 }

@@ -49,7 +49,7 @@ public class ModelUtils {
             FileWriter writer = new FileWriter(file);
             Gson g = new GsonBuilder().setPrettyPrinting().create();
             JsonObject data = new JsonObject();
-            Tuple2<String, TextureLocation>[] textures = handler.getTextureProvider().getAllTextures();
+            Tuple2<String, TextureLocation>[] textures = handler.getBlockModel().getTextureProvider().getAllTextures();
             JsonObject textureArray = new JsonObject();
 
             for (Tuple2<String, TextureLocation> tex : textures) {

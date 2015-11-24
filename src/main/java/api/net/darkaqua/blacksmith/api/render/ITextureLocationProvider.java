@@ -7,7 +7,7 @@ import net.darkaqua.blacksmith.api.util.Tuple2;
  */
 public interface ITextureLocationProvider {
 
-    TextureLocation getTextureLocation(String part);
+    TextureLocation getTextureLocation(IRenderShape shape);
 
     /**
      *
