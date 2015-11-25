@@ -11,12 +11,12 @@ import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
+import net.darkaqua.blacksmith.mod.render.BS_ModelLoader;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModContainerFactory;
@@ -50,15 +50,31 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_CreativeTabFactory.init();
         BS_EventBus.init();
         StaticAccess.GAME = Game.INSTANCE;
-
         //debug();
     }
 
-    private static void debug(){
+    public static void debug(ModelResourceLocation location){
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        ModelManager manager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager();
-        IBakedModel model = manager.getModel(new ModelResourceLocation("blacksmith:computer/computer#inventory"));
-        Log.debug(model);
+//        ItemModelMesherForge manager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+//        ModelManager m = manager.getModelManager();
+//        Log.debug(location);
+//        IBakedModel model = m.getModel(location);
+//        Log.debug(model);
+//        Log.debug("=-=-=-=-=1");
+//        IBlock iblock = BlockRegistry.INSTANCE.getBlockFromDefinition(BlockRegistry.INSTANCE.getRegisteredBlockDefinitions().get(0));
+//        Log.debug("=-=-=-=-=2");
+//        Block block = MCInterface.toBlock(iblock);
+//        Log.debug("=-=-=-=-=3");
+//        Log.debug(block);
+//        ItemStack stack = new ItemStack(block);
+//        Log.debug("=-=-=-=-=4");
+//        Log.debug(manager);
+//        try {
+//            IBakedModel model = manager.getItemModel(stack);
+//            Log.debug(model);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     }
 
@@ -67,17 +83,18 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
-
+        MinecraftForge.EVENT_BUS.register(BlockRegistry.INSTANCE);
+        ModelLoaderRegistry.registerLoader(BS_ModelLoader.INSTANCE);
         GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
         ModLoaderManager.firePreInit(event);
-
         Log.info("PreInitEvent done");
     }
 
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-        BlockRegistry.registerRenders();
+        if(Game.INSTANCE.isClient())
+        BlockRegistry.INSTANCE.registerRenders();
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }

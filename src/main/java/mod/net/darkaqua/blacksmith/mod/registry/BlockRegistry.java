@@ -5,6 +5,7 @@ import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
+import net.darkaqua.blacksmith.api.util.Log;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
@@ -16,8 +17,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cout970 on 08/11/2015.
@@ -27,9 +30,9 @@ public class BlockRegistry implements IBlockRegistry {
     public static final BlockRegistry INSTANCE = new BlockRegistry();
 
     private static final List<IBlockDefinition> blockDefinitions = new LinkedList<>();
+    private static final Map<IBlockDefinition, IBlock> blocksRegistered = new HashMap<>();
 
-    private BlockRegistry() {
-    }
+    private BlockRegistry() {}
 
     @Override
     public IBlock registerBlockDefinition(IBlockDefinition definition, String identifier) {
@@ -86,5 +89,7 @@ public class BlockRegistry implements IBlockRegistry {
         return MCInterface.fromBlock(i);
     }
 
-
+    public IBlock getBlockFromDefinition(IBlockDefinition def){
+        return blocksRegistered.get(def);
+    }
 }

@@ -30,7 +30,7 @@ public class BS_BlockContainer extends BlockContainer{
     }
 
     public int getRenderType(){
-        return 0;
+        return 3;
     }
 
     private void setBlockBounds(Cube c){

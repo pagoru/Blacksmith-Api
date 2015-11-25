@@ -3,6 +3,8 @@ package net.darkaqua.blacksmith.mod.event.modloader;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import java.io.File;
+
 /**
  * Created by cout970 on 07/11/2015.
  */
@@ -40,5 +42,20 @@ public class PreInitEvent implements IPreInitEvent{
     @Override
     public Object getForgeEvent() {
         return event;
+    }
+
+    @Override
+    public File getModConfigurationDirectory() {
+        return event.getModConfigurationDirectory();
+    }
+
+    @Override
+    public File getSuggestedConfigurationFile() {
+        return event.getSuggestedConfigurationFile();
+    }
+
+    @Override
+    public File getSourceFile() {
+        return event.getSourceFile();
     }
 }
