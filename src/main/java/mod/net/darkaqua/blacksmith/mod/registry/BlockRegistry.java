@@ -8,12 +8,9 @@ import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
-import net.darkaqua.blacksmith.mod.render.ModelUtils;
+import net.darkaqua.blacksmith.mod.render.RenderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
@@ -30,14 +27,8 @@ public class BlockRegistry implements IBlockRegistry {
     public static final BlockRegistry INSTANCE = new BlockRegistry();
 
     private static final List<IBlockDefinition> blockDefinitions = new LinkedList<>();
-    private static final List<RenderRegistration> renders = new LinkedList<>();
 
-    private BlockRegistry() {}
-
-    public static void registerRenders(){
-        for(RenderRegistration render : renders){
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(render.getItem(), render.getMeta(), render.getModel());
-        }
+    private BlockRegistry() {
     }
 
     @Override
@@ -47,30 +38,25 @@ public class BlockRegistry implements IBlockRegistry {
         if (identifier == null)
             throw new NullPointerException("BlockRegistry cannot use a null identifier to create a new block");
 
-        Block result = null;
-        if(definition instanceof IBlockContainerDefinition){
+        Block result;
+        if (definition instanceof IBlockContainerDefinition) {
             BS_BlockContainer block = new BS_BlockContainer((IBlockContainerDefinition) definition);
             result = GameRegistry.registerBlock(block, BS_ItemBlock.class, identifier);
-        }else {
+        } else {
             BS_Block block = new BS_Block(definition);
             result = GameRegistry.registerBlock(block, BS_ItemBlock.class, identifier);
         }
-        if (result != null) {
-            blockDefinitions.add(definition);
-            Item item = Item.getItemFromBlock(result);
-            if(item instanceof BS_ItemBlock) {
-                ((BS_ItemBlock) item).setBlockDefinition(definition);
-            }
-            if(StaticAccess.GAME.isClient()) {
-                if (definition.getBlockRenderHandler() != null) {
-                    for (int i = 0; i < definition.getNumMetadataStates(); i++) {
-                        RenderRegistration render = new RenderRegistration(item, i, ModelUtils.getModelResourceLocation(item, i, definition, identifier));
-                        renders.add(render);
-                        ModelBakery.addVariantName(render.getItem(), render.getModel().getResourceDomain()+":"+render.getModel().getResourcePath());
-                    }
-                }
-            }
+        if (result == null)
+            return null;
+        blockDefinitions.add(definition);
+        Item item = Item.getItemFromBlock(result);
+        if (item instanceof BS_ItemBlock) {
+            ((BS_ItemBlock) item).setBlockDefinition(definition);
         }
+        if (StaticAccess.GAME.isClient()) {
+            RenderManager.INSTANCE.register(result, item, definition);
+        }
+
         return MCInterface.fromBlock(result);
     }
 
@@ -100,27 +86,5 @@ public class BlockRegistry implements IBlockRegistry {
         return MCInterface.fromBlock(i);
     }
 
-    private class RenderRegistration{
-        private Item item;
-        private int meta;
-        private ModelResourceLocation model;
 
-        public RenderRegistration(Item item, int meta, ModelResourceLocation model) {
-            this.item = item;
-            this.meta = meta;
-            this.model = model;
-        }
-
-        public Item getItem() {
-            return item;
-        }
-
-        public int getMeta() {
-            return meta;
-        }
-
-        public ModelResourceLocation getModel() {
-            return model;
-        }
-    }
 }
