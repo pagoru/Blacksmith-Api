@@ -7,9 +7,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by cout970 on 25/11/2015.
@@ -19,9 +22,10 @@ public class RenderManager {
     public static final RenderManager INSTANCE = new RenderManager();
     private static List<IBlockRenderHandler> handlers = new LinkedList<>();
     private static final List<RenderRegistration> renders = new LinkedList<>();
+    private static final HashSet<String> registeredDomains = new HashSet<>();
+    private static final List<ResourceLocation> registeredResources = new LinkedList<>();
 
-
-    public static void registerRenders(){
+    public void registerRenders(){
         for(RenderRegistration render : renders){
             Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(render.getItem(), render.getMeta(), render.getModel());
         }
@@ -33,11 +37,23 @@ public class RenderManager {
             for (int i = 0; i < def.getValidStates().size(); i++) {
 
                 RenderRegistration render = new RenderRegistration(item, i, ModelUtils.getModelResourceLocation(item, i, def, identifier));
+                renders.add(render);
+                registeredDomains.add(render.getModel().getResourceDomain());
+                registeredResources.add(render.getModel());
                 ModelBakery.addVariantName(render.getItem(), render.getModel().getResourceDomain()+":"+render.getModel().getResourcePath());
                 renders.add(render);
             }
         }
     }
+
+    public Set getRegisteredDomains() {
+        return registeredDomains;
+    }
+
+    public List<ResourceLocation> registeredResourceLocations() {
+        return registeredResources;
+    }
+
     private class RenderRegistration{
         private Item item;
         private int meta;
@@ -45,6 +61,7 @@ public class RenderManager {
 
         public RenderRegistration(Item item, int meta, ModelResourceLocation model) {
             this.item = item;
+
             this.meta = meta;
             this.model = model;
         }
