@@ -12,9 +12,9 @@ import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
 import net.darkaqua.blacksmith.mod.render.BS_ModelLoader;
+import net.darkaqua.blacksmith.mod.render.RenderManager;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.DummyModContainer;
@@ -50,11 +50,12 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_CreativeTabFactory.init();
         BS_EventBus.init();
         StaticAccess.GAME = Game.INSTANCE;
-        //debug();
+        debug();
     }
 
-    public static void debug(ModelResourceLocation location){
+    public static void debug(){
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+
 //        ItemModelMesherForge manager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 //        ModelManager m = manager.getModelManager();
 //        Log.debug(location);
@@ -94,7 +95,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
         if(Game.INSTANCE.isClient())
-        BlockRegistry.INSTANCE.registerRenders();
+        RenderManager.INSTANCE.registerRenders();
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }
