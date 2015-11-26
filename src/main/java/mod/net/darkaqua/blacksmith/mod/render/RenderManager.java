@@ -4,7 +4,6 @@ import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -34,14 +33,12 @@ public class RenderManager {
     public void register(Block block, Item item, IBlockDefinition def, String identifier){
 
         if (def.getBlockRenderHandler() != null) {
-            for (int i = 0; i < def.getValidStates().size(); i++) {
-
-                RenderRegistration render = new RenderRegistration(item, i, ModelUtils.getModelResourceLocation(item, i, def, identifier));
-                renders.add(render);
-                registeredDomains.add(render.getModel().getResourceDomain());
-                registeredResources.add(render.getModel());
-                ModelBakery.addVariantName(render.getItem(), render.getModel().getResourceDomain()+":"+render.getModel().getResourcePath());
-                renders.add(render);
+            List<RenderRegistration> render = ModelUtils.setupBlock(block, item, def, identifier);
+            for (RenderRegistration rend: render) {
+                renders.add(rend);
+                registeredDomains.add(rend.getModel().getResourceDomain());
+                registeredResources.add(rend.getModel());
+//                ModelBakery.addVariantName(rend.getItem(), rend.getModel().getResourceDomain()+":"+rend.getModel().getResourcePath());
             }
         }
     }
@@ -54,7 +51,7 @@ public class RenderManager {
         return registeredResources;
     }
 
-    private class RenderRegistration{
+    public static class RenderRegistration{
         private Item item;
         private int meta;
         private ModelResourceLocation model;

@@ -11,11 +11,12 @@ import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
-import net.darkaqua.blacksmith.mod.render.BS_ModelLoader;
+import net.darkaqua.blacksmith.mod.render.BS_ResourceLoader;
 import net.darkaqua.blacksmith.mod.render.RenderManager;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
@@ -50,7 +51,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_CreativeTabFactory.init();
         BS_EventBus.init();
         StaticAccess.GAME = Game.INSTANCE;
-        debug();
     }
 
     public static void debug(){
@@ -84,8 +84,11 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
+        if(Game.INSTANCE.isClient()) {
+            IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+            manager.registerReloadListener(BS_ResourceLoader.INSTANCE);
+        }
         MinecraftForge.EVENT_BUS.register(BlockRegistry.INSTANCE);
-        ModelLoaderRegistry.registerLoader(BS_ModelLoader.INSTANCE);
         GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
         ModLoaderManager.firePreInit(event);
         Log.info("PreInitEvent done");
@@ -94,8 +97,9 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-        if(Game.INSTANCE.isClient())
-        RenderManager.INSTANCE.registerRenders();
+        if(Game.INSTANCE.isClient()) {
+            RenderManager.INSTANCE.registerRenders();
+        }
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }
