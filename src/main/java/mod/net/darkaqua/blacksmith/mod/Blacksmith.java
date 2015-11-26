@@ -12,6 +12,7 @@ import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
 import net.darkaqua.blacksmith.mod.render.BS_ModelLoader;
+import net.darkaqua.blacksmith.mod.render.RenderManager;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -94,7 +95,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
         if(Game.INSTANCE.isClient())
-        BlockRegistry.INSTANCE.registerRenders();
+            RenderManager.registerRenders();
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }

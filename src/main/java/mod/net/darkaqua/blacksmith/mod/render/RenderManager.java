@@ -27,12 +27,14 @@ public class RenderManager {
         }
     }
 
-    public void register(Block block, Item item, IBlockDefinition def){
+    public void register(Block block, Item item, IBlockDefinition def, String identifier){
+
         if (def.getBlockRenderHandler() != null) {
-            for (int i = 0; i < def.getNumMetadataStates(); i++) {
-                RenderRegistration render = new RenderRegistration(item, i, ModelUtils.getModelResourceLocation(item, i, definition, identifier));
-                renders.add(render);
+            for (int i = 0; i < def.getValidStates().size(); i++) {
+
+                RenderRegistration render = new RenderRegistration(item, i, ModelUtils.getModelResourceLocation(item, i, def, identifier));
                 ModelBakery.addVariantName(render.getItem(), render.getModel().getResourceDomain()+":"+render.getModel().getResourcePath());
+                renders.add(render);
             }
         }
     }

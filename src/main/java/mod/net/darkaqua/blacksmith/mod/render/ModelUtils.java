@@ -33,12 +33,12 @@ public class ModelUtils {
         ModelResourceLocation res = new ModelResourceLocation(path, "inventory");
 
         File block = getFile(Blacksmith.MOD_ID +"@"+ mod.getModId(), "/models/block/", identifier.toLowerCase() + ".json");
-        File item = getFile(Blacksmith.MOD_ID +"@"+ mod.getModId(), "/models/item/", identifier.toLowerCase() + ".json");
+//        File item = getFile(Blacksmith.MOD_ID +"@"+ mod.getModId(), "/models/item/", identifier.toLowerCase() + ".json");
 
         Log.debug("JSON =====================================================================================================");
 
         createIfNeeded(definition.getBlockRenderHandler(), block);
-        createIfNeeded(definition.getBlockRenderHandler(), item);
+//        createIfNeeded(definition.getBlockRenderHandler(), item);
         return res;
     }
 
@@ -61,7 +61,7 @@ public class ModelUtils {
 //            data.addProperty("parent", "block/cube_all");
 //            data.add("textures", textureArray);
 //
-            String jsonText = "";//g.toJson(data);
+            String jsonText = "{}";//g.toJson(data);
             Log.debug(jsonText);
             Log.debug("JSON =====================================================================================================");
             writer.write(jsonText);

@@ -5,7 +5,6 @@ import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.util.Log;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
@@ -49,15 +48,13 @@ public class BlockRegistry implements IBlockRegistry {
             BS_Block block = new BS_Block(definition);
             result = GameRegistry.registerBlock(block, BS_ItemBlock.class, identifier);
         }
-        if (result == null)
-            return null;
         blockDefinitions.add(definition);
         Item item = Item.getItemFromBlock(result);
         if (item instanceof BS_ItemBlock) {
             ((BS_ItemBlock) item).setBlockDefinition(definition);
         }
         if (StaticAccess.GAME.isClient()) {
-            RenderManager.INSTANCE.register(result, item, definition);
+            RenderManager.INSTANCE.register(result, item, definition, identifier);
         }
 
         return MCInterface.fromBlock(result);

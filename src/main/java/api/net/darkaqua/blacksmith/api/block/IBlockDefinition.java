@@ -4,6 +4,8 @@ import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.util.Cube;
 
+import java.util.List;
+
 /**
  * This interface is mended to be implemented by the modders
  * This interface defines a new block
@@ -74,5 +76,7 @@ public interface IBlockDefinition {
      */
     IBlockRenderHandler getBlockRenderHandler();
 
-    int getNumMetadataStates();
+    IIBlockState getDefaultBlockState();
+
+    List<IIBlockState> getValidStates();
 }

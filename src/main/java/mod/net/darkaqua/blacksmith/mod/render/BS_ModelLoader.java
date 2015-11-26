@@ -9,6 +9,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 
 import java.io.IOException;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 public class BS_ModelLoader implements ICustomModelLoader {
 
     public static final BS_ModelLoader INSTANCE = new BS_ModelLoader();
+    private static IResourceManager manager;
     private ModelLoader loader;
 
     private BS_ModelLoader(){}
@@ -39,11 +41,11 @@ public class BS_ModelLoader implements ICustomModelLoader {
 
     @Override
     public IModel loadModel(ResourceLocation modelLocation) throws IOException {
-        return null;
+        return ModelLoaderRegistry.getMissingModel();
     }
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
-
+        manager = resourceManager;
     }
 }
