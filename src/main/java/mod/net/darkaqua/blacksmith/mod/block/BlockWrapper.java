@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.block;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
 import net.darkaqua.blacksmith.api.block.properties.*;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Vector3i;

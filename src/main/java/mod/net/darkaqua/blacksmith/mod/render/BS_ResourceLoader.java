@@ -30,12 +30,12 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
         File file = getFile(res);
         Log.debug("GET INPUT STREAM ===================================================================================================");
         Log.debug(res);
+        Log.debug(file);
         Log.debug("GET INPUT STREAM ===================================================================================================");
         return new BufferedInputStream(new FileInputStream(file));
     }
 
     private File getFile(ResourceLocation res){
-        String path = res.getResourcePath();
         return ModelUtils.getFile(res.getResourceDomain(), res.getResourcePath());
     }
 
@@ -75,23 +75,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
         res.reloadResourcePack(BS_ResourceLoader.INSTANCE);
         Log.debug(res.getResourceDomains()+" "+getResourceDomains());
         Log.debug("ON RELOAD ===================================================================================================");
+        RenderManager.INSTANCE.registerBlockRenders();
+        RenderManager.INSTANCE.registerItemRenders();
     }
-
-//    @Override
-//    public List getAllResources(ResourceLocation res) throws IOException {
-//        LinkedList list = new LinkedList();
-//        for (ResourceLocation loc : manager.registeredResourceLocations()){
-//            if(loc.getResourceDomain().equals(res.getResourceDomain())){
-//                if(loc.getResourcePath().contains(res.getResourcePath())){
-//                    list.add(getResource(loc));
-//                }
-//            }
-//        }
-//        return list;
-//    }
-//
-//    public IResource getResource(ResourceLocation res) throws IOException {
-//        return new SimpleResource(Blacksmith.MOD_NAME + " Resource", res,
-//                getInputStream(res), null, null);
-//    }
 }

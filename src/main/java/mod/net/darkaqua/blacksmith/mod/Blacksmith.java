@@ -4,15 +4,16 @@ import com.google.common.eventbus.Subscribe;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.Log;
+import net.darkaqua.blacksmith.mod.block.blockstate.BS_BlockStateFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
+import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
 import net.darkaqua.blacksmith.mod.render.BS_ResourceLoader;
-import net.darkaqua.blacksmith.mod.render.RenderManager;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
 import net.minecraft.client.Minecraft;
@@ -49,6 +50,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_Log.init();
         BS_ItemStackFactory.init();
         BS_CreativeTabFactory.init();
+        BS_BlockStateFactory.init();
         BS_EventBus.init();
         StaticAccess.GAME = Game.INSTANCE;
     }
@@ -56,26 +58,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public static void debug(){
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
 
-//        ItemModelMesherForge manager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-//        ModelManager m = manager.getModelManager();
-//        Log.debug(location);
-//        IBakedModel model = m.getModel(location);
-//        Log.debug(model);
-//        Log.debug("=-=-=-=-=1");
-//        IBlock iblock = BlockRegistry.INSTANCE.getBlockFromDefinition(BlockRegistry.INSTANCE.getRegisteredBlockDefinitions().get(0));
-//        Log.debug("=-=-=-=-=2");
-//        Block block = MCInterface.toBlock(iblock);
-//        Log.debug("=-=-=-=-=3");
-//        Log.debug(block);
-//        ItemStack stack = new ItemStack(block);
-//        Log.debug("=-=-=-=-=4");
-//        Log.debug(manager);
-//        try {
-//            IBakedModel model = manager.getItemModel(stack);
-//            Log.debug(model);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     }
 
@@ -84,22 +66,29 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
-        if(Game.INSTANCE.isClient()) {
-            IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
-            manager.registerReloadListener(BS_ResourceLoader.INSTANCE);
+        try {
+            if (Game.INSTANCE.isClient()) {
+                IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+                manager.registerReloadListener(BS_ResourceLoader.INSTANCE);
+            }
+            MinecraftForge.EVENT_BUS.register(BlockRegistry.INSTANCE);
+            GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
+            ModLoaderManager.firePreInit(event);
+//        if(Game.INSTANCE.isClient()) {
+//            RenderManager.INSTANCE.registerBlockRenders();
+//        }
+        }catch (Exception e){
+            new BlacksmithInternalException(e.getMessage()).printStackTrace();
         }
-        MinecraftForge.EVENT_BUS.register(BlockRegistry.INSTANCE);
-        GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
-        ModLoaderManager.firePreInit(event);
         Log.info("PreInitEvent done");
     }
 
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-        if(Game.INSTANCE.isClient()) {
-            RenderManager.INSTANCE.registerRenders();
-        }
+//        if(Game.INSTANCE.isClient()) {
+//            RenderManager.INSTANCE.registerItemRenders();
+//        }
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }

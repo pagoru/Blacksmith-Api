@@ -9,6 +9,7 @@ public class Tuple2<T1, T2> {
     private T2 last;
 
     public Tuple2(T1 a, T2 b){
+
         fist = a;
         last = b;
     }

@@ -214,7 +214,7 @@ public enum Blocks {
 	}
 
 	/**
-	 * @return the unique identifier of the block, usually used on "minecraft:" + getName()
+	 * @return the unique identifier of the block, usually used on "minecraft:" + getModelName()
 	 */
 	public String getName() {
 		return name;

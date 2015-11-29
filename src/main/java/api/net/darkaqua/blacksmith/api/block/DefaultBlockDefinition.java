@@ -1,12 +1,13 @@
 package net.darkaqua.blacksmith.api.block;
 
+import net.darkaqua.blacksmith.api.block.blockstate.BlockStateFactory;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockStateHandler;
+import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
 import net.darkaqua.blacksmith.api.creativetab.CreativeTabFactory;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.util.Cube;
-
-import java.util.Arrays;
-import java.util.List;
+import net.minecraft.block.state.IBlockState;
 
 /**
  * Created by cout970 on 08/11/2015.
@@ -14,9 +15,15 @@ import java.util.List;
 public class DefaultBlockDefinition implements IBlockDefinition{
 
     protected String blockName;
+    protected IBlock parent;
 
     public DefaultBlockDefinition(String name){
         blockName = name;
+    }
+
+    @Override
+    public void onBlockCreate(IBlock block) {
+        parent = block;
     }
 
     @Override
@@ -60,12 +67,24 @@ public class DefaultBlockDefinition implements IBlockDefinition{
     }
 
     @Override
-    public IIBlockState getDefaultBlockState() {
-        return null;
-    }
+    public IBlockStateHandler getBlockStateHandler() {
+        final IIBlockState state = BlockStateFactory.createBlockState(parent);
+        return new IBlockStateHandler(){
 
-    @Override
-    public List<IIBlockState> getValidStates() {
-        return Arrays.asList(new IIBlockState[1]);
+            @Override
+            public IIBlockState getDefaultBlockState() {
+                return state;
+            }
+
+            @Override
+            public IIBlockState getBlockStateFromMeta(int meta) {
+                return state;
+            }
+
+            @Override
+            public int getMetaFromBlockState(IBlockState state) {
+                return 0;
+            }
+        };
     }
 }

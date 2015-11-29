@@ -1,7 +1,8 @@
 package net.darkaqua.blacksmith.mod.util;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
@@ -16,7 +17,8 @@ import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
-import net.darkaqua.blacksmith.mod.block.IBlockStateWrapper;
+import net.darkaqua.blacksmith.mod.block.blockstate.IBlockStateWrapper;
+import net.darkaqua.blacksmith.mod.block.blockstate.IPropertyWrapper;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
@@ -27,6 +29,7 @@ import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
 import net.darkaqua.blacksmith.mod.world.IBlockAccessWrapper;
 import net.darkaqua.blacksmith.mod.world.WorldWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -200,6 +203,17 @@ public class MCInterface {
     public static EntityPlayer fromPlayer(IPlayer player) {
     if(player instanceof EntityPlayerWrapper)
         return ((EntityPlayerWrapper) player).getPlayer();
+        return null;
+    }
+
+    public static IIProperty fromIProperty(IProperty prop) {
+        if(prop == null)return null;
+        return new IPropertyWrapper(prop);
+    }
+
+    public static IProperty toIProperty(IIProperty prop) {
+        if(prop instanceof IPropertyWrapper)
+            return ((IPropertyWrapper) prop).getIProperty();
         return null;
     }
 }

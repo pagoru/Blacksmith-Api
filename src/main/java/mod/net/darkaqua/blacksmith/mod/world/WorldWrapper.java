@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.mod.world;
 
-import net.darkaqua.blacksmith.api.block.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.world.IWorld;

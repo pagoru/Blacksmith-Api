@@ -7,7 +7,6 @@ package net.darkaqua.blacksmith.api.util;
  */
 public class Vector3i {
 
-	public static final Vector3i NULL_VECTOR = new Vector3i(0, 0, 0);
 	protected int x;
 	protected int y;
 	protected int z;
@@ -26,6 +25,10 @@ public class Vector3i {
 		this(ar[0], ar[1], ar[2]);
 	}
 
+	public static Vector3i nullVector(){
+		return new Vector3i(0,0,0);
+	}
+
 	public Vector3i getOpposite() {
 		return new Vector3i(-x, -y, -z);
 	}
@@ -38,8 +41,7 @@ public class Vector3i {
 			return false;
 		} else {
 			Vector3i vecInt = (Vector3i) obj;
-			return this.getX() != vecInt
-					.getX() ? false : (this.getY() != vecInt.getY() ? false : this.getZ() == vecInt.getZ());
+			return this.getX() == vecInt.getX() && (this.getY() == vecInt.getY() && this.getZ() == vecInt.getZ());
 		}
 	}
 

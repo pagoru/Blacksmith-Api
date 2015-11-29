@@ -7,8 +7,6 @@ package net.darkaqua.blacksmith.api.util;
  */
 public class Vector3d {
 
-	public static final Vector3d NULL_VECTOR = new Vector3d(0, 0, 0);
-
 	protected double x;
 	protected double y;
 	protected double z;
@@ -23,6 +21,10 @@ public class Vector3d {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	public static Vector3d nullVector(){
+		return new Vector3d(0,0,0);
 	}
 
 	public Vector3d(int[] ar) {
@@ -146,7 +148,7 @@ public class Vector3d {
 	 */
 	public Vector3d unitVector() {
 		if (isNullVector())
-			return NULL_VECTOR.copy();
+			return nullVector();
 		return this.copy().multiply(1 / mag());
 	}
 

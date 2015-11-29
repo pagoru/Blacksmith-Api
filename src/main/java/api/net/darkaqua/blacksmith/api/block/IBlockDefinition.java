@@ -1,10 +1,9 @@
 package net.darkaqua.blacksmith.api.block;
 
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockStateHandler;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.util.Cube;
-
-import java.util.List;
 
 /**
  * This interface is mended to be implemented by the modders
@@ -14,6 +13,9 @@ import java.util.List;
  * Created by cout970 on 08/11/2015.
  */
 public interface IBlockDefinition {
+
+
+    void onBlockCreate(IBlock block);
 
     /**
      * The internal name of the block
@@ -70,13 +72,8 @@ public interface IBlockDefinition {
      */
     ICreativeTab getCreativeTab();
 
-    /**
-     *
-     * @return the render handler that renders this block
-     */
+    //TODO document this part
     IBlockRenderHandler getBlockRenderHandler();
 
-    IIBlockState getDefaultBlockState();
-
-    List<IIBlockState> getValidStates();
+    IBlockStateHandler getBlockStateHandler();
 }
