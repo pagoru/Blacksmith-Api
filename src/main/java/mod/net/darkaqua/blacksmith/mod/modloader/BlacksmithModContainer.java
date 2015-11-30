@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import net.darkaqua.blacksmith.api.util.Log;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.discovery.ModCandidate;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
@@ -40,6 +41,8 @@ public class BlacksmithModContainer implements ModContainer {
         this.modCandidate = candidate;
         this.modDescriptor = descriptor;
         source = candidate.getModContainer();
+        Log.debug(source);
+        Log.debug("-------------------------------------------------------------------------------------------------------------");
     }
 
     @Subscribe
@@ -51,13 +54,7 @@ public class BlacksmithModContainer implements ModContainer {
             Class<?> clazz = Class.forName(modClass, true, modClassLoader);
             modInstance = clazz.newInstance();
             ModLoaderManager.registerPlugin(this, modInstance);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
+        } catch (InstantiationException | MalformedURLException | ClassNotFoundException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

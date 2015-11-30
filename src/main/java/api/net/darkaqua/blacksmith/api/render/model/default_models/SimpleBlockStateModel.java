@@ -14,8 +14,8 @@ public class SimpleBlockStateModel implements IBlockStateModel {
     private int rotX, rotY;
     boolean useUVLock;
 
-    public SimpleBlockStateModel(String modelName, String stateName){
-        this.modelName = modelName;
+    public SimpleBlockStateModel(String blockIdentifier, String stateName){
+        this.modelName = blockIdentifier;
         this.stateName = stateName;
     }
 

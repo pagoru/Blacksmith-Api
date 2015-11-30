@@ -56,7 +56,7 @@ public class RenderManager {
     }
 
     public Set<String> getRegisteredDomains() {
-        return registeredDomains;
+        return new HashSet<String>(registeredDomains);
     }
 
     public List<ResourceLocation> registeredResourceLocations() {

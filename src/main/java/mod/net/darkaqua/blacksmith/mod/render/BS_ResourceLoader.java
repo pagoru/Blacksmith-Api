@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -19,6 +20,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     public static final BS_ResourceLoader INSTANCE = new BS_ResourceLoader();
     private RenderManager manager;
+    private Set<String> cache;
 
     private BS_ResourceLoader() {
         manager = RenderManager.INSTANCE;
@@ -41,7 +43,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     @Override
     public boolean resourceExists(ResourceLocation res) {
-        if(res.getResourceDomain().contains(Blacksmith.MOD_ID+"@")){
+        if(getResourceDomains().contains(res)){
             File f = getFile(res);
             Log.debug(f.exists()+" "+f.getAbsolutePath());
             return f.exists();
@@ -51,7 +53,17 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     @Override
     public Set getResourceDomains() {
-        return manager.getRegisteredDomains();
+        if(cache == null) {
+            Set<String> set = new HashSet<>();
+            for (String s : manager.getRegisteredDomains()) {
+                set.add(s);
+                if (s.contains(Blacksmith.MOD_ID + "@")) {
+                    set.add(s.replace(Blacksmith.MOD_ID + "@", ""));
+                }
+            }
+            cache = set;
+        }
+        return cache;
     }
 
     @Override
@@ -77,5 +89,6 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
         Log.debug("ON RELOAD ===================================================================================================");
         RenderManager.INSTANCE.registerBlockRenders();
         RenderManager.INSTANCE.registerItemRenders();
+        cache = null;
     }
 }

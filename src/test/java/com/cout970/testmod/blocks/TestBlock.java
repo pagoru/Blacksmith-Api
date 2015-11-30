@@ -25,12 +25,12 @@ public class TestBlock extends DefaultBlockDefinition {
 
     @Override
     public IBlockRenderHandler getBlockRenderHandler() {
-        final IBlockModel model = new SimpleBlockModel("TestBlock", new TextureLocation("testmod", "textTexture.png"));
+        final IBlockModel model = new SimpleBlockModel("block_model_name", new TextureLocation("mod_domain", "blocks/texture_name"));
         return new IBlockRenderHandler() {
             @Override
             public List<IBlockStateModel> getBlockStateModels() {
                 List<IBlockStateModel> list = new ArrayList<>(1);
-                list.add(new SimpleBlockStateModel("TestBlock", "normal"));
+                list.add(new SimpleBlockStateModel("block_identifier", "normal"));
                 return list;
             }
 

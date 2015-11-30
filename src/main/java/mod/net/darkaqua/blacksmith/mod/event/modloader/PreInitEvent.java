@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.mod.event.modloader;
 
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
+import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
@@ -51,11 +52,11 @@ public class PreInitEvent implements IPreInitEvent{
 
     @Override
     public File getSuggestedConfigurationFile() {
-        return event.getSuggestedConfigurationFile();
+        return new File(event.getModConfigurationDirectory(), ModLoaderManager.getActiveMod().getModId()+".cfg");
     }
 
     @Override
     public File getSourceFile() {
-        return event.getSourceFile();
+        return ModLoaderManager.getActiveMod().getSource();
     }
 }

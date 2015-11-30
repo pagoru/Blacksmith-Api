@@ -298,19 +298,23 @@ public class ModelUtils {
     }
 
     public static File getFile(String domain, String path, String resource) {
-        URL i = ModelUtils.class.getResource("/assets/");
-        File assets = null;
-        if (i == null) {
-            Log.error("No resource found on: " + "/assets/");
+        URL root = ModelUtils.class.getResource("/");
+        File rootFile = null;
+        if (root == null) {
+            Log.error("Error searching the root folder for blacksmith assets");
             return null;
         } else {
             try {
-                assets = new File(i.toURI());
+                rootFile = new File(root.toURI());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
                 return null;
             }
         }
+        File assets = new File(rootFile, "assets/");
+        if(!assets.exists())
+            assets.mkdirs();
+
         File endFile = new File(assets, domain + "/" + path + "/");
         if (!endFile.exists()) {
             endFile.mkdirs();
@@ -320,19 +324,22 @@ public class ModelUtils {
     }
 
     public static File getFile(String domain, String path) {
-        URL i = ModelUtils.class.getResource("/assets/");
-        File assets = null;
-        if (i == null) {
-            Log.error("No resource found on: " + "/assets/");
+        URL root = ModelUtils.class.getResource("/");
+        File rootFile = null;
+        if (root == null) {
+            Log.error("Error searching the root folder for blacksmith assets");
             return null;
         } else {
             try {
-                assets = new File(i.toURI());
+                rootFile = new File(root.toURI());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
                 return null;
             }
         }
+        File assets = new File(rootFile, "assets/");
+        if(!assets.exists())
+            assets.mkdirs();
         return new File(assets, domain + "/" + path + "/");
     }
 }
