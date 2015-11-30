@@ -11,6 +11,7 @@ out
 *.ipr
 *.iws
 *.iml
+*.eml
 .idea
 
 # gradle
@@ -20,3 +21,7 @@ build
 # other
 eclipse
 run
+forge-*
+MinecraftForge*
+Paulscode*
+
