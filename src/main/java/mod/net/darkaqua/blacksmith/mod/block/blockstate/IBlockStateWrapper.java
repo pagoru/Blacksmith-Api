@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod.block.blockstate;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
 import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
+import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -19,6 +20,8 @@ public class IBlockStateWrapper implements IIBlockState{
     private IBlockState state;
 
     public IBlockStateWrapper(IBlockState state){
+        if(state == null)
+            throw new BlacksmithInternalException("Invalid blockstate");
         this.state = state;
     }
 

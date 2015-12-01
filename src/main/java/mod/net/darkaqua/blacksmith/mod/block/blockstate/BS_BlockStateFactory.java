@@ -4,6 +4,10 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.blockstate.BlockStateFactory;
 import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
 import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
+import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 
 import java.util.Map;
 
@@ -20,7 +24,12 @@ public class BS_BlockStateFactory extends BlockStateFactory{
 
     @Override
     protected IIBlockState newBlockState(IBlock block, IIProperty[] properties) {
-        return null;
+        IProperty[] prop = new IProperty[properties.length];
+        for(int i = 0; i < properties.length; i++){
+            prop[i] = MCInterface.toIProperty(properties[i]);
+        }
+        IBlockState state = new BlockState(MCInterface.toBlock(block), prop).getBaseState();
+        return MCInterface.fromIBlockState(state);
     }
 
     @Override

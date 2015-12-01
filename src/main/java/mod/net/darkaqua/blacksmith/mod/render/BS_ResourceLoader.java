@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -43,7 +42,8 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     @Override
     public boolean resourceExists(ResourceLocation res) {
-        if(getResourceDomains().contains(res)){
+        if(getResourceDomains().contains(res.getResourceDomain())){
+            Log.debug(res);
             File f = getFile(res);
             Log.debug(f.exists()+" "+f.getAbsolutePath());
             return f.exists();
@@ -54,14 +54,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     @Override
     public Set getResourceDomains() {
         if(cache == null) {
-            Set<String> set = new HashSet<>();
-            for (String s : manager.getRegisteredDomains()) {
-                set.add(s);
-                if (s.contains(Blacksmith.MOD_ID + "@")) {
-                    set.add(s.replace(Blacksmith.MOD_ID + "@", ""));
-                }
-            }
-            cache = set;
+            cache = manager.getRegisteredDomains();
         }
         return cache;
     }
@@ -87,8 +80,12 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
         res.reloadResourcePack(BS_ResourceLoader.INSTANCE);
         Log.debug(res.getResourceDomains()+" "+getResourceDomains());
         Log.debug("ON RELOAD ===================================================================================================");
+        registerRenders();
+        cache = null;
+    }
+
+    public void registerRenders(){
         RenderManager.INSTANCE.registerBlockRenders();
         RenderManager.INSTANCE.registerItemRenders();
-        cache = null;
     }
 }

@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.mod.render;
 
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
+import net.darkaqua.blacksmith.api.util.Log;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -109,6 +110,7 @@ public class RenderManager {
         }
 
         public void register() {
+            Log.debug("Block: "+block+", StateMap: "+map);
             Minecraft.getMinecraft()
                     .getBlockRendererDispatcher()
                     .getBlockModelShapes()

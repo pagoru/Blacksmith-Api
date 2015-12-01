@@ -1,6 +1,7 @@
 package com.cout970.testmod;
 
 import com.cout970.testmod.blocks.TestBlock;
+import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.event.EventSubscribe;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
@@ -17,11 +18,12 @@ public class ModClass {
     public static final String MOD_NAME = "mod_name";
     public static final String MOD_VERSION = "mod_version";
 
+    public static IBlock block;
 
     @EventSubscribe
     public void preInit(IPreInitEvent event){
         Log.debug("TestMod preinit");
-        StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(new TestBlock(), "block_identifier");
+        block = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(new TestBlock(), "block_identifier");
     }
 
 }

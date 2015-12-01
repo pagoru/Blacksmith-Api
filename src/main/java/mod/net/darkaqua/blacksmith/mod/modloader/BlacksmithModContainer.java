@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import net.darkaqua.blacksmith.api.util.Log;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.discovery.ModCandidate;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
@@ -41,8 +40,6 @@ public class BlacksmithModContainer implements ModContainer {
         this.modCandidate = candidate;
         this.modDescriptor = descriptor;
         source = candidate.getModContainer();
-        Log.debug(source);
-        Log.debug("-------------------------------------------------------------------------------------------------------------");
     }
 
     @Subscribe
@@ -180,7 +177,14 @@ public class BlacksmithModContainer implements ModContainer {
 
     @Override
     public Class<?> getCustomResourcePackClass() {
-        return null;
+        try
+        {
+            return getSource().isDirectory() ? Class.forName("net.minecraftforge.fml.client.FMLFolderResourcePack", true, getClass().getClassLoader()) : Class.forName("net.minecraftforge.fml.client.FMLFileResourcePack",true, getClass().getClassLoader());
+        }
+        catch (ClassNotFoundException e)
+        {
+            return null;
+        }
     }
 
     @Override

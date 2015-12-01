@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod.render;
 import com.google.gson.*;
 import javafx.util.Pair;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
+import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.render.TextureLocation;
 import net.darkaqua.blacksmith.api.render.model.*;
@@ -23,7 +24,6 @@ import net.minecraft.item.Item;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +45,6 @@ public class ModelUtils {
         File blockstatesFile = getFile(domain, "/blockstates/", identifier.toLowerCase() + ".json");
 
         IBlockRenderHandler handler = definition.getBlockRenderHandler();
-        int index = 0;
 
         createIfNeededBlockState(blockstatesFile, handler.getBlockStateModels(), definition, domain);
 
@@ -57,16 +56,30 @@ public class ModelUtils {
             if (handler.getBlockStateModels().size() == 1)
                 stateName = "normal";
 
+//            List<IBlockState> list = block.getBlockState().getValidStates();
+//            for(IBlockState s : list){
+//                stateMap.put(s, new ModelResourceLocation(domain+":models/block/"+identifier, "normal"));
+//            }
+
             {
                 if (e.getModelName() == null) {
                     Log.error("Trying to load a model for block: " + identifier + ", with null name");
                     continue;
                 }
+                //block
                 ModelResourceLocation blockModel = new ModelResourceLocation(domain + ":" + e.getModelName().toLowerCase(), stateName);
                 File blockModelFile = getFile(domain, "/models/block/", e.getModelName().toLowerCase() + ".json");
 
                 createIfNeededBlockModel(blockModelFile, stateName, handler.getModel(e.getModelName()), definition);
-                stateMap.put(MCInterface.toIBlockState(handler.getBlockState(e.getBlockStateName())), blockModel);
+                IIBlockState state = handler.getBlockState(e.getBlockStateName());
+                stateMap.put(MCInterface.toIBlockState(state), blockModel);
+
+                //item
+                File itemModelFile = getFile(domain, "/models/item/", e.getModelName().toLowerCase()+".json");
+                ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + e.getModelName().toLowerCase(), "inventory");
+
+                createIfNeededItemModel(itemModelFile, itemBlock, handler.getModel(e.getModelName()), definition, domain);
+                data.addItem(itemBlock, 0, itemModel);
             }
 
             for (IBlockStateModel model : e.getAlternatives()) {
@@ -83,13 +96,158 @@ public class ModelUtils {
         }
         data.addBlock(block, stateMap);
 
-//        File itemModelFile = getFile(domain, "/models/item/", identifier.toLowerCase()+".json");
-//        ModelResourceLocation itemModel = new ModelResourceLocation(domain+":"+identifier, "inventory");
-//        createIfNeededItemModel(itemModelFile);
-//
-//        data.addItem(itemBlock, index, itemModel);
 
         return data;
+    }
+
+    private static void createIfNeededItemModel(File file, Item itemBlock, IBlockModel model, IBlockDefinition definition, String domain) {
+        if (file.exists())
+            return;
+
+        try {
+
+            FileWriter writer = new FileWriter(file);
+            Gson g = new GsonBuilder().setPrettyPrinting().create();
+            JsonObject data = new JsonObject();
+            String jsonText = null;
+
+            if (model.getParent() != null)
+                data.addProperty("parent", model.getParent().getModelName());
+
+            if (!model.useAmbientOcclusion())
+                data.addProperty("ambientocclusion", false);
+
+            JsonObject textures = new JsonObject();
+            List<Pair<String, TextureLocation>> texList = model.getTextures();
+            if(texList != null && !texList.isEmpty()) {
+                for (Pair<String, TextureLocation> e : texList) {
+                    textures.addProperty(e.getKey(), e.getValue().toString());
+                }
+                data.add("textures", textures);
+            }
+
+            JsonObject obj1 = null;
+
+            for(RenderPlace place : RenderPlace.values()) {
+                Display disp = model.getDisplay(place);
+
+                if (disp != null) {
+                    if(obj1 == null)
+                        obj1 = new JsonObject();
+                    JsonObject obj = new JsonObject();
+
+                    JsonArray rot = new JsonArray();
+                    rot.add(new JsonPrimitive(disp.getRotation().getX()));
+                    rot.add(new JsonPrimitive(disp.getRotation().getY()));
+                    rot.add(new JsonPrimitive(disp.getRotation().getZ()));
+                    obj.add("rotation", rot);
+
+                    JsonArray trans = new JsonArray();
+                    rot.add(new JsonPrimitive(disp.getTranslation().getX()));
+                    rot.add(new JsonPrimitive(disp.getTranslation().getY()));
+                    rot.add(new JsonPrimitive(disp.getTranslation().getZ()));
+                    obj.add("translation", trans);
+
+                    JsonArray scale = new JsonArray();
+                    rot.add(new JsonPrimitive(disp.getScale().getX()));
+                    rot.add(new JsonPrimitive(disp.getScale().getY()));
+                    rot.add(new JsonPrimitive(disp.getScale().getZ()));
+                    obj.add("scale", scale);
+
+                    obj1.add(place.getPropertyName(), obj);
+                }
+            }
+            if(obj1 != null)
+                data.add("display", obj1);
+
+            List<IModelElement> element = model.getElements();
+            if(element != null && !element.isEmpty()){
+                JsonArray elems = new JsonArray();
+                for(IModelElement e : element){
+                    JsonObject obj = new JsonObject();
+
+                    Vector3i from = e.getStartPoint();
+                    JsonArray first = new JsonArray();
+                    first.add(new JsonPrimitive(from.getX()));
+                    first.add(new JsonPrimitive(from.getY()));
+                    first.add(new JsonPrimitive(from.getZ()));
+                    obj.add("from", first);
+
+                    Vector3i to = e.getEndPoint();
+                    JsonArray end = new JsonArray();
+                    end.add(new JsonPrimitive(to.getX()));
+                    end.add(new JsonPrimitive(to.getY()));
+                    end.add(new JsonPrimitive(to.getZ()));
+                    obj.add("to", end);
+
+                    IModelRotation rot = e.getRotation();
+                    if(rot != null){
+
+                        JsonObject rotation = new JsonObject();
+
+                        Vector3i origin = rot.getOrigin();
+                        JsonArray orig = new JsonArray();
+                        orig.add(new JsonPrimitive(origin.getX()));
+                        orig.add(new JsonPrimitive(origin.getY()));
+                        orig.add(new JsonPrimitive(origin.getZ()));
+                        rotation.add("origin", first);
+
+                        rotation.addProperty("axis", rot.getAxis().name().toLowerCase());
+
+                        rotation.addProperty("angler", rot.getAngle());
+
+                        rotation.addProperty("rescale", rot.rescale());
+
+                        obj.add("rotation", rotation);
+                    }
+
+                    obj.addProperty("shade", e.shouldRenderShadows());
+
+                    JsonObject faces = null;
+
+                    for(Direction dir : Direction.values()) {
+                        IModelFace face = e.getFace(dir);
+
+                        if(face != null){
+                            if(faces == null)
+                                faces = new JsonObject();
+                            JsonObject jsonFace = new JsonObject();
+
+                            JsonArray uv = new JsonArray();
+                            Vector4d vec = face.getUV();
+                            uv.add(new JsonPrimitive(vec.getX()));
+                            uv.add(new JsonPrimitive(vec.getY()));
+                            uv.add(new JsonPrimitive(vec.getZ()));
+                            uv.add(new JsonPrimitive(vec.getW()));
+
+                            jsonFace.add("uv", uv);
+
+                            jsonFace.addProperty("texture", "#"+face.getTextureID());
+
+                            if(face.getCullFace() != null & face.getCullFace() != dir)
+                                jsonFace.addProperty("cullface", face.getCullFace().name().toLowerCase());
+
+                            if(face.getTextureRotation() != 0)
+                                jsonFace.addProperty("rotation", face.getTextureRotation());
+
+                            faces.add(dir.name().toLowerCase(), jsonFace);
+                        }
+                    }
+
+                    if(faces != null)
+                        obj.add("faces", faces);
+
+                    elems.add(obj);
+                }
+                data.add("elements", elems);
+            }
+
+            jsonText = g.toJson(data);
+            writer.write(jsonText);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void createIfNeededBlockModel(File file, String stateName, IBlockModel model, IBlockDefinition definition) {
@@ -306,7 +464,7 @@ public class ModelUtils {
         } else {
             try {
                 rootFile = new File(root.toURI());
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -332,7 +490,7 @@ public class ModelUtils {
         } else {
             try {
                 rootFile = new File(root.toURI());
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
