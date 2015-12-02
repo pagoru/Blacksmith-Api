@@ -1,10 +1,9 @@
 package net.darkaqua.blacksmith.mod.render;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 import javafx.util.Pair;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
-import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.render.TextureLocation;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.util.Direction;
@@ -43,59 +42,22 @@ public class ModelUtils {
         String domain = Blacksmith.MOD_ID + "@" + mod.getModId().toLowerCase();
 
         File blockstatesFile = getFile(domain, "/blockstates/", identifier.toLowerCase() + ".json");
-
-        IBlockRenderHandler handler = definition.getBlockRenderHandler();
-
-        createIfNeededBlockState(blockstatesFile, handler.getBlockStateModels(), definition, domain);
-
         Map<IBlockState, ModelResourceLocation> stateMap = new HashMap<>();
 
-        for (IBlockStateModel e : handler.getBlockStateModels()) {
-
-            String stateName = e.getBlockStateName();
-            if (handler.getBlockStateModels().size() == 1)
-                stateName = "normal";
-
-//            List<IBlockState> list = block.getBlockState().getValidStates();
-//            for(IBlockState s : list){
-//                stateMap.put(s, new ModelResourceLocation(domain+":models/block/"+identifier, "normal"));
-//            }
-
-            {
-                if (e.getModelName() == null) {
-                    Log.error("Trying to load a model for block: " + identifier + ", with null name");
-                    continue;
-                }
-                //block
-                ModelResourceLocation blockModel = new ModelResourceLocation(domain + ":" + e.getModelName().toLowerCase(), stateName);
-                File blockModelFile = getFile(domain, "/models/block/", e.getModelName().toLowerCase() + ".json");
-
-                createIfNeededBlockModel(blockModelFile, stateName, handler.getModel(e.getModelName()), definition);
-                IIBlockState state = handler.getBlockState(e.getBlockStateName());
-                stateMap.put(MCInterface.toIBlockState(state), blockModel);
-
-                //item
-                File itemModelFile = getFile(domain, "/models/item/", e.getModelName().toLowerCase()+".json");
-                ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + e.getModelName().toLowerCase(), "inventory");
-
-                createIfNeededItemModel(itemModelFile, itemBlock, handler.getModel(e.getModelName()), definition, domain);
-                data.addItem(itemBlock, 0, itemModel);
-            }
-
-            for (IBlockStateModel model : e.getAlternatives()) {
-                if (model.getModelName() == null) {
-                    Log.error("Trying to load a model for block: " + identifier + ", with null name");
-                    continue;
-                }
-                ModelResourceLocation blockModel = new ModelResourceLocation(domain + ":" + model.getModelName().toLowerCase(), stateName);
-                File blockModelFile = getFile(domain, "/models/block/", model.getModelName().toLowerCase() + ".json");
-
-                createIfNeededBlockModel(blockModelFile, stateName, handler.getModel(model.getModelName()), definition);
-                stateMap.put(MCInterface.toIBlockState(handler.getBlockState(e.getBlockStateName())), blockModel);
-            }
+        ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
+        for (IBlockState s : list) {
+            stateMap.put(s, new ModelResourceLocation(domain + ":models/block/" + identifier, "normal"));
         }
         data.addBlock(block, stateMap);
+        createIfNeededBlockState(blockstatesFile, stateMap, definition, domain);
 
+        //item
+//                File itemModelFile = getFile(domain, "/models/item/", e.getModelName().toLowerCase()+".json");
+//                ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + e.getModelName().toLowerCase(), "inventory");
+//
+//                createIfNeededItemModel(itemModelFile, itemBlock, handler.getModel(e.getModelName()), definition, domain);
+//                data.addItem(itemBlock, 0, itemModel);
+//            }
 
         return data;
     }
@@ -119,7 +81,7 @@ public class ModelUtils {
 
             JsonObject textures = new JsonObject();
             List<Pair<String, TextureLocation>> texList = model.getTextures();
-            if(texList != null && !texList.isEmpty()) {
+            if (texList != null && !texList.isEmpty()) {
                 for (Pair<String, TextureLocation> e : texList) {
                     textures.addProperty(e.getKey(), e.getValue().toString());
                 }
@@ -128,11 +90,11 @@ public class ModelUtils {
 
             JsonObject obj1 = null;
 
-            for(RenderPlace place : RenderPlace.values()) {
+            for (RenderPlace place : RenderPlace.values()) {
                 Display disp = model.getDisplay(place);
 
                 if (disp != null) {
-                    if(obj1 == null)
+                    if (obj1 == null)
                         obj1 = new JsonObject();
                     JsonObject obj = new JsonObject();
 
@@ -157,13 +119,13 @@ public class ModelUtils {
                     obj1.add(place.getPropertyName(), obj);
                 }
             }
-            if(obj1 != null)
+            if (obj1 != null)
                 data.add("display", obj1);
 
             List<IModelElement> element = model.getElements();
-            if(element != null && !element.isEmpty()){
+            if (element != null && !element.isEmpty()) {
                 JsonArray elems = new JsonArray();
-                for(IModelElement e : element){
+                for (IModelElement e : element) {
                     JsonObject obj = new JsonObject();
 
                     Vector3i from = e.getStartPoint();
@@ -181,7 +143,7 @@ public class ModelUtils {
                     obj.add("to", end);
 
                     IModelRotation rot = e.getRotation();
-                    if(rot != null){
+                    if (rot != null) {
 
                         JsonObject rotation = new JsonObject();
 
@@ -205,11 +167,11 @@ public class ModelUtils {
 
                     JsonObject faces = null;
 
-                    for(Direction dir : Direction.values()) {
+                    for (Direction dir : Direction.values()) {
                         IModelFace face = e.getFace(dir);
 
-                        if(face != null){
-                            if(faces == null)
+                        if (face != null) {
+                            if (faces == null)
                                 faces = new JsonObject();
                             JsonObject jsonFace = new JsonObject();
 
@@ -222,19 +184,19 @@ public class ModelUtils {
 
                             jsonFace.add("uv", uv);
 
-                            jsonFace.addProperty("texture", "#"+face.getTextureID());
+                            jsonFace.addProperty("texture", "#" + face.getTextureID());
 
-                            if(face.getCullFace() != null & face.getCullFace() != dir)
+                            if (face.getCullFace() != null & face.getCullFace() != dir)
                                 jsonFace.addProperty("cullface", face.getCullFace().name().toLowerCase());
 
-                            if(face.getTextureRotation() != 0)
+                            if (face.getTextureRotation() != 0)
                                 jsonFace.addProperty("rotation", face.getTextureRotation());
 
                             faces.add(dir.name().toLowerCase(), jsonFace);
                         }
                     }
 
-                    if(faces != null)
+                    if (faces != null)
                         obj.add("faces", faces);
 
                     elems.add(obj);
@@ -269,7 +231,7 @@ public class ModelUtils {
 
             JsonObject textures = new JsonObject();
             List<Pair<String, TextureLocation>> texList = model.getTextures();
-            if(texList != null && !texList.isEmpty()) {
+            if (texList != null && !texList.isEmpty()) {
                 for (Pair<String, TextureLocation> e : texList) {
                     textures.addProperty(e.getKey(), e.getValue().toString());
                 }
@@ -278,11 +240,11 @@ public class ModelUtils {
 
             JsonObject obj1 = null;
 
-            for(RenderPlace place : RenderPlace.values()) {
+            for (RenderPlace place : RenderPlace.values()) {
                 Display disp = model.getDisplay(place);
 
                 if (disp != null) {
-                    if(obj1 == null)
+                    if (obj1 == null)
                         obj1 = new JsonObject();
                     JsonObject obj = new JsonObject();
 
@@ -307,13 +269,13 @@ public class ModelUtils {
                     obj1.add(place.getPropertyName(), obj);
                 }
             }
-            if(obj1 != null)
+            if (obj1 != null)
                 data.add("display", obj1);
 
             List<IModelElement> element = model.getElements();
-            if(element != null && !element.isEmpty()){
+            if (element != null && !element.isEmpty()) {
                 JsonArray elems = new JsonArray();
-                for(IModelElement e : element){
+                for (IModelElement e : element) {
                     JsonObject obj = new JsonObject();
 
                     Vector3i from = e.getStartPoint();
@@ -331,7 +293,7 @@ public class ModelUtils {
                     obj.add("to", end);
 
                     IModelRotation rot = e.getRotation();
-                    if(rot != null){
+                    if (rot != null) {
 
                         JsonObject rotation = new JsonObject();
 
@@ -355,11 +317,11 @@ public class ModelUtils {
 
                     JsonObject faces = null;
 
-                    for(Direction dir : Direction.values()) {
+                    for (Direction dir : Direction.values()) {
                         IModelFace face = e.getFace(dir);
 
-                        if(face != null){
-                            if(faces == null)
+                        if (face != null) {
+                            if (faces == null)
                                 faces = new JsonObject();
                             JsonObject jsonFace = new JsonObject();
 
@@ -372,19 +334,19 @@ public class ModelUtils {
 
                             jsonFace.add("uv", uv);
 
-                            jsonFace.addProperty("texture", "#"+face.getTextureID());
+                            jsonFace.addProperty("texture", "#" + face.getTextureID());
 
-                            if(face.getCullFace() != null & face.getCullFace() != dir)
+                            if (face.getCullFace() != null & face.getCullFace() != dir)
                                 jsonFace.addProperty("cullface", face.getCullFace().name().toLowerCase());
 
-                            if(face.getTextureRotation() != 0)
+                            if (face.getTextureRotation() != 0)
                                 jsonFace.addProperty("rotation", face.getTextureRotation());
 
                             faces.add(dir.name().toLowerCase(), jsonFace);
                         }
                     }
 
-                    if(faces != null)
+                    if (faces != null)
                         obj.add("faces", faces);
 
                     elems.add(obj);
@@ -400,7 +362,7 @@ public class ModelUtils {
         }
     }
 
-    private static void createIfNeededBlockState(File file, List<IBlockStateModel> map, IBlockDefinition definition, String domain) {
+    private static void createIfNeededBlockState(File file, Map<IBlockState, ModelResourceLocation> map, IBlockDefinition definition, String domain) {
         if (file.exists())
             return;
 
@@ -411,12 +373,14 @@ public class ModelUtils {
             JsonObject variants = new JsonObject();
             String jsonText = null;
 
-            for (IBlockStateModel variant : map) {
+            for (IBlockState state : map.keySet()) {
+                List<IBlockStateModelMapper> mapper = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockState(state));
                 JsonArray models = new JsonArray();
-                {
+
+                for (IBlockStateModelMapper variant : mapper) {
                     JsonObject jsonObject = new JsonObject();
 
-                    jsonObject.addProperty("model", domain+":"+variant.getModelName());
+                    jsonObject.addProperty("model", domain + ":" + variant.getModelName());
                     if (variant.getRotationX() != 0)
                         jsonObject.addProperty("x", variant.getRotationX());
                     if (variant.getRotationY() != 0)
@@ -427,22 +391,6 @@ public class ModelUtils {
                         jsonObject.addProperty("weight", variant.getWeight());
                     models.add(jsonObject);
                 }
-
-                for (IBlockStateModel imodel : variant.getAlternatives()) {
-                    JsonObject jsonObject = new JsonObject();
-
-                    jsonObject.addProperty("model", imodel.getModelName());
-                    if (imodel.getRotationX() != 0)
-                        jsonObject.addProperty("x", imodel.getRotationX());
-                    if (imodel.getRotationY() != 0)
-                        jsonObject.addProperty("y", imodel.getRotationY());
-                    if (imodel.useUVLock())
-                        jsonObject.addProperty("uvlock", true);
-                    if (imodel.getWeight() != 1)
-                        jsonObject.addProperty("weight", imodel.getWeight());
-                    models.add(jsonObject);
-                }
-                variants.add(map.size() == 1 ? "normal" : variant.getBlockStateName(), models);
             }
 
             data.add("variants", variants);
@@ -470,7 +418,7 @@ public class ModelUtils {
             }
         }
         File assets = new File(rootFile, "assets/");
-        if(!assets.exists())
+        if (!assets.exists())
             assets.mkdirs();
 
         File endFile = new File(assets, domain + "/" + path + "/");
@@ -496,7 +444,7 @@ public class ModelUtils {
             }
         }
         File assets = new File(rootFile, "assets/");
-        if(!assets.exists())
+        if (!assets.exists())
             assets.mkdirs();
         return new File(assets, domain + "/" + path + "/");
     }

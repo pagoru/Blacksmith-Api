@@ -1,6 +1,5 @@
 package net.darkaqua.blacksmith.mod;
 
-import com.cout970.testmod.ModClass;
 import com.google.common.eventbus.Subscribe;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
@@ -17,12 +16,8 @@ import net.darkaqua.blacksmith.mod.registry.Game;
 import net.darkaqua.blacksmith.mod.render.BS_ResourceLoader;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
-import net.darkaqua.blacksmith.mod.util.MCInterface;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
@@ -96,18 +91,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
         Log.info("Starting PostInitEvent");
-
         ModLoaderManager.firePostInit(event);
-
-        BlockModelShapes modelshapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
-
-        Map<IBlockState, ModelResourceLocation> models = modelshapes.getBlockStateMapper().putAllStateModelLocations();
-        IBlockState state = MCInterface.toBlock(ModClass.block).getDefaultState();
-
-        Log.debug(models.size());
-        Log.debug(models.get(state));
-        Log.debug(modelshapes.getModelForState(state) == modelshapes.getModelManager().getMissingModel());
-
         Log.info("PostInitEvent done");
     }
 

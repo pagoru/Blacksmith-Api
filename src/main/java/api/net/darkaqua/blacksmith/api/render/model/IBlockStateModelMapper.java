@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public interface IBlockStateModel {
+public interface IBlockStateModelMapper {
 
     String getBlockStateName();
     String getModelName();
@@ -18,5 +18,5 @@ public interface IBlockStateModel {
 
     int getWeight();
 
-    List<IBlockStateModel> getAlternatives();
+    List<IBlockStateModelMapper> getAlternatives();
 }
