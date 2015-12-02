@@ -1,14 +1,11 @@
 package net.darkaqua.blacksmith.api.render.model.default_models;
 
-import net.darkaqua.blacksmith.api.render.model.IBlockStateModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.darkaqua.blacksmith.api.render.model.IBlockStateModelMapper;
 
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class SimpleBlockStateModel implements IBlockStateModel {
+public class SimpleBlockStateModel implements IBlockStateModelMapper {
 
     private String modelName, stateName;
     private int rotX, rotY;
@@ -17,11 +14,6 @@ public class SimpleBlockStateModel implements IBlockStateModel {
     public SimpleBlockStateModel(String blockIdentifier, String stateName){
         this.modelName = blockIdentifier;
         this.stateName = stateName;
-    }
-
-    @Override
-    public String getBlockStateName() {
-        return stateName;
     }
 
     @Override
@@ -47,11 +39,6 @@ public class SimpleBlockStateModel implements IBlockStateModel {
     @Override
     public int getWeight() {
         return 1;
-    }
-
-    @Override
-    public List<IBlockStateModel> getAlternatives() {
-        return new ArrayList<>();
     }
 
     public void setRotationX(int rotX) {
