@@ -1,13 +1,10 @@
 package net.darkaqua.blacksmith.api.render.model;
 
-import java.util.List;
-
 /**
  * Created by cout970 on 28/11/2015.
  */
 public interface IBlockStateModelMapper {
 
-    String getBlockStateName();
     String getModelName();
 
     int getRotationX();
@@ -17,6 +14,4 @@ public interface IBlockStateModelMapper {
     boolean useUVLock();
 
     int getWeight();
-
-    List<IBlockStateModelMapper> getAlternatives();
 }

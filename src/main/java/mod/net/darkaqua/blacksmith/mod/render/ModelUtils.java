@@ -16,6 +16,7 @@ import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -27,6 +28,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by cout970 on 16/11/2015.
@@ -46,8 +48,12 @@ public class ModelUtils {
 
         ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
         for (IBlockState s : list) {
+            String state_name = list.size() == 1 ? "normal" : getStateName(s);
+
             stateMap.put(s, new ModelResourceLocation(domain + ":models/block/" + identifier, "normal"));
         }
+        Log.debug(list);
+        Log.debug("------------------------------------------------------------------------------------------");
         data.addBlock(block, stateMap);
         createIfNeededBlockState(blockstatesFile, stateMap, definition, domain);
 
@@ -60,6 +66,19 @@ public class ModelUtils {
 //            }
 
         return data;
+    }
+
+    private static String getStateName(IBlockState s) {
+        Set<Map.Entry<IProperty, Comparable<?>>> properties = s.getProperties().entrySet();
+        String name = "";
+        int index = 0;
+        for(Map.Entry<IProperty, Comparable<?>> prop : properties){
+            name+=prop.getKey().getName()+"="+prop.getValue().toString();
+            if(index != properties.size()-1)
+                name+=",";
+                index++;
+        }
+        return name;
     }
 
     private static void createIfNeededItemModel(File file, Item itemBlock, IBlockModel model, IBlockDefinition definition, String domain) {
@@ -363,8 +382,8 @@ public class ModelUtils {
     }
 
     private static void createIfNeededBlockState(File file, Map<IBlockState, ModelResourceLocation> map, IBlockDefinition definition, String domain) {
-        if (file.exists())
-            return;
+//        if (file.exists())
+//            return;
 
         try {
             FileWriter writer = new FileWriter(file);
@@ -380,7 +399,7 @@ public class ModelUtils {
                 for (IBlockStateModelMapper variant : mapper) {
                     JsonObject jsonObject = new JsonObject();
 
-                    jsonObject.addProperty("model", domain + ":" + variant.getModelName());
+                    jsonObject.addProperty("model", map.get(state).getResourceDomain()+":"+map.get(state).getResourcePath());
                     if (variant.getRotationX() != 0)
                         jsonObject.addProperty("x", variant.getRotationX());
                     if (variant.getRotationY() != 0)
@@ -391,6 +410,7 @@ public class ModelUtils {
                         jsonObject.addProperty("weight", variant.getWeight());
                     models.add(jsonObject);
                 }
+                variants.add(map.get(state).getVariant(), models);
             }
 
             data.add("variants", variants);

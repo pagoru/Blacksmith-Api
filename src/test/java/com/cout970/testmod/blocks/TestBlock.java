@@ -7,7 +7,6 @@ import net.darkaqua.blacksmith.api.render.ITileEntityModel;
 import net.darkaqua.blacksmith.api.render.TextureLocation;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.render.model.default_models.SimpleBlockModel;
-import net.darkaqua.blacksmith.api.render.model.default_models.SimpleBlockStateModel;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vector3i;
@@ -81,26 +80,43 @@ public class TestBlock extends DefaultBlockDefinition {
             }
         };
         return new IBlockRenderHandler() {
-            @Override
-            public List<IBlockStateModel> getBlockStateModels() {
-                List<IBlockStateModel> list = new ArrayList<>(1);
-                list.add(new SimpleBlockStateModel("block_identifier", "normal"));
-                return list;
-            }
-
-            @Override
-            public IBlockModel getModel(String modelName) {
-                return model;
-            }
-
-            @Override
-            public IIBlockState getBlockState(String id) {
-                return TestBlock.this.getBlockStateHandler().getDefaultBlockState();
-            }
 
             @Override
             public ITileEntityModel getTileEntityModel(ITileEntity tileEntity) {
                 return null;
+            }
+
+            @Override
+            public List<IBlockStateModelMapper> getBlockModelsForState(IIBlockState state) {
+                List<IBlockStateModelMapper> list = new ArrayList<>(1);
+                list.add(new IBlockStateModelMapper() {
+
+                    @Override
+                    public String getModelName() {
+                        return "block_model_name";
+                    }
+
+                    @Override
+                    public int getRotationX() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getRotationY() {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean useUVLock() {
+                        return false;
+                    }
+
+                    @Override
+                    public int getWeight() {
+                        return 1;
+                    }
+                });
+                return list;
             }
         };
     }
