@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.util.Direction;
@@ -15,25 +15,25 @@ public interface IBlockEventHandler {
 
 	IBlock getBlock();
 	
-	void onBlockHarvested(WorldRef ref, IIBlockState state, EntityPlayer player);
+	void onBlockHarvested(WorldRef ref, IBlockVariant state, EntityPlayer player);
 	
-	void onBlockPlacedBy(WorldRef ref, IIBlockState state, EntityLivingBase placer, IItemStack stack);
+	void onBlockPlacedBy(WorldRef ref, IBlockVariant state, EntityLivingBase placer, IItemStack stack);
 	
 	boolean removedByPlayer(WorldRef ref, EntityPlayer player, boolean willHarvest);
 
-	void onBlockAdded(WorldRef ref, IIBlockState fromBlockState);
+	void onBlockAdded(WorldRef ref, IBlockVariant fromBlockState);
 
-	void onBlockBreaks(WorldRef ref, IIBlockState state);
+	void onBlockBreaks(WorldRef ref, IBlockVariant state);
 	
 	void onBlockDestroyedByExplosion(WorldRef ref, Explosion explosion);
 	
-	void onNeighborBlockChange(WorldRef ref, IIBlockState state, IBlock neighbor);
+	void onNeighborBlockChange(WorldRef ref, IBlockVariant state, IBlock neighbor);
 	
-	boolean onBlockActivated(WorldRef ref, IIBlockState state, EntityPlayer player, Direction side, Vector3d vector3d);
+	boolean onBlockActivated(WorldRef ref, IBlockVariant state, EntityPlayer player, Direction side, Vector3d vector3d);
 	
 	void onEntityCollidedWithBlock(WorldRef ref, IEntity entity);
 
-	IIBlockState onBlockPlaced(WorldRef ref, Direction side, IEntity entity, Vector3d hit, int metadata);
+	IBlockVariant onBlockPlaced(WorldRef ref, Direction side, IEntity entity, Vector3d hit, int metadata);
 
 	void onBlockClicked(WorldRef ref, EntityPlayer player);
 }

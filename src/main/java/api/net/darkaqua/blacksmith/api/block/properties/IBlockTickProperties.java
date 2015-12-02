@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
@@ -13,9 +13,9 @@ public interface IBlockTickProperties {
 	
 	boolean needsRandomTick();
 	
-	void randomTick(WorldRef ref, IIBlockState state, Random rand);
+	void randomTick(WorldRef ref, IBlockVariant state, Random rand);
 	
-	void updateTick(WorldRef ref, IIBlockState state, Random rand);
+	void updateTick(WorldRef ref, IBlockVariant state, Random rand);
 
 	int tickRate(IWorld world);
 }

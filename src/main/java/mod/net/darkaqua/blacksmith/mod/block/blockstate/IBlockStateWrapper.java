@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.block.blockstate;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public class IBlockStateWrapper implements IIBlockState{
+public class IBlockStateWrapper implements IBlockVariant {
 
     private IBlockState state;
 
@@ -36,7 +36,7 @@ public class IBlockStateWrapper implements IIBlockState{
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Collection<String> getPropertyName() {
+    public Collection<String> getPropertyNames() {
         return state.getPropertyNames();
     }
 
@@ -46,13 +46,13 @@ public class IBlockStateWrapper implements IIBlockState{
     }
 
     @Override
-    public IIBlockState withProperty(IIProperty property, Comparable<?> value) {
-        return MCInterface.fromIBlockState(state.withProperty(MCInterface.toIProperty(property), value));
+    public IBlockVariant withProperty(IIProperty property, Comparable<?> value) {
+        return MCInterface.fromIBlockVariant(state.withProperty(MCInterface.toIProperty(property), value));
     }
 
     @Override
-    public IIBlockState cycleProperty(IIProperty property) {
-        return MCInterface.fromIBlockState(state.cycleProperty(MCInterface.toIProperty(property)));
+    public IBlockVariant cycleProperty(IIProperty property) {
+        return MCInterface.fromIBlockVariant(state.cycleProperty(MCInterface.toIProperty(property)));
     }
 
     @Override

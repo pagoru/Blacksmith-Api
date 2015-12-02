@@ -49,8 +49,20 @@ public class ModelUtils {
         ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
         for (IBlockState s : list) {
             String state_name = list.size() == 1 ? "normal" : getStateName(s);
-
-            stateMap.put(s, new ModelResourceLocation(domain + ":models/block/" + identifier, "normal"));
+            List<IBlockModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(s));
+            for(IBlockModelWrapper wr : variants) {
+                IBlockModel model = wr.getBlockModel();
+                if (model == null) {
+                    Log.warn("Skipping block model for: "+s);
+                    continue;
+                }else if(model.getModelName() == null){
+                    Log.warn("Skipping block model: "+model+", invalid name (null)");
+                    continue;
+                }
+                stateMap.put(s, new ModelResourceLocation(domain + ":models/block/" + model.getModelName().toLowerCase(), state_name));
+                File blockmodelFile = getFile(domain, "/models/block/", model.getModelName().toLowerCase() + ".json");
+                createIfNeededBlockModel(blockmodelFile, model);
+            }
         }
         Log.debug(list);
         Log.debug("------------------------------------------------------------------------------------------");
@@ -231,7 +243,7 @@ public class ModelUtils {
         }
     }
 
-    private static void createIfNeededBlockModel(File file, String stateName, IBlockModel model, IBlockDefinition definition) {
+    private static void createIfNeededBlockModel(File file, IBlockModel model) {
         if (file.exists())
             return;
 
@@ -393,10 +405,10 @@ public class ModelUtils {
             String jsonText = null;
 
             for (IBlockState state : map.keySet()) {
-                List<IBlockStateModelMapper> mapper = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockState(state));
+                List<IBlockModelWrapper> mapper = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(state));
                 JsonArray models = new JsonArray();
 
-                for (IBlockStateModelMapper variant : mapper) {
+                for (IBlockModelWrapper variant : mapper) {
                     JsonObject jsonObject = new JsonObject();
 
                     jsonObject.addProperty("model", map.get(state).getResourceDomain()+":"+map.get(state).getResourcePath());

@@ -1,8 +1,7 @@
 package net.darkaqua.blacksmith.api.render;
 
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
-import net.darkaqua.blacksmith.api.render.model.IBlockStateModelMapper;
-import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
+import net.darkaqua.blacksmith.api.render.model.IBlockModelWrapper;
 
 import java.util.List;
 
@@ -11,9 +10,6 @@ import java.util.List;
  */
 public interface IBlockRenderHandler {
 
-    //TODO
-    ITileEntityModel getTileEntityModel(ITileEntity tileEntity);
-
     //TODO test
-    List<IBlockStateModelMapper> getBlockModelsForState(IIBlockState state);
+    List<IBlockModelWrapper> getBlockModelsForState(IBlockVariant state);
 }

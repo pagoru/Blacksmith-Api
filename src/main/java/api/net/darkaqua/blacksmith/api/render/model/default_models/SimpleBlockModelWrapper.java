@@ -1,24 +1,24 @@
 package net.darkaqua.blacksmith.api.render.model.default_models;
 
-import net.darkaqua.blacksmith.api.render.model.IBlockStateModelMapper;
+import net.darkaqua.blacksmith.api.render.model.IBlockModel;
+import net.darkaqua.blacksmith.api.render.model.IBlockModelWrapper;
 
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class SimpleBlockStateModel implements IBlockStateModelMapper {
+public class SimpleBlockModelWrapper implements IBlockModelWrapper {
 
-    private String modelName, stateName;
     private int rotX, rotY;
-    boolean useUVLock;
+    private boolean useUVLock;
+    private IBlockModel model;
 
-    public SimpleBlockStateModel(String blockIdentifier, String stateName){
-        this.modelName = blockIdentifier;
-        this.stateName = stateName;
+    public SimpleBlockModelWrapper(IBlockModel model){
+        this.model = model;
     }
 
     @Override
-    public String getModelName() {
-        return modelName;
+    public IBlockModel getBlockModel() {
+        return model;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SimpleBlockStateModel implements IBlockStateModelMapper {
 
     @Override
     public boolean useUVLock() {
-        return false;
+        return useUVLock;
     }
 
     @Override

@@ -11,7 +11,7 @@ public abstract class BlockStateFactory {
 
     protected static BlockStateFactory INSTANCE;
 
-    public static IIBlockState createBlockState(IBlock block, IIProperty... properties){
+    public static IBlockVariant createBlockState(IBlock block, IIProperty... properties){
         return INSTANCE.newBlockState(block, properties);
     }
 
@@ -35,7 +35,7 @@ public abstract class BlockStateFactory {
         return INSTANCE.newPropertyDirection(name);
     }
 
-    protected abstract IIBlockState newBlockState(IBlock block, IIProperty[] properties);
+    protected abstract IBlockVariant newBlockState(IBlock block, IIProperty[] properties);
 
     protected abstract <T> IIProperty newIProperty(String name, Map<String, Comparable<T>> values, Class<T> valuesClass);
     protected abstract IIProperty newPropertyInteger(String name, int min, int max);

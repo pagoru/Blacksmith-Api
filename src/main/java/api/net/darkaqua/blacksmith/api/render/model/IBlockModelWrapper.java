@@ -3,9 +3,9 @@ package net.darkaqua.blacksmith.api.render.model;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public interface IBlockStateModelMapper {
+public interface IBlockModelWrapper {
 
-    String getModelName();
+    IBlockModel getBlockModel();
 
     int getRotationX();
 

@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.util;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
@@ -131,12 +131,12 @@ public class MCInterface {
         return null;
     }
 
-    public static IIBlockState fromIBlockState(IBlockState state) {
+    public static IBlockVariant fromIBlockVariant(IBlockState state) {
         if (state == null) return null;
         return new IBlockStateWrapper(state);
     }
 
-    public static IBlockState toIBlockState(IIBlockState state) {
+    public static IBlockState toIBlockState(IBlockVariant state) {
         if (state instanceof IBlockStateWrapper)
             return ((IBlockStateWrapper) state).getIBlockState();
         return null;

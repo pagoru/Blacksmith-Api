@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.api.block;
 
 import net.darkaqua.blacksmith.api.block.blockstate.BlockStateFactory;
 import net.darkaqua.blacksmith.api.block.blockstate.IBlockStateHandler;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.creativetab.CreativeTabFactory;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
@@ -68,16 +68,16 @@ public class DefaultBlockDefinition implements IBlockDefinition{
 
     @Override
     public IBlockStateHandler getBlockStateHandler() {
-        final IIBlockState state = BlockStateFactory.createBlockState(parent);
+        final IBlockVariant state = BlockStateFactory.createBlockState(parent);
         return new IBlockStateHandler(){
 
             @Override
-            public IIBlockState getDefaultBlockState() {
+            public IBlockVariant getDefaultBlockState() {
                 return state;
             }
 
             @Override
-            public IIBlockState getBlockStateFromMeta(int meta) {
+            public IBlockVariant getBlockStateFromMeta(int meta) {
                 return state;
             }
 

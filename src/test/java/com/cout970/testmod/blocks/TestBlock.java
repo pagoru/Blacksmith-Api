@@ -1,13 +1,12 @@
 package com.cout970.testmod.blocks;
 
 import net.darkaqua.blacksmith.api.block.DefaultBlockDefinition;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
-import net.darkaqua.blacksmith.api.render.ITileEntityModel;
 import net.darkaqua.blacksmith.api.render.TextureLocation;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.render.model.default_models.SimpleBlockModel;
-import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
+import net.darkaqua.blacksmith.api.render.model.default_models.SimpleBlockModelWrapper;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.util.Vector4d;
@@ -82,40 +81,9 @@ public class TestBlock extends DefaultBlockDefinition {
         return new IBlockRenderHandler() {
 
             @Override
-            public ITileEntityModel getTileEntityModel(ITileEntity tileEntity) {
-                return null;
-            }
-
-            @Override
-            public List<IBlockStateModelMapper> getBlockModelsForState(IIBlockState state) {
-                List<IBlockStateModelMapper> list = new ArrayList<>(1);
-                list.add(new IBlockStateModelMapper() {
-
-                    @Override
-                    public String getModelName() {
-                        return "block_model_name";
-                    }
-
-                    @Override
-                    public int getRotationX() {
-                        return 0;
-                    }
-
-                    @Override
-                    public int getRotationY() {
-                        return 0;
-                    }
-
-                    @Override
-                    public boolean useUVLock() {
-                        return false;
-                    }
-
-                    @Override
-                    public int getWeight() {
-                        return 1;
-                    }
-                });
+            public List<IBlockModelWrapper> getBlockModelsForState(IBlockVariant state) {
+                List<IBlockModelWrapper> list = new ArrayList<>(1);
+                list.add(new SimpleBlockModelWrapper(model));
                 return list;
             }
         };

@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.block;
 
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
@@ -9,5 +9,5 @@ import net.darkaqua.blacksmith.api.world.IWorld;
  */
 public interface IBlockContainerDefinition extends IBlockDefinition {
 
-    ITileEntityDefinition createTileEntity(IWorld world, IIBlockState state);
+    ITileEntityDefinition createTileEntity(IWorld world, IBlockVariant state);
 }

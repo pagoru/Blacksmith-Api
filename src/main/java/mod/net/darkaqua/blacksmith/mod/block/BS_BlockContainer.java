@@ -39,7 +39,7 @@ public class BS_BlockContainer extends BlockContainer{
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        ITileEntityDefinition tile = definition.createTileEntity(MCInterface.fromWorld(worldIn), MCInterface.fromIBlockState(getStateFromMeta(meta)));
+        ITileEntityDefinition tile = definition.createTileEntity(MCInterface.fromWorld(worldIn), MCInterface.fromIBlockVariant(getStateFromMeta(meta)));
         return MCInterface.toTileEntity(TileEntityRegistry.INSTANCE.createTileEntity(tile));
     }
 }

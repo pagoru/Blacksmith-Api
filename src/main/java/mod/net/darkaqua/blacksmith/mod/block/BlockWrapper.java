@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.block;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.block.properties.*;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Vector3i;
@@ -71,22 +71,22 @@ public class BlockWrapper implements IBlock {
 			}
 
 			@Override
-			public IIBlockState getDefaultState() {
-				return MCInterface.fromIBlockState(block.getDefaultState());
+			public IBlockVariant getDefaultState() {
+				return MCInterface.fromIBlockVariant(block.getDefaultState());
 			}
 
 			@Override
-			public IIBlockState getActualState(IIBlockState state, IIBlockAccess worldIn, Vector3i pos) {
-				return MCInterface.fromIBlockState(block.getActualState(MCInterface.toIBlockState(state), MCInterface.toBlockAccess(worldIn), MCInterface.toBlockPos(pos)));
+			public IBlockVariant getActualState(IBlockVariant state, IIBlockAccess worldIn, Vector3i pos) {
+				return MCInterface.fromIBlockVariant(block.getActualState(MCInterface.toIBlockState(state), MCInterface.toBlockAccess(worldIn), MCInterface.toBlockPos(pos)));
 			}
 
 			@Override
-			public IIBlockState getStateFromMeta(int meta) {
-				return MCInterface.fromIBlockState(block.getStateFromMeta(meta));
+			public IBlockVariant getStateFromMeta(int meta) {
+				return MCInterface.fromIBlockVariant(block.getStateFromMeta(meta));
 			}
 
 			@Override
-			public int getMetaFromState(IIBlockState state) {
+			public int getMetaFromState(IBlockVariant state) {
 				return block.getMetaFromState(MCInterface.toIBlockState(state));
 			}
 		};

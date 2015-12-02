@@ -7,9 +7,9 @@ import net.minecraft.block.state.IBlockState;
  */
 public interface IBlockStateHandler {
 
-    IIBlockState getDefaultBlockState();
+    IBlockVariant getDefaultBlockState();
 
-    IIBlockState getBlockStateFromMeta(int meta);
+    IBlockVariant getBlockStateFromMeta(int meta);
 
     int getMetaFromBlockState(IBlockState state);
 }

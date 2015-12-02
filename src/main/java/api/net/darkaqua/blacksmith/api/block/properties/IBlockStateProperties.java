@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 
@@ -9,11 +9,11 @@ public interface IBlockStateProperties {
 	
 	IBlock getBlock();
 	
-	IIBlockState getDefaultState();
+	IBlockVariant getDefaultState();
 
-	IIBlockState getActualState(IIBlockState state, IIBlockAccess worldIn, Vector3i pos);
+	IBlockVariant getActualState(IBlockVariant state, IIBlockAccess worldIn, Vector3i pos);
 	
-	IIBlockState getStateFromMeta(int meta);
+	IBlockVariant getStateFromMeta(int meta);
 	
-	int getMetaFromState(IIBlockState state);
+	int getMetaFromState(IBlockVariant state);
 }

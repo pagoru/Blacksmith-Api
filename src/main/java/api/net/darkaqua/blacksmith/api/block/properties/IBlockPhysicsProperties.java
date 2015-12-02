@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Direction;
@@ -29,15 +29,15 @@ public interface IBlockPhysicsProperties {
 	
 	boolean isTraspasable(IIBlockAccess world, Vector3i pos);
 	
-	boolean canCollide(IIBlockState state, boolean hitIfIsLiquid);
+	boolean canCollide(IBlockVariant state, boolean hitIfIsLiquid);
 	
 	void setBlockBounds(Cube blockBounds);
 	
 	Cube getBlockBounds();
 	
-	Cube getColisionBox(WorldRef ref, IIBlockState state);
+	Cube getColisionBox(WorldRef ref, IBlockVariant state);
 
 	Cube getSelectionBox(WorldRef ref);
 	
-	List<Cube> getCollidingCubes(WorldRef ref, IIBlockState state, Cube mask, IEntity entity);
+	List<Cube> getCollidingCubes(WorldRef ref, IBlockVariant state, Cube mask, IEntity entity);
 }

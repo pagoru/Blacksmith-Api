@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.block.properties;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IIBlockState;
+import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Color;
@@ -30,7 +30,7 @@ public interface IBlockRenderProperties {
 
 	Color getBlockColor();
 
-	Color getRenderColor(IIBlockState state);
+	Color getRenderColor(IBlockVariant state);
 
 	Color colorMultiplier(IIBlockAccess world, Vector3i pos, int renderPass);
 
@@ -39,11 +39,11 @@ public interface IBlockRenderProperties {
 
 	boolean shouldSideBeRendered(IIBlockAccess world, Vector3i pos, Direction side);
 	
-	void randomRenderTick(WorldRef ref, IIBlockState state, Random rand);
+	void randomRenderTick(WorldRef ref, IBlockVariant state, Random rand);
 
 	boolean isTransparent();
 
 	float getAmbientOcclusionLightValue();
 
-	IIBlockState getStateForEntityRender(IIBlockState state);
+	IBlockVariant getStateForEntityRender(IBlockVariant state);
 }

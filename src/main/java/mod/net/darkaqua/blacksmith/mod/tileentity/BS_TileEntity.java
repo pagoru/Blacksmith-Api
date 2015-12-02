@@ -88,7 +88,7 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox{
     }
 
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return def.shouldRecreate(new WorldRef(MCInterface.fromWorld(world), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(oldState), MCInterface.fromIBlockState(newSate));
+        return def.shouldRecreate(new WorldRef(MCInterface.fromWorld(world), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockVariant(oldState), MCInterface.fromIBlockVariant(newSate));
     }
 
     public net.minecraft.util.AxisAlignedBB getRenderBoundingBox(){

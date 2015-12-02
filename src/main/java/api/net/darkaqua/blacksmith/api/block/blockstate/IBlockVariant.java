@@ -5,17 +5,17 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import java.util.Collection;
 import java.util.Map;
 
-public interface IIBlockState {
+public interface IBlockVariant {
 
 	IBlock getBlock();
 
-	Collection<String> getPropertyName();
+	Collection<String> getPropertyNames();
 
 	Comparable<?> getValue(IIProperty property);
 
-	IIBlockState withProperty(IIProperty property, Comparable<?> value);
+	IBlockVariant withProperty(IIProperty property, Comparable<?> value);
 
-	IIBlockState cycleProperty(IIProperty property);
+	IBlockVariant cycleProperty(IIProperty property);
 
 	Map<IIProperty, Comparable<?>> getProperties();
 
