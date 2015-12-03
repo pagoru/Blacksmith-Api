@@ -45,6 +45,7 @@ public class ModelUtils {
 
         File blockstatesFile = getFile(domain, "/blockstates/", identifier.toLowerCase() + ".json");
         Map<IBlockState, ModelResourceLocation> stateMap = new HashMap<>();
+        Map<IBlockState, ModelResourceLocation> modelMap = new HashMap<>();
 
         ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
         for (IBlockState s : list) {
@@ -59,16 +60,14 @@ public class ModelUtils {
                     Log.warn("Skipping block model: "+model+", invalid name (null)");
                     continue;
                 }
-                stateMap.put(s, new ModelResourceLocation(domain + ":models/block/" + model.getModelName().toLowerCase(), state_name));
+                modelMap.put(s, new ModelResourceLocation(domain + ":" + model.getModelName().toLowerCase(), state_name));
+                stateMap.put(s, new ModelResourceLocation(domain + ":" + identifier.toLowerCase(), state_name));
                 File blockmodelFile = getFile(domain, "/models/block/", model.getModelName().toLowerCase() + ".json");
                 createIfNeededBlockModel(blockmodelFile, model);
             }
         }
-        Log.debug(list);
-        Log.debug("------------------------------------------------------------------------------------------");
         data.addBlock(block, stateMap);
-        createIfNeededBlockState(blockstatesFile, stateMap, definition, domain);
-
+        createIfNeededBlockState(blockstatesFile, modelMap, definition, domain);
         //item
 //                File itemModelFile = getFile(domain, "/models/item/", e.getModelName().toLowerCase()+".json");
 //                ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + e.getModelName().toLowerCase(), "inventory");
@@ -104,8 +103,8 @@ public class ModelUtils {
             JsonObject data = new JsonObject();
             String jsonText = null;
 
-            if (model.getParent() != null)
-                data.addProperty("parent", model.getParent().getModelName());
+//            if (model.getParent() != null)
+//                data.addProperty("parent", model.getParent().getModelName());
 
             if (!model.useAmbientOcclusion())
                 data.addProperty("ambientocclusion", false);
@@ -254,8 +253,8 @@ public class ModelUtils {
             JsonObject data = new JsonObject();
             String jsonText = null;
 
-            if (model.getParent() != null)
-                data.addProperty("parent", model.getParent().getModelName());
+//            if (model.getParent() != null)
+//                data.addProperty("parent", model.getParent().getModelName());
 
             if (!model.useAmbientOcclusion())
                 data.addProperty("ambientocclusion", false);

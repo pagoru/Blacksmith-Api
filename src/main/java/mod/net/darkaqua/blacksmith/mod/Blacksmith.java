@@ -13,7 +13,7 @@ import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.registry.Game;
-import net.darkaqua.blacksmith.mod.render.BS_ResourceLoader;
+import net.darkaqua.blacksmith.mod.util.BS_ResourceLoader;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_Log;
 import net.minecraft.client.Minecraft;

@@ -12,8 +12,6 @@ public interface IBlockModel {
 
     String getModelName();
 
-    IBlockModel getParent();
-
     boolean useAmbientOcclusion();
 
     Display getDisplay(RenderPlace place);

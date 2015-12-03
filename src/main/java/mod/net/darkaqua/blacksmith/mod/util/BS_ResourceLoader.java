@@ -1,7 +1,8 @@
-package net.darkaqua.blacksmith.mod.render;
+package net.darkaqua.blacksmith.mod.util;
 
-import net.darkaqua.blacksmith.api.util.Log;
 import net.darkaqua.blacksmith.mod.Blacksmith;
+import net.darkaqua.blacksmith.mod.render.ModelUtils;
+import net.darkaqua.blacksmith.mod.render.RenderManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.*;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -29,10 +30,6 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     public InputStream getInputStream(ResourceLocation res) throws IOException {
 
         File file = getFile(res);
-        Log.debug("GET INPUT STREAM ===================================================================================================");
-        Log.debug(res);
-        Log.debug(file);
-        Log.debug("GET INPUT STREAM ===================================================================================================");
         return new BufferedInputStream(new FileInputStream(file));
     }
 
@@ -42,10 +39,8 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     @Override
     public boolean resourceExists(ResourceLocation res) {
-        if(getResourceDomains().contains(res.getResourceDomain())){
-            Log.debug(res);
+        if(getResourceDomains().contains(res.getResourceDomain()) || res.getResourceDomain().contains(Blacksmith.MOD_ID+"@")){
             File f = getFile(res);
-            Log.debug(f.exists()+" "+f.getAbsolutePath());
             return f.exists();
         }
         return false;
@@ -78,8 +73,6 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     public void onResourceManagerReload(IResourceManager resourceManager) {
         SimpleReloadableResourceManager res = (SimpleReloadableResourceManager) resourceManager;
         res.reloadResourcePack(BS_ResourceLoader.INSTANCE);
-        Log.debug(res.getResourceDomains()+" "+getResourceDomains());
-        Log.debug("ON RELOAD ===================================================================================================");
         registerRenders();
         cache = null;
     }
