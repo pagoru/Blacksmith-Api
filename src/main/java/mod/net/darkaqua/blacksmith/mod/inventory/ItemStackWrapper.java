@@ -62,6 +62,11 @@ public class ItemStackWrapper implements IItemStack{
     }
 
     @Override
+    public String getUnlocalizedName() {
+        return stack.getUnlocalizedName();
+    }
+
+    @Override
     public Object getInternalItemStack() {
         return stack;
     }

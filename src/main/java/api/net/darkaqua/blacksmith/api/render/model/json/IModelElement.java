@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.render.model;
+package net.darkaqua.blacksmith.api.render.model.json;
 
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vector3i;

@@ -1,18 +1,23 @@
 package net.darkaqua.blacksmith.mod.modloader;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import net.darkaqua.blacksmith.api.modloader.ModInstance;
+import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.discovery.ModCandidate;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
 import net.minecraftforge.fml.common.versioning.VersionRange;
+import org.apache.logging.log4j.Level;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.cert.Certificate;
@@ -26,6 +31,8 @@ public class BlacksmithModContainer implements ModContainer {
     public final ModCandidate modCandidate;
     public final Map<String, Object> modDescriptor;
     public final File source;
+    private final String modLanguage;
+    private final ILanguageAdapter languageAdapter;
 
     public ModMetadata metadata;
     public boolean enabled = true;
@@ -40,6 +47,22 @@ public class BlacksmithModContainer implements ModContainer {
         this.modCandidate = candidate;
         this.modDescriptor = descriptor;
         source = candidate.getModContainer();
+        //TODO join this class with FMLModContainer
+
+        //default FML code, will work for now
+        this.modLanguage = (String) modDescriptor.get("modLanguage");
+        String languageAdapterType = (String)modDescriptor.get("modLanguageAdapter");
+        if (Strings.isNullOrEmpty(languageAdapterType)){
+            this.languageAdapter = "scala".equals(modLanguage) ? new ILanguageAdapter.ScalaAdapter() : new ILanguageAdapter.JavaAdapter();
+        }else{
+            try{
+                this.languageAdapter = (ILanguageAdapter)Class.forName(languageAdapterType, true, Loader.instance().getModClassLoader()).newInstance();
+                FMLLog.finer("Using custom language adapter %s (type %s) for %s (modid %s)", this.languageAdapter, languageAdapterType, this.modClass, getModId());
+            }catch (Exception ex){
+                FMLLog.log(Level.ERROR, ex, "Error constructing custom mod language adapter %s (referenced by %s) (modid: %s)", languageAdapterType, this.modClass, getModId());
+                throw new LoaderException(ex);
+            }
+        }
     }
 
     @Subscribe
@@ -51,6 +74,17 @@ public class BlacksmithModContainer implements ModContainer {
             Class<?> clazz = Class.forName(modClass, true, modClassLoader);
             modInstance = clazz.newInstance();
             ModLoaderManager.registerPlugin(this, modInstance);
+            try {
+                for (Field f : clazz.getDeclaredFields()) {
+                    if (f.isAnnotationPresent(ModInstance.class)) {
+                        f.set(modInstance, modInstance);
+                    }
+                }
+            }catch (ReflectiveOperationException e){
+                Log.warn("Error trying to place a mod instance in a field marked with @ModInstance: "+clazz);
+            }
+
+            ProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
         } catch (InstantiationException | MalformedURLException | ClassNotFoundException | IllegalAccessException e) {
             e.printStackTrace();
         }

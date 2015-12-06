@@ -12,4 +12,6 @@ public interface IGame {
     boolean isClient();
 
     boolean isServer();
+
+    boolean isDeobfuscatedEnvironment();
 }

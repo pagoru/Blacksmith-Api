@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.render;
 
 import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
-import net.darkaqua.blacksmith.api.render.model.IBlockModelWrapper;
+import net.darkaqua.blacksmith.api.render.model.json.IBlockModelWrapper;
 
 import java.util.List;
 

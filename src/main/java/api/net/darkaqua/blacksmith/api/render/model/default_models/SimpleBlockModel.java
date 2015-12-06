@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.api.render.model.default_models;
 
 import javafx.util.Pair;
 import net.darkaqua.blacksmith.api.render.TextureLocation;
-import net.darkaqua.blacksmith.api.render.model.*;
+import net.darkaqua.blacksmith.api.render.model.json.*;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.util.Vector4d;
@@ -26,11 +26,6 @@ public class SimpleBlockModel implements IBlockModel {
     @Override
     public String getModelName() {
         return name;
-    }
-
-    @Override
-    public IBlockModel getParent() {
-        return null;
     }
 
     @Override

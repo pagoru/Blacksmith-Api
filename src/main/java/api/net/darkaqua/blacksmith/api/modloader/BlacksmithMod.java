@@ -16,5 +16,7 @@ public @interface BlacksmithMod {
 
 	String version();
 
+	String dependencies() default "";
+
 	String updateURL() default "";
 }

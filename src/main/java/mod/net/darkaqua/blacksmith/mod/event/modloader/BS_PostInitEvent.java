@@ -1,16 +1,16 @@
 package net.darkaqua.blacksmith.mod.event.modloader;
 
-import net.darkaqua.blacksmith.api.event.modloader.IInitEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.darkaqua.blacksmith.api.event.modloader.IPostInitEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 /**
  * Created by cout970 on 07/11/2015.
  */
-public class InitEvent implements IInitEvent{
+public class BS_PostInitEvent implements IPostInitEvent {
 
-    private FMLInitializationEvent event;
+    private FMLPostInitializationEvent event;
 
-    public InitEvent(FMLInitializationEvent event) {
+    public BS_PostInitEvent(FMLPostInitializationEvent event) {
         this.event = event;
     }
 

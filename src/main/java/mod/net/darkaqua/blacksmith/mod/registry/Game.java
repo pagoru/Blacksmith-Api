@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod.registry;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
 import net.darkaqua.blacksmith.api.registry.IGame;
 import net.darkaqua.blacksmith.api.registry.ITileEntityRegistry;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -33,5 +34,10 @@ public class Game implements IGame{
     @Override
     public boolean isServer() {
         return FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER;
+    }
+
+    @Override
+    public boolean isDeobfuscatedEnvironment() {
+        return (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
     }
 }

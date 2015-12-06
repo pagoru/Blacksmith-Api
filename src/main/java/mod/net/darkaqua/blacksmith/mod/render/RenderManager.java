@@ -108,7 +108,7 @@ public class RenderManager {
             return map;
         }
 
-        public void register() {
+        public void register(){
             Minecraft.getMinecraft()
                     .getBlockRendererDispatcher()
                     .getBlockModelShapes()

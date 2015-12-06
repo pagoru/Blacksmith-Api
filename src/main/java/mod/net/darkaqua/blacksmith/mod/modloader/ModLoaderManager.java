@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.event.EventBus;
 import net.darkaqua.blacksmith.api.event.IEvent;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
-import net.darkaqua.blacksmith.mod.event.modloader.InitEvent;
-import net.darkaqua.blacksmith.mod.event.modloader.PostInitEvent;
-import net.darkaqua.blacksmith.mod.event.modloader.PreInitEvent;
+import net.darkaqua.blacksmith.mod.event.modloader.BS_InitEvent;
+import net.darkaqua.blacksmith.mod.event.modloader.BS_PostInitEvent;
+import net.darkaqua.blacksmith.mod.event.modloader.BS_PreInitEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -49,15 +49,15 @@ public class ModLoaderManager {
 	}
 
 	public static void firePreInit(FMLPreInitializationEvent event) {
-		postEvent(new PreInitEvent(event));
+		postEvent(new BS_PreInitEvent(event));
 	}
 
 	public static void fireInit(FMLInitializationEvent event) {
-		postEvent(new InitEvent(event));
+		postEvent(new BS_InitEvent(event));
 	}
 
 	public static void firePostInit(FMLPostInitializationEvent event) {
-		postEvent(new PostInitEvent(event));
+		postEvent(new BS_PostInitEvent(event));
 	}
 
 	private static void postEvent(IEvent e){

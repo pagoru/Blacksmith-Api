@@ -4,9 +4,9 @@ import net.darkaqua.blacksmith.api.block.DefaultBlockDefinition;
 import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
 import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.render.TextureLocation;
-import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.render.model.default_models.SimpleBlockModel;
 import net.darkaqua.blacksmith.api.render.model.default_models.SimpleBlockModelWrapper;
+import net.darkaqua.blacksmith.api.render.model.json.*;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vector3i;
 import net.darkaqua.blacksmith.api.util.Vector4d;
@@ -37,7 +37,7 @@ public class TestBlock extends DefaultBlockDefinition {
 
                     @Override
                     public Vector3i getEndPoint() {
-                        return new Vector3i(8, 8, 8);
+                        return new Vector3i(16, 16, 16);
                     }
 
                     @Override

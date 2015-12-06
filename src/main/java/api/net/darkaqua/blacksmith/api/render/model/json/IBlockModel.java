@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.render.model;
+package net.darkaqua.blacksmith.api.render.model.json;
 
 import javafx.util.Pair;
 import net.darkaqua.blacksmith.api.render.TextureLocation;

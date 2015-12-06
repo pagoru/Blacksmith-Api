@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.render.model;
+package net.darkaqua.blacksmith.api.render.model.json;
 
 /**
  * Created by cout970 on 28/11/2015.

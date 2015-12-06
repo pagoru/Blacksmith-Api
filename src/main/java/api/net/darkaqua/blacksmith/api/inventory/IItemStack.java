@@ -17,5 +17,7 @@ public interface IItemStack {
     IDataCompound getDataCompound();
     void setDataCompound(IDataCompound cmp);
 
+    String getUnlocalizedName();
+
     Object getInternalItemStack();
 }

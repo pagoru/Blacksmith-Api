@@ -78,7 +78,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     }
 
     public void registerRenders(){
-        RenderManager.INSTANCE.registerBlockRenders();
         RenderManager.INSTANCE.registerItemRenders();
+        RenderManager.INSTANCE.registerBlockRenders();
     }
 }

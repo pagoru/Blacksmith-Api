@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.render.model.default_models;
 
-import net.darkaqua.blacksmith.api.render.model.IBlockModel;
-import net.darkaqua.blacksmith.api.render.model.IBlockModelWrapper;
+import net.darkaqua.blacksmith.api.render.model.json.IBlockModel;
+import net.darkaqua.blacksmith.api.render.model.json.IBlockModelWrapper;
 
 /**
  * Created by cout970 on 28/11/2015.

@@ -6,7 +6,7 @@ import net.darkaqua.blacksmith.api.event.EventSubscribe;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.util.Log;
+import net.darkaqua.blacksmith.mod.util.Log;
 
 /**
  * Created by cout970 on 24/11/2015.

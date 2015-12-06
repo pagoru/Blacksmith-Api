@@ -5,21 +5,21 @@ import com.google.gson.*;
 import javafx.util.Pair;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.render.TextureLocation;
-import net.darkaqua.blacksmith.api.render.model.*;
-import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.util.Log;
-import net.darkaqua.blacksmith.api.util.Vector3i;
-import net.darkaqua.blacksmith.api.util.Vector4d;
+import net.darkaqua.blacksmith.api.render.model.json.*;
+import net.darkaqua.blacksmith.api.util.*;
 import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
+import net.darkaqua.blacksmith.mod.util.Log;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.model.ModelLoader;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -68,13 +68,18 @@ public class ModelUtils {
         }
         data.addBlock(block, stateMap);
         createIfNeededBlockState(blockstatesFile, modelMap, definition, domain);
+
+
         //item
-//                File itemModelFile = getFile(domain, "/models/item/", e.getModelName().toLowerCase()+".json");
-//                ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + e.getModelName().toLowerCase(), "inventory");
-//
-//                createIfNeededItemModel(itemModelFile, itemBlock, handler.getModel(e.getModelName()), definition, domain);
-//                data.addItem(itemBlock, 0, itemModel);
-//            }
+        List<IBlockModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(block.getDefaultState()));
+        if(variants != null && !variants.isEmpty()) {
+            File itemModelFile = getFile(domain, "/models/item/", identifier.toLowerCase() + ".json");
+            ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + identifier.toLowerCase(), "inventory");
+
+            createIfNeededItemBlockModel(itemModelFile, variants.get(0).getBlockModel());
+            ModelBakery.addVariantName(itemBlock, domain + ":" + identifier.toLowerCase());
+            ModelLoader.setCustomModelResourceLocation(itemBlock, 0, itemModel);
+        }
 
         return data;
     }
@@ -92,9 +97,9 @@ public class ModelUtils {
         return name;
     }
 
-    private static void createIfNeededItemModel(File file, Item itemBlock, IBlockModel model, IBlockDefinition definition, String domain) {
-        if (file.exists())
-            return;
+    private static void createIfNeededItemBlockModel(File file, IBlockModel model) {
+//        if (file.exists())
+//            return;
 
         try {
 
@@ -123,6 +128,9 @@ public class ModelUtils {
             for (RenderPlace place : RenderPlace.values()) {
                 Display disp = model.getDisplay(place);
 
+                if(disp == null && place == RenderPlace.THIRD_PERSON){
+                    disp = new Display(new Vector3d(10, -45, 170), new Vector3d(0, 1.5, -2.75), new Vector3d(0.375, 0.375, 0.375));
+                }
                 if (disp != null) {
                     if (obj1 == null)
                         obj1 = new JsonObject();
@@ -135,15 +143,15 @@ public class ModelUtils {
                     obj.add("rotation", rot);
 
                     JsonArray trans = new JsonArray();
-                    rot.add(new JsonPrimitive(disp.getTranslation().getX()));
-                    rot.add(new JsonPrimitive(disp.getTranslation().getY()));
-                    rot.add(new JsonPrimitive(disp.getTranslation().getZ()));
+                    trans.add(new JsonPrimitive(disp.getTranslation().getX()));
+                    trans.add(new JsonPrimitive(disp.getTranslation().getY()));
+                    trans.add(new JsonPrimitive(disp.getTranslation().getZ()));
                     obj.add("translation", trans);
 
                     JsonArray scale = new JsonArray();
-                    rot.add(new JsonPrimitive(disp.getScale().getX()));
-                    rot.add(new JsonPrimitive(disp.getScale().getY()));
-                    rot.add(new JsonPrimitive(disp.getScale().getZ()));
+                    scale.add(new JsonPrimitive(disp.getScale().getX()));
+                    scale.add(new JsonPrimitive(disp.getScale().getY()));
+                    scale.add(new JsonPrimitive(disp.getScale().getZ()));
                     obj.add("scale", scale);
 
                     obj1.add(place.getPropertyName(), obj);
@@ -243,8 +251,8 @@ public class ModelUtils {
     }
 
     private static void createIfNeededBlockModel(File file, IBlockModel model) {
-        if (file.exists())
-            return;
+//        if (file.exists())
+//            return;
 
         try {
 

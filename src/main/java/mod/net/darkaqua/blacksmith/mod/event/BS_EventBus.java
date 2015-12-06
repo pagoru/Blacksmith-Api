@@ -5,7 +5,7 @@ import net.darkaqua.blacksmith.api.event.EventSubscribe;
 import net.darkaqua.blacksmith.api.event.IEvent;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
-import net.darkaqua.blacksmith.mod.util.BS_Log;
+import net.darkaqua.blacksmith.mod.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -56,12 +56,12 @@ public class BS_EventBus extends EventBus{
             if (m.isAnnotationPresent(EventSubscribe.class)) {
                 Class<?>[] parameterTypes = m.getParameterTypes();
                 if (parameterTypes.length != 1) {
-                    BS_Log.error("Invalid number of arguments on the EventSubscribe method: " + m.getName());
+                    Log.error("Invalid number of arguments on the EventSubscribe method: " + m.getName());
                     continue;
                 }
                 Class<?> eventType = parameterTypes[0];
                 if (!IEvent.class.isAssignableFrom(eventType)) {
-                    BS_Log.error("Invalid argument type on the EventSubscribe method: " + m.getName()
+                    Log.error("Invalid argument type on the EventSubscribe method: " + m.getName()
                             + ", the type " + eventType + " don't implements Event");
                     continue;
                 }

@@ -3,17 +3,18 @@ package net.darkaqua.blacksmith.mod.event.modloader;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 /**
  * Created by cout970 on 07/11/2015.
  */
-public class PreInitEvent implements IPreInitEvent{
+public class BS_PreInitEvent implements IPreInitEvent{
 
     private FMLPreInitializationEvent event;
 
-    public PreInitEvent(FMLPreInitializationEvent event) {
+    public BS_PreInitEvent(FMLPreInitializationEvent event) {
         this.event = event;
     }
 
@@ -58,5 +59,10 @@ public class PreInitEvent implements IPreInitEvent{
     @Override
     public File getSourceFile() {
         return ModLoaderManager.getActiveMod().getSource();
+    }
+
+    @Override
+    public Logger getModLog() {
+        return event.getModLog();
     }
 }
