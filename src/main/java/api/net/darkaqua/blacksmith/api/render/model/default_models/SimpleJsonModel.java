@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.render.model.default_models;
 
 import javafx.util.Pair;
-import net.darkaqua.blacksmith.api.render.TextureLocation;
+import net.darkaqua.blacksmith.api.render.ResourceReference;
 import net.darkaqua.blacksmith.api.render.model.json.*;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vector3i;
@@ -13,14 +13,14 @@ import java.util.List;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class SimpleBlockModel implements IBlockModel {
+public class SimpleJsonModel implements IJsonModel {
 
     private String name;
-    private TextureLocation textureLocation;
+    private ResourceReference resourceReference;
 
-    public SimpleBlockModel(String name, TextureLocation textureLocation){
+    public SimpleJsonModel(String name, ResourceReference resourceReference){
         this.name = name;
-        this.textureLocation = textureLocation;
+        this.resourceReference = resourceReference;
     }
 
     @Override
@@ -34,21 +34,21 @@ public class SimpleBlockModel implements IBlockModel {
     }
 
     @Override
-    public Display getDisplay(RenderPlace place) {
+    public JsonRenderDisplay getDisplay(JsonRenderPlace place) {
         return null;
     }
 
     @Override
-    public List<Pair<String, TextureLocation>> getTextures() {
-        List<Pair<String, TextureLocation>> list = new ArrayList<>(1);
-        list.add(new Pair<>("all", textureLocation));
+    public List<Pair<String, ResourceReference>> getTextures() {
+        List<Pair<String, ResourceReference>> list = new ArrayList<>(1);
+        list.add(new Pair<>("all", resourceReference));
         return list;
     }
 
     @Override
-    public List<IModelElement> getElements() {
-        List<IModelElement> list = new ArrayList<>(1);
-        list.add(new IModelElement() {
+    public List<IJsonModelElement> getElements() {
+        List<IJsonModelElement> list = new ArrayList<>(1);
+        list.add(new IJsonModelElement() {
             @Override
             public Vector3i getStartPoint() {
                 return new Vector3i(0,0,0);
@@ -60,7 +60,7 @@ public class SimpleBlockModel implements IBlockModel {
             }
 
             @Override
-            public IModelRotation getRotation() {
+            public IJsonModelRotation getRotation() {
                 return null;
             }
 
@@ -70,8 +70,8 @@ public class SimpleBlockModel implements IBlockModel {
             }
 
             @Override
-            public IModelFace getFace(Direction dir) {
-                return new IModelFace() {
+            public IJsonModelFace getFace(Direction dir) {
+                return new IJsonModelFace() {
                     @Override
                     public Vector4d getUV() {
                         return new Vector4d(0, 0, 16, 16);

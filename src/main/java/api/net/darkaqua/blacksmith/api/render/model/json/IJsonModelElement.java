@@ -6,14 +6,14 @@ import net.darkaqua.blacksmith.api.util.Vector3i;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public interface IModelElement {
+public interface IJsonModelElement {
 
     Vector3i getStartPoint();
     Vector3i getEndPoint();
 
-    IModelRotation getRotation();
+    IJsonModelRotation getRotation();
 
     boolean shouldRenderShadows();
 
-    IModelFace getFace(Direction dir);
+    IJsonModelFace getFace(Direction dir);
 }

@@ -5,7 +5,7 @@ import net.darkaqua.blacksmith.api.util.Vector3i;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public interface IModelRotation {
+public interface IJsonModelRotation {
 
     Vector3i getOrigin();
 

@@ -3,9 +3,9 @@ package net.darkaqua.blacksmith.api.render.model.json;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public interface IBlockModelWrapper {
+public interface IJsonModelWrapper {
 
-    IBlockModel getBlockModel();
+    IJsonModel getBlockModel();
 
     int getRotationX();
 

@@ -5,13 +5,13 @@ import net.darkaqua.blacksmith.api.util.Vector3d;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class Display {
+public class JsonRenderDisplay {
 
     private Vector3d rotation;
     private Vector3d translation;
     private Vector3d scale;
 
-    public Display(Vector3d rotation, Vector3d translation, Vector3d scale) {
+    public JsonRenderDisplay(Vector3d rotation, Vector3d translation, Vector3d scale) {
         this.rotation = rotation;
         this.translation = translation;
         this.scale = scale;

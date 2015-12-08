@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.render;
 
 import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
-import net.darkaqua.blacksmith.api.render.model.json.IBlockModelWrapper;
+import net.darkaqua.blacksmith.api.render.model.json.IJsonModelWrapper;
 
 import java.util.List;
 
@@ -10,6 +10,5 @@ import java.util.List;
  */
 public interface IBlockRenderHandler {
 
-    //TODO test
-    List<IBlockModelWrapper> getBlockModelsForState(IBlockVariant state);
+    List<IJsonModelWrapper> getBlockModelsForState(IBlockVariant state);
 }

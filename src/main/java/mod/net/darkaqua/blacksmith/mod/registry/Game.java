@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
 import net.darkaqua.blacksmith.api.registry.IGame;
+import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
 import net.darkaqua.blacksmith.api.registry.ITileEntityRegistry;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -19,6 +20,11 @@ public class Game implements IGame{
     @Override
     public IBlockRegistry getBlockRegistry() {
         return BlockRegistry.INSTANCE;
+    }
+
+    @Override
+    public IRenderRegistry getRenderRegistry() {
+        return RenderRegistry.INSTANCE;
     }
 
     @Override

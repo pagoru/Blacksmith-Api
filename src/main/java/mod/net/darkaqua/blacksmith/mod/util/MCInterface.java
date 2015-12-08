@@ -9,11 +9,10 @@ import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
+import net.darkaqua.blacksmith.api.render.ResourceReference;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
-import net.darkaqua.blacksmith.api.util.Cube;
-import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.util.Vector3i;
+import net.darkaqua.blacksmith.api.util.*;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
@@ -42,8 +41,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 
 public class MCInterface {
 
@@ -215,5 +216,20 @@ public class MCInterface {
         if(prop instanceof IPropertyWrapper)
             return ((IPropertyWrapper) prop).getIProperty();
         return null;
+    }
+
+    public static javax.vecmath.Vector3d toVector3d(Vector3d vertex) {
+        if (vertex == null)return null;
+        return new javax.vecmath.Vector3d(vertex.getX(), vertex.getY(), vertex.getZ());
+    }
+
+    public static javax.vecmath.Vector2d toVector2d(Vector2d uv) {
+        if (uv == null)return null;
+        return new javax.vecmath.Vector2d(uv.getX(), uv.getY());
+    }
+
+    public static ResourceLocation toResourceLocation(ResourceReference loc) {
+        if (loc == null)return null;
+        return new ResourceLocation(loc.getDomain(), loc.getPath());
     }
 }

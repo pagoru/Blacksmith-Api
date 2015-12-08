@@ -7,6 +7,8 @@ public interface IGame {
 
     IBlockRegistry getBlockRegistry();
 
+    IRenderRegistry getRenderRegistry();
+
     ITileEntityRegistry getTileEntityRegistry();
 
     boolean isClient();

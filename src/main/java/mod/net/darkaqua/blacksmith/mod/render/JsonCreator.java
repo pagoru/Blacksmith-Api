@@ -1,31 +1,27 @@
 package net.darkaqua.blacksmith.mod.render;
 
-import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 import javafx.util.Pair;
-import net.darkaqua.blacksmith.api.block.IBlockDefinition;
-import net.darkaqua.blacksmith.api.render.TextureLocation;
+import net.darkaqua.blacksmith.api.render.ResourceReference;
 import net.darkaqua.blacksmith.api.render.model.json.*;
-import net.darkaqua.blacksmith.api.util.*;
+import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.util.Vector3d;
+import net.darkaqua.blacksmith.api.util.Vector3i;
+import net.darkaqua.blacksmith.api.util.Vector4d;
 import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
+import net.darkaqua.blacksmith.mod.registry.BlockRegistry;
 import net.darkaqua.blacksmith.mod.util.Log;
-import net.darkaqua.blacksmith.mod.util.MCInterface;
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.model.ModelLoader;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,71 +29,84 @@ import java.util.Set;
 /**
  * Created by cout970 on 16/11/2015.
  */
-public class ModelUtils {
+public class JsonCreator {
 
-    public static RenderManager.RenderRegistrationData setupBlock(Block block, Item itemBlock, IBlockDefinition definition, String identifier) {
+    public static void createBlockStateJson(BlockRegistry.RegisteredBlock reg) {
         BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
         if (mod == null) {
             throw new BlacksmithInternalException();
         }
-        RenderManager.RenderRegistrationData data = new RenderManager.RenderRegistrationData();
         String domain = Blacksmith.MOD_ID + "@" + mod.getModId().toLowerCase();
+        File blockStatesFile = getFile(domain, "/blockstates/", reg.getIdentifier().toLowerCase() + ".json");
 
-        File blockstatesFile = getFile(domain, "/blockstates/", identifier.toLowerCase() + ".json");
-        Map<IBlockState, ModelResourceLocation> stateMap = new HashMap<>();
-        Map<IBlockState, ModelResourceLocation> modelMap = new HashMap<>();
+        Map<ModelResourceLocation, List<IJsonModelWrapper>> renderMap = reg.getRenderMap();
 
-        ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
-        for (IBlockState s : list) {
-            String state_name = list.size() == 1 ? "normal" : getStateName(s);
-            List<IBlockModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(s));
-            for(IBlockModelWrapper wr : variants) {
-                IBlockModel model = wr.getBlockModel();
-                if (model == null) {
-                    Log.warn("Skipping block model for: "+s);
-                    continue;
-                }else if(model.getModelName() == null){
-                    Log.warn("Skipping block model: "+model+", invalid name (null)");
-                    continue;
-                }
-                modelMap.put(s, new ModelResourceLocation(domain + ":" + model.getModelName().toLowerCase(), state_name));
-                stateMap.put(s, new ModelResourceLocation(domain + ":" + identifier.toLowerCase(), state_name));
-                File blockmodelFile = getFile(domain, "/models/block/", model.getModelName().toLowerCase() + ".json");
-                createIfNeededBlockModel(blockmodelFile, model);
-            }
-        }
-        data.addBlock(block, stateMap);
-        createIfNeededBlockState(blockstatesFile, modelMap, definition, domain);
-
-
-        //item
-        List<IBlockModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(block.getDefaultState()));
-        if(variants != null && !variants.isEmpty()) {
-            File itemModelFile = getFile(domain, "/models/item/", identifier.toLowerCase() + ".json");
-            ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + identifier.toLowerCase(), "inventory");
-
-            createIfNeededItemBlockModel(itemModelFile, variants.get(0).getBlockModel());
-            ModelBakery.addVariantName(itemBlock, domain + ":" + identifier.toLowerCase());
-            ModelLoader.setCustomModelResourceLocation(itemBlock, 0, itemModel);
-        }
-
-        return data;
+        createIfNeededBlockState(blockStatesFile, renderMap, domain);
     }
+
+//    public static RenderManager.RenderRegistrationData setupBlock(Block block, Item itemBlock, IBlockDefinition definition, String identifier) {
+//        BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
+//        if (mod == null) {
+//            throw new BlacksmithInternalException();
+//        }
+//        RenderManager.RenderRegistrationData data = new RenderManager.RenderRegistrationData();
+//        String domain = Blacksmith.MOD_ID + "@" + mod.getModId().toLowerCase();
+//
+//        File blockstatesFile = getFile(domain, "/blockstates/", identifier.toLowerCase() + ".json");
+//        Map<IBlockState, ModelResourceLocation> stateMap = new HashMap<>();
+//        Map<IBlockState, ModelResourceLocation> modelMap = new HashMap<>();
+//
+//        ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
+//        for (IBlockState s : list) {
+//            String state_name = list.size() == 1 ? "normal" : getStateName(s);
+//            List<IJsonModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(s));
+//            for(IJsonModelWrapper wr : variants) {
+//                IJsonModel model = wr.getBlockModel();
+//                if (model == null) {
+//                    Log.warn("Skipping block model for: "+s);
+//                    continue;
+//                }else if(model.getModelName() == null){
+//                    Log.warn("Skipping block model: "+model+", invalid name (null)");
+//                    continue;
+//                }
+//                modelMap.put(s, new ModelResourceLocation(domain + ":" + model.getModelName().toLowerCase(), state_name));
+//                stateMap.put(s, new ModelResourceLocation(domain + ":" + identifier.toLowerCase(), state_name));
+//                File blockmodelFile = getFile(domain, "/models/block/", model.getModelName().toLowerCase() + ".json");
+//                createIfNeededBlockModel(blockmodelFile, model);
+//            }
+//        }
+//        data.addBlock(block, stateMap);
+//        createIfNeededBlockState(blockstatesFile, modelMap, definition, domain);
+//
+//
+//        //item
+//        List<IJsonModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(block.getDefaultState()));
+//        if(variants != null && !variants.isEmpty()) {
+//            File itemModelFile = getFile(domain, "/models/item/", identifier.toLowerCase() + ".json");
+//            ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + identifier.toLowerCase(), "inventory");
+//
+//            createIfNeededItemBlockModel(itemModelFile, variants.get(0).getBlockModel());
+//            ModelBakery.addVariantName(itemBlock, domain + ":" + identifier.toLowerCase());
+//            ModelLoader.setCustomModelResourceLocation(itemBlock, 0, itemModel);
+//        }
+//
+//        return data;
+//    }
 
     private static String getStateName(IBlockState s) {
         Set<Map.Entry<IProperty, Comparable<?>>> properties = s.getProperties().entrySet();
         String name = "";
         int index = 0;
-        for(Map.Entry<IProperty, Comparable<?>> prop : properties){
-            name+=prop.getKey().getName()+"="+prop.getValue().toString();
-            if(index != properties.size()-1)
-                name+=",";
-                index++;
+        for (Map.Entry<IProperty, Comparable<?>> prop : properties) {
+            name += prop.getKey().getName() + "=" + prop.getValue().toString();
+            if (index != properties.size() - 1)
+                name += ",";
+            index++;
         }
         return name;
     }
 
-    private static void createIfNeededItemBlockModel(File file, IBlockModel model) {
+    private static void createIfNeededItemBlockModel(File file, IJsonModel model) {
 //        if (file.exists())
 //            return;
 
@@ -115,9 +124,9 @@ public class ModelUtils {
                 data.addProperty("ambientocclusion", false);
 
             JsonObject textures = new JsonObject();
-            List<Pair<String, TextureLocation>> texList = model.getTextures();
+            List<Pair<String, ResourceReference>> texList = model.getTextures();
             if (texList != null && !texList.isEmpty()) {
-                for (Pair<String, TextureLocation> e : texList) {
+                for (Pair<String, ResourceReference> e : texList) {
                     textures.addProperty(e.getKey(), e.getValue().toString());
                 }
                 data.add("textures", textures);
@@ -125,11 +134,11 @@ public class ModelUtils {
 
             JsonObject obj1 = null;
 
-            for (RenderPlace place : RenderPlace.values()) {
-                Display disp = model.getDisplay(place);
+            for (JsonRenderPlace place : JsonRenderPlace.values()) {
+                JsonRenderDisplay disp = model.getDisplay(place);
 
-                if(disp == null && place == RenderPlace.THIRD_PERSON){
-                    disp = new Display(new Vector3d(10, -45, 170), new Vector3d(0, 1.5, -2.75), new Vector3d(0.375, 0.375, 0.375));
+                if (disp == null && place == JsonRenderPlace.THIRD_PERSON) {
+                    disp = new JsonRenderDisplay(new Vector3d(10, -45, 170), new Vector3d(0, 1.5, -2.75), new Vector3d(0.375, 0.375, 0.375));
                 }
                 if (disp != null) {
                     if (obj1 == null)
@@ -160,10 +169,10 @@ public class ModelUtils {
             if (obj1 != null)
                 data.add("display", obj1);
 
-            List<IModelElement> element = model.getElements();
+            List<IJsonModelElement> element = model.getElements();
             if (element != null && !element.isEmpty()) {
                 JsonArray elems = new JsonArray();
-                for (IModelElement e : element) {
+                for (IJsonModelElement e : element) {
                     JsonObject obj = new JsonObject();
 
                     Vector3i from = e.getStartPoint();
@@ -180,7 +189,7 @@ public class ModelUtils {
                     end.add(new JsonPrimitive(to.getZ()));
                     obj.add("to", end);
 
-                    IModelRotation rot = e.getRotation();
+                    IJsonModelRotation rot = e.getRotation();
                     if (rot != null) {
 
                         JsonObject rotation = new JsonObject();
@@ -206,7 +215,7 @@ public class ModelUtils {
                     JsonObject faces = null;
 
                     for (Direction dir : Direction.values()) {
-                        IModelFace face = e.getFace(dir);
+                        IJsonModelFace face = e.getFace(dir);
 
                         if (face != null) {
                             if (faces == null)
@@ -250,7 +259,7 @@ public class ModelUtils {
         }
     }
 
-    private static void createIfNeededBlockModel(File file, IBlockModel model) {
+    private static void createIfNeededBlockModel(File file, IJsonModel model) {
 //        if (file.exists())
 //            return;
 
@@ -268,9 +277,9 @@ public class ModelUtils {
                 data.addProperty("ambientocclusion", false);
 
             JsonObject textures = new JsonObject();
-            List<Pair<String, TextureLocation>> texList = model.getTextures();
+            List<Pair<String, ResourceReference>> texList = model.getTextures();
             if (texList != null && !texList.isEmpty()) {
-                for (Pair<String, TextureLocation> e : texList) {
+                for (Pair<String, ResourceReference> e : texList) {
                     textures.addProperty(e.getKey(), e.getValue().toString());
                 }
                 data.add("textures", textures);
@@ -278,8 +287,8 @@ public class ModelUtils {
 
             JsonObject obj1 = null;
 
-            for (RenderPlace place : RenderPlace.values()) {
-                Display disp = model.getDisplay(place);
+            for (JsonRenderPlace place : JsonRenderPlace.values()) {
+                JsonRenderDisplay disp = model.getDisplay(place);
 
                 if (disp != null) {
                     if (obj1 == null)
@@ -310,10 +319,10 @@ public class ModelUtils {
             if (obj1 != null)
                 data.add("display", obj1);
 
-            List<IModelElement> element = model.getElements();
+            List<IJsonModelElement> element = model.getElements();
             if (element != null && !element.isEmpty()) {
                 JsonArray elems = new JsonArray();
-                for (IModelElement e : element) {
+                for (IJsonModelElement e : element) {
                     JsonObject obj = new JsonObject();
 
                     Vector3i from = e.getStartPoint();
@@ -330,7 +339,7 @@ public class ModelUtils {
                     end.add(new JsonPrimitive(to.getZ()));
                     obj.add("to", end);
 
-                    IModelRotation rot = e.getRotation();
+                    IJsonModelRotation rot = e.getRotation();
                     if (rot != null) {
 
                         JsonObject rotation = new JsonObject();
@@ -356,7 +365,7 @@ public class ModelUtils {
                     JsonObject faces = null;
 
                     for (Direction dir : Direction.values()) {
-                        IModelFace face = e.getFace(dir);
+                        IJsonModelFace face = e.getFace(dir);
 
                         if (face != null) {
                             if (faces == null)
@@ -400,7 +409,7 @@ public class ModelUtils {
         }
     }
 
-    private static void createIfNeededBlockState(File file, Map<IBlockState, ModelResourceLocation> map, IBlockDefinition definition, String domain) {
+    private static void createIfNeededBlockState(File file, Map<ModelResourceLocation, List<IJsonModelWrapper>> map, String domain) {
 //        if (file.exists())
 //            return;
 
@@ -411,14 +420,14 @@ public class ModelUtils {
             JsonObject variants = new JsonObject();
             String jsonText = null;
 
-            for (IBlockState state : map.keySet()) {
-                List<IBlockModelWrapper> mapper = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(state));
+            for (ModelResourceLocation loc : map.keySet()) {
+                List<IJsonModelWrapper> mapper = map.get(loc);
                 JsonArray models = new JsonArray();
 
-                for (IBlockModelWrapper variant : mapper) {
+                for (IJsonModelWrapper variant : mapper) {
                     JsonObject jsonObject = new JsonObject();
 
-                    jsonObject.addProperty("model", map.get(state).getResourceDomain()+":"+map.get(state).getResourcePath());
+                    jsonObject.addProperty("model", loc.getResourceDomain()+":"+loc.getResourcePath());
                     if (variant.getRotationX() != 0)
                         jsonObject.addProperty("x", variant.getRotationX());
                     if (variant.getRotationY() != 0)
@@ -429,7 +438,8 @@ public class ModelUtils {
                         jsonObject.addProperty("weight", variant.getWeight());
                     models.add(jsonObject);
                 }
-                variants.add(map.get(state).getVariant(), models);
+
+                variants.add(loc.getVariant(), models);
             }
 
             data.add("variants", variants);
@@ -443,7 +453,7 @@ public class ModelUtils {
     }
 
     public static File getFile(String domain, String path, String resource) {
-        URL root = ModelUtils.class.getResource("/");
+        URL root = JsonCreator.class.getResource("/");
         File rootFile = null;
         if (root == null) {
             Log.error("Error searching the root folder for blacksmith assets");
@@ -469,7 +479,7 @@ public class ModelUtils {
     }
 
     public static File getFile(String domain, String path) {
-        URL root = ModelUtils.class.getResource("/");
+        URL root = JsonCreator.class.getResource("/");
         File rootFile = null;
         if (root == null) {
             Log.error("Error searching the root folder for blacksmith assets");

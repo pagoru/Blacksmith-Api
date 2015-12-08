@@ -1,8 +1,8 @@
 package net.darkaqua.blacksmith.mod.util;
 
 import net.darkaqua.blacksmith.mod.Blacksmith;
-import net.darkaqua.blacksmith.mod.render.ModelUtils;
-import net.darkaqua.blacksmith.mod.render.RenderManager;
+import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
+import net.darkaqua.blacksmith.mod.render.JsonCreator;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.*;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -19,12 +19,9 @@ import java.util.Set;
 public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadListener{
 
     public static final BS_ResourceLoader INSTANCE = new BS_ResourceLoader();
-    private RenderManager manager;
     private Set<String> cache;
 
-    private BS_ResourceLoader() {
-        manager = RenderManager.INSTANCE;
-    }
+    private BS_ResourceLoader() {}
 
     @Override
     public InputStream getInputStream(ResourceLocation res) throws IOException {
@@ -34,7 +31,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     }
 
     private File getFile(ResourceLocation res){
-        return ModelUtils.getFile(res.getResourceDomain(), res.getResourcePath());
+        return JsonCreator.getFile(res.getResourceDomain(), res.getResourcePath());
     }
 
     @Override
@@ -49,7 +46,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     @Override
     public Set getResourceDomains() {
         if(cache == null) {
-            cache = manager.getRegisteredDomains();
+            cache = RenderRegistry.INSTANCE.getRegisteredDomains();
         }
         return cache;
     }
@@ -73,12 +70,6 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     public void onResourceManagerReload(IResourceManager resourceManager) {
         SimpleReloadableResourceManager res = (SimpleReloadableResourceManager) resourceManager;
         res.reloadResourcePack(BS_ResourceLoader.INSTANCE);
-        registerRenders();
         cache = null;
-    }
-
-    public void registerRenders(){
-        RenderManager.INSTANCE.registerItemRenders();
-        RenderManager.INSTANCE.registerBlockRenders();
     }
 }

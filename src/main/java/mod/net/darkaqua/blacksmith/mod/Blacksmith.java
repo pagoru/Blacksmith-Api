@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.mod.block.blockstate.BS_BlockStateFactory;
+import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.event.FMLEventRedirect;
@@ -12,15 +13,16 @@ import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.Game;
+import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
+import net.darkaqua.blacksmith.mod.render.BS_CustomModelLoader;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_ResourceLoader;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.ModContainerFactory;
-import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -50,7 +52,9 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_CreativeTabFactory.init();
         BS_BlockStateFactory.init();
         BS_EventBus.init();
+        BS_ConfigurationFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
+
     }
 
     public static void debug(){
@@ -68,8 +72,10 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         try {
             FMLEventRedirect.init();
             if (Game.INSTANCE.isClient()) {
+                MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
                 IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
                 manager.registerReloadListener(BS_ResourceLoader.INSTANCE);
+                ModelLoaderRegistry.registerLoader(BS_CustomModelLoader.INSTANCE);
             }
             GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
             ModLoaderManager.firePreInit(event);
@@ -82,7 +88,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-        BS_ResourceLoader.INSTANCE.registerRenders();
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }
