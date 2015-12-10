@@ -8,6 +8,8 @@ import net.darkaqua.blacksmith.api.render.model.json.IJsonModelWrapper;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
+import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
+import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -61,6 +63,10 @@ public class BlockRegistry implements IBlockRegistry {
 
     @Override
     public IBlock registerBlockDefinition(IBlockDefinition definition, String identifier) {
+        BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
+        if (mod == null) {
+            throw new IllegalStateException("Block models should be registered only in preInit");
+        }
         if (definition == null)
             throw new NullPointerException("BlockRegistry cannot use a null IBlockDefinition to create a new block");
         if (identifier == null)

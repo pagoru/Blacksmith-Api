@@ -43,6 +43,8 @@ public class BS_GeneratedModel implements IModel {
     public IFlexibleBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         Log.debug("BAKING MODEL ===================================================================================================");
         IFlexibleBakedModel model = BS_BakedModel.of(this, state, format, bakedTextureGetter);
+        Log.debug(model);
+        Log.debug("BAKING MODEL ===================================================================================================");
         return model;
     }
 

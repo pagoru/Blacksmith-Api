@@ -39,14 +39,19 @@ public class BS_CustomModelLoader implements ICustomModelLoader{
     @Override
     public IModel loadModel(ResourceLocation modelLocation) throws IOException {
         if(!cache.containsKey(modelLocation)){
-            IGenModel model = RenderRegistry.INSTANCE.getRegisteredModels().get(modelLocation);
+
+            ResourceLocation loc2 = new ResourceLocation(modelLocation.getResourceDomain(), modelLocation.getResourcePath().replace("models/item/",""));
+            Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+            Log.debug("Registering Model: "+cache.get(modelLocation));
+            Log.debug(RenderRegistry.INSTANCE.getRegisteredModels());
+            Log.debug(loc2);
+            Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+
+            IGenModel model = RenderRegistry.INSTANCE.getRegisteredModels().get(loc2);
             if (model != null){
                 cache.put(modelLocation, new BS_GeneratedModel(model));
             }
-            Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-            Log.debug("Registering Model: "+model);
-            Log.debug(RenderRegistry.INSTANCE.getRegisteredModels());
-            Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+
         }
         return cache.get(modelLocation);
     }

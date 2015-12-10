@@ -32,7 +32,7 @@ public class ModClass {
         Log.debug("TestMod preinit");
         IBlockDefinition def = new TestBlock();
         block = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(def, "block_identifier");
-        StaticAccess.GAME.getRenderRegistry().register(def, new SimpleGenModelCube(new ResourceReference(MOD_ID, "blocks/texture_name")));
+        StaticAccess.GAME.getRenderRegistry().registerCustomBlockModel(def, new SimpleGenModelCube(new ResourceReference(MOD_ID, "blocks/texture_name")));
         Log.debug("TestMod preinit done");
     }
 
