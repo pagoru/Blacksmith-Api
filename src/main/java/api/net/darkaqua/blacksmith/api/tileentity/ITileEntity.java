@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.tileentity;
 
-import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.util.ClientSideOnly;
 import net.darkaqua.blacksmith.api.util.Cube;

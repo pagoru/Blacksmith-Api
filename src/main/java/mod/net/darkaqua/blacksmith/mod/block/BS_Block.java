@@ -18,11 +18,11 @@ public class BS_Block extends Block{
         definition = def;
         setUnlocalizedName(def.getUnlocalizedName());
         setCreativeTab(MCInterface.fromCreativeTab(def.getCreativeTab()));
-        setBlockBounds(def.getBlockBounds());
-        setHardness(def.getBlockHardness());
+        setBlockBounds(def.getBounds());
+        setHardness(def.getHardness());
         setLightLevel(def.getLightEmitted());
         setLightOpacity((int)(def.getLightOpacity()*255f));
-        setResistance(def.getBlockResistance());
+        setResistance(def.getResistance());
     }
 
     private void setBlockBounds(Cube c){

@@ -2,8 +2,8 @@ package net.darkaqua.blacksmith.mod.render;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import net.darkaqua.blacksmith.api.render.ResourceReference;
-import net.darkaqua.blacksmith.api.render.model.generated.IGenModel;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
+import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 import net.darkaqua.blacksmith.mod.render.util.BS_BakedModel;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,9 +19,9 @@ import java.util.LinkedList;
  */
 public class BS_GeneratedModel implements IModel {
 
-    private IGenModel model;
+    private IRenderModel model;
 
-    public BS_GeneratedModel(IGenModel model){
+    public BS_GeneratedModel(IRenderModel model){
         this.model = model;
     }
 
@@ -53,7 +53,7 @@ public class BS_GeneratedModel implements IModel {
         return null;
     }
 
-    public IGenModel getGenModel() {
+    public IRenderModel getGenModel() {
         return model;
     }
 }

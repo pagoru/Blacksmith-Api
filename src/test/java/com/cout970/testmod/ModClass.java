@@ -9,8 +9,10 @@ import net.darkaqua.blacksmith.api.event.EventSubscribe;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.render.ResourceReference;
-import net.darkaqua.blacksmith.api.render.model.default_models.SimpleGenModelCube;
+import net.darkaqua.blacksmith.api.render.model.default_models.SimpleBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.model.default_models.SimpleRenderModel;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
+import net.darkaqua.blacksmith.api.render.model.default_models.SimpleModelPartCube;
 import net.darkaqua.blacksmith.mod.util.Log;
 
 import java.io.File;
@@ -32,7 +34,10 @@ public class ModClass {
         Log.debug("TestMod preinit");
         IBlockDefinition def = new TestBlock();
         block = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(def, "block_identifier");
-        StaticAccess.GAME.getRenderRegistry().registerCustomBlockModel(def, new SimpleGenModelCube(new ResourceReference(MOD_ID, "blocks/texture_name")));
+        SimpleRenderModel model = new SimpleRenderModel();
+        model.addModelPart(new SimpleModelPartCube(new ResourceReference(MOD_ID, "blocks/texture_name")));
+        SimpleBlockModelProvider provider = new SimpleBlockModelProvider(model);
+        StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(def, provider);
         Log.debug("TestMod preinit done");
     }
 

@@ -31,6 +31,14 @@ public class Vector3d {
 		this(ar[0], ar[1], ar[2]);
 	}
 
+	public Vector3d(float[] ar) {
+		this(ar[0], ar[1], ar[2]);
+	}
+
+	public Vector3d(double[] ar) {
+		this(ar[0], ar[1], ar[2]);
+	}
+
 	public Vector3d getOpposite() {
 		return new Vector3d(-x, -y, -z);
 	}

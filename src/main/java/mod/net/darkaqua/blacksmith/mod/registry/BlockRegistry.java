@@ -4,7 +4,6 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
-import net.darkaqua.blacksmith.api.render.model.json.IJsonModelWrapper;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
@@ -19,10 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by cout970 on 08/11/2015.
@@ -73,6 +69,7 @@ public class BlockRegistry implements IBlockRegistry {
             throw new NullPointerException("BlockRegistry cannot use a null identifier to create a new block");
 
         Block result;
+        identifier = mod.getModId().toLowerCase()+"/"+identifier;
         //creating and registering the block
         if (definition instanceof IBlockContainerDefinition) {
             BS_BlockContainer block = new BS_BlockContainer((IBlockContainerDefinition) definition);
@@ -88,7 +85,7 @@ public class BlockRegistry implements IBlockRegistry {
         //setting up the itemblock
         item.setBlockDefinition(definition);
 
-        RegisteredBlock reg = new RegisteredBlock(definition, iblock, item, result, identifier);
+        RegisteredBlock reg = new RegisteredBlock(definition, iblock, item, result, mod.getModId(), identifier);
         registeredblocks.put(definition, reg);
 
         return iblock;
@@ -104,6 +101,10 @@ public class BlockRegistry implements IBlockRegistry {
         return registeredblocks.get(def);
     }
 
+    public Collection<RegisteredBlock> getAllRegisteredBlocks() {
+        return registeredblocks.values();
+    }
+
     public static class RegisteredBlock{
 
         private IBlockDefinition definition;
@@ -111,14 +112,17 @@ public class BlockRegistry implements IBlockRegistry {
         private ItemBlock itemBlock;
         private Block mcBlock;
         private String identifier;
-        private Map<ModelResourceLocation,List<IJsonModelWrapper>> renderMap;
+        private String modID;
+        private List<ModelResourceLocation> blockModels;
 
-        public RegisteredBlock(IBlockDefinition definition, IBlock block, ItemBlock itemBlock, Block mcBlock, String identifier) {
+        public RegisteredBlock(IBlockDefinition definition, IBlock block, ItemBlock itemBlock, Block mcBlock, String modID, String identifier) {
             this.definition = definition;
             this.block = block;
             this.itemBlock = itemBlock;
             this.mcBlock = mcBlock;
             this.identifier = identifier;
+            this.modID = modID;
+            blockModels = new LinkedList<>();
         }
 
         public IBlockDefinition getDefinition() {
@@ -137,16 +141,21 @@ public class BlockRegistry implements IBlockRegistry {
             return mcBlock;
         }
 
-        public String getIdentifier() {
+        public String getBlockIdentifier() {
             return identifier;
         }
 
-        public void setRenderMap(Map<ModelResourceLocation,List<IJsonModelWrapper>> renderMap) {
-            this.renderMap = renderMap;
+        public String getModID() {
+            return modID;
         }
 
-        public Map<ModelResourceLocation, List<IJsonModelWrapper>> getRenderMap() {
-            return renderMap;
+        public List<ModelResourceLocation> getBlockModels() {
+            return blockModels;
         }
+
+        public void addBlockModel(ModelResourceLocation loc){
+            blockModels.add(loc);
+        }
+
     }
 }

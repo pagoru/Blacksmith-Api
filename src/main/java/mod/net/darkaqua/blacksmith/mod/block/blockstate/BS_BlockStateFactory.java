@@ -1,9 +1,9 @@
 package net.darkaqua.blacksmith.mod.block.blockstate;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.BlockStateFactory;
-import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
-import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
+import net.darkaqua.blacksmith.api.block.IPropertyFactory;
+import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.IIProperty;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class BS_BlockStateFactory extends BlockStateFactory{
+public class BS_BlockStateFactory extends IPropertyFactory {
 
     public static void init(){
         INSTANCE = new BS_BlockStateFactory();

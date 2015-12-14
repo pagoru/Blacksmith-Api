@@ -1,7 +1,9 @@
 package net.darkaqua.blacksmith.api.block;
 
-import net.darkaqua.blacksmith.api.block.properties.*;
+import net.darkaqua.blacksmith.api.block.methods.BlockMethod;
+import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.item.IItem;
+import net.darkaqua.blacksmith.api.util.Cube;
 
 /**
  * This is an abstraction to a Minecraft block
@@ -10,7 +12,7 @@ import net.darkaqua.blacksmith.api.item.IItem;
  * @author cout970
  *
  */
-public interface IBlock {
+public interface IBlock extends BlockMethod.AllBlockMethods {
 
 	/**
 	 * @return The internal block name in the form: tile.blockname.name
@@ -22,57 +24,64 @@ public interface IBlock {
      */
 	String getLocalizedName();
 
-	// Different handlers for different aspects of the block
+	/**
+	 * This attribute defines the default size, collision box and selection box of the block
+	 * The collision box and the selection box can be changes in dynamically in other methods
+	 * @return The size of the block
+	 */
+	Cube getBlockBounds();
 
 	/**
-	 * Light Related stuff
-     */
-	IBlockLightProperties getLightProperties();
+	 * This attribute defines how hard is mine the block.
+	 * if the hardness is negative the block will be unbreakable
+	 * Some examples:
+	 * Stone: 1.5F
+	 * Dirt: 0.5F
+	 * Obsidian: 50F
+	 * Bedrock: -1F
+	 * @return The hardness of the block
+	 */
+	float getHardness();
 
 	/**
-	 * Block States and metadata related stuff
-     */
-	IBlockStateProperties getBlockStateProperties();
+	 * This attribute defines the amount of light that the block will emit,
+	 * the value must be between 0F and 1F
+	 * @return the amount of light emitted by the block
+	 */
+	float getLightEmitted();
 
 	/**
-	 * Different properties about the block structure or about collision boxes
-     */
-	IBlockPhysicsProperties getPhysicsProperties();
+	 * This attribute defines the amount of light that the block will absorb,
+	 * the value must be between 0F and 1F
+	 * @return the amount of light absorbed by the block
+	 */
+	float getLightOpacity();
 
 	/**
-	 * Stuff related with block drops and block harvesting
-     */
-	IBlockHarvestProperties getHarvestProperties();
-
-	/**
-	 * Stuff related with redstone
-     */
-	IBlockRedstoneProperties getRedstoneProperties();
-
-	/**
-	 * Stuff related with render and client only things
-     */
-	IBlockRenderProperties getRenderProperties();
-
-	/**
-	 * Stuff about TileEntities
-     */
-	IBlockTileEntityProperties getTileEntityProperties();
-
-	/**
-	 * Stuff about blocks random tick
-     */
-	IBlockTickProperties getTickProperties();
-
-	/**
-	 * Stuff about events like right click, on break or on added
-     */
-	IBlockEventHandler getEventHandler();
+	 * This attribute defines the resistance to explosions of the block
+	 * Some examples:
+	 * Stone: 10F
+	 * Dirt: 2.5F
+	 * Obsidian: 2000F
+	 * Bedrock: 6000000F
+	 * @return the resistance of the block to explosions
+	 */
+	float getResistance();
 
 	/**
 	 * The item that represents this block on an inventory
      */
 	IItem getItemBlock();
+
+	boolean isOpaque();
+
+	IBlockVariant getDefaultVariant();
+
+	IBlockVariant getVariantFromMeta(int meta);
+
+	int getMetaFromVariant(IBlockVariant variant);
+
+	ICreativeTab getCreativeTab();
 
 	/**
 	 * The internal minecraft block

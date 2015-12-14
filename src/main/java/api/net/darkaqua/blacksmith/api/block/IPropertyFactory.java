@@ -1,19 +1,13 @@
-package net.darkaqua.blacksmith.api.block.blockstate;
-
-import net.darkaqua.blacksmith.api.block.IBlock;
+package net.darkaqua.blacksmith.api.block;
 
 import java.util.Map;
 
 /**
  * Created by cout970 on 28/11/2015.
  */
-public abstract class BlockStateFactory {
+public abstract class IPropertyFactory {
 
-    protected static BlockStateFactory INSTANCE;
-
-    public static IBlockVariant createBlockState(IBlock block, IIProperty... properties){
-        return INSTANCE.newBlockState(block, properties);
-    }
+    protected static IPropertyFactory INSTANCE;
 
     public static <T> IIProperty createProperty(String name, Map<String, Comparable<T>> values, Class<T> valuesClass){
         return INSTANCE.newIProperty(name, values, valuesClass);

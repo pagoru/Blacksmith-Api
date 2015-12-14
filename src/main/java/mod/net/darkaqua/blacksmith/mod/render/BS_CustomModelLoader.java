@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.mod.render;
 
-import net.darkaqua.blacksmith.api.render.model.generated.IGenModel;
+import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraft.client.resources.IResourceManager;
@@ -27,7 +27,7 @@ public class BS_CustomModelLoader implements ICustomModelLoader{
 
     @Override
     public boolean accepts(ResourceLocation modelLocation) {
-        if(modelLocation.getResourceDomain().contains("blacksmith")) {
+        if(!modelLocation.getResourceDomain().contains("minecraft")) {
             Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
             Log.debug("Acepts? " + modelLocation);
             Log.debug(RenderRegistry.INSTANCE.getRegisteredModels());
@@ -40,14 +40,14 @@ public class BS_CustomModelLoader implements ICustomModelLoader{
     public IModel loadModel(ResourceLocation modelLocation) throws IOException {
         if(!cache.containsKey(modelLocation)){
 
-            ResourceLocation loc2 = new ResourceLocation(modelLocation.getResourceDomain(), modelLocation.getResourcePath().replace("models/item/",""));
+            ResourceLocation loc2 = new ResourceLocation(modelLocation.getResourceDomain(), modelLocation.getResourcePath());
             Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-            Log.debug("Registering Model: "+cache.get(modelLocation));
+            Log.debug("Registering Model: "+modelLocation);
             Log.debug(RenderRegistry.INSTANCE.getRegisteredModels());
             Log.debug(loc2);
             Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
 
-            IGenModel model = RenderRegistry.INSTANCE.getRegisteredModels().get(loc2);
+            IRenderModel model = RenderRegistry.INSTANCE.getRegisteredModels().get(loc2);
             if (model != null){
                 cache.put(modelLocation, new BS_GeneratedModel(model));
             }

@@ -1,13 +1,19 @@
 package net.darkaqua.blacksmith.mod.block;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
-import net.darkaqua.blacksmith.api.block.properties.*;
+import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
+import net.darkaqua.blacksmith.api.entity.IEntity;
+import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
-import net.darkaqua.blacksmith.api.util.Vector3i;
-import net.darkaqua.blacksmith.api.world.IIBlockAccess;
+import net.darkaqua.blacksmith.api.util.Cube;
+import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
+
+import javax.vecmath.Vector3d;
 
 public class BlockWrapper implements IBlock {
 
@@ -32,100 +38,33 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public IBlockLightProperties getLightProperties() {
-
-		return new IBlockLightProperties() {
-			@Override
-			public IBlock getBlock() {
-				return BlockWrapper.this;
-			}
-
-			@Override
-			public float getLightOpacity() {
-				return block.getLightOpacity()/15f;
-			}
-
-			@Override
-			public float getLightOpacity(IIBlockAccess world, Vector3i pos) {
-				return block.getLightOpacity(MCInterface.toBlockAccess(world), MCInterface.toBlockPos(pos))/15f;
-			}
-
-			@Override
-			public float getLightEmitted() {
-				return block.getLightValue();
-			}
-
-			@Override
-			public boolean isOpaque() {
-				return block.isOpaqueCube();
-			}
-		};
+	public Cube getBlockBounds() {
+		return new Cube(block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(),
+				block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ());
 	}
 
 	@Override
-	public IBlockStateProperties getBlockStateProperties() {
-		return new IBlockStateProperties() {
-			@Override
-			public IBlock getBlock() {
-				return BlockWrapper.this;
-			}
-
-			@Override
-			public IBlockVariant getDefaultState() {
-				return MCInterface.fromIBlockVariant(block.getDefaultState());
-			}
-
-			@Override
-			public IBlockVariant getActualState(IBlockVariant state, IIBlockAccess worldIn, Vector3i pos) {
-				return MCInterface.fromIBlockVariant(block.getActualState(MCInterface.toIBlockState(state), MCInterface.toBlockAccess(worldIn), MCInterface.toBlockPos(pos)));
-			}
-
-			@Override
-			public IBlockVariant getStateFromMeta(int meta) {
-				return MCInterface.fromIBlockVariant(block.getStateFromMeta(meta));
-			}
-
-			@Override
-			public int getMetaFromState(IBlockVariant state) {
-				return block.getMetaFromState(MCInterface.toIBlockState(state));
-			}
-		};
+	public float getHardness() {
+		//TODO
+		return block.getBlockHardness(null, null);
 	}
 
 	@Override
-	public IBlockPhysicsProperties getPhysicsProperties() {
-		return null;
+	public float getLightEmitted() {
+		return block.getLightValue();
 	}
 
 	@Override
-	public IBlockHarvestProperties getHarvestProperties() {
-		return null;
+	public float getLightOpacity() {
+		return block.getLightOpacity();
 	}
 
 	@Override
-	public IBlockRedstoneProperties getRedstoneProperties() {
-		return null;
+	public float getResistance() {
+		//TODO
+		return block.getExplosionResistance(null);
 	}
 
-	@Override
-	public IBlockRenderProperties getRenderProperties() {
-		return null;
-	}
-
-	@Override
-	public IBlockTileEntityProperties getTileEntityProperties() {
-		return null;
-	}
-
-	@Override
-	public IBlockTickProperties getTickProperties() {
-		return null;
-	}
-
-	@Override
-	public IBlockEventHandler getEventHandler() {
-		return null;
-	}
 
 	@Override
 	public IItem getItemBlock() {
@@ -133,7 +72,89 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
+	public boolean isOpaque() {
+		return block.isOpaqueCube();
+	}
+
+	@Override
+	public IBlockVariant getDefaultVariant() {
+		return MCInterface.fromIBlockVariant(block.getDefaultState());
+	}
+
+	@Override
+	public IBlockVariant getVariantFromMeta(int meta) {
+		return MCInterface.fromIBlockVariant(block.getDefaultState());
+	}
+
+	@Override
+	public int getMetaFromVariant(IBlockVariant variant) {
+		return block.getMetaFromState(MCInterface.toIBlockState(variant));
+	}
+
+	@Override
+	public ICreativeTab getCreativeTab() {
+		return MCInterface.fromCreativeTab(block.getCreativeTabToDisplayOn());
+	}
+
+	@Override
 	public Object getInternalBlock() {
 		return block;
+	}
+
+	//TODO
+
+	@Override
+	public boolean onBlockActivated(WorldRef ref, IBlockVariant state, IPlayer player, Direction side, Vector3d vector3d) {
+		return false;
+	}
+
+	@Override
+	public void onBlockAdded(WorldRef ref, IBlockVariant fromBlockState) {
+
+	}
+
+	@Override
+	public void onActivate() {
+
+	}
+
+	@Override
+	public void onBlockBreaks(WorldRef ref, IBlockVariant state) {
+
+	}
+
+	@Override
+	public void onBlockClicked(WorldRef ref, IPlayer player) {
+
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(WorldRef ref, IEntity entity) {
+
+	}
+
+	@Override
+	public void onBlockHarvested(WorldRef ref, IBlockVariant variant, IPlayer player) {
+
+	}
+
+	@Override
+	public void onNeighborBlockChange(WorldRef ref, IBlockVariant state, IBlock neighbor) {
+
+	}
+
+	@Override
+	public IBlockVariant onBlockPlaced(WorldRef ref, Direction side, IPlayer entity, Vector3d hit, int metadata) {
+		return null;
+	}
+
+	@Override
+	public void onBlockPlacedBy(WorldRef ref, IBlockVariant state, IPlayer placer, IItemStack stack) {
+
+	}
+
+	@Override
+	public boolean removedByPlayer(WorldRef ref, IPlayer player, boolean willHarvest) {
+		return false;
 	}
 }

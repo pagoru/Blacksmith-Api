@@ -19,6 +19,7 @@ public class ModLoaderManager {
 
 	private static final List<BlacksmithModContainer> loadedMods = Lists.newArrayList();
 	private static BlacksmithModContainer activeMod;
+	private static LoadingState currentState = LoadingState.NONE;
 
 	private ModLoaderManager() {}
 
@@ -49,14 +50,17 @@ public class ModLoaderManager {
 	}
 
 	public static void firePreInit(FMLPreInitializationEvent event) {
+		currentState = LoadingState.PREINIT;
 		postEvent(new BS_PreInitEvent(event));
 	}
 
 	public static void fireInit(FMLInitializationEvent event) {
+		currentState = LoadingState.INIT;
 		postEvent(new BS_InitEvent(event));
 	}
 
 	public static void firePostInit(FMLPostInitializationEvent event) {
+		currentState = LoadingState.POSTINIT;
 		postEvent(new BS_PostInitEvent(event));
 	}
 
@@ -76,5 +80,16 @@ public class ModLoaderManager {
 			}
 		}
 		activeMod = null;
+	}
+
+	public static LoadingState getLoadingState() {
+		return currentState;
+	}
+
+	public enum LoadingState{
+		PREINIT,
+		INIT,
+		POSTINIT,
+		NONE
 	}
 }

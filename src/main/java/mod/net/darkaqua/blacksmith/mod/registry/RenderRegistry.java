@@ -2,16 +2,19 @@ package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
-import net.darkaqua.blacksmith.api.render.model.generated.IGenModel;
-import net.darkaqua.blacksmith.api.render.model.json.IJsonModelWrapper;
+import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
+import net.darkaqua.blacksmith.mod.render.JsonCreator;
+import net.darkaqua.blacksmith.mod.render.util.ModelIdentifier;
+import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -25,13 +28,13 @@ import java.util.*;
 public class RenderRegistry implements IRenderRegistry {
 
     public static final RenderRegistry INSTANCE = new RenderRegistry();
-    private static Map<ResourceLocation, IGenModel> models = new HashMap<>();
+    private static Map<ResourceLocation, IRenderModel> models = new HashMap<>();
     private static List<ItemRenderRegister> itemsToRegister = new LinkedList<>();
 
     private RenderRegistry() {
     }
 
-    public Map<ResourceLocation, IGenModel> getRegisteredModels() {
+    public Map<ResourceLocation, IRenderModel> getRegisteredModels() {
         return models;
     }
 
@@ -44,39 +47,51 @@ public class RenderRegistry implements IRenderRegistry {
     }
 
     @Override
-    public boolean registerCustomBlockModel(IBlockDefinition def, IGenModel model) {
+    public boolean registerBlockModelProvider(IBlockDefinition def, final IBlockModelProvider provider) {
         BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
-        if (mod == null) {
+        if (mod == null || ModLoaderManager.getLoadingState() != ModLoaderManager.LoadingState.PREINIT) {
             throw new IllegalStateException("Block models should be registered only in preInit");
         }
         BlockRegistry.RegisteredBlock reg = BlockRegistry.INSTANCE.getRegistrationData(def);
-        final String domain = Blacksmith.MOD_ID + "@" + mod.getModId().toLowerCase();
+        final String domain = Blacksmith.MOD_ID;
+
+        final ResourceLocation block = (ResourceLocation) Block.blockRegistry.getNameForObject(reg.getMcBlock());
+        Map<IModelIdentifier, IRenderModel> localModels = new HashMap<>();
+
+        for(IRenderModel model : provider.getAllModels()){
+            ResourceLocation id = new ResourceLocation(domain, block.getResourcePath()+"/"+model.getName());
+            ModelIdentifier identifier = new ModelIdentifier(id);
+            provider.bindModelIdentifier(model, identifier);
+            localModels.put(identifier, model);
+        }
 
         //itemblock
-        ModelBakery.addVariantName(reg.getItemBlock(), new ResourceLocation(domain, reg.getIdentifier().toLowerCase()).toString());
-        ModelLoader.setCustomModelResourceLocation(reg.getItemBlock(), 0, new ModelResourceLocation(domain+ ":" + reg.getIdentifier().toLowerCase(), "inventory"));
-        models.put(new ResourceLocation(domain, reg.getIdentifier().toLowerCase()), model);
-        itemsToRegister.add(new ItemRenderRegister(reg.getItemBlock(), 0, new ModelResourceLocation(domain+ ":" + reg.getIdentifier().toLowerCase(), "inventory")));
+//        ModelBakery.addVariantName(reg.getItemBlock(), new ResourceLocation(domain, reg.getBlockIdentifier().toLowerCase()).toString());
+//        ModelLoader.setCustomModelResourceLocation(reg.getItemBlock(), 0, new ModelResourceLocation(domain+ ":" + reg.getBlockIdentifier().toLowerCase(), "inventory"));
+//        models.put(new ResourceLocation(domain, "models/item/"+reg.getBlockIdentifier().toLowerCase()), model);
+//        itemsToRegister.add(new ItemRenderRegister(reg.getItemBlock(), 0, new ModelResourceLocation(domain+ ":" + reg.getBlockIdentifier().toLowerCase(), "inventory")));
 
+        final Map<String, IModelIdentifier> ids = new HashMap<>();
         //block
-        ModelLoader.setCustomStateMapper(reg.getMcBlock(), new StateMapperBase() {
+        StateMapperBase stateMapper = new StateMapperBase() {
 
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                ResourceLocation block = (ResourceLocation) Block.blockRegistry.getNameForObject(state.getBlock());
-                block = new ResourceLocation(domain, block.getResourcePath());
+                IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromIBlockVariant(state));
                 String variant = getPropertyString(state.getProperties());
-                return new ModelResourceLocation(block, variant);
+                ids.put(variant, identifier);
+                return new ModelResourceLocation(domain+":"+block.getResourcePath(), variant);
             }
-        });
+        };
+        for(Object loc : stateMapper.putStateModelLocations(reg.getMcBlock()).values()) {
+            ModelResourceLocation mloc = (ModelResourceLocation) loc;
+            reg.addBlockModel(mloc);
+            IRenderModel model = localModels.get(ids.get(mloc.getVariant()));
+            models.put(new ResourceLocation(mloc.getResourceDomain(), "models/block/"+mloc.getResourcePath()), model);
+        }
+        ModelLoader.setCustomStateMapper(reg.getMcBlock(), stateMapper);
 
         return true;
-    }
-
-    @Override
-    public boolean registerJsonBlockModel(IBlockDefinition def, IJsonModelWrapper model) {
-
-        return false;
     }
 
     public void onInit(){
@@ -85,6 +100,12 @@ public class RenderRegistry implements IRenderRegistry {
                     .getRenderItem()
                     .getItemModelMesher()
                     .register(r.getItem(), r.getMeta(), r.getLocation());
+        }
+    }
+
+    public void onPreInitFinish() {
+        for(BlockRegistry.RegisteredBlock block : BlockRegistry.INSTANCE.getAllRegisteredBlocks()) {
+            JsonCreator.createBlockStateJson(block);
         }
     }
 

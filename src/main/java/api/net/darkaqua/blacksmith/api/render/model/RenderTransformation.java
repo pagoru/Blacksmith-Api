@@ -1,23 +1,24 @@
-package net.darkaqua.blacksmith.api.render.model.json;
+package net.darkaqua.blacksmith.api.render.model;
 
 import net.darkaqua.blacksmith.api.util.Vector3d;
+import net.darkaqua.blacksmith.api.util.Vector4d;
 
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class JsonRenderDisplay {
+public class RenderTransformation {
 
-    private Vector3d rotation;
+    private Vector4d rotation;
     private Vector3d translation;
     private Vector3d scale;
 
-    public JsonRenderDisplay(Vector3d rotation, Vector3d translation, Vector3d scale) {
+    public RenderTransformation(Vector3d translation, Vector4d rotation, Vector3d scale) {
         this.rotation = rotation;
         this.translation = translation;
         this.scale = scale;
     }
 
-    public Vector3d getRotation() {
+    public Vector4d getRotation() {
         return rotation;
     }
 

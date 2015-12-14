@@ -1,8 +1,6 @@
 package net.darkaqua.blacksmith.api.block;
 
-import net.darkaqua.blacksmith.api.block.blockstate.IBlockStateHandler;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
-import net.darkaqua.blacksmith.api.render.IBlockRenderHandler;
 import net.darkaqua.blacksmith.api.util.Cube;
 
 /**
@@ -15,7 +13,7 @@ import net.darkaqua.blacksmith.api.util.Cube;
 public interface IBlockDefinition {
 
 
-    void onBlockCreate(IBlock block);
+    void onCreate(IBlock block);
 
     /**
      * The internal name of the block
@@ -28,7 +26,7 @@ public interface IBlockDefinition {
      * The collision box and the selection box can be changes in dynamically in other methods
      * @return The size of the block
      */
-    Cube getBlockBounds();
+    Cube getBounds();
 
     /**
      * This attribute defines how hard is mine the block.
@@ -40,7 +38,7 @@ public interface IBlockDefinition {
      * Bedrock: -1F
      * @return The hardness of the block
      */
-    float getBlockHardness();
+    float getHardness();
 
     /**
      * This attribute defines the amount of light that the block will emit,
@@ -65,15 +63,10 @@ public interface IBlockDefinition {
      * Bedrock: 6000000F
      * @return the resistance of the block to explosions
      */
-    float getBlockResistance();
+    float getResistance();
 
     /**
      * @return the creative tab where this block will appear
      */
     ICreativeTab getCreativeTab();
-
-    //TODO document this part
-    IBlockRenderHandler getBlockRenderHandler();
-
-    IBlockStateHandler getBlockStateHandler();
 }

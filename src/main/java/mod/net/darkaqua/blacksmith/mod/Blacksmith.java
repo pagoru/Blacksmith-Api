@@ -82,6 +82,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
             }
             GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
             ModLoaderManager.firePreInit(event);
+            RenderRegistry.INSTANCE.onPreInitFinish();
         }catch (Exception e){
             new BlacksmithInternalException(e.getMessage()).printStackTrace();
         }

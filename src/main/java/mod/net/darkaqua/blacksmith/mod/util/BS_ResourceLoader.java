@@ -3,8 +3,10 @@ package net.darkaqua.blacksmith.mod.util;
 import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.render.JsonCreator;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.*;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
@@ -36,7 +38,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     @Override
     public boolean resourceExists(ResourceLocation res) {
-        if(getResourceDomains().contains(res.getResourceDomain()) || res.getResourceDomain().contains(Blacksmith.MOD_ID+"@")){
+        if(getResourceDomains().contains(res.getResourceDomain()) || res.getResourceDomain().contains(Blacksmith.MOD_ID)){
             File f = getFile(res);
             return f.exists();
         }
@@ -58,7 +60,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     @Override
     public BufferedImage getPackImage() throws IOException {
-        return TextureUtil.readBufferedImage(DefaultResourcePack.class.getResourceAsStream("/" + (new ResourceLocation("pack.png")).getResourcePath()));
+        return null;
     }
 
     @Override

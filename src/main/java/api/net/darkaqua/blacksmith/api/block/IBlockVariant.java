@@ -1,6 +1,4 @@
-package net.darkaqua.blacksmith.api.block.blockstate;
-
-import net.darkaqua.blacksmith.api.block.IBlock;
+package net.darkaqua.blacksmith.api.block;
 
 import java.util.Collection;
 import java.util.Map;

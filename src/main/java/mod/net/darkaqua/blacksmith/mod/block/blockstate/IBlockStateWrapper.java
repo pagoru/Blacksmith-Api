@@ -1,8 +1,8 @@
 package net.darkaqua.blacksmith.mod.block.blockstate;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.blockstate.IBlockVariant;
-import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
+import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.IIProperty;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.properties.IProperty;

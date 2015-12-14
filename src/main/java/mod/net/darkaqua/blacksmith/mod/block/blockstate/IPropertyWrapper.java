@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.mod.block.blockstate;
 
-import net.darkaqua.blacksmith.api.block.blockstate.IIProperty;
+import net.darkaqua.blacksmith.api.block.IIProperty;
 import net.minecraft.block.properties.IProperty;
 
 import java.util.Collection;

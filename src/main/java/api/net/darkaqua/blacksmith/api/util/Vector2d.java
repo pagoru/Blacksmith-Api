@@ -26,6 +26,14 @@ public class Vector2d {
         this(ar[0], ar[1]);
     }
 
+    public Vector2d(float[] ar) {
+        this(ar[0], ar[1]);
+    }
+
+    public Vector2d(double[] ar) {
+        this(ar[0], ar[1]);
+    }
+
     public Vector2d getOpposite() {
         return new Vector2d(-x, -y);
     }

@@ -1,9 +1,10 @@
-package net.darkaqua.blacksmith.api.render.model.json;
+package net.darkaqua.blacksmith.api.render.model;
 
 /**
  * Created by cout970 on 28/11/2015.
  */
-public enum JsonRenderPlace {
+public enum RenderPlace {
+    NONE("none"),
     THIRD_PERSON("thirdperson"),
     THIRD_PERSON_RIGHT_HAND("thirdperson_righthand"),
     THIRD_PERSON_LEFT_HAND("thirdperson_lefthand"),
@@ -17,7 +18,7 @@ public enum JsonRenderPlace {
 
     private String propertyName;
 
-    JsonRenderPlace(String name){
+    RenderPlace(String name){
         propertyName = name;
     }
 
