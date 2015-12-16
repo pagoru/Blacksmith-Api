@@ -5,9 +5,9 @@ import net.darkaqua.blacksmith.api.world.IWorld;
 public class WorldRef {
 
 	private IWorld world;
-	private Vector3i position;
+	private Vect3i position;
 	
-	public WorldRef(IWorld world, Vector3i position) {
+	public WorldRef(IWorld world, Vect3i position) {
 		this.world = world;
 		this.position = position;
 	}
@@ -20,11 +20,11 @@ public class WorldRef {
 		this.world = world;
 	}
 
-	public Vector3i getPosition() {
+	public Vect3i getPosition() {
 		return position;
 	}
 
-	public void setPosition(Vector3i position) {
+	public void setPosition(Vect3i position) {
 		this.position = position;
 	}
 }

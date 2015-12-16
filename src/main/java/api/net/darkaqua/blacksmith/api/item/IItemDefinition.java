@@ -13,28 +13,23 @@ import net.darkaqua.blacksmith.api.world.IWorld;
 
 import java.util.List;
 
-public interface IItem {
+/**
+ * Created by cout970 on 16/12/2015.
+ */
+public interface IItemDefinition {
+
+    void onCreate(IItem parent);
 
     String getUnlocalizedName();
+    String getUnlocalizedName(IItemStack stack);
 
     int getMaxStackSize(IItemStack stack);
-    void setMaxStackSize(IItemStack stack, int size);
-
-    int getMaxDamage(IItemStack stack);
-    void setMaxDamage(IItemStack stack, int max);
 
     boolean hasSubtypes();
-    void setSubtypes(boolean has);
 
     IItemStack getContainerItemStack(IItemStack stack);
-    void setContainerItemStack(IItemStack item);
-
-    String getUnlocalizedName(IItemStack stack);
-    void setUnlocalizedName(String name);
-    String getLocalizedName(IItemStack stack);
 
     ICreativeTab getCreativeTab();
-    void setCreativeTab(ICreativeTab tab);
 
     boolean is3DItem();
 
@@ -86,10 +81,4 @@ public interface IItem {
 
     void addInformation(IItemStack stack, IPlayer player, List tooltip, boolean advanced);
 
-    /**
-     * If this item was created with and IItemDefinition this will return the definition, otherwise this will return null
-     */
-    IItemDefinition getItemDefinition();
-
-    Object getInternalItem();
 }

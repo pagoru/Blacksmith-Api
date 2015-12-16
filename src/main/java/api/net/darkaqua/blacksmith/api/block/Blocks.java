@@ -1,5 +1,7 @@
 package net.darkaqua.blacksmith.api.block;
 
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 
 public enum Blocks {
@@ -222,5 +224,9 @@ public enum Blocks {
 
 	public String getUnlocalizedName() {
 		return getBlock().getUnlocalizedName();
+	}
+
+	public IItemStack newItemStack(int amount) {
+		return ItemStackFactory.create(getBlock(), amount);
 	}
 }

@@ -6,12 +6,11 @@ package net.darkaqua.blacksmith.api.util;
 public class Tuple2<T1, T2> {
 
     private T1 fist;
-    private T2 last;
+    private T2 second;
 
     public Tuple2(T1 a, T2 b){
-
         fist = a;
-        last = b;
+        second = b;
     }
 
     public T1 getFist() {
@@ -22,11 +21,11 @@ public class Tuple2<T1, T2> {
         this.fist = fist;
     }
 
-    public T2 getLast() {
-        return last;
+    public T2 getSecond() {
+        return second;
     }
 
-    public void setLast(T2 last) {
-        this.last = last;
+    public void setSecond(T2 last) {
+        this.second = last;
     }
 }

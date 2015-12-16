@@ -17,4 +17,6 @@ public interface IRenderModel {
     List<IModelPart> getSubParts();
 
     Matrix4f getTransformationMatrix(RenderPlace place);
+
+    boolean useAmbientOcclusion();
 }

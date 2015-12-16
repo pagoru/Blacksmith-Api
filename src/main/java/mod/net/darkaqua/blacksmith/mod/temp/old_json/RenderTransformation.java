@@ -1,7 +1,8 @@
-package net.darkaqua.blacksmith.api.render.model;
+package net.darkaqua.blacksmith.mod.temp.old_json;
 
-import net.darkaqua.blacksmith.api.util.Vector3d;
-import net.darkaqua.blacksmith.api.util.Vector4d;
+
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector4d;
 
 /**
  * Created by cout970 on 28/11/2015.

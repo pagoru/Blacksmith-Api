@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.mod.network.packet;
 
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
-import net.darkaqua.blacksmith.api.util.Vector3i;
+import net.darkaqua.blacksmith.api.util.Vect3i;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
@@ -22,7 +22,7 @@ public class DescriptionPacketWrapper implements IDescriptionPacket {
     }
 
     @Override
-    public Vector3i getPosition() {
+    public Vect3i getPosition() {
         return MCInterface.fromBlockPos(packet.func_179823_a());
     }
     @Override

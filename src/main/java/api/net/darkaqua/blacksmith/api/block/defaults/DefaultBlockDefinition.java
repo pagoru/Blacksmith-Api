@@ -57,4 +57,14 @@ public class DefaultBlockDefinition implements IBlockDefinition {
     public ICreativeTab getCreativeTab() {
         return CreativeTabFactory.BLOCKS_TAB;
     }
+
+    @Override
+    public boolean shouldRender() {
+        return true;
+    }
+
+    @Override
+    public boolean isFullCube() {
+        return true;
+    }
 }

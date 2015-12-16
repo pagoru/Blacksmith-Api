@@ -120,7 +120,7 @@ public class JsonCreator {
 //        ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
 //        for (IBlockState s : list) {
 //            String state_name = list.size() == 1 ? "normal" : getStateName(s);
-//            List<IJsonModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(s));
+//            List<IJsonModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockState(s));
 //            for(IJsonModelWrapper wr : variants) {
 //                IJsonModel model = wr.getModelIdentifier();
 //                if (model == null) {
@@ -141,7 +141,7 @@ public class JsonCreator {
 //
 //
 //        //item
-//        List<IJsonModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockVariant(block.getDefaultState()));
+//        List<IJsonModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockState(block.getDefaultState()));
 //        if(variants != null && !variants.isEmpty()) {
 //            File itemModelFile = getFile(domain, "/models/item/", identifier.toLowerCase() + ".json");
 //            ModelResourceLocation itemModel = new ModelResourceLocation(domain + ":" + identifier.toLowerCase(), "inventory");

@@ -5,6 +5,8 @@ import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.IModelQuad;
 import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
+import net.darkaqua.blacksmith.api.util.Vect2d;
+import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.mod.render.BS_GeneratedModel;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -21,8 +23,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector2d;
-import javax.vecmath.Vector3d;
 import java.util.*;
 
 /**
@@ -71,7 +71,7 @@ public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareMode
                     UnBakedQuad uQuad = new UnBakedQuad(MCInterface.toEnumFacing(s.getNormal()));
 
                     for (IModelQuad.QuadVertex v : IModelQuad.QuadVertex.values()) {
-                        Vector2d in_uv = MCInterface.toVector2d(s.getUV(v));
+                        Vect2d in_uv = s.getUV(v);
 
                         if (in_uv == null)
                             throw new IllegalStateException("Invalid UV creating a IGenQuad(" + s + ") for IGenModel(" + model + ")");
@@ -80,14 +80,15 @@ public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareMode
                         if (sprite == null)
                             throw new IllegalStateException("Some IGenQuad(" + s + ") uses a texture(" + s.getTexture() + ") that is not provided by IGenModel(" + model + ")");
 
-                        Vector2d uv = new Vector2d(sprite.getInterpolatedU(in_uv.getX() * 16), sprite.getInterpolatedV(in_uv.getY() * 16));
-                        Vector3d vertex = MCInterface.toVector3d(s.getVertex(v));
+                        Vect2d uv = new Vect2d(sprite.getInterpolatedU(in_uv.getX() * 16), sprite.getInterpolatedV(in_uv.getY() * 16));
+                        Vect3d vertex = s.getVertex(v);
 
                         if (vertex == null)
                             throw new IllegalStateException("Invalid UV creating a IGenQuad(" + s + ") for IGenModel(" + model + ")");
 
                         uQuad.addVertex(vertex, uv);
                     }
+                    uQuad.setShade(s.useShade());
                     if (s.getNormal() == null) {
                         generalQuads.add(uQuad.bake());
                     } else {
@@ -112,7 +113,7 @@ public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareMode
 
     @Override
     public boolean isAmbientOcclusion() {
-        return true;
+        return model.getGenModel().useAmbientOcclusion();
     }
 
     @Override
@@ -132,7 +133,7 @@ public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareMode
 
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
-        return ItemCameraTransforms.DEFAULT;
+        return null;
     }
 
     @Override

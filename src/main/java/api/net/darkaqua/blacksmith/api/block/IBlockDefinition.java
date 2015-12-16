@@ -69,4 +69,8 @@ public interface IBlockDefinition {
      * @return the creative tab where this block will appear
      */
     ICreativeTab getCreativeTab();
+
+    boolean shouldRender();
+
+    boolean isFullCube();
 }

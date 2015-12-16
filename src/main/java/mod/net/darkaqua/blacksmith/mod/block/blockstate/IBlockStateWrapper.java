@@ -47,12 +47,12 @@ public class IBlockStateWrapper implements IBlockVariant {
 
     @Override
     public IBlockVariant withProperty(IIProperty property, Comparable<?> value) {
-        return MCInterface.fromIBlockVariant(state.withProperty(MCInterface.toIProperty(property), value));
+        return MCInterface.fromIBlockState(state.withProperty(MCInterface.toIProperty(property), value));
     }
 
     @Override
     public IBlockVariant cycleProperty(IIProperty property) {
-        return MCInterface.fromIBlockVariant(state.cycleProperty(MCInterface.toIProperty(property)));
+        return MCInterface.fromIBlockState(state.cycleProperty(MCInterface.toIProperty(property)));
     }
 
     @Override

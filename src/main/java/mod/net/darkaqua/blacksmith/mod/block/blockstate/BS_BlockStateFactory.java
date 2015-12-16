@@ -29,7 +29,7 @@ public class BS_BlockStateFactory extends IPropertyFactory {
             prop[i] = MCInterface.toIProperty(properties[i]);
         }
         IBlockState state = new BlockState(MCInterface.toBlock(block), prop).getBaseState();
-        return MCInterface.fromIBlockVariant(state);
+        return MCInterface.fromIBlockState(state);
     }
 
     @Override

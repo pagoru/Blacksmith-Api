@@ -5,6 +5,8 @@ import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
 import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
 import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
+import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
@@ -30,21 +32,9 @@ public class RenderRegistry implements IRenderRegistry {
     public static final RenderRegistry INSTANCE = new RenderRegistry();
     private static Map<ResourceLocation, IRenderModel> models = new HashMap<>();
     private static List<ItemRenderRegister> itemsToRegister = new LinkedList<>();
+    private static Map<Class<? extends ITileEntityDefinition>, ITileEntityRenderer> tileRenderers = new HashMap<>();
 
-    private RenderRegistry() {
-    }
-
-    public Map<ResourceLocation, IRenderModel> getRegisteredModels() {
-        return models;
-    }
-
-    public Set<String> getRegisteredDomains() {
-        HashSet<String> domains = new HashSet<>();
-        for (ResourceLocation res : models.keySet()) {
-            domains.add(res.getResourceDomain());
-        }
-        return domains;
-    }
+    private RenderRegistry() {}
 
     @Override
     public boolean registerBlockModelProvider(IBlockDefinition def, final IBlockModelProvider provider) {
@@ -77,7 +67,7 @@ public class RenderRegistry implements IRenderRegistry {
 
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromIBlockVariant(state));
+                IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromIBlockState(state));
                 String variant = getPropertyString(state.getProperties());
                 ids.put(variant, identifier);
                 return new ModelResourceLocation(domain+":"+block.getResourcePath(), variant);
@@ -94,6 +84,21 @@ public class RenderRegistry implements IRenderRegistry {
         return true;
     }
 
+    @Override
+    public boolean registerTileEntityRenderer(Class<? extends ITileEntityDefinition> def, ITileEntityRenderer renderer) {
+        if (tileRenderers.containsKey(def))
+            return false;
+        if (renderer == null){
+            return false;
+        }
+        tileRenderers.put(def, renderer);
+        return true;
+    }
+
+    public ITileEntityRenderer getTileEntityRenderer(Class<? extends ITileEntityDefinition> def) {
+        return tileRenderers.get(def);
+    }
+
     public void onInit(){
         for(ItemRenderRegister r : itemsToRegister){
             Minecraft.getMinecraft()
@@ -103,11 +108,25 @@ public class RenderRegistry implements IRenderRegistry {
         }
     }
 
+    public Map<ResourceLocation, IRenderModel> getRegisteredModels() {
+        return models;
+    }
+
+    public Set<String> getRegisteredDomains() {
+        HashSet<String> domains = new HashSet<>();
+        for (ResourceLocation res : models.keySet()) {
+            domains.add(res.getResourceDomain());
+        }
+        return domains;
+    }
+
     public void onPreInitFinish() {
         for(BlockRegistry.RegisteredBlock block : BlockRegistry.INSTANCE.getAllRegisteredBlocks()) {
             JsonCreator.createBlockStateJson(block);
         }
     }
+
+
 
     public static class ItemRenderRegister{
 

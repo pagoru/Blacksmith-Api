@@ -5,10 +5,12 @@ import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.block.IIProperty;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
+import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
+import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
@@ -24,14 +26,17 @@ import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
 import net.darkaqua.blacksmith.mod.network.packet.DescriptionPacketWrapper;
+import net.darkaqua.blacksmith.mod.storage.NBTTagCompoundWrapper;
 import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
 import net.darkaqua.blacksmith.mod.world.IBlockAccessWrapper;
 import net.darkaqua.blacksmith.mod.world.WorldWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,11 +64,11 @@ public class MCInterface {
         return null;
     }
 
-    public static Vector3i fromBlockPos(BlockPos pos) {
-        return new Vector3i(pos.getX(), pos.getY(), pos.getZ());
+    public static Vect3i fromBlockPos(BlockPos pos) {
+        return new Vect3i(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public static BlockPos toBlockPos(Vector3i pos) {
+    public static BlockPos toBlockPos(Vect3i pos) {
         return new BlockPos(pos.getX(), pos.getY(), pos.getZ());
     }
 
@@ -132,7 +137,7 @@ public class MCInterface {
         return null;
     }
 
-    public static IBlockVariant fromIBlockVariant(IBlockState state) {
+    public static IBlockVariant fromIBlockState(IBlockState state) {
         if (state == null) return null;
         return new IBlockStateWrapper(state);
     }
@@ -167,10 +172,15 @@ public class MCInterface {
     }
 
     public static IDataCompound fromNBTCompound(NBTTagCompound tag){
-        return null;
+        if (tag == null)
+            return null;
+        return new NBTTagCompoundWrapper(tag);
     }
 
     public static NBTTagCompound toNBTCompound(IDataCompound tag) {
+        if (tag instanceof NBTTagCompoundWrapper){
+            return ((NBTTagCompoundWrapper) tag).getNBTTagCompound();
+        }
         return null;
     }
 
@@ -218,18 +228,23 @@ public class MCInterface {
         return null;
     }
 
-    public static javax.vecmath.Vector3d toVector3d(Vector3d vertex) {
-        if (vertex == null)return null;
-        return new javax.vecmath.Vector3d(vertex.getX(), vertex.getY(), vertex.getZ());
-    }
-
-    public static javax.vecmath.Vector2d toVector2d(Vector2d uv) {
-        if (uv == null)return null;
-        return new javax.vecmath.Vector2d(uv.getX(), uv.getY());
-    }
-
     public static ResourceLocation toResourceLocation(ResourceReference loc) {
         if (loc == null)return null;
         return new ResourceLocation(loc.getDomain(), loc.getPath());
+    }
+
+    public static EntityLivingBase fromLivingEntity(ILivingEntity entity) {
+        //TODO
+        return null;
+    }
+
+    public static ILivingEntity toLivingEntity(EntityLivingBase entity) {
+        //TODO
+        return null;
+    }
+
+    public static IFontRenderer fromFontRenderer(FontRenderer fontRenderer) {
+        //TODO
+        return null;
     }
 }

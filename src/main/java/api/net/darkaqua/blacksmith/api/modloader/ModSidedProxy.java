@@ -15,4 +15,6 @@ public @interface ModSidedProxy {
     String clientSide() default "";
 
     String serverSide() default "";
+
+    String modId() default "";
 }

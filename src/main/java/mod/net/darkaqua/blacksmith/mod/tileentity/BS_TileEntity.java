@@ -24,6 +24,10 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox{
         def.onLoad(MCInterface.fromTileEntity(this));
     }
 
+    public ITileEntityDefinition getTileEntityDefinition(){
+        return def;
+    }
+
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         Class<? extends ITileEntityDefinition> clazz =
@@ -33,10 +37,7 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox{
         if (clazz != null) {
             try {
                 def = clazz.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-                error = true;
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
                 error = true;
             }
@@ -88,7 +89,7 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox{
     }
 
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return def.shouldRecreate(new WorldRef(MCInterface.fromWorld(world), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockVariant(oldState), MCInterface.fromIBlockVariant(newSate));
+        return def.shouldRecreate(new WorldRef(MCInterface.fromWorld(world), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(oldState), MCInterface.fromIBlockState(newSate));
     }
 
     public net.minecraft.util.AxisAlignedBB getRenderBoundingBox(){

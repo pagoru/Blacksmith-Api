@@ -73,6 +73,17 @@ public interface IBlock extends BlockMethod.AllBlockMethods {
      */
 	IItem getItemBlock();
 
+	/**
+	 * If the block was created by an IBlockDefinition this method will return this definition, otherwise will return null
+     */
+	IBlockDefinition getBlockDefinition();
+
+	/**
+	 * The internal minecraft block
+	 * Useful to check interfaces and apis outside Blacksmith
+     */
+	Object getInternalBlock();
+
 	boolean isOpaque();
 
 	IBlockVariant getDefaultVariant();
@@ -82,10 +93,4 @@ public interface IBlock extends BlockMethod.AllBlockMethods {
 	int getMetaFromVariant(IBlockVariant variant);
 
 	ICreativeTab getCreativeTab();
-
-	/**
-	 * The internal minecraft block
-	 * Useful to check interfaces and apis outside Blacksmith
-     */
-	Object getInternalBlock();
 }

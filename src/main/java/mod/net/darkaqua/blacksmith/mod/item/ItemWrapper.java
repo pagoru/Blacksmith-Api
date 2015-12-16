@@ -1,18 +1,22 @@
 package net.darkaqua.blacksmith.mod.item;
 
+import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
+import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
@@ -147,8 +151,14 @@ public class ItemWrapper implements IItem {
     }
 
     @Override
-    public void getSubItems(IItem item1, ICreativeTab tab, List subItems) {
-        item.getSubItems(MCInterface.toItem(item1), MCInterface.fromCreativeTab(tab), subItems);
+    public void getSubItems(IItem item1, ICreativeTab tab, List<IItemStack> subItems) {
+        List<Object> list = Lists.newArrayList();
+        item.getSubItems(MCInterface.toItem(item1), MCInterface.fromCreativeTab(tab), list);
+        for(Object o : list){
+            if (o instanceof ItemStack){
+                subItems.add(MCInterface.fromItemStack((ItemStack) o));
+            }
+        }
     }
 
     @Override
@@ -168,10 +178,10 @@ public class ItemWrapper implements IItem {
 
 
     @Override
-    public boolean onItemUse(IItemStack stack, IPlayer player, WorldRef ref, Direction side, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(IItemStack stack, IPlayer player, WorldRef ref, Direction side, Vect3d hit) {
         return item.onItemUse(MCInterface.toItemStack(stack), MCInterface.fromPlayer(player),
                 MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
-                MCInterface.toEnumFacing(side), hitX, hitY, hitZ);
+                MCInterface.toEnumFacing(side), (float)hit.getX(), (float)hit.getY(), (float)hit.getZ());
     }
 
     @Override
@@ -227,6 +237,14 @@ public class ItemWrapper implements IItem {
     @Override
     public void addInformation(IItemStack stack, IPlayer player, List tooltip, boolean advanced) {
         item.addInformation(MCInterface.toItemStack(stack), MCInterface.fromPlayer(player), tooltip, advanced);
+    }
+
+    @Override
+    public IItemDefinition getItemDefinition() {
+        if (item instanceof BS_Item){
+            return ((BS_Item) item).getItemDefinition();
+        }
+        return null;
     }
 
     @Override

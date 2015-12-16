@@ -13,10 +13,10 @@ public enum Direction {
 	public static final Direction[] OPPOSITES = { UP, DOWN, SOUTH, NORTH, EAST, WEST };
 	public static final int[][] rotation = { { 0, 1, 5, 4, 2, 3 }, { 0, 1, 4, 5, 3, 2 }, { 5, 4, 2, 3, 0, 1 }, { 4, 5, 2, 3, 1, 0 }, { 2, 3, 1, 0, 4, 5 }, { 3, 2, 0, 1, 4, 5 }, { 0, 1, 2, 3, 4, 5 } };
 
-	private final Vector3i offsets;
+	private final Vect3i offsets;
 
 	Direction(int x, int y, int z) {
-		offsets = new Vector3i(x, y, z);
+		offsets = new Vect3i(x, y, z);
 	}
 
 	public int getOffsetX() {
@@ -39,7 +39,7 @@ public enum Direction {
 		return values()[i % VALID_DIRECTIONS.length];
 	}
 
-	public Vector3i toVecInt() {
+	public Vect3i toVecInt() {
 		return offsets.copy();
 	}
 	

@@ -62,4 +62,9 @@ public class SimpleRenderModel implements IRenderModel {
         }
         return null;
     }
+
+    @Override
+    public boolean useAmbientOcclusion() {
+        return true;
+    }
 }

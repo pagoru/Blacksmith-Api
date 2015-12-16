@@ -3,7 +3,6 @@ package net.darkaqua.blacksmith.mod.temp.old_json;
 import javafx.util.Pair;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
-import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
 
 import java.util.List;
 

@@ -8,20 +8,23 @@ import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.event.FMLEventRedirect;
-import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.Game;
 import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.render.BS_CustomModelLoader;
+import net.darkaqua.blacksmith.mod.render.BS_TileEntityRenderer;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_ResourceLoader;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModContainerFactory;
@@ -60,9 +63,10 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     }
 
-    public static void debug(){
+    public static void debug() {
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(new ModelResourceLocation("sand", "normal"));
+        Log.debug(model);
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     }
 
@@ -72,20 +76,17 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
 
-        try {
-            FMLEventRedirect.init();
-            if (Game.INSTANCE.isClient()) {
-                MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
-                IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
-                manager.registerReloadListener(BS_ResourceLoader.INSTANCE);
-                ModelLoaderRegistry.registerLoader(BS_CustomModelLoader.INSTANCE);
-            }
-            GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
-            ModLoaderManager.firePreInit(event);
-            RenderRegistry.INSTANCE.onPreInitFinish();
-        }catch (Exception e){
-            new BlacksmithInternalException(e.getMessage()).printStackTrace();
+        FMLEventRedirect.init();
+        if (Game.INSTANCE.isClient()) {
+            MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
+            IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+            manager.registerReloadListener(BS_ResourceLoader.INSTANCE);
+            ModelLoaderRegistry.registerLoader(BS_CustomModelLoader.INSTANCE);
+            ClientRegistry.bindTileEntitySpecialRenderer(BS_TileEntity.class, BS_TileEntityRenderer.INSTANCE);
         }
+        GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
+        ModLoaderManager.firePreInit(event);
+        RenderRegistry.INSTANCE.onPreInitFinish();
         Log.info("PreInitEvent done");
     }
 
@@ -161,7 +162,8 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     }
 
     @Override
-    public void injectData(Map<String, Object> data) {}
+    public void injectData(Map<String, Object> data) {
+    }
 
     @Override
     public String getAccessTransformerClass() {

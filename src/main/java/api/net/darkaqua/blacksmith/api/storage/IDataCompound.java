@@ -6,25 +6,25 @@ public interface IDataCompound extends IDataElement{
 
 	boolean containsKey(String name);
 
-	void setInteger(String name, int id);
+	void setInteger(String name, int value);
 
-	void setLong(String name, long id);
+	void setLong(String name, long value);
 
-	void setFloat(String name, float id);
+	void setFloat(String name, float value);
 
-	void setDouble(String name, double id);
+	void setDouble(String name, double value);
 
-	void setString(String name, String id);
+	void setString(String name, String value);
 
-	void setIntegerArray(String name, int[] id);
+	void setIntegerArray(String name, int[] value);
 
-	void setByte(String name, byte id);
+	void setByte(String name, byte value);
 
-	void setByteArray(String name, byte[] id);
+	void setByteArray(String name, byte[] value);
 
-	void setDataTag(String name, IDataElement id);
+	void setDataElement(String name, IDataElement value);
 
-	void setBoolean(String name, boolean id);
+	void setBoolean(String name, boolean value);
 
 	int getInteger(String name);
 
@@ -45,4 +45,8 @@ public interface IDataCompound extends IDataElement{
 	IDataElement getDataElement(String name);
 
 	boolean getBoolean(String name);
+
+	IDataCompound getDataCompound(String name);
+
+	IDataCompound copy();
 }

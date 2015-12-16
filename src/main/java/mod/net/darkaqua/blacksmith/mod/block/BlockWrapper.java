@@ -1,19 +1,20 @@
 package net.darkaqua.blacksmith.mod.block;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
+import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
+import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
-
-import javax.vecmath.Vector3d;
 
 public class BlockWrapper implements IBlock {
 
@@ -72,18 +73,26 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
+	public IBlockDefinition getBlockDefinition() {
+		if(block instanceof BS_Block){
+			return ((BS_Block)block).getBlockDefinition();
+		}
+		return null;
+	}
+
+	@Override
 	public boolean isOpaque() {
 		return block.isOpaqueCube();
 	}
 
 	@Override
 	public IBlockVariant getDefaultVariant() {
-		return MCInterface.fromIBlockVariant(block.getDefaultState());
+		return MCInterface.fromIBlockState(block.getDefaultState());
 	}
 
 	@Override
 	public IBlockVariant getVariantFromMeta(int meta) {
-		return MCInterface.fromIBlockVariant(block.getDefaultState());
+		return MCInterface.fromIBlockState(block.getDefaultState());
 	}
 
 	@Override
@@ -101,60 +110,56 @@ public class BlockWrapper implements IBlock {
 		return block;
 	}
 
-	//TODO
-
 	@Override
-	public boolean onBlockActivated(WorldRef ref, IBlockVariant state, IPlayer player, Direction side, Vector3d vector3d) {
-		return false;
+	public boolean onActivated(WorldRef ref, IBlockVariant state, IPlayer player, Direction side, Vect3d v) {
+		return block.onBlockActivated(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
+				MCInterface.toIBlockState(state), MCInterface.fromPlayer(player), MCInterface.toEnumFacing(side), (float) v.getX(), (float) v.getY(), (float) v.getZ());
 	}
 
 	@Override
-	public void onBlockAdded(WorldRef ref, IBlockVariant fromBlockState) {
-
+	public void onAdded(WorldRef ref, IBlockVariant state) {
+		block.onBlockAdded(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state));
 	}
 
 	@Override
-	public void onActivate() {
-
+	public void onBreaks(WorldRef ref, IBlockVariant state) {
+		block.breakBlock(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state));
 	}
 
 	@Override
-	public void onBlockBreaks(WorldRef ref, IBlockVariant state) {
-
+	public void onClicked(WorldRef ref, IPlayer player) {
+		block.onBlockClicked(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.fromPlayer(player));
 	}
 
 	@Override
-	public void onBlockClicked(WorldRef ref, IPlayer player) {
-
+	public void onEntityCollided(WorldRef ref, IEntity entity) {
+		block.onEntityCollidedWithBlock(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEntity(entity));
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(WorldRef ref, IEntity entity) {
-
+	public void onHarvested(WorldRef ref, IBlockVariant variant, IPlayer player) {
+		block.onBlockHarvested(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(variant), MCInterface.fromPlayer(player));
 	}
 
 	@Override
-	public void onBlockHarvested(WorldRef ref, IBlockVariant variant, IPlayer player) {
-
+	public void onNeighborBlockChange(WorldRef ref, IBlockVariant variant, IBlock neighbor) {
+		block.onNeighborBlockChange(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(variant), MCInterface.toBlock(neighbor));
 	}
 
 	@Override
-	public void onNeighborBlockChange(WorldRef ref, IBlockVariant state, IBlock neighbor) {
-
+	public IBlockVariant onPlaced(WorldRef ref, Direction side, ILivingEntity entity, Vect3d hit, int metadata) {
+		return MCInterface.fromIBlockState(block.onBlockPlaced(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEnumFacing(side), (float)hit.getX(), (float)hit.getY(), (float)hit.getZ(), metadata, MCInterface.fromLivingEntity(entity)));
 	}
 
 	@Override
-	public IBlockVariant onBlockPlaced(WorldRef ref, Direction side, IPlayer entity, Vector3d hit, int metadata) {
-		return null;
+	public void onPlacedBy(WorldRef ref, IBlockVariant state, ILivingEntity placer, IItemStack stack) {
+		block.onBlockPlacedBy(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state), MCInterface.fromLivingEntity(placer), MCInterface.toItemStack(stack));
 	}
 
 	@Override
-	public void onBlockPlacedBy(WorldRef ref, IBlockVariant state, IPlayer placer, IItemStack stack) {
-
+	public boolean onRemovedByPlayer(WorldRef ref, IPlayer player, boolean willHarvest) {
+		return block.removedByPlayer(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.fromPlayer(player), willHarvest);
 	}
 
-	@Override
-	public boolean removedByPlayer(WorldRef ref, IPlayer player, boolean willHarvest) {
-		return false;
-	}
+	//TODO add more methods
 }

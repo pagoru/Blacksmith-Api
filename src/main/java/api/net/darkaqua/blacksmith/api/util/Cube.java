@@ -2,15 +2,15 @@ package net.darkaqua.blacksmith.api.util;
 
 public class Cube {
 
-	protected Vector3d min;
-	protected Vector3d max;
+	protected Vect3d min;
+	protected Vect3d max;
 
 	public Cube(double x0, double y0, double z0, double x1, double y1, double z1) {
-		min = new Vector3d(Math.min(x0, x1), Math.min(y0, y1), Math.min(z0, z1));
-		max = new Vector3d(Math.max(x0, x1), Math.max(y0, y1), Math.max(z0, z1));
+		min = new Vect3d(Math.min(x0, x1), Math.min(y0, y1), Math.min(z0, z1));
+		max = new Vect3d(Math.max(x0, x1), Math.max(y0, y1), Math.max(z0, z1));
 	}
 
-	public Cube(Vector3d start, Vector3d end) {
+	public Cube(Vect3d start, Vect3d end) {
 		this(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
 	}
 
@@ -27,11 +27,11 @@ public class Cube {
 		return new Cube(min, max);
 	}
 
-	public Vector3d min() {
+	public Vect3d min() {
 		return min.copy();
 	}
 
-	public Vector3d max() {
+	public Vect3d max() {
 		return max.copy();
 	}
 
@@ -59,12 +59,12 @@ public class Cube {
 		return max.getZ();
 	}
 
-	public Cube translate(Vector3d pos) {
+	public Cube translate(Vect3d pos) {
 		return new Cube(min.copy().add(pos), max.copy().add(pos));
 	}
 
-	public Cube expand(Vector3d pos) {
-		return new Cube(min.copy().substract(pos), max.copy().add(pos));
+	public Cube expand(Vect3d pos) {
+		return new Cube(min.copy().sub(pos), max.copy().add(pos));
 	}
 
 	public Cube union(Cube box) {
