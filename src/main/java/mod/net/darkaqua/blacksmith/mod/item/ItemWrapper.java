@@ -152,12 +152,10 @@ public class ItemWrapper implements IItem {
 
     @Override
     public void getSubItems(IItem item1, ICreativeTab tab, List<IItemStack> subItems) {
-        List<Object> list = Lists.newArrayList();
+        List<ItemStack> list = Lists.newArrayList();
         item.getSubItems(MCInterface.toItem(item1), MCInterface.fromCreativeTab(tab), list);
-        for(Object o : list){
-            if (o instanceof ItemStack){
-                subItems.add(MCInterface.fromItemStack((ItemStack) o));
-            }
+        for (ItemStack o : list) {
+            subItems.add(MCInterface.fromItemStack(o));
         }
     }
 
@@ -181,7 +179,7 @@ public class ItemWrapper implements IItem {
     public boolean onItemUse(IItemStack stack, IPlayer player, WorldRef ref, Direction side, Vect3d hit) {
         return item.onItemUse(MCInterface.toItemStack(stack), MCInterface.fromPlayer(player),
                 MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
-                MCInterface.toEnumFacing(side), (float)hit.getX(), (float)hit.getY(), (float)hit.getZ());
+                MCInterface.toEnumFacing(side), (float) hit.getX(), (float) hit.getY(), (float) hit.getZ());
     }
 
     @Override
@@ -241,7 +239,7 @@ public class ItemWrapper implements IItem {
 
     @Override
     public IItemDefinition getItemDefinition() {
-        if (item instanceof BS_Item){
+        if (item instanceof BS_Item) {
             return ((BS_Item) item).getItemDefinition();
         }
         return null;

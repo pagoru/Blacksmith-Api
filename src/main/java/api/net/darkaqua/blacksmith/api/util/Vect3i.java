@@ -69,7 +69,7 @@ public class Vect3i {
 
 	@Override
 	public String toString() {
-		return "x: " + getX() + ", y: " + getY() + ", z: " + getZ();
+		return "Vect3i: x: " + getX() + ", y: " + getY() + ", z: " + getZ();
 	}
 
 	public Vect3i multiply(int i) {

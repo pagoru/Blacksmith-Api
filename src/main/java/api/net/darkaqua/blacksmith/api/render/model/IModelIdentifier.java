@@ -8,4 +8,6 @@ import net.darkaqua.blacksmith.api.util.ResourceReference;
 public interface IModelIdentifier{
 
     ResourceReference getReference();
+
+    String getVariant();
 }

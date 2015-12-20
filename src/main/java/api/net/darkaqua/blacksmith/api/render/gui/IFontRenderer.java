@@ -10,4 +10,6 @@ public interface IFontRenderer {
     int getStringWidth(String text);
     int getCharWidth(char character);
     String trimStringToWidth(String text, int width);
+
+    Object getInternalObject();
 }

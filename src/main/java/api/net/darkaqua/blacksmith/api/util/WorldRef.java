@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.util;
 
+import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
 public class WorldRef {
@@ -26,5 +27,13 @@ public class WorldRef {
 
 	public void setPosition(Vect3i position) {
 		this.position = position;
+	}
+
+	public IBlockVariant getBlockVariant() {
+		return world.getBlockVariant(position);
+	}
+
+	public void setBlockVariant(IBlockVariant variant, int flags) {
+		world.setBlockVariant(variant, position, flags);
 	}
 }

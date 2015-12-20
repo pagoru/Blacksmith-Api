@@ -23,7 +23,7 @@ public class DescriptionPacketWrapper implements IDescriptionPacket {
 
     @Override
     public Vect3i getPosition() {
-        return MCInterface.fromBlockPos(packet.func_179823_a());
+        return MCInterface.fromBlockPos(packet.getPos());
     }
     @Override
     public IDataCompound getDataCompound() {

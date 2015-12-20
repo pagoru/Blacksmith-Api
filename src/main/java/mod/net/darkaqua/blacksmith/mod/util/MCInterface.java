@@ -11,11 +11,15 @@ import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
-import net.darkaqua.blacksmith.api.util.*;
+import net.darkaqua.blacksmith.api.util.Cube;
+import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
+import net.darkaqua.blacksmith.api.util.Vect3i;
+import net.darkaqua.blacksmith.api.world.IChunk;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
+import net.darkaqua.blacksmith.api.world.IIChunkProvider;
 import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IBlockStateWrapper;
@@ -26,9 +30,12 @@ import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
 import net.darkaqua.blacksmith.mod.network.packet.DescriptionPacketWrapper;
+import net.darkaqua.blacksmith.mod.render.gui.FontRendererWrapper;
 import net.darkaqua.blacksmith.mod.storage.NBTTagCompoundWrapper;
 import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
+import net.darkaqua.blacksmith.mod.world.ChunkWrapper;
 import net.darkaqua.blacksmith.mod.world.IBlockAccessWrapper;
+import net.darkaqua.blacksmith.mod.world.IChunkProviderWrapper;
 import net.darkaqua.blacksmith.mod.world.WorldWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -49,6 +56,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
 
 
 public class MCInterface {
@@ -233,8 +242,38 @@ public class MCInterface {
         return new ResourceLocation(loc.getDomain(), loc.getPath());
     }
 
-    public static EntityLivingBase fromLivingEntity(ILivingEntity entity) {
-        //TODO
+    public static IFontRenderer fromFontRenderer(FontRenderer fontRenderer) {
+        if (fontRenderer == null){
+            return null;
+        }
+        return new FontRendererWrapper(fontRenderer);
+    }
+
+    public static IIChunkProvider fromIChunkProvider(IChunkProvider chunkProvider) {
+        if(chunkProvider == null){
+            return null;
+        }
+        return new IChunkProviderWrapper(chunkProvider);
+    }
+
+    public static IChunkProvider toIChunkProvider(IIChunkProvider prov) {
+        if(prov instanceof IChunkProviderWrapper){
+            return ((IChunkProviderWrapper) prov).getChunkProvider();
+        }
+        return null;
+    }
+
+    public static IChunk fromChunk(Chunk chunk) {
+        if(chunk == null){
+            return null;
+        }
+        return new ChunkWrapper(chunk);
+    }
+
+    public static Chunk toChunk(IChunk chunk) {
+        if(chunk instanceof ChunkWrapper){
+            return ((ChunkWrapper) chunk).getChunk();
+        }
         return null;
     }
 
@@ -243,7 +282,7 @@ public class MCInterface {
         return null;
     }
 
-    public static IFontRenderer fromFontRenderer(FontRenderer fontRenderer) {
+    public static EntityLivingBase fromLivingEntity(ILivingEntity entity) {
         //TODO
         return null;
     }

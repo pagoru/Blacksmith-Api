@@ -7,9 +7,15 @@ public interface IGame {
 
     IBlockRegistry getBlockRegistry();
 
+    IItemRegistry getItemRegistry();
+
     IRenderRegistry getRenderRegistry();
 
     ITileEntityRegistry getTileEntityRegistry();
+
+    IWorldGenerationRegistry getWorldGenerationRegistry();
+
+    IResourceManager getResourceManager();
 
     boolean isClient();
 

@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.mod.block;
 
+import com.google.common.base.Predicate;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
@@ -15,6 +16,9 @@ import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+
+import javax.annotation.Nullable;
 
 public class BlockWrapper implements IBlock {
 
@@ -106,6 +110,17 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
+	public boolean canBeReplacedByOreGen(WorldRef ref, final Predicate<IBlockVariant> target) {
+
+		return block.isReplaceableOreGen(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), new Predicate<IBlockState>() {
+			@Override
+			public boolean apply(@Nullable IBlockState input) {
+				return target.apply(MCInterface.fromIBlockState(input));
+			}
+		});
+	}
+
+	@Override
 	public Object getInternalBlock() {
 		return block;
 	}
@@ -162,4 +177,21 @@ public class BlockWrapper implements IBlock {
 	}
 
 	//TODO add more methods
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof BlockWrapper)) return false;
+
+		BlockWrapper that = (BlockWrapper) o;
+
+		return !(block != null ? !block.equals(that.block) : that.block != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return block != null ? block.hashCode() : 0;
+	}
 }

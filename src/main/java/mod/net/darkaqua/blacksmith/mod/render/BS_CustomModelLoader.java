@@ -30,7 +30,7 @@ public class BS_CustomModelLoader implements ICustomModelLoader{
         if(!modelLocation.getResourceDomain().contains("minecraft")) {
             Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
             Log.debug("Acepts? " + modelLocation);
-            Log.debug(RenderRegistry.INSTANCE.getRegisteredModels());
+            Log.debug(RenderRegistry.INSTANCE.getRegisteredModels().containsKey(modelLocation));
             Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         }
         return RenderRegistry.INSTANCE.getRegisteredModels().containsKey(modelLocation);
@@ -43,7 +43,7 @@ public class BS_CustomModelLoader implements ICustomModelLoader{
             ResourceLocation loc2 = new ResourceLocation(modelLocation.getResourceDomain(), modelLocation.getResourcePath());
             Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
             Log.debug("Registering Model: "+modelLocation);
-            Log.debug(RenderRegistry.INSTANCE.getRegisteredModels());
+            Log.debug(RenderRegistry.INSTANCE.getRegisteredModels().containsKey(modelLocation));
             Log.debug(loc2);
             Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
 

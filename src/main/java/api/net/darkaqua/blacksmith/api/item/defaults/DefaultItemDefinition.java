@@ -61,7 +61,7 @@ public class DefaultItemDefinition implements IItemDefinition {
 
     @Override
     public ICreativeTab getCreativeTab() {
-        return CreativeTabFactory.MISC_TAB;
+        return CreativeTabFactory.DECORATIONS_TAB;
     }
 
     @Override

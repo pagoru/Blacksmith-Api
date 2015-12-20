@@ -10,14 +10,21 @@ import net.minecraft.util.ResourceLocation;
 public class ModelIdentifier implements IModelIdentifier {
 
     private ResourceLocation model;
+    private String variant;
 
-    public ModelIdentifier(ResourceLocation model) {
+    public ModelIdentifier(ResourceLocation model, String variant) {
         this.model = model;
+        this.variant = variant;
     }
 
     @Override
     public ResourceReference getReference() {
         return new ResourceReference(model.getResourceDomain(), model.getResourcePath());
+    }
+
+    @Override
+    public String getVariant() {
+        return variant;
     }
 
     public ResourceLocation getModel() {

@@ -2,7 +2,6 @@ package net.darkaqua.blacksmith.api.render.model;
 
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 
-import javax.vecmath.Matrix4f;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public interface IRenderModel {
 
     List<IModelPart> getSubParts();
 
-    Matrix4f getTransformationMatrix(RenderPlace place);
+    RenderTransformation getTransformation(RenderPlace place);
 
     boolean useAmbientOcclusion();
 }

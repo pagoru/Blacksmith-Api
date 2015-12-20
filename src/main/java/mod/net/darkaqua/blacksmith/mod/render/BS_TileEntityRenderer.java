@@ -11,20 +11,18 @@ import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 /**
  * Created by cout970 on 16/12/2015.
  */
-public class BS_TileEntityRenderer extends TileEntitySpecialRenderer {
+public class BS_TileEntityRenderer extends TileEntitySpecialRenderer<BS_TileEntity> {
 
     public static final BS_TileEntityRenderer INSTANCE = new BS_TileEntityRenderer();
     public static final TileEntityRendererHelper HELPER = new TileEntityRendererHelper(DESTROY_STAGES);
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float partialTick, int breakingProgress) {
-        BS_TileEntity tile = (BS_TileEntity) tileEntity;
+    public void renderTileEntityAt(BS_TileEntity tile, double posX, double posY, double posZ, float partialTick, int breakingProgress) {
         ITileEntityRenderer renderer = RenderRegistry.INSTANCE.getTileEntityRenderer(tile.getTileEntityDefinition().getClass());
         if (renderer != null){
             renderer.renderTileEntity(new TileEntityWrapper(tile), tile.getTileEntityDefinition(), HELPER, new Vect3d(posX, posY, posZ), partialTick, breakingProgress);

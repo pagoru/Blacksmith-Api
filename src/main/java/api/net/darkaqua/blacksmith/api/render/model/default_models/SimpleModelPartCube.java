@@ -2,13 +2,9 @@ package net.darkaqua.blacksmith.api.render.model.default_models;
 
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.IModelQuad;
-import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
-import net.darkaqua.blacksmith.api.util.Vect2d;
-import net.darkaqua.blacksmith.api.util.Vect3d;
+import net.darkaqua.blacksmith.api.util.*;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
 /**
@@ -16,65 +12,75 @@ import java.util.List;
  */
 public class SimpleModelPartCube implements IModelPart {
 
-    private EnumMap<Direction, ResourceReference> textures;
-    List<IModelQuad> quads;
+    protected ResourceReference texture;
+    protected List<IModelQuad> quads;
+    protected Vect3d size;
+    protected Vect3d pos;
+    protected Vect3d offset;
+    protected Vect3d rotation;
+    protected int textureSize = 32;
+    protected Vect2i textureOffset;
 
     public SimpleModelPartCube(ResourceReference all) {
-        this.textures = new EnumMap<>(Direction.class);
-        quads = new ArrayList<>(6);
-        for (Direction dir : Direction.values()) {
-            textures.put(dir, all);
-        }
-        for (Direction dir : Direction.values()) {
-            quads.add(new Quad(dir, textures.get(dir)));
-        }
-    }
-
-    public SimpleModelPartCube(EnumMap<Direction, ResourceReference> textures) {
-        this.textures = new EnumMap<>(textures);
-        quads = new ArrayList<>(6);
-        for (Direction dir : Direction.values()) {
-            quads.add(new Quad(dir, textures.get(dir)));
-        }
-    }
-
-    private SimpleModelPartCube() {
-        textures = new EnumMap<>(Direction.class);
+        texture = all;
     }
 
     @Override
     public List<IModelQuad> getQuads() {
+        if (quads == null) {
+            generateQuads();
+        }
         return quads;
     }
 
-    public void translate(Vect3d translation) {
-        for (IModelQuad m : quads) {
-            Quad q = (Quad) m;
+    private void generateQuads() {
+        quads = new ArrayList<>(6);
+        if (size == null) {
+            size = new Vect3d(1, 1, 1);
+        }
+        for (Direction dir : Direction.values()) {
+            quads.add(new Quad(dir, texture, size, textureSize, textureOffset));
+        }
+        for (IModelQuad p : quads) {
+            Quad q = (Quad) p;
             for (int i = 0; i < 4; i++) {
-                q.vertex[i].add(translation);
+                if (offset != null) {
+                    q.vertex[i].add(offset);
+                }
+                if (rotation != null) {
+                    q.vertex[i].rotateX(rotation.getX());
+                    q.vertex[i].rotateY(rotation.getY());
+                    q.vertex[i].rotateZ(rotation.getZ());
+                }
+                if (pos != null) {
+                    q.vertex[i].add(pos);
+                }
             }
         }
     }
 
-    public void scale(Vect3d scale) {
-        for (IModelQuad m : quads) {
-            Quad q = (Quad) m;
-            for (int i = 0; i < 4; i++) {
-                q.vertex[i].setX(q.vertex[i].getX() * scale.getX());
-                q.vertex[i].setY(q.vertex[i].getY() * scale.getY());
-                q.vertex[i].setZ(q.vertex[i].getZ() * scale.getZ());
-            }
-        }
+    public void setSize(Vect3d cubeSize) {
+        size = cubeSize.copy();
     }
 
-//    TODO add an utility to rotate vectors
-    public void rotate(double angle, Vect3d axis){
-        for (IModelQuad m : quads){
-            Quad q = (Quad) m;
-            for(int i =0; i<4; i++) {
-                q.vertex[i].rotateCustom(axis, angle);
-            }
-        }
+    public void setPosition(Vect3d cubePosition) {
+        pos = cubePosition.copy();
+    }
+
+    public void setOffset(Vect3d cubeOffset) {
+        offset = cubeOffset.copy();
+    }
+
+    public void setRotation(Vect3d cubeRotation) {
+        rotation = cubeRotation.copy();
+    }
+
+    public void setTextureOffset(Vect2i cubeTextureOffset) {
+        textureOffset = cubeTextureOffset.copy();
+    }
+
+    public void setTextureSize(int size) {
+        textureSize = size;
     }
 
     private static class Quad implements IModelQuad {
@@ -102,14 +108,54 @@ public class SimpleModelPartCube implements IModelPart {
         private Vect3d[] vertex;
         private Vect2d[] uv;
 
-        public Quad(Direction side, ResourceReference texture) {
-            this.side = side;
+        public Quad(Direction dir, ResourceReference texture, Vect3d size, int textureSize, Vect2i textureOffset) {
+            this.side = dir;
             this.texture = texture;
             vertex = new Vect3d[4];
             uv = new Vect2d[4];
             for (int i = 0; i < 4; i++) {
-                vertex[i] = new Vect3d(VERTEX[side.ordinal()][i]);
-                uv[i] = new Vect2d(FULL_UV[side.ordinal()][i]);
+                vertex[i] = new Vect3d(VERTEX[side.ordinal()][i]).multiply(size);
+            }
+            double pixel = 1d / textureSize;
+            size = size.copy().multiply(16);
+            switch (dir) {
+
+                case DOWN:
+                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,      (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,      textureOffset.getY() * pixel);
+                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel,  textureOffset.getY() * pixel);
+                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel,  (textureOffset.getY() + size.getZ()) * pixel);
+                    break;
+                case UP:
+                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel,                (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel,                textureOffset.getY() * pixel);
+                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,  textureOffset.getY() * pixel);
+                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,  (textureOffset.getY() + size.getZ()) * pixel);
+                    break;
+                case NORTH://Front
+                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel,                (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel,                (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,  (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,  (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    break;
+                case SOUTH://Back
+                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ()*2 + size.getX()*2) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ()*2 + size.getX()) * pixel,   (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ()*2 + size.getX()) * pixel,   (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ()*2 + size.getX()*2) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                    break;
+                case WEST://Left
+                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel,    (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    uv[1] = new Vect2d(textureOffset.getX() * pixel,                    (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    uv[2] = new Vect2d(textureOffset.getX() * pixel,                    (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel,    (textureOffset.getY() + size.getZ()) * pixel);
+                    break;
+                case EAST://Right
+                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,   (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel,   (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ()*2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ()*2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                    break;
             }
         }
 
@@ -125,7 +171,7 @@ public class SimpleModelPartCube implements IModelPart {
 
         @Override
         public Direction getNormal() {
-            return side;
+            return null;
         }
 
         @Override
@@ -135,7 +181,7 @@ public class SimpleModelPartCube implements IModelPart {
 
         @Override
         public boolean useShade() {
-            return false;
+            return true;
         }
     }
 }

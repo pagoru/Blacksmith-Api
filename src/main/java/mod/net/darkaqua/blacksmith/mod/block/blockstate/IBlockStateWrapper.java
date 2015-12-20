@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -36,8 +37,12 @@ public class IBlockStateWrapper implements IBlockVariant {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Collection<String> getPropertyNames() {
-        return state.getPropertyNames();
+    public Collection<IIProperty> getProperties() {
+        LinkedList<IIProperty> list = new LinkedList<>();
+        for(IProperty p : state.getPropertyNames()){
+            list.add(MCInterface.fromIProperty(p));
+        }
+        return list;
     }
 
     @Override
@@ -57,13 +62,27 @@ public class IBlockStateWrapper implements IBlockVariant {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Map<IIProperty, Comparable<?>> getProperties() {
+    public Map<IIProperty, Comparable<?>> getPropertyMap() {
         Map<IIProperty, Comparable<?>> properties = new HashMap<>();
-        for(Object e : state.getProperties().entrySet()){
-            Map.Entry<IProperty, Comparable> entry = (Map.Entry<IProperty, Comparable>) e;
+        for(Map.Entry<IProperty, Comparable> entry : state.getProperties().entrySet()){
             properties.put(MCInterface.fromIProperty(entry.getKey()), entry.getValue());
         }
         return properties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof IBlockStateWrapper)) return false;
+
+        IBlockStateWrapper that = (IBlockStateWrapper) o;
+
+        return !(state != null ? !state.equals(that.state) : that.state != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return state != null ? state.hashCode() : 0;
     }
 
     @Override

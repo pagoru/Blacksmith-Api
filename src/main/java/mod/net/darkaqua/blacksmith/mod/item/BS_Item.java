@@ -22,7 +22,7 @@ public class BS_Item extends Item {
         definition = def;
         definition.onCreate(MCInterface.fromItem(this));
         setUnlocalizedName(def.getUnlocalizedName());
-
+        setCreativeTab(MCInterface.fromCreativeTab(def.getCreativeTab()));
     }
 
     public IItemDefinition getItemDefinition(){

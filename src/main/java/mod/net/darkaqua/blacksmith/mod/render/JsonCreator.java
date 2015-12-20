@@ -22,7 +22,7 @@ public class JsonCreator {
 
     public static void createBlockStateJson(BlockRegistry.RegisteredBlock reg) {
         String domain = Blacksmith.MOD_ID;
-        String identifier = reg.getBlockIdentifier().toLowerCase();
+        String identifier = reg.getIdentifier().toLowerCase();
         String path = "/blockstates/"+ identifier.substring(0, identifier.indexOf("/"));
         File blockStatesFile = getFile(domain, path, identifier.substring(identifier.indexOf("/")) + ".json");
 
@@ -117,7 +117,7 @@ public class JsonCreator {
 //        Map<IBlockState, ModelResourceLocation> stateMap = new HashMap<>();
 //        Map<IBlockState, ModelResourceLocation> modelMap = new HashMap<>();
 //
-//        ImmutableList<IBlockState> list = block.getBlockState().getValidStates();
+//        ImmutableList<IBlockState> list = block.getBlockVariant().getValidStates();
 //        for (IBlockState s : list) {
 //            String state_name = list.size() == 1 ? "normal" : getStateName(s);
 //            List<IJsonModelWrapper> variants = definition.getBlockRenderHandler().getBlockModelsForState(MCInterface.fromIBlockState(s));
@@ -155,7 +155,7 @@ public class JsonCreator {
 //    }
 
 //    private static String getStateName(IBlockState s) {
-//        Set<Map.Entry<IProperty, Comparable<?>>> properties = s.getProperties().entrySet();
+//        Set<Map.Entry<IProperty, Comparable<?>>> properties = s.getPropertyMap().entrySet();
 //        String name = "";
 //        int index = 0;
 //        for (Map.Entry<IProperty, Comparable<?>> prop : properties) {

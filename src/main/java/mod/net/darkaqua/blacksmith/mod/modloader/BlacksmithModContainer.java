@@ -88,7 +88,7 @@ public class BlacksmithModContainer implements ModContainer {
                 Log.warn("Error trying to place a mod instance in a field marked with @ModInstance: "+clazz);
             }
 ;
-            CustomProxyInjecto.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
+            CustomProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
         } catch (InstantiationException | MalformedURLException | ClassNotFoundException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -276,12 +276,13 @@ public class BlacksmithModContainer implements ModContainer {
     }
 
 
-    public static class CustomProxyInjecto{
+    public static class CustomProxyInjector {
+
         public static void inject(ModContainer mod, ASMDataTable data, Side side, ILanguageAdapter languageAdapter)
         {
-            FMLLog.fine("Attempting to inject @SidedProxy classes into %s", mod.getModId());
+            FMLLog.fine("Attempting to inject @ModSidedProxy classes into %s", mod.getModId());
             Set<ASMDataTable.ASMData> targets = data.getAnnotationsFor(mod).get(ModSidedProxy.class.getName());
-            ClassLoader mcl = Loader.instance().getModClassLoader();
+            ModClassLoader mcl = Loader.instance().getModClassLoader();
 
             for (ASMDataTable.ASMData targ : targets)
             {

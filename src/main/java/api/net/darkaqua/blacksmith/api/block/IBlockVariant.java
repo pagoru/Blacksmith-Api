@@ -7,7 +7,7 @@ public interface IBlockVariant {
 
 	IBlock getBlock();
 
-	Collection<String> getPropertyNames();
+	Collection<IIProperty> getProperties();
 
 	Comparable<?> getValue(IIProperty property);
 
@@ -15,7 +15,7 @@ public interface IBlockVariant {
 
 	IBlockVariant cycleProperty(IIProperty property);
 
-	Map<IIProperty, Comparable<?>> getProperties();
+	Map<IIProperty, Comparable<?>> getPropertyMap();
 
 	Object getInternalBlockState();
 }

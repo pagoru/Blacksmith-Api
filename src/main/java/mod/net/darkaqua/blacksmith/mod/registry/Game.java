@@ -1,9 +1,6 @@
 package net.darkaqua.blacksmith.mod.registry;
 
-import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
-import net.darkaqua.blacksmith.api.registry.IGame;
-import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
-import net.darkaqua.blacksmith.api.registry.ITileEntityRegistry;
+import net.darkaqua.blacksmith.api.registry.*;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,6 +20,11 @@ public class Game implements IGame{
     }
 
     @Override
+    public IItemRegistry getItemRegistry() {
+        return ItemRegistry.INSTANCE;
+    }
+
+    @Override
     public IRenderRegistry getRenderRegistry() {
         return RenderRegistry.INSTANCE;
     }
@@ -30,6 +32,16 @@ public class Game implements IGame{
     @Override
     public ITileEntityRegistry getTileEntityRegistry() {
         return TileEntityRegistry.INSTANCE;
+    }
+
+    @Override
+    public IWorldGenerationRegistry getWorldGenerationRegistry() {
+        return WorldGenerationRegistry.INSTANCE;
+    }
+
+    @Override
+    public IResourceManager getResourceManager() {
+        return ResourceManager.INSTANCE;
     }
 
     @Override

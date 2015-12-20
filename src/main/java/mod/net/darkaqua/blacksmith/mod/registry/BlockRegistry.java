@@ -6,6 +6,7 @@ import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
+import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.item.BS_ItemBlock;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
@@ -27,46 +28,22 @@ public class BlockRegistry implements IBlockRegistry {
 
     public static final BlockRegistry INSTANCE = new BlockRegistry();
 
-    private static final Map<IBlockDefinition, RegisteredBlock> registeredblocks = new HashMap<>();
+    private static final Map<IBlockDefinition, RegisteredBlock> registeredBlocks = new HashMap<>();
 
     private BlockRegistry() {}
 
     @Override
-    public List<IBlock> getRegisteredBlocks() {
-        List<IBlock> list = new LinkedList<>();
-
-        for (Object b : GameData.getBlockRegistry()) {
-            if (b instanceof Block) {
-                list.add(MCInterface.fromBlock((Block) b));
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public List<IBlockDefinition> getRegisteredBlockDefinitions() {
-        return new LinkedList<>(registeredblocks.keySet());
-    }
-
-    @Override
-    public IBlock findBlock(String domain, String name) {
-        Block i = GameRegistry.findBlock(domain, name);
-        if (i == null) {
-            i = (net.minecraft.block.Block) net.minecraft.block.Block.blockRegistry.getObject(new ResourceLocation(domain, name));
-        }
-        return MCInterface.fromBlock(i);
-    }
-
-    @Override
     public IBlock registerBlockDefinition(IBlockDefinition definition, String identifier) {
-        BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
-        if (mod == null) {
-            throw new IllegalStateException("Block models should be registered only in preInit");
+        if (ModLoaderManager.getLoadingState() != ModLoaderManager.LoadingState.PREINIT) {
+            throw new IllegalStateException("Block definitions should be registered only in preInit");
         }
         if (definition == null)
             throw new NullPointerException("BlockRegistry cannot use a null IBlockDefinition to create a new block");
         if (identifier == null)
             throw new NullPointerException("BlockRegistry cannot use a null identifier to create a new block");
+        BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
+        if(mod == null)
+            throw new BlacksmithInternalException("Invalid mod container in item registration: null");
 
         Block result;
         identifier = mod.getModId().toLowerCase()+"/"+identifier;
@@ -86,23 +63,49 @@ public class BlockRegistry implements IBlockRegistry {
         item.setBlockDefinition(definition);
 
         RegisteredBlock reg = new RegisteredBlock(definition, iblock, item, result, mod.getModId(), identifier);
-        registeredblocks.put(definition, reg);
+        registeredBlocks.put(definition, reg);
 
         return iblock;
     }
 
+    @Override
+    public List<IBlock> getRegisteredBlocks() {
+        List<IBlock> list = new LinkedList<>();
+
+        for (Object b : GameData.getBlockRegistry()) {
+            if (b instanceof Block) {
+                list.add(MCInterface.fromBlock((Block) b));
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<IBlockDefinition> getRegisteredBlockDefinitions() {
+        return new LinkedList<>(registeredBlocks.keySet());
+    }
+
+    @Override
+    public IBlock findBlock(String domain, String name) {
+        Block i = GameRegistry.findBlock(domain, name);
+        if (i == null) {
+            i = Block.blockRegistry.getObject(new ResourceLocation(domain, name));
+        }
+        return MCInterface.fromBlock(i);
+    }
+
     public IBlock getBlockFromDefinition(IBlockDefinition def){
-        RegisteredBlock reg = registeredblocks.get(def);
+        RegisteredBlock reg = registeredBlocks.get(def);
         if(reg == null)return null;
-        return reg.getBlock();
+        return reg.getIBlock();
     }
 
     public RegisteredBlock getRegistrationData(IBlockDefinition def) {
-        return registeredblocks.get(def);
+        return registeredBlocks.get(def);
     }
 
     public Collection<RegisteredBlock> getAllRegisteredBlocks() {
-        return registeredblocks.values();
+        return registeredBlocks.values();
     }
 
     public static class RegisteredBlock{
@@ -129,7 +132,7 @@ public class BlockRegistry implements IBlockRegistry {
             return definition;
         }
 
-        public IBlock getBlock() {
+        public IBlock getIBlock() {
             return block;
         }
 
@@ -137,11 +140,11 @@ public class BlockRegistry implements IBlockRegistry {
             return itemBlock;
         }
 
-        public Block getMcBlock() {
+        public Block getBlock() {
             return mcBlock;
         }
 
-        public String getBlockIdentifier() {
+        public String getIdentifier() {
             return identifier;
         }
 
@@ -153,8 +156,8 @@ public class BlockRegistry implements IBlockRegistry {
             return blockModels;
         }
 
-        public void addBlockModel(ModelResourceLocation loc){
-            blockModels.add(loc);
+        public void addModel(ModelResourceLocation model){
+            blockModels.add(model);
         }
 
     }

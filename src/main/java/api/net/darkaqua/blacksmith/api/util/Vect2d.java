@@ -42,6 +42,10 @@ public class Vect2d {
         return new Vect2d(-x, -y);
     }
 
+    public Vect2i toVect2i(){
+        return new Vect2i(getX(), getY());
+    }
+
     public Vect2d set(double x, double y) {
         this.x = x;
         this.y = y;
@@ -73,7 +77,7 @@ public class Vect2d {
         return this;
     }
 
-    public Vect2d substract(Vect2d v) {
+    public Vect2d sub(Vect2d v) {
         x -= v.x;
         y -= v.y;
         return this;
@@ -86,7 +90,7 @@ public class Vect2d {
         return this;
     }
 
-    public Vect2d substract(double a, double b) {
+    public Vect2d sub(double a, double b) {
         x -= a;
         y -= b;
         return this;

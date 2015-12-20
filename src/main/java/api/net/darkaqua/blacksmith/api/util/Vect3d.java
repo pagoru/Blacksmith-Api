@@ -25,8 +25,8 @@ public class Vect3d {
         this(vec.getX(), vec.getY(), vec.getZ());
     }
 
-    public static Vect3d nullVector(){
-        return new Vect3d(0,0,0);
+    public static Vect3d nullVector() {
+        return new Vect3d(0, 0, 0);
     }
 
     public Vect3d(int[] ar) {
@@ -128,7 +128,7 @@ public class Vect3d {
      * Returns a array of doubles with the components of the vector
      */
     public double[] doubleArray() {
-        return new double[] { x, y, z };
+        return new double[]{x, y, z};
     }
 
     /**
@@ -193,8 +193,8 @@ public class Vect3d {
     }
 
     public Vect3d rotateX(double angle) {
-        Vect3d[] rotationMatrix = { new Vect3d(1, 0, 0), new Vect3d(0, Math.cos(angle),
-                -Math.sin(angle)), new Vect3d(0, Math.sin(angle), Math.cos(angle)) };
+        Vect3d[] rotationMatrix = {new Vect3d(1, 0, 0), new Vect3d(0, Math.cos(angle),
+                -Math.sin(angle)), new Vect3d(0, Math.sin(angle), Math.cos(angle))};
 
         double i, j, k;
         i = dotProduct(rotationMatrix[0]);
@@ -205,8 +205,8 @@ public class Vect3d {
     }
 
     public Vect3d rotateY(double angle) {
-        Vect3d[] rotationMatrix = { new Vect3d(Math.cos(angle), 0, Math.sin(angle)), new Vect3d(0, 1,
-                0), new Vect3d(-Math.sin(angle), 0, Math.cos(angle)) };
+        Vect3d[] rotationMatrix = {new Vect3d(Math.cos(angle), 0, Math.sin(angle)), new Vect3d(0, 1,
+                0), new Vect3d(-Math.sin(angle), 0, Math.cos(angle))};
 
         double i, j, k;
         i = dotProduct(rotationMatrix[0]);
@@ -217,8 +217,8 @@ public class Vect3d {
     }
 
     public Vect3d rotateZ(double angle) {
-        Vect3d[] rotationMatrix = { new Vect3d(Math.cos(angle), -Math.sin(angle),
-                0), new Vect3d(Math.sin(angle), Math.cos(angle), 0), new Vect3d(0, 0, 1) };
+        Vect3d[] rotationMatrix = {new Vect3d(Math.cos(angle), -Math.sin(angle),
+                0), new Vect3d(Math.sin(angle), Math.cos(angle), 0), new Vect3d(0, 0, 1)};
 
         double i, j, k;
         i = dotProduct(rotationMatrix[0]);
@@ -234,20 +234,26 @@ public class Vect3d {
 
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
+        //@formatter:off
+        Vect3d[] rotationMatrix = {
+                new Vect3d(cos + axis.x * axis.x * (1 - cos),               axis.y * axis.x * (1 - cos) + axis.z * sin,     axis.z * axis.x * (1 - cos) - axis.y * sin),
+                new Vect3d(axis.x * axis.y * (1 - cos) - axis.z * sin,      cos + axis.y * axis.y * (1 - cos),              axis.z * axis.y * (1 - cos) + axis.z * sin),
+                new Vect3d(axis.x * axis.z * (1 - cos) + axis.y * sin,      axis.y * axis.z * (1 - cos),                    cos + axis.z * axis.z * (1 - cos))
+        };
 
-        Vect3d[] rotationMatrix = { new Vect3d(cos + axis.x * axis.x * (1 - cos),
-                axis.y * axis.x * (1 - cos) + axis.z * sin,
-                axis.z * axis.x * (1 - cos) - axis.y * sin), new Vect3d(
-                axis.x * axis.y * (1 - cos) - axis.z * sin, cos + axis.y * axis.y * (1 - cos),
-                axis.z * axis.y * (1 - cos) + axis.z * sin), new Vect3d(
-                axis.x * axis.z * (1 - cos) + axis.y * sin, axis.y * axis.z * (1 - cos),
-                cos + axis.z * axis.z * (1 - cos)) };
-
+        //@formatter:on
         double i, j, k;
         i = dotProduct(rotationMatrix[0]);
         j = dotProduct(rotationMatrix[1]);
         k = dotProduct(rotationMatrix[2]);
         set(i, j, k);
+        return this;
+    }
+
+    public Vect3d multiply(Vect3d size) {
+        x *= size.getX();
+        y *= size.getY();
+        z *= size.getZ();
         return this;
     }
 }
