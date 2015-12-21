@@ -111,7 +111,7 @@ public class DefaultItemDefinition implements IItemDefinition {
 
     @Override
     public void getSubItems(IItem item, ICreativeTab tab, List<IItemStack> subItems) {
-        subItems.add(ItemStackFactory.create(parent));
+        subItems.add(ItemStackFactory.createItemStack(parent));
     }
 
     @Override

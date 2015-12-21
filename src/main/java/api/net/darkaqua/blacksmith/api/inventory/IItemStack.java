@@ -19,5 +19,11 @@ public interface IItemStack {
 
     String getUnlocalizedName();
 
+    IItemStack copy();
+
+    IItemStack split(int amount);
+
+    String getDisplayName();
+
     Object getInternalItemStack();
 }

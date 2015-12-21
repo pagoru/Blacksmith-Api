@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.render.model.default_models;
+package net.darkaqua.blacksmith.api.render.model.defaults;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;

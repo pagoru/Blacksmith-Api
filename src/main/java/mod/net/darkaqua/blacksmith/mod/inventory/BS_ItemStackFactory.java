@@ -4,8 +4,10 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
 import net.darkaqua.blacksmith.api.item.IItem;
+import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by cout970 on 08/11/2015.
@@ -17,6 +19,18 @@ public class BS_ItemStackFactory extends ItemStackFactory{
     }
 
     private BS_ItemStackFactory(){}
+
+    @Override
+    protected IItemStack load(IDataCompound data) {
+        return MCInterface.fromItemStack(ItemStack.loadItemStackFromNBT(MCInterface.toNBTCompound(data)));
+    }
+
+    @Override
+    protected void save(IDataCompound data, IItemStack stack) {
+        NBTTagCompound nbt = MCInterface.toNBTCompound(data);
+        ItemStack item = MCInterface.toItemStack(stack);
+        item.writeToNBT(nbt);
+    }
 
     @Override
     protected IItemStack newItemStack(IItem item, int amount, int metadata) {

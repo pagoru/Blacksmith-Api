@@ -38,9 +38,9 @@ public class BlockRegistry implements IBlockRegistry {
             throw new IllegalStateException("Block definitions should be registered only in preInit");
         }
         if (definition == null)
-            throw new NullPointerException("BlockRegistry cannot use a null IBlockDefinition to create a new block");
+            throw new NullPointerException("BlockRegistry cannot use a null IBlockDefinition to newCreativeTab a new block");
         if (identifier == null)
-            throw new NullPointerException("BlockRegistry cannot use a null identifier to create a new block");
+            throw new NullPointerException("BlockRegistry cannot use a null identifier to newCreativeTab a new block");
         BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
         if(mod == null)
             throw new BlacksmithInternalException("Invalid mod container in item registration: null");

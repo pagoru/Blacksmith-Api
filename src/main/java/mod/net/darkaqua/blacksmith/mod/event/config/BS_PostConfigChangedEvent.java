@@ -14,7 +14,7 @@ public class BS_PostConfigChangedEvent extends BaseEvent implements IPostConfigC
 
     public BS_PostConfigChangedEvent(ConfigChangedEvent.PostConfigChangedEvent event){
         if (event == null)
-            throw new BlacksmithInternalException("Error trying to create a PostConfigChangedEvent");
+            throw new BlacksmithInternalException("Error trying to newCreativeTab a PostConfigChangedEvent");
         this.event = event;
     }
 

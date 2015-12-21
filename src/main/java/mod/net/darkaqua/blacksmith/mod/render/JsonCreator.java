@@ -174,7 +174,7 @@ public class JsonCreator {
 //        try {
 //
 //            FileWriter writer = new FileWriter(file);
-//            Gson g = new GsonBuilder().setPrettyPrinting().create();
+//            Gson g = new GsonBuilder().setPrettyPrinting().newCreativeTab();
 //            JsonObject data = new JsonObject();
 //            String jsonText = null;
 //
@@ -327,7 +327,7 @@ public class JsonCreator {
 //        try {
 //
 //            FileWriter writer = new FileWriter(file);
-//            Gson g = new GsonBuilder().setPrettyPrinting().create();
+//            Gson g = new GsonBuilder().setPrettyPrinting().newCreativeTab();
 //            JsonObject data = new JsonObject();
 //            String jsonText = null;
 //

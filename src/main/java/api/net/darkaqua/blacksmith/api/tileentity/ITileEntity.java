@@ -35,6 +35,8 @@ public interface ITileEntity {
 	void onBlockChange();
 	
 	void onClientDataArrive(int id, int data);
+
+	ITileEntityDefinition getTileEntityDefinition();
 	
 	@ClientSideOnly()
 	double getRenderDistance();

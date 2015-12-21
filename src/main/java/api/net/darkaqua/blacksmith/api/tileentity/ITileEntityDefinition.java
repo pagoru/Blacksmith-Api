@@ -11,6 +11,8 @@ import net.darkaqua.blacksmith.api.util.WorldRef;
  */
 public interface ITileEntityDefinition {
 
+    ITileEntity getParent();
+
     void onLoad(ITileEntity parent);
 
     void update();

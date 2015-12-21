@@ -31,7 +31,7 @@ public class BS_CreativeTabFactory extends CreativeTabFactory {
     }
 
     @Override
-    protected ICreativeTab create(String label, IItemStack tabIcon) {
+    protected ICreativeTab newCreativeTab(String label, IItemStack tabIcon) {
         if(tabIcon == null)throw new NullPointerException("CreativeTabFactory cannot make a creative tab with a null tabIcon");
         BS_CreativeTab tab = new BS_CreativeTab(label, tabIcon);
         return MCInterface.fromCreativeTab(tab);

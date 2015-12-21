@@ -22,9 +22,9 @@ public interface IDataCompound extends IDataElement{
 
 	void setByteArray(String name, byte[] value);
 
-	void setDataElement(String name, IDataElement value);
-
 	void setBoolean(String name, boolean value);
+
+	void setDataElement(String name, IDataElement value);
 
 	int getInteger(String name);
 
@@ -42,11 +42,17 @@ public interface IDataCompound extends IDataElement{
 
 	byte[] getByteArray(String name);
 
+	boolean getBoolean(String name);
+
 	IDataElement getDataElement(String name);
 
-	boolean getBoolean(String name);
+	IDataList getDataList(String name);
 
 	IDataCompound getDataCompound(String name);
 
 	IDataCompound copy();
+
+	Object getInternalNBTCompound();
+
+
 }

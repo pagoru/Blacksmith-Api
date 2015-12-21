@@ -11,7 +11,9 @@ import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
+import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
+import net.darkaqua.blacksmith.api.storage.IDataList;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Direction;
@@ -32,6 +34,7 @@ import net.darkaqua.blacksmith.mod.item.ItemWrapper;
 import net.darkaqua.blacksmith.mod.network.packet.DescriptionPacketWrapper;
 import net.darkaqua.blacksmith.mod.render.gui.FontRendererWrapper;
 import net.darkaqua.blacksmith.mod.storage.NBTTagCompoundWrapper;
+import net.darkaqua.blacksmith.mod.storage.NBTTagListWrapper;
 import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
 import net.darkaqua.blacksmith.mod.world.ChunkWrapper;
 import net.darkaqua.blacksmith.mod.world.IBlockAccessWrapper;
@@ -41,6 +44,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,6 +52,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -169,109 +174,104 @@ public class MCInterface {
     }
 
     public static ICreativeTab fromCreativeTab(CreativeTabs tab) {
-        if(tab == null) return null;
+        if (tab == null) return null;
         return new CreativeTabWrapper(tab);
     }
 
-    public static CreativeTabs fromCreativeTab(ICreativeTab tab){
-        if(tab instanceof CreativeTabWrapper){
+    public static CreativeTabs fromCreativeTab(ICreativeTab tab) {
+        if (tab instanceof CreativeTabWrapper) {
             return ((CreativeTabWrapper) tab).getCreativeTab();
         }
         return null;
     }
 
-    public static IDataCompound fromNBTCompound(NBTTagCompound tag){
+    public static IDataCompound fromNBTCompound(NBTTagCompound tag) {
         if (tag == null)
             return null;
         return new NBTTagCompoundWrapper(tag);
     }
 
     public static NBTTagCompound toNBTCompound(IDataCompound tag) {
-        if (tag instanceof NBTTagCompoundWrapper){
+        if (tag instanceof NBTTagCompoundWrapper) {
             return ((NBTTagCompoundWrapper) tag).getNBTTagCompound();
         }
         return null;
     }
 
     public static ITileEntity fromTileEntity(TileEntity tile) {
-        if(tile == null) return null;
+        if (tile == null) return null;
         return new TileEntityWrapper(tile);
     }
 
-    public static  TileEntity toTileEntity(ITileEntity tile){
-        if(tile instanceof TileEntityWrapper)
+    public static TileEntity toTileEntity(ITileEntity tile) {
+        if (tile instanceof TileEntityWrapper)
             return ((TileEntityWrapper) tile).getTileEntity();
         return null;
     }
 
-    public static IDescriptionPacket toDescriptionPacket(S35PacketUpdateTileEntity pack){
-        if(pack == null) return null;
+    public static IDescriptionPacket toDescriptionPacket(S35PacketUpdateTileEntity pack) {
+        if (pack == null) return null;
         return new DescriptionPacketWrapper(pack);
     }
 
     public static S35PacketUpdateTileEntity fromDescriptionPacket(IDescriptionPacket pack) {
-        if(pack instanceof DescriptionPacketWrapper)
+        if (pack instanceof DescriptionPacketWrapper)
             return ((DescriptionPacketWrapper) pack).getPacket();
         return null;
     }
 
-    public static IPlayer toPlayer(EntityPlayer player){
-        if(player == null) return null;
+    public static IPlayer toPlayer(EntityPlayer player) {
+        if (player == null) return null;
         return new EntityPlayerWrapper(player);
     }
 
     public static EntityPlayer fromPlayer(IPlayer player) {
-    if(player instanceof EntityPlayerWrapper)
-        return ((EntityPlayerWrapper) player).getPlayer();
+        if (player instanceof EntityPlayerWrapper)
+            return ((EntityPlayerWrapper) player).getPlayer();
         return null;
     }
 
     public static IIProperty fromIProperty(IProperty prop) {
-        if(prop == null)return null;
+        if (prop == null) return null;
         return new IPropertyWrapper(prop);
     }
 
     public static IProperty toIProperty(IIProperty prop) {
-        if(prop instanceof IPropertyWrapper)
+        if (prop instanceof IPropertyWrapper)
             return ((IPropertyWrapper) prop).getIProperty();
         return null;
     }
 
-    public static ResourceLocation toResourceLocation(ResourceReference loc) {
-        if (loc == null)return null;
-        return new ResourceLocation(loc.getDomain(), loc.getPath());
-    }
-
     public static IFontRenderer fromFontRenderer(FontRenderer fontRenderer) {
-        if (fontRenderer == null){
+        if (fontRenderer == null) {
             return null;
         }
         return new FontRendererWrapper(fontRenderer);
     }
 
     public static IIChunkProvider fromIChunkProvider(IChunkProvider chunkProvider) {
-        if(chunkProvider == null){
+        if (chunkProvider == null) {
             return null;
         }
         return new IChunkProviderWrapper(chunkProvider);
     }
 
     public static IChunkProvider toIChunkProvider(IIChunkProvider prov) {
-        if(prov instanceof IChunkProviderWrapper){
+        if (prov instanceof IChunkProviderWrapper) {
             return ((IChunkProviderWrapper) prov).getChunkProvider();
         }
         return null;
     }
 
     public static IChunk fromChunk(Chunk chunk) {
-        if(chunk == null){
+        if (chunk == null) {
             return null;
         }
         return new ChunkWrapper(chunk);
     }
 
     public static Chunk toChunk(IChunk chunk) {
-        if(chunk instanceof ChunkWrapper){
+        if (chunk instanceof ChunkWrapper) {
             return ((ChunkWrapper) chunk).getChunk();
         }
         return null;
@@ -284,6 +284,53 @@ public class MCInterface {
 
     public static EntityLivingBase fromLivingEntity(ILivingEntity entity) {
         //TODO
+        return null;
+    }
+
+    public static ItemCameraTransforms.TransformType toCamaraTransform(RenderPlace place) {
+        switch (place) {
+
+            case NONE:
+                return ItemCameraTransforms.TransformType.NONE;
+            case THIRD_PERSON:
+            case THIRD_PERSON_RIGHT_HAND:
+            case THIRD_PERSON_LEFT_HAND:
+                return ItemCameraTransforms.TransformType.THIRD_PERSON;
+            case FIRST_PERSON:
+            case FIRST_PERSON_RIGHT_HAND:
+            case FIST_PERSON_LEFT_HAND:
+                return ItemCameraTransforms.TransformType.FIRST_PERSON;
+            case GUI:
+                return ItemCameraTransforms.TransformType.GUI;
+            case HEAD:
+                return ItemCameraTransforms.TransformType.HEAD;
+            case GROUND:
+                return ItemCameraTransforms.TransformType.GROUND;
+            case FIXED:
+                return ItemCameraTransforms.TransformType.FIXED;
+        }
+        return ItemCameraTransforms.TransformType.NONE;
+    }
+
+    public static ResourceReference fromResourceLocation(ResourceLocation loc) {
+        if (loc == null) return null;
+        return new ResourceReference(loc.getResourceDomain(), loc.getResourcePath());
+    }
+
+    public static ResourceLocation toResourceLocation(ResourceReference loc) {
+        if (loc == null) return null;
+        return new ResourceLocation(loc.getDomain(), loc.getPath());
+    }
+
+    public static IDataList fromNBTList(NBTTagList nbt) {
+        if(nbt == null) return null;
+        return new NBTTagListWrapper(nbt);
+    }
+
+    public static NBTTagList toNBTTagList(IDataList nbt){
+        if (nbt instanceof NBTTagListWrapper){
+            return ((NBTTagListWrapper) nbt).getNBTTagList();
+        }
         return null;
     }
 }

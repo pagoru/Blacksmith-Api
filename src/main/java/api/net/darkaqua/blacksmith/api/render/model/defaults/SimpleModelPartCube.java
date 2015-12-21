@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.render.model.default_models;
+package net.darkaqua.blacksmith.api.render.model.defaults;
 
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.IModelQuad;
@@ -37,6 +37,9 @@ public class SimpleModelPartCube implements IModelPart {
         quads = new ArrayList<>(6);
         if (size == null) {
             size = new Vect3d(1, 1, 1);
+        }
+        if (textureOffset == null){
+            textureOffset = new Vect2i(0,0);
         }
         for (Direction dir : Direction.values()) {
             quads.add(new Quad(dir, texture, size, textureSize, textureOffset));

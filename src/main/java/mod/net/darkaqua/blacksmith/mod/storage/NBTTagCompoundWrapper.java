@@ -2,9 +2,11 @@ package net.darkaqua.blacksmith.mod.storage;
 
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.storage.IDataElement;
+import net.darkaqua.blacksmith.api.storage.IDataList;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 /**
  * Created by cout970 on 16/12/2015.
@@ -133,10 +135,12 @@ public class NBTTagCompoundWrapper implements IDataCompound {
     @Override
     public IDataElement getDataElement(String name) {
         NBTBase base = nbt.getTag(name);
-        if(base != null){
-            if(base instanceof NBTTagCompound){
+        if (base != null) {
+            if (base instanceof NBTTagCompound) {
                 return new NBTTagCompoundWrapper((NBTTagCompound) base);
-            }else{
+            } else if(base instanceof NBTTagList){
+                return new NBTTagListWrapper((NBTTagList) base);
+            }else {
                 return new NBTBaseWrapper(base);
             }
         }
@@ -144,10 +148,19 @@ public class NBTTagCompoundWrapper implements IDataCompound {
     }
 
     @Override
+    public IDataList getDataList(String name) {
+        NBTBase base = nbt.getTag(name);
+        if (base instanceof NBTTagList) {
+            return new NBTTagListWrapper((NBTTagList) base);
+        }
+        return new NBTTagListWrapper(new NBTTagList());
+    }
+
+    @Override
     public IDataCompound getDataCompound(String name) {
         NBTBase base = nbt.getTag(name);
-        if (base instanceof NBTTagCompound){
-            return new NBTTagCompoundWrapper(nbt);
+        if (base instanceof NBTTagCompound) {
+            return new NBTTagCompoundWrapper((NBTTagCompound) base);
         }
         return new NBTTagCompoundWrapper(new NBTTagCompound());
     }
@@ -160,5 +173,39 @@ public class NBTTagCompoundWrapper implements IDataCompound {
     @Override
     public IDataCompound copy() {
         return new NBTTagCompoundWrapper((NBTTagCompound) nbt.copy());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (!(o instanceof NBTTagCompoundWrapper)) return false;
+
+        NBTTagCompoundWrapper that = (NBTTagCompoundWrapper) o;
+
+        return !(nbt != null ? !nbt.equals(that.nbt) : that.nbt != null);
+
+    }
+
+    @Override
+    public String toString() {
+        return "IDataCompound{" +
+                "data=" + nbt +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return nbt != null ? nbt.hashCode() : 0;
+    }
+
+    @Override
+    public Object getInternalNBTBase() {
+        return nbt;
+    }
+
+    @Override
+    public Object getInternalNBTCompound() {
+        return nbt;
     }
 }

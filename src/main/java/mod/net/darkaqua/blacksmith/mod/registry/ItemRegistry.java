@@ -37,9 +37,9 @@ public class ItemRegistry implements IItemRegistry {
             throw new IllegalStateException("Item definition should be registered only in preInit");
         }
         if (definition == null)
-            throw new NullPointerException("ItemRegistry cannot use a null IItemDefinition to create a new item");
+            throw new NullPointerException("ItemRegistry cannot use a null IItemDefinition to newCreativeTab a new item");
         if (identifier == null)
-            throw new NullPointerException("ItemRegistry cannot use a null identifier to create a new item");
+            throw new NullPointerException("ItemRegistry cannot use a null identifier to newCreativeTab a new item");
         BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
         if(mod == null)
             throw new BlacksmithInternalException("Invalid mod container in item registration: null");

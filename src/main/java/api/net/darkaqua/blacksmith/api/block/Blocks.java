@@ -227,6 +227,6 @@ public enum Blocks {
 	}
 
 	public IItemStack newItemStack(int amount) {
-		return ItemStackFactory.create(getBlock(), amount);
+		return ItemStackFactory.createItemStack(getBlock(), amount);
 	}
 }

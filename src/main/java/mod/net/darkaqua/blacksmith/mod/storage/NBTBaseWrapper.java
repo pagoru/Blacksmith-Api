@@ -29,10 +29,31 @@ public class NBTBaseWrapper implements IDataElement {
         return new NBTBaseWrapper(nbt.copy());
     }
 
+    @Override
+    public Object getInternalNBTBase() {
+        return nbt;
+    }
+
     public NBTTagCompound asNBTTagCompound(){
         if (nbt instanceof NBTTagCompound){
             return (NBTTagCompound) nbt;
         }
         throw new ClassCastException();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NBTBaseWrapper)) return false;
+
+        NBTBaseWrapper that = (NBTBaseWrapper) o;
+
+        return !(nbt != null ? !nbt.equals(that.nbt) : that.nbt != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return nbt != null ? nbt.hashCode() : 0;
     }
 }

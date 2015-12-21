@@ -5,4 +5,6 @@ public interface IDataElement {
 	byte getID();
 	
 	IDataElement copy();
+
+	Object getInternalNBTBase();
 }

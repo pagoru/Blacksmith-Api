@@ -45,6 +45,11 @@ public class Game implements IGame{
     }
 
     @Override
+    public IRenderManager getRenderManager() {
+        return RenderManager.INSTANCE;
+    }
+
+    @Override
     public boolean isClient() {
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
     }

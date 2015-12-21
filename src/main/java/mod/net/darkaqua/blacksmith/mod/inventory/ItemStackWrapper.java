@@ -67,6 +67,11 @@ public class ItemStackWrapper implements IItemStack{
     }
 
     @Override
+    public IItemStack copy() {
+        return MCInterface.fromItemStack(stack.copy());
+    }
+
+    @Override
     public Object getInternalItemStack() {
         return stack;
     }

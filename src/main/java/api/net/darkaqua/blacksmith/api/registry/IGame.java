@@ -17,6 +17,8 @@ public interface IGame {
 
     IResourceManager getResourceManager();
 
+    IRenderManager getRenderManager();
+
     boolean isClient();
 
     boolean isServer();
