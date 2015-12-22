@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod.tileentity;
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
+import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
@@ -87,6 +88,14 @@ public class TileEntityWrapper implements ITileEntity {
     @Override
     public void onClientDataArrive(int id, int data) {
         tile.receiveClientEvent(id, data);
+    }
+
+    @Override
+    public ITileEntityDefinition getTileEntityDefinition() {
+        if (tile instanceof BS_TileEntity){
+            return ((BS_TileEntity) tile).getTileEntityDefinition();
+        }
+        return null;
     }
 
     @Override

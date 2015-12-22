@@ -10,9 +10,11 @@ public interface IItemStack {
 
     int getAmount();
     void setAmount(int amount);
+    int getMaxAmount();
 
     int getDamage();
     void setDamage(int damage);
+    int getMaxDamage();
 
     IDataCompound getDataCompound();
     void setDataCompound(IDataCompound cmp);
@@ -26,4 +28,6 @@ public interface IItemStack {
     String getDisplayName();
 
     Object getInternalItemStack();
+
+
 }

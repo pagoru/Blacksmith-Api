@@ -7,6 +7,7 @@ import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
@@ -30,6 +31,9 @@ import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
+import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
+import net.darkaqua.blacksmith.mod.inventory.SimpleInventoryWrapper;
+import net.darkaqua.blacksmith.mod.item.ItemBlockWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
 import net.darkaqua.blacksmith.mod.network.packet.DescriptionPacketWrapper;
 import net.darkaqua.blacksmith.mod.render.gui.FontRendererWrapper;
@@ -49,7 +53,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -142,6 +149,9 @@ public class MCInterface {
 
     public static IItem fromItem(Item item) {
         if (item == null) return null;
+        if (item instanceof ItemBlock){
+            return new ItemBlockWrapper((ItemBlock) item);
+        }
         return new ItemWrapper(item);
     }
 
@@ -332,5 +342,13 @@ public class MCInterface {
             return ((NBTTagListWrapper) nbt).getNBTTagList();
         }
         return null;
+    }
+
+    public static IInventoryHandler fromInventory(IInventory inv) {
+        if (inv == null)return null;
+        if (inv instanceof ISidedInventory){
+            return new SidedInventoryWrapper((ISidedInventory) inv);
+        }
+        return new SimpleInventoryWrapper(inv);
     }
 }

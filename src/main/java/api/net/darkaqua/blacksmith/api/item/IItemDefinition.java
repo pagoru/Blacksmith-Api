@@ -35,6 +35,7 @@ public interface IItemDefinition {
 
     int getMetadata(IItemStack stack);
     int getDamage(IItemStack stack);
+    int getMaxDamage();
 
     boolean isDamageable();
 

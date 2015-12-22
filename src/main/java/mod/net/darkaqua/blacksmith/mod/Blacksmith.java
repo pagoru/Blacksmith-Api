@@ -16,6 +16,7 @@ import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.registry.ResourceManager;
 import net.darkaqua.blacksmith.mod.render.BS_CustomModelLoader;
 import net.darkaqua.blacksmith.mod.render.BS_TileEntityRenderer;
+import net.darkaqua.blacksmith.mod.storage.BS_DataElementFactory;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_ObjectScanner;
 import net.darkaqua.blacksmith.mod.util.BS_ResourceLoader;
@@ -60,12 +61,13 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_EventBus.init();
         BS_ConfigurationFactory.init();
         BS_ObjectScanner.init();
+        BS_DataElementFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
     }
 
     public static void debug() {
-        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 
     //  Events code
@@ -92,9 +94,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-        if (Game.INSTANCE.isClient()) {
-            RenderRegistry.INSTANCE.onInit();
-        }
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }

@@ -42,6 +42,11 @@ public class ItemStackWrapper implements IItemStack{
     }
 
     @Override
+    public int getMaxAmount() {
+        return stack.getMaxStackSize();
+    }
+
+    @Override
     public int getDamage() {
         return stack.getItemDamage();
     }
@@ -49,6 +54,11 @@ public class ItemStackWrapper implements IItemStack{
     @Override
     public void setDamage(int damage) {
     stack.setItemDamage(damage);
+    }
+
+    @Override
+    public int getMaxDamage() {
+        return stack.getMaxDamage();
     }
 
     @Override
@@ -69,6 +79,16 @@ public class ItemStackWrapper implements IItemStack{
     @Override
     public IItemStack copy() {
         return MCInterface.fromItemStack(stack.copy());
+    }
+
+    @Override
+    public IItemStack split(int amount) {
+        return MCInterface.fromItemStack(stack.splitStack(amount));
+    }
+
+    @Override
+    public String getDisplayName() {
+        return stack.getDisplayName();
     }
 
     @Override

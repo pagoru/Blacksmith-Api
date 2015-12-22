@@ -5,6 +5,7 @@ import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
 import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
 import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IRenderTransformationProvider;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
@@ -18,6 +19,5 @@ public interface IRenderRegistry {
     boolean registerItemModelProvider(IItemDefinition def, IItemModelProvider provider);
     boolean registerTileEntityRenderer(Class<? extends ITileEntityDefinition> def, ITileEntityRenderer renderer);
 
-    IModelIdentifier registerModelFile(ResourceReference file);
-    IModelIdentifier registerFlatItemModel(ResourceReference texture);
+    IModelIdentifier registerFlatItemModel(ResourceReference texture, IRenderTransformationProvider provider);
 }

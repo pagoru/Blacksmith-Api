@@ -14,4 +14,6 @@ public interface IItemModelProvider {
     void bindModelIdentifier(IRenderModel model, IModelIdentifier identifier);
 
     List<IRenderModel> getAllModels();
+
+    List<IModelIdentifier> getExtraModels();
 }

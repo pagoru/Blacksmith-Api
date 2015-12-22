@@ -53,21 +53,21 @@ public class BS_Item extends Item {
 //    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn) {
 //        return super.onItemUseFinish(stack, worldIn, playerIn);
 //    }
-//
-//    @Override
-//    public int getMetadata(int damage) {
-//        return super.getMetadata(damage);
-//    }
-//
-//    @Override
-//    public boolean getHasSubtypes() {
-//        return super.getHasSubtypes();
-//    }
-//
-//    @Override
-//    public int getMaxDamage() {
-//        return super.getMaxDamage();
-//    }
+
+    @Override
+    public int getMetadata(int damage) {
+        return super.getMetadata(damage);
+    }
+
+    @Override
+    public boolean getHasSubtypes() {
+        return definition.hasSubtypes();
+    }
+
+    @Override
+    public int getMaxDamage() {
+        return definition.getMaxDamage();
+    }
 //
 //    @Override
 //    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
@@ -89,10 +89,10 @@ public class BS_Item extends Item {
 //        return super.itemInteractionForEntity(stack, playerIn, target);
 //    }
 //
-//    @Override
-//    public boolean isFull3D() {
-//        return super.isFull3D();
-//    }
+    @Override
+    public boolean isFull3D() {
+        return definition.is3DItem();
+    }
 //
 //    @Override
 //    public boolean shouldRotateAroundWhenRendering() {
@@ -169,11 +169,11 @@ public class BS_Item extends Item {
 //        return super.onItemUseFirst(stack, player, world, pos, side, hitX, hitY, hitZ);
 //    }
 //
-//    @Override
-//    public int getItemStackLimit(ItemStack stack) {
-//        return super.getItemStackLimit(stack);
-//    }
-//
+    @Override
+    public int getItemStackLimit(ItemStack stack) {
+        return definition.getMaxStackSize(MCInterface.fromItemStack(stack));
+    }
+
 //    @Override
 //    public boolean isDamaged(ItemStack stack) {
 //        return super.isDamaged(stack);

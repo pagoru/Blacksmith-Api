@@ -12,12 +12,10 @@ import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.defaults.ItemFlatModelProvider;
 import net.darkaqua.blacksmith.api.render.model.defaults.SimpleBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.defaults.SimpleItemModelProvider;
 import net.darkaqua.blacksmith.api.render.model.defaults.SimpleModelPartBlock;
 import net.darkaqua.blacksmith.api.render.model.defaults.SimpleRenderModel;
-import net.darkaqua.blacksmith.api.render.techne.TechneModelLoader;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.mod.util.Log;
 
@@ -44,9 +42,11 @@ public class ModClass {
         block = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
         item = StaticAccess.GAME.getItemRegistry().registerItemDefinition(itemDef, "item_identifier");
 
-        IRenderModel model = TechneModelLoader.loadModel(new ResourceReference("mod_id", "models/test.tcn"), new ResourceReference("mod_id", "misc/test_texture"));
-        SimpleItemModelProvider itemProvider = new SimpleItemModelProvider(model);
-        StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef, itemProvider);
+//        IRenderModel model = TechneModelLoader.loadModel(new ResourceReference("mod_id", "models/test.tcn"), new ResourceReference("mod_id", "misc/test_texture"));
+//        SimpleItemModelProvider itemProvider = new SimpleItemModelProvider(model);
+//        StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef, itemProvider);
+        StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
+                new ItemFlatModelProvider(new ResourceReference(MOD_ID, "blocks/texture_name")));
 
         SimpleRenderModel blockModel = new SimpleRenderModel();
         blockModel.addModelPart(new SimpleModelPartBlock(new ResourceReference("mod_id", "blocks/texture_name")));

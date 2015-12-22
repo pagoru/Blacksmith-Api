@@ -19,6 +19,8 @@ public interface IGame {
 
     IRenderManager getRenderManager();
 
+    IOreDictionary getOreDictionary();
+
     boolean isClient();
 
     boolean isServer();

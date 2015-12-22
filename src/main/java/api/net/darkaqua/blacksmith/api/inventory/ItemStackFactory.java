@@ -37,7 +37,7 @@ public abstract class ItemStackFactory {
 	}
 
 	public static void saveItemStack(IDataCompound data, IItemStack stack) {
-		saveItemStack(data, stack);
+		INSTANCE.save(data, stack);
 	}
 
 	protected abstract IItemStack load(IDataCompound data);

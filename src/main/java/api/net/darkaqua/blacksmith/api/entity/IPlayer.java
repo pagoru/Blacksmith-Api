@@ -10,5 +10,5 @@ public interface IPlayer extends ILivingEntity, IInventoryProvider {
 
     IItemStack getSelectedItemStack();
 
-    void setSelectedItemStack(int i, IItemStack stack);
+    void setSelectedItemStack(IItemStack stack);
 }

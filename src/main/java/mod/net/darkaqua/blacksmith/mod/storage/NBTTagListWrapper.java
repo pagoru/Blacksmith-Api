@@ -61,6 +61,29 @@ public class NBTTagListWrapper implements IDataList {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NBTTagListWrapper)) return false;
+
+        NBTTagListWrapper that = (NBTTagListWrapper) o;
+
+        return !(nbt != null ? !nbt.equals(that.nbt) : that.nbt != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return nbt != null ? nbt.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "IDataList{" +
+                "data=" + nbt +
+                '}';
+    }
+
+    @Override
     public Object getInternalNBTBase() {
         return nbt;
     }

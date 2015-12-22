@@ -1,12 +1,10 @@
 package net.darkaqua.blacksmith.mod.registry;
 
+import com.google.common.collect.ImmutableList;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
-import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
@@ -14,22 +12,28 @@ import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
+import net.darkaqua.blacksmith.mod.render.BS_GeneratedModel;
+import net.darkaqua.blacksmith.mod.render.BS_ItemLayerModel;
 import net.darkaqua.blacksmith.mod.render.JsonCreator;
 import net.darkaqua.blacksmith.mod.render.util.ModelIdentifier;
-import net.darkaqua.blacksmith.mod.util.Log;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by cout970 on 07/12/2015.
@@ -38,8 +42,8 @@ public class RenderRegistry implements IRenderRegistry {
 
     public static final RenderRegistry INSTANCE = new RenderRegistry();
     private static Map<ResourceLocation, IRenderModel> models = new HashMap<>();
-    private static List<ItemRenderRegister> itemsToRegister = new LinkedList<>();
     private static Map<Class<? extends ITileEntityDefinition>, ITileEntityRenderer> tileRenders = new HashMap<>();
+    private static Map<ResourceLocation, Pair<ResourceLocation, IRenderTransformationProvider>> flatItemModels = new HashMap();
 
     private RenderRegistry() {
     }
@@ -126,16 +130,20 @@ public class RenderRegistry implements IRenderRegistry {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
                 IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromItemStack(stack));
-                return new ModelResourceLocation(domain + ":" + itemRes.getResourcePath()+"/"+identifier.getVariant(), "inventory");
+                return new ModelResourceLocation(domain + ":" + identifier.getReference().getPath(), "inventory");
             }
         });
         for (Map.Entry<IModelIdentifier, IRenderModel> e : localModels.entrySet()) {
-            ModelResourceLocation mloc = new ModelResourceLocation(e.getKey().getReference().toString(), e.getKey().getVariant());
+            ModelResourceLocation mloc = new ModelResourceLocation(e.getKey().getReference().toString(), "inventory");
             reg.addModel(mloc);
             IRenderModel model = e.getValue();
-            Log.debug(e.getKey().getReference().toString());
             ModelLoader.addVariantName(reg.getItem(), e.getKey().getReference().toString());
             models.put(new ResourceLocation(mloc.getResourceDomain(), "models/item/" + mloc.getResourcePath()), model);
+        }
+        for (IModelIdentifier identifier : provider.getExtraModels()) {
+            ModelResourceLocation mloc = new ModelResourceLocation(identifier.getReference().toString(), "inventory");
+            reg.addModel(mloc);
+            ModelLoader.addVariantName(reg.getItem(), identifier.getReference().toString());
         }
 
         return true;
@@ -153,30 +161,15 @@ public class RenderRegistry implements IRenderRegistry {
     }
 
     @Override
-    public IModelIdentifier registerModelFile(ResourceReference file) {
-        return null;
-    }
-
-    @Override
-    public IModelIdentifier registerFlatItemModel(ResourceReference texture) {
-        return null;
+    public IModelIdentifier registerFlatItemModel(ResourceReference texture, IRenderTransformationProvider provider) {
+        ResourceLocation res = new ResourceLocation(Blacksmith.MOD_ID, "builtin_" + flatItemModels.size());
+        ModelIdentifier identifier = new ModelIdentifier(res, "builtin_" + flatItemModels.size());
+        flatItemModels.put(res, new ImmutablePair<ResourceLocation, IRenderTransformationProvider>(MCInterface.toResourceLocation(texture), provider));
+        return identifier;
     }
 
     public ITileEntityRenderer getTileEntityRenderer(Class<? extends ITileEntityDefinition> def) {
         return tileRenders.get(def);
-    }
-
-    public void onInit() {
-        for (ItemRenderRegister r : itemsToRegister) {
-            Minecraft.getMinecraft()
-                    .getRenderItem()
-                    .getItemModelMesher()
-                    .register(r.getItem(), r.getMeta(), r.getLocation());
-        }
-    }
-
-    public Map<ResourceLocation, IRenderModel> getRegisteredModels() {
-        return models;
     }
 
     public Set<String> getRegisteredDomains() {
@@ -185,6 +178,30 @@ public class RenderRegistry implements IRenderRegistry {
             domains.add(res.getResourceDomain());
         }
         return domains;
+    }
+
+    public IModel getModel(ResourceLocation modelLocation) {
+        if (models.containsKey(modelLocation)) {
+            IRenderModel model = models.get(modelLocation);
+            return new BS_GeneratedModel(model);
+        }
+        String path = modelLocation.getResourcePath().replace("models/item/", "").replace("models/block/", "");
+        ResourceLocation loc = new ResourceLocation(modelLocation.getResourceDomain(), path);
+        if (flatItemModels.containsKey(loc)) {
+            return new BS_ItemLayerModel(ImmutableList.of(flatItemModels.get(loc).getLeft()), flatItemModels.get(loc).getRight());
+        }
+        return null;
+    }
+
+    public boolean hasModelForLocation(ResourceLocation modelLocation) {
+        if (models.containsKey(modelLocation)) {
+            return true;
+        }
+        String path = modelLocation.getResourcePath().replace("models/item/", "").replace("models/block/", "");
+        if (flatItemModels.containsKey(new ResourceLocation(modelLocation.getResourceDomain(), path))) {
+            return true;
+        }
+        return false;
     }
 
     public void onPreInitFinish() {

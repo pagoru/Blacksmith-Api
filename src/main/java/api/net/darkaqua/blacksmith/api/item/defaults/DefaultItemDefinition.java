@@ -24,6 +24,10 @@ public class DefaultItemDefinition implements IItemDefinition {
 
     protected String name;
     protected IItem parent;
+    protected int maxDamage = 1;
+    protected int maxStackSize = 64;
+    protected boolean hasSubtypes = false;
+    protected ICreativeTab creativeTab = CreativeTabFactory.DECORATIONS_TAB;
 
     public DefaultItemDefinition(String name) {
         this.name = name;
@@ -46,12 +50,12 @@ public class DefaultItemDefinition implements IItemDefinition {
 
     @Override
     public int getMaxStackSize(IItemStack stack) {
-        return 64;
+        return maxStackSize;
     }
 
     @Override
     public boolean hasSubtypes() {
-        return false;
+        return hasSubtypes;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class DefaultItemDefinition implements IItemDefinition {
 
     @Override
     public ICreativeTab getCreativeTab() {
-        return CreativeTabFactory.DECORATIONS_TAB;
+        return creativeTab;
     }
 
     @Override
@@ -77,6 +81,11 @@ public class DefaultItemDefinition implements IItemDefinition {
     @Override
     public int getDamage(IItemStack stack) {
         return stack.getDamage();
+    }
+
+    @Override
+    public int getMaxDamage() {
+        return maxDamage;
     }
 
     @Override

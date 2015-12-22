@@ -228,7 +228,7 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox, I
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             for (Direction d : Direction.values()) {
                 for (int i = 0; i < inv.getSlots(d); i++) {
-                    inv.extractItemStack(d, i, 64, false);
+                    inv.setStackInSlot(d, i, null);
                 }
             }
         }

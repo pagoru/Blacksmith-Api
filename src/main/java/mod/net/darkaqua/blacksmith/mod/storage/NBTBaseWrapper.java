@@ -53,6 +53,13 @@ public class NBTBaseWrapper implements IDataElement {
     }
 
     @Override
+    public String toString() {
+        return "IDataElement{" +
+                "data=" + nbt +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return nbt != null ? nbt.hashCode() : 0;
     }

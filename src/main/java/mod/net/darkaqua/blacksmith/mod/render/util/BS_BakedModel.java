@@ -5,7 +5,6 @@ import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.util.Vect2d;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.mod.render.BS_GeneratedModel;
-import net.darkaqua.blacksmith.mod.util.Log;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -172,13 +171,12 @@ public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareMode
     @Override
     public Pair<IPerspectiveAwareModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
         if (transformMap == null) {
-            transformMap = new EnumMap<ItemCameraTransforms.TransformType, Matrix4f>(ItemCameraTransforms.TransformType.class);
+            transformMap = new EnumMap<>(ItemCameraTransforms.TransformType.class);
         }
         if (!transformMap.containsKey(cameraTransformType)) {
             RenderTransformation trans = model.getGenModel().getTransformation(getRenderPlace(cameraTransformType));
             Matrix4f mat = new Matrix4f();
             mat.setIdentity();
-            Log.debug(cameraTransformType);
             if (trans != null) {
                 Vect3d t = trans.getTranslation();
                 Vect3d r = trans.getRotation();
