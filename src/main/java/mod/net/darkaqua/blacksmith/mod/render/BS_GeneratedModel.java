@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.render.model.IRenderModel;
-import net.darkaqua.blacksmith.mod.render.util.BS_BakedModel;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;

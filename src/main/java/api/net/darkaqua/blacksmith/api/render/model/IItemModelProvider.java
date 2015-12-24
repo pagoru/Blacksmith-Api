@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.api.render.model;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 
 import java.util.List;
 
@@ -11,9 +12,7 @@ public interface IItemModelProvider {
 
     IModelIdentifier getModelForVariant(IItemStack stack);
 
-    void bindModelIdentifier(IRenderModel model, IModelIdentifier identifier);
+    void registerModels(IModelRegistry registry);
 
-    List<IRenderModel> getAllModels();
-
-    List<IModelIdentifier> getExtraModels();
+    List<IModelIdentifier> getValidModels();
 }

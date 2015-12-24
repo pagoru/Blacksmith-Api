@@ -4,6 +4,7 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
+import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
@@ -116,7 +117,8 @@ public class BlockRegistry implements IBlockRegistry {
         private Block mcBlock;
         private String identifier;
         private String modID;
-        private List<ModelResourceLocation> blockModels;
+        private Map<IModelIdentifier, ResourceLocation> blockModels;
+        private List<ModelResourceLocation> jsonStates;
 
         public RegisteredBlock(IBlockDefinition definition, IBlock block, ItemBlock itemBlock, Block mcBlock, String modID, String identifier) {
             this.definition = definition;
@@ -125,7 +127,8 @@ public class BlockRegistry implements IBlockRegistry {
             this.mcBlock = mcBlock;
             this.identifier = identifier;
             this.modID = modID;
-            blockModels = new LinkedList<>();
+            blockModels = new HashMap<>();
+            jsonStates = new ArrayList<>();
         }
 
         public IBlockDefinition getDefinition() {
@@ -152,13 +155,20 @@ public class BlockRegistry implements IBlockRegistry {
             return modID;
         }
 
-        public List<ModelResourceLocation> getBlockModels() {
-            return blockModels;
+        public void addModel(IModelIdentifier identifier, ResourceLocation model){
+            blockModels.put(identifier, model);
         }
 
-        public void addModel(ModelResourceLocation model){
-            blockModels.add(model);
+        public ResourceLocation getResourceLocation(IModelIdentifier identifier) {
+            return blockModels.get(identifier);
         }
 
+        public List<ModelResourceLocation> getJsonStates() {
+            return jsonStates;
+        }
+
+        public void addJsonState(ModelResourceLocation loc){
+            jsonStates.add(loc);
+        }
     }
 }

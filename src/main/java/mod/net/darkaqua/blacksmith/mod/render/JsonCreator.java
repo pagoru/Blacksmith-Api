@@ -26,7 +26,7 @@ public class JsonCreator {
         String path = "/blockstates/"+ identifier.substring(0, identifier.indexOf("/"));
         File blockStatesFile = getFile(domain, path, identifier.substring(identifier.indexOf("/")) + ".json");
 
-        List<ModelResourceLocation> renderMap = reg.getBlockModels();
+        List<ModelResourceLocation> renderMap = reg.getJsonStates();
         createIfNeededBlockState(blockStatesFile, renderMap, domain);
     }
 

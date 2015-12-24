@@ -7,10 +7,13 @@ import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.fluid.IFluid;
+import net.darkaqua.blacksmith.api.fluid.IFluidStack;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
+import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
@@ -30,12 +33,15 @@ import net.darkaqua.blacksmith.mod.block.blockstate.IPropertyWrapper;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
+import net.darkaqua.blacksmith.mod.fluid.FluidStackWrapper;
+import net.darkaqua.blacksmith.mod.fluid.FluidWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SimpleInventoryWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemBlockWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
 import net.darkaqua.blacksmith.mod.network.packet.DescriptionPacketWrapper;
+import net.darkaqua.blacksmith.mod.recipe.InventoryCraftingWrapper;
 import net.darkaqua.blacksmith.mod.render.gui.FontRendererWrapper;
 import net.darkaqua.blacksmith.mod.storage.NBTTagCompoundWrapper;
 import net.darkaqua.blacksmith.mod.storage.NBTTagListWrapper;
@@ -55,6 +61,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -70,6 +77,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 
 public class MCInterface {
@@ -350,5 +359,40 @@ public class MCInterface {
             return new SidedInventoryWrapper((ISidedInventory) inv);
         }
         return new SimpleInventoryWrapper(inv);
+    }
+
+    public static IFluidStack fromFluidStack(FluidStack stack) {
+        if (stack == null) return null;
+        return new FluidStackWrapper(stack);
+    }
+    public static FluidStack toFluidStack(IFluidStack stack) {
+        if(stack instanceof FluidStackWrapper){
+            return ((FluidStackWrapper) stack).getFluidStack();
+        }
+        return null;
+    }
+
+    public static IFluid fromFluid(Fluid fluid) {
+        if (fluid == null) return null;
+        return new FluidWrapper(fluid);
+    }
+
+    public static Fluid toFluid(IFluid fluid){
+        if (fluid instanceof FluidWrapper){
+            return ((FluidWrapper) fluid).getFluid();
+        }
+        return null;
+    }
+
+    public static ICraftingGrid fromInventoryCrafting(InventoryCrafting inv) {
+        if (inv == null) return null;
+        return new InventoryCraftingWrapper(inv);
+    }
+
+    public static InventoryCrafting toInventoryCrafting(ICraftingGrid grid) {
+        if (grid instanceof InventoryCraftingWrapper){
+            return ((InventoryCraftingWrapper) grid).getInventory();
+        }
+        return null;
     }
 }

@@ -6,9 +6,13 @@ import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 
 /**
- * Created by cout970 on 06/12/2015.
+ * Created by cout970 on 23/12/2015.
  */
-public interface IFluid {
+public interface IFluidDefinition {
+
+    String getFluidName();
+    ResourceReference getStillTexture();
+    ResourceReference getFlowingTexture();
 
     String getUnlocalizedName(IFluidStack stack);
 
@@ -31,6 +35,4 @@ public interface IFluid {
     Color getColor(WorldRef ref);
     ResourceReference getStill(WorldRef ref);
     ResourceReference getFlowing(WorldRef ref);
-
-    Object getInternalObject();
 }

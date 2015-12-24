@@ -1,23 +1,20 @@
 package net.darkaqua.blacksmith.mod.registry;
 
-import com.google.common.collect.ImmutableList;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
+import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
-import net.darkaqua.blacksmith.api.render.model.*;
+import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
+import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
-import net.darkaqua.blacksmith.mod.render.BS_GeneratedModel;
-import net.darkaqua.blacksmith.mod.render.BS_ItemLayerModel;
 import net.darkaqua.blacksmith.mod.render.JsonCreator;
-import net.darkaqua.blacksmith.mod.render.util.ModelIdentifier;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -27,13 +24,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by cout970 on 07/12/2015.
@@ -41,9 +33,9 @@ import java.util.Set;
 public class RenderRegistry implements IRenderRegistry {
 
     public static final RenderRegistry INSTANCE = new RenderRegistry();
-    private static Map<ResourceLocation, IRenderModel> models = new HashMap<>();
+    private static ModelRegistry modelRegistry = ModelRegistry.INSTANCE;
+    private static Map<ResourceLocation, IModelIdentifier> locationToIdentifier = new HashMap<>();
     private static Map<Class<? extends ITileEntityDefinition>, ITileEntityRenderer> tileRenders = new HashMap<>();
-    private static Map<ResourceLocation, Pair<ResourceLocation, IRenderTransformationProvider>> flatItemModels = new HashMap();
 
     private RenderRegistry() {
     }
@@ -58,47 +50,54 @@ public class RenderRegistry implements IRenderRegistry {
         if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in block model provider registration: null");
 
-        BlockRegistry.RegisteredBlock reg = BlockRegistry.INSTANCE.getRegistrationData(def);
+        final BlockRegistry.RegisteredBlock reg = BlockRegistry.INSTANCE.getRegistrationData(def);
+
         if (reg == null)
             return false;
-        final String domain = Blacksmith.MOD_ID;
+        final String blockIdentifier = reg.getIdentifier();
 
-        final ResourceLocation block = Block.blockRegistry.getNameForObject(reg.getBlock());
-        Map<IModelIdentifier, IRenderModel> localModels = new HashMap<>();
+        provider.registerModels(modelRegistry);
+        Map<ResourceLocation, IModelIdentifier> inverseMap = new HashMap<>();
 
-        for (IRenderModel model : provider.getAllModels()) {
-            ResourceLocation id = new ResourceLocation(domain, block.getResourcePath() + "/" + model.getName());
-            ModelIdentifier identifier = new ModelIdentifier(id, model.getName());
-            provider.bindModelIdentifier(model, identifier);
-            localModels.put(identifier, model);
+        for(IModelIdentifier model : provider.getValidModels()){
+            ResourceLocation resource = new ResourceLocation(Blacksmith.MOD_ID, blockIdentifier);
+            reg.addModel(model, resource);
+            inverseMap.put(resource, model);
+            locationToIdentifier.put(new ResourceLocation(resource.getResourceDomain(), "models/block/"+resource.getResourcePath()+"/"+model.getModelName()), model);
         }
 
-        //itemblock
-//        ModelBakery.addVariantName(reg.getItemBlock(), new ResourceLocation(domain, reg.getIdentifier().toLowerCase()).toString());
-//        ModelLoader.setCustomModelResourceLocation(reg.getItemBlock(), 0, new ModelResourceLocation(domain+ ":" + reg.getIdentifier().toLowerCase(), "inventory"));
-//        models.put(new ResourceLocation(domain, "models/item/"+reg.getIdentifier().toLowerCase()), model);
-//        itemsToRegister.add(new ItemRenderRegister(reg.getItemBlock(), 0, new ModelResourceLocation(domain+ ":" + reg.getIdentifier().toLowerCase(), "inventory")));
-
-        final Map<String, IModelIdentifier> ids = new HashMap<>();
         //block
         StateMapperBase stateMapper = new StateMapperBase() {
 
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
                 IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromIBlockState(state));
-                String variant = getPropertyString(state.getProperties());
-                ids.put(variant, identifier);
-                return new ModelResourceLocation(domain + ":" + block.getResourcePath(), variant);
+                String stateName = getPropertyString(state.getProperties());
+                return new ModelResourceLocation(reg.getResourceLocation(identifier), stateName);
             }
         };
-        for (Object loc : stateMapper.putStateModelLocations(reg.getBlock()).values()) {
-            ModelResourceLocation mloc = (ModelResourceLocation) loc;
-            reg.addModel(mloc);
-            IRenderModel model = localModels.get(ids.get(mloc.getVariant()));
-            models.put(new ResourceLocation(mloc.getResourceDomain(), "models/block/" + mloc.getResourcePath()), model);
+
+        for(Map.Entry<IBlockState, ModelResourceLocation> e : stateMapper.putStateModelLocations(reg.getBlock()).entrySet()){
+            IModelIdentifier identifier = inverseMap.get(new ResourceLocation(e.getValue().getResourceDomain(), e.getValue().getResourcePath()));
+            reg.addJsonState(new ModelResourceLocation(e.getValue().getResourceDomain()+":"+e.getValue().getResourcePath()+"/"+identifier.getModelName(), e.getValue().getVariant()));
         }
+
         ModelLoader.setCustomStateMapper(reg.getBlock(), stateMapper);
 
+        //itemblock
+        IModelIdentifier itemBlockModel = provider.getModelForVariant(MCInterface.fromIBlockState(reg.getBlock().getDefaultState()));
+        String itemIdentifier = reg.getItemBlock().getUnlocalizedName();
+
+        final ResourceLocation resource = new ResourceLocation(Blacksmith.MOD_ID, itemIdentifier+"/"+itemBlockModel.getModelName());
+        ModelLoader.addVariantName(reg.getItemBlock(), resource.toString());
+        locationToIdentifier.put(new ResourceLocation(resource.getResourceDomain(), "models/item/"+resource.getResourcePath()), itemBlockModel);
+
+        ModelLoader.setCustomMeshDefinition(reg.getItemBlock(), new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return new ModelResourceLocation(resource, "inventory");
+            }
+        });
         return true;
     }
 
@@ -112,39 +111,35 @@ public class RenderRegistry implements IRenderRegistry {
         if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in item model provider registration: null");
 
-        ItemRegistry.RegisteredItem reg = ItemRegistry.INSTANCE.getRegistrationData(def);
+        if(provider == null)
+            throw new NullPointerException("Invalid IItemModelProvider: null");
+
+        final ItemRegistry.RegisteredItem reg = ItemRegistry.INSTANCE.getRegistrationData(def);
+
         if (reg == null)
             return false;
-        final String domain = Blacksmith.MOD_ID;
-        final ResourceLocation itemRes = Item.itemRegistry.getNameForObject(reg.getItem());
-        Map<IModelIdentifier, IRenderModel> localModels = new HashMap<>();
 
-        for (IRenderModel model : provider.getAllModels()) {
-            ResourceLocation id = new ResourceLocation(domain, itemRes.getResourcePath() + "/" + model.getName());
-            ModelIdentifier identifier = new ModelIdentifier(id, model.getName());
-            provider.bindModelIdentifier(model, identifier);
-            localModels.put(identifier, model);
+        provider.registerModels(modelRegistry);
+
+        String itemIdentifier = reg.getIdentifier();
+
+        List<IModelIdentifier> identifiers = provider.getValidModels();
+        if(identifiers == null)
+            throw new NullPointerException("Invalid IItemModelProvider.getValidModels(): null");
+        for(IModelIdentifier model : identifiers){
+            ResourceLocation resource = new ResourceLocation(Blacksmith.MOD_ID, itemIdentifier+"/"+model.getModelName());
+            ModelLoader.addVariantName(reg.getItem(), resource.toString());
+            reg.addModel(model, new ModelResourceLocation(resource, "inventory"));
+            locationToIdentifier.put(new ResourceLocation(resource.getResourceDomain(), "models/item/"+resource.getResourcePath()), model);
         }
 
         ModelLoader.setCustomMeshDefinition(reg.getItem(), new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
                 IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromItemStack(stack));
-                return new ModelResourceLocation(domain + ":" + identifier.getReference().getPath(), "inventory");
+                return reg.getModelResourceLocation(identifier);
             }
         });
-        for (Map.Entry<IModelIdentifier, IRenderModel> e : localModels.entrySet()) {
-            ModelResourceLocation mloc = new ModelResourceLocation(e.getKey().getReference().toString(), "inventory");
-            reg.addModel(mloc);
-            IRenderModel model = e.getValue();
-            ModelLoader.addVariantName(reg.getItem(), e.getKey().getReference().toString());
-            models.put(new ResourceLocation(mloc.getResourceDomain(), "models/item/" + mloc.getResourcePath()), model);
-        }
-        for (IModelIdentifier identifier : provider.getExtraModels()) {
-            ModelResourceLocation mloc = new ModelResourceLocation(identifier.getReference().toString(), "inventory");
-            reg.addModel(mloc);
-            ModelLoader.addVariantName(reg.getItem(), identifier.getReference().toString());
-        }
 
         return true;
     }
@@ -161,11 +156,8 @@ public class RenderRegistry implements IRenderRegistry {
     }
 
     @Override
-    public IModelIdentifier registerFlatItemModel(ResourceReference texture, IRenderTransformationProvider provider) {
-        ResourceLocation res = new ResourceLocation(Blacksmith.MOD_ID, "builtin_" + flatItemModels.size());
-        ModelIdentifier identifier = new ModelIdentifier(res, "builtin_" + flatItemModels.size());
-        flatItemModels.put(res, new ImmutablePair<ResourceLocation, IRenderTransformationProvider>(MCInterface.toResourceLocation(texture), provider));
-        return identifier;
+    public IModelRegistry getModelRegistry() {
+        return modelRegistry;
     }
 
     public ITileEntityRenderer getTileEntityRenderer(Class<? extends ITileEntityDefinition> def) {
@@ -174,34 +166,17 @@ public class RenderRegistry implements IRenderRegistry {
 
     public Set<String> getRegisteredDomains() {
         HashSet<String> domains = new HashSet<>();
-        for (ResourceLocation res : models.keySet()) {
-            domains.add(res.getResourceDomain());
-        }
+        domains.add(Blacksmith.MOD_ID);
         return domains;
     }
 
     public IModel getModel(ResourceLocation modelLocation) {
-        if (models.containsKey(modelLocation)) {
-            IRenderModel model = models.get(modelLocation);
-            return new BS_GeneratedModel(model);
-        }
-        String path = modelLocation.getResourcePath().replace("models/item/", "").replace("models/block/", "");
-        ResourceLocation loc = new ResourceLocation(modelLocation.getResourceDomain(), path);
-        if (flatItemModels.containsKey(loc)) {
-            return new BS_ItemLayerModel(ImmutableList.of(flatItemModels.get(loc).getLeft()), flatItemModels.get(loc).getRight());
-        }
-        return null;
+        IModelIdentifier identifier = locationToIdentifier.get(modelLocation);
+        return modelRegistry.getModel(identifier);
     }
 
     public boolean hasModelForLocation(ResourceLocation modelLocation) {
-        if (models.containsKey(modelLocation)) {
-            return true;
-        }
-        String path = modelLocation.getResourcePath().replace("models/item/", "").replace("models/block/", "");
-        if (flatItemModels.containsKey(new ResourceLocation(modelLocation.getResourceDomain(), path))) {
-            return true;
-        }
-        return false;
+        return locationToIdentifier.containsKey(modelLocation);
     }
 
     public void onPreInitFinish() {

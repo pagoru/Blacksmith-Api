@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.mod.render.util;
+package net.darkaqua.blacksmith.mod.render;
 
 import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
@@ -10,11 +10,11 @@ import net.minecraft.util.ResourceLocation;
 public class ModelIdentifier implements IModelIdentifier {
 
     private ResourceLocation model;
-    private String variant;
+    private String name;
 
-    public ModelIdentifier(ResourceLocation model, String variant) {
+    public ModelIdentifier(ResourceLocation model, String name) {
         this.model = model;
-        this.variant = variant;
+        this.name = name;
     }
 
     @Override
@@ -23,8 +23,8 @@ public class ModelIdentifier implements IModelIdentifier {
     }
 
     @Override
-    public String getVariant() {
-        return variant;
+    public String getModelName() {
+        return name;
     }
 
     public ResourceLocation getModel() {
@@ -48,6 +48,6 @@ public class ModelIdentifier implements IModelIdentifier {
 
     @Override
     public String toString() {
-        return "ModelIdentifier{model = " + model + "}";
+        return "ModelIdentifier{" + "model=" + model + ", name='" + name + '\'' + '}';
     }
 }

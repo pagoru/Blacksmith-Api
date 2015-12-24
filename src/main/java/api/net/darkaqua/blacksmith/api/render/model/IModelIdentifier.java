@@ -9,5 +9,5 @@ public interface IModelIdentifier{
 
     ResourceReference getReference();
 
-    String getVariant();
+    String getModelName();
 }

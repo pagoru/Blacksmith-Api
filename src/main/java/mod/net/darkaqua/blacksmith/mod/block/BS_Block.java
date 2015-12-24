@@ -25,7 +25,7 @@ public class BS_Block extends Block {
     protected IBlockDefinition definition;
 
     public BS_Block(IBlockDefinition def) {
-        super(Material.iron);//Temp
+        super(Material.rock);//Temp
         definition = def;
         this.fullBlock = this.isOpaqueCube();
         setUnlocalizedName(def.getUnlocalizedName());
@@ -35,6 +35,7 @@ public class BS_Block extends Block {
         setLightLevel(def.getLightEmitted());
         setLightOpacity((int) (def.getLightOpacity() * 255f));
         setResistance(def.getResistance());
+        useNeighborBrightness = false;
     }
 
     public IBlockDefinition getBlockDefinition(){

@@ -8,6 +8,7 @@ import net.darkaqua.blacksmith.api.inventory.IItemStack;
 public abstract class CreativeTabFactory {
 
     protected static CreativeTabFactory INSTANCE;
+
     public static ICreativeTab BLOCKS_TAB;
     public static ICreativeTab DECORATIONS_TAB;
     public static ICreativeTab REDSTONE_TAB;

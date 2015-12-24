@@ -8,10 +8,12 @@ import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.event.FMLEventRedirect;
+import net.darkaqua.blacksmith.mod.fluid.BS_FluidStackFactory;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.registry.Game;
+import net.darkaqua.blacksmith.mod.registry.RenderManager;
 import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.registry.ResourceManager;
 import net.darkaqua.blacksmith.mod.render.BS_CustomModelLoader;
@@ -67,6 +69,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     public static void debug() {
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+//        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock()
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 
@@ -75,8 +78,8 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
-
         FMLEventRedirect.init();
+        BS_FluidStackFactory.init();
         IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
         manager.registerReloadListener(ResourceManager.INSTANCE);
         if (Game.INSTANCE.isClient()) {
@@ -94,6 +97,9 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
+        if (Game.INSTANCE.isClient()) {
+            RenderManager.init();
+        }
         ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }

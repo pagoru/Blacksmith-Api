@@ -21,6 +21,10 @@ public interface IGame {
 
     IOreDictionary getOreDictionary();
 
+    IFluidRegistry getFluidRegistry();
+
+    IRecipeRegistry getRecipeRegistry();
+
     boolean isClient();
 
     boolean isServer();

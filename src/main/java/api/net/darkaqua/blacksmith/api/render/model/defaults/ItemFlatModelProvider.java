@@ -1,12 +1,12 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
-import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.registry.StaticAccess;
+import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,13 +15,17 @@ import java.util.List;
 public class ItemFlatModelProvider implements IItemModelProvider {
 
     protected IModelIdentifier identifier;
+    protected ResourceReference texture;
+    protected IRenderTransformationProvider provider;
 
     public ItemFlatModelProvider(ResourceReference texture){
-        identifier = StaticAccess.GAME.getRenderRegistry().registerFlatItemModel(texture, new RenderTransformationProvider());
+        this.texture = texture;
+        this.provider = new RenderTransformationProvider();
     }
 
     public ItemFlatModelProvider(ResourceReference texture, IRenderTransformationProvider provider){
-        identifier = StaticAccess.GAME.getRenderRegistry().registerFlatItemModel(texture, provider);
+        this.texture = texture;
+        this.provider = provider;
     }
 
     @Override
@@ -30,16 +34,13 @@ public class ItemFlatModelProvider implements IItemModelProvider {
     }
 
     @Override
-    public void bindModelIdentifier(IRenderModel model, IModelIdentifier identifier) {}
-
-    @Override
-    public List<IRenderModel> getAllModels() {
-        return Lists.newArrayList();
+    public void registerModels(IModelRegistry registry) {
+        identifier = registry.registerFlatItemModel(texture, provider);
     }
 
     @Override
-    public List<IModelIdentifier> getExtraModels() {
-        return Lists.newArrayList(identifier);
+    public List<IModelIdentifier> getValidModels() {
+        return Arrays.asList(identifier);
     }
 
     public static class RenderTransformationProvider implements IRenderTransformationProvider{

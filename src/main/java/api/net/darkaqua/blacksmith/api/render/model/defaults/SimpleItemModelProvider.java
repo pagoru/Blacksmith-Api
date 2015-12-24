@@ -1,11 +1,12 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
-import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
 import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,19 +27,14 @@ public class SimpleItemModelProvider implements IItemModelProvider {
     }
 
     @Override
-    public void bindModelIdentifier(IRenderModel model, IModelIdentifier identifier) {
-        this.identifier = identifier;
+    public void registerModels(IModelRegistry registry) {
+        identifier = registry.registerRenderModel(model);
     }
 
     @Override
-    public List<IRenderModel> getAllModels() {
-        List<IRenderModel> list = Lists.newArrayList();
-        list.add(model);
-        return list;
+    public List<IModelIdentifier> getValidModels() {
+        return Arrays.asList(identifier);
     }
 
-    @Override
-    public List<IModelIdentifier> getExtraModels() {
-        return Lists.newArrayList();
-    }
+
 }

@@ -2,6 +2,7 @@ package com.cout970.testmod;
 
 import com.cout970.testmod.blocks.TestBlock;
 import com.cout970.testmod.items.TestItem;
+import net.darkaqua.blacksmith.api.block.Blocks;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.config.ConfigurationFactory;
@@ -10,6 +11,7 @@ import net.darkaqua.blacksmith.api.event.EventSubscribe;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
+import net.darkaqua.blacksmith.api.item.Items;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.render.model.defaults.ItemFlatModelProvider;
@@ -52,6 +54,8 @@ public class ModClass {
         blockModel.addModelPart(new SimpleModelPartBlock(new ResourceReference("mod_id", "blocks/texture_name")));
         SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(blockModel);
         StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, blockProvider);
+
+        StaticAccess.GAME.getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);
         Log.debug("TestMod preinit done");
     }
 

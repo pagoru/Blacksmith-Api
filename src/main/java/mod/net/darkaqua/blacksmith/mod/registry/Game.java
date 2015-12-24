@@ -55,6 +55,16 @@ public class Game implements IGame{
     }
 
     @Override
+    public IFluidRegistry getFluidRegistry() {
+        return FluidRegistryManager.INSTANCE;
+    }
+
+    @Override
+    public IRecipeRegistry getRecipeRegistry() {
+        return RecipeRegistry.INSTANCE;
+    }
+
+    @Override
     public boolean isClient() {
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
     }

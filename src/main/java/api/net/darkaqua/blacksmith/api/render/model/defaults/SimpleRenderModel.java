@@ -55,6 +55,25 @@ public class SimpleRenderModel implements IRenderModel {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SimpleRenderModel)) return false;
+
+        SimpleRenderModel that = (SimpleRenderModel) o;
+
+        if (parts != null ? !parts.equals(that.parts) : that.parts != null) return false;
+        return !(textures != null ? !textures.equals(that.textures) : that.textures != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = parts != null ? parts.hashCode() : 0;
+        result = 31 * result + (textures != null ? textures.hashCode() : 0);
+        return result;
     }
 }

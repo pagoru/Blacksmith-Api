@@ -27,7 +27,6 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
 
     @Override
     public InputStream getInputStream(ResourceLocation res) throws IOException {
-
         File file = getFile(res);
         return new BufferedInputStream(new FileInputStream(file));
     }
@@ -46,7 +45,7 @@ public class BS_ResourceLoader implements IResourcePack, IResourceManagerReloadL
     }
 
     @Override
-    public Set getResourceDomains() {
+    public Set<String> getResourceDomains() {
         if(cache == null) {
             cache = RenderRegistry.INSTANCE.getRegisteredDomains();
         }

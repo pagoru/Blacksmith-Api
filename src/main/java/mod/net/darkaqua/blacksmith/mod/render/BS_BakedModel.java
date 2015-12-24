@@ -1,21 +1,22 @@
-package net.darkaqua.blacksmith.mod.render.util;
+package net.darkaqua.blacksmith.mod.render;
 
 import com.google.common.base.Function;
+import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.util.Vect2d;
 import net.darkaqua.blacksmith.api.util.Vect3d;
-import net.darkaqua.blacksmith.mod.render.BS_GeneratedModel;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
-import net.minecraftforge.client.model.IModelState;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.BufferUtils;
@@ -28,7 +29,7 @@ import java.util.*;
 /**
  * Created by cout970 on 07/12/2015.
  */
-public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareModel {
+public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareModel, ISmartBlockModel, ISmartItemModel {
 
     private EnumMap<EnumFacing, List<BakedQuad>> quads;
     private List<BakedQuad> generalQuads;
@@ -217,5 +218,15 @@ public class BS_BakedModel implements IFlexibleBakedModel, IPerspectiveAwareMode
             default:
                 return RenderPlace.NONE;
         }
+    }
+
+    @Override
+    public IBakedModel handleBlockState(IBlockState state) {
+        return this;
+    }
+
+    @Override
+    public IBakedModel handleItemState(ItemStack stack) {
+        return this;
     }
 }
