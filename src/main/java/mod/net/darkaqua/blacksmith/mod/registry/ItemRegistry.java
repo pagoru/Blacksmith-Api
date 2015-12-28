@@ -3,7 +3,7 @@ package net.darkaqua.blacksmith.mod.registry;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.registry.IItemRegistry;
-import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.item.BS_Item;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
@@ -103,7 +103,7 @@ public class ItemRegistry implements IItemRegistry {
         private Item mcItem;
         private String identifier;
         private String modID;
-        private Map<IModelIdentifier, ModelResourceLocation> itemModels;
+        private Map<IModelPartIdentifier, ModelResourceLocation> itemModels;
 
         public RegisteredItem(IItemDefinition definition, IItem item, Item mcItem, String modID, String identifier) {
             this.definition = definition;
@@ -134,11 +134,11 @@ public class ItemRegistry implements IItemRegistry {
             return modID;
         }
 
-        public ModelResourceLocation getModelResourceLocation(IModelIdentifier i) {
+        public ModelResourceLocation getModelResourceLocation(IModelPartIdentifier i) {
             return itemModels.get(i);
         }
 
-        public void addModel(IModelIdentifier i, ModelResourceLocation model){
+        public void addModel(IModelPartIdentifier i, ModelResourceLocation model){
             itemModels.put(i, model);
         }
     }

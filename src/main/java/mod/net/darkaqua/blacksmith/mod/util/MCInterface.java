@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod.util;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.block.IIProperty;
+import net.darkaqua.blacksmith.api.container.ISlotDefinition;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
@@ -13,16 +14,14 @@ import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
+import net.darkaqua.blacksmith.api.network.packet.IPacket;
 import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.storage.IDataList;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
-import net.darkaqua.blacksmith.api.util.Cube;
-import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
-import net.darkaqua.blacksmith.api.util.Vect3i;
+import net.darkaqua.blacksmith.api.util.*;
 import net.darkaqua.blacksmith.api.world.IChunk;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 import net.darkaqua.blacksmith.api.world.IIChunkProvider;
@@ -30,11 +29,13 @@ import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IPropertyWrapper;
+import net.darkaqua.blacksmith.mod.container.BS_Slot;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidStackWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidWrapper;
+import net.darkaqua.blacksmith.mod.inventory.InventoryHandlerWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SimpleInventoryWrapper;
@@ -62,11 +63,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -79,6 +82,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
 
 
 public class MCInterface {
@@ -394,5 +398,32 @@ public class MCInterface {
             return ((InventoryCraftingWrapper) grid).getInventory();
         }
         return null;
+    }
+
+    public static Side toSide(GameSide gameSide) {
+        if (gameSide == null) return null;
+        return Side.values()[gameSide.ordinal()];
+    }
+
+    public static IPacket<?> fromPacket(Packet<?> packet) {
+        //TODO
+        return null;
+    }
+
+    public static Slot toSlot(ISlotDefinition slot) {
+        if (slot == null) return null;
+        return new BS_Slot(slot);
+    }
+
+    public static ISlotDefinition fromSlot(Slot slot) {
+        if (slot instanceof BS_Slot){
+            return ((BS_Slot) slot).getDefinition();
+        }
+        return null;
+    }
+
+    public static IInventory toInventory(IInventoryHandler inv) {
+        if (inv == null) return null;
+        return new InventoryHandlerWrapper(inv);
     }
 }

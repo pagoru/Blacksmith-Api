@@ -7,13 +7,17 @@ import java.util.List;
 /**
  * Created by cout970 on 07/12/2015.
  */
-public interface IRenderModel extends IRenderTransformationProvider{
+public interface IRenderModel{
 
     String getName();
 
-    List<ResourceReference> getTextures();
+    RenderTransformation getTransformation(RenderPlace place);
 
-    List<IModelPart> getSubParts();
+    List<IModelPartIdentifier> getParts();
 
     boolean useAmbientOcclusion();
+
+    ResourceReference getParticleTexture();
+
+    boolean needsInventoryRotation();
 }

@@ -1,12 +1,12 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
+import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,36 +14,40 @@ import java.util.List;
  */
 public class ItemFlatModelProvider implements IItemModelProvider {
 
-    protected IModelIdentifier identifier;
+    protected IModelPartIdentifier identifier;
     protected ResourceReference texture;
-    protected IRenderTransformationProvider provider;
+    protected IRenderModel model;
 
     public ItemFlatModelProvider(ResourceReference texture){
         this.texture = texture;
-        this.provider = new RenderTransformationProvider();
-    }
-
-    public ItemFlatModelProvider(ResourceReference texture, IRenderTransformationProvider provider){
-        this.texture = texture;
-        this.provider = provider;
     }
 
     @Override
-    public IModelIdentifier getModelForVariant(IItemStack stack) {
-        return identifier;
+    public IRenderModel getModelForVariant(IItemStack stack) {
+        if(model == null){
+            model = new ItemFlatModel(identifier);
+        }
+        return model;
     }
 
     @Override
     public void registerModels(IModelRegistry registry) {
-        identifier = registry.registerFlatItemModel(texture, provider);
+        identifier = registry.registerFlatItemModel(texture);
     }
 
-    @Override
-    public List<IModelIdentifier> getValidModels() {
-        return Arrays.asList(identifier);
-    }
 
-    public static class RenderTransformationProvider implements IRenderTransformationProvider{
+    public static class ItemFlatModel implements IRenderModel{
+
+        private IModelPartIdentifier component;
+
+        public ItemFlatModel(IModelPartIdentifier component) {
+            this.component = component;
+        }
+
+        @Override
+        public String getName() {
+            return "FlatItemModel";
+        }
 
         @Override
         public RenderTransformation getTransformation(RenderPlace place) {
@@ -53,6 +57,26 @@ public class ItemFlatModelProvider implements IItemModelProvider {
                 return new RenderTransformation(new Vect3d(0, 4, 2).multiply(1/16d), new Vect3d(0, -135, 25), new Vect3d(1.7, 1.7, 1.7));
             }
             return null;
+        }
+
+        @Override
+        public List<IModelPartIdentifier> getParts() {
+            return Lists.newArrayList(component);
+        }
+
+        @Override
+        public boolean useAmbientOcclusion() {
+            return true;
+        }
+
+        @Override
+        public ResourceReference getParticleTexture() {
+            return null;
+        }
+
+        @Override
+        public boolean needsInventoryRotation() {
+            return false;
         }
     }
 }

@@ -65,6 +65,11 @@ public class Game implements IGame{
     }
 
     @Override
+    public IGuiRegistry getGuiRegistry() {
+        return GuiRegistry.INSTANCE;
+    }
+
+    @Override
     public boolean isClient() {
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
     }

@@ -2,7 +2,10 @@ package net.darkaqua.blacksmith.api.render.model.defaults;
 
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.IModelQuad;
-import net.darkaqua.blacksmith.api.util.*;
+import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
+import net.darkaqua.blacksmith.api.util.Vect2d;
+import net.darkaqua.blacksmith.api.util.Vect3d;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -27,10 +30,6 @@ public class SimpleModelPartBlock implements IModelPart {
     public SimpleModelPartBlock(EnumMap<Direction, ResourceReference> textures) {
         this.textures = new EnumMap<>(textures);
         generateQuads();
-    }
-
-    private SimpleModelPartBlock() {
-        textures = new EnumMap<>(Direction.class);
     }
 
     @Override

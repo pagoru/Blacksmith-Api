@@ -3,11 +3,8 @@ package net.darkaqua.blacksmith.api.render.techne;
 import net.darkaqua.blacksmith.api.registry.IResourceManager;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
-import net.darkaqua.blacksmith.api.render.model.RenderPlace;
-import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
-import net.darkaqua.blacksmith.api.render.model.defaults.SimpleModelPartCube;
-import net.darkaqua.blacksmith.api.render.model.defaults.SimpleRenderModel;
+import net.darkaqua.blacksmith.api.render.model.IModelQuad;
+import net.darkaqua.blacksmith.api.render.model.defaults.ModelPartTechneCube;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 import net.darkaqua.blacksmith.api.util.Vect3d;
@@ -41,7 +38,7 @@ public class TechneModelLoader {
             "de81aa14-bd60-4228-8d8d-5238bcd3caaa"
     );
 
-    public static IRenderModel loadModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
+    public static IModelPart loadModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
 
 
         List<IModelPart> parts = new LinkedList<>();
@@ -184,7 +181,7 @@ public class TechneModelLoader {
                             Math.toRadians(Float.parseFloat(rotation[1])),
                             Math.toRadians(Float.parseFloat(rotation[2])));
 
-                    SimpleModelPartCube cube = new SimpleModelPartCube(textureReference);
+                    ModelPartTechneCube cube = new ModelPartTechneCube(textureReference);
 
                     cube.setSize(cubeSize.multiply(1 / 16d));
                     cube.setPosition(cubePosition.multiply(1 / 16d).add(0.5, -0.5, 0.5));
@@ -209,16 +206,28 @@ public class TechneModelLoader {
             throw new ModelFormatException("Model " + file + " contains invalid XML", e);
         }
 
-        SimpleRenderModel model = new SimpleRenderModel() {
-            @Override
-            public RenderTransformation getTransformation(RenderPlace place) {
-                //For some reason techne models are inverted
-                return new RenderTransformation(Vect3d.nullVector(), new Vect3d(180, 0, 0), new Vect3d(1, 1, 1));
-            }
-        };
-        for (IModelPart part : parts) {
-            model.addModelPart(part);
+        return new TechneModelPart(parts);
+    }
+
+    public static class TechneModelPart implements IModelPart{
+
+        protected List<IModelPart> modelParts;
+
+        public TechneModelPart(List<IModelPart> modelParts) {
+            this.modelParts = modelParts;
         }
-        return model;
+
+        public List<IModelPart> getModelParts() {
+            return modelParts;
+        }
+
+        @Override
+        public List<IModelQuad> getQuads() {
+            List<IModelQuad> list = new LinkedList<>();
+            for(IModelPart part : modelParts){
+                list.addAll(part.getQuads());
+            }
+            return list;
+        }
     }
 }

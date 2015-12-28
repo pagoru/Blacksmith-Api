@@ -92,6 +92,30 @@ public class ItemStackWrapper implements IItemStack{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ItemStackWrapper)) return false;
+
+        ItemStackWrapper that = (ItemStackWrapper) o;
+
+        return !(stack != null ? !stack.equals(that.stack) : that.stack != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return stack != null ? stack.hashCode() : 0;
+    }
+
+    @Override
+    public String
+    toString() {
+        return "ItemStackWrapper{" +
+                "stack=" + stack +
+                '}';
+    }
+
+    @Override
     public Object getInternalItemStack() {
         return stack;
     }

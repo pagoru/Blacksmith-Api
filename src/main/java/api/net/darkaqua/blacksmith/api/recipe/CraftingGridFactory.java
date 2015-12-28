@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.recipe;
 
-import net.darkaqua.blacksmith.api.inventory.container.IContainer;
+import net.darkaqua.blacksmith.api.container.IContainer;
 
 /**
  * Created by cout970 on 23/12/2015.

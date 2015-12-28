@@ -28,6 +28,4 @@ public interface IItemStack {
     String getDisplayName();
 
     Object getInternalItemStack();
-
-
 }

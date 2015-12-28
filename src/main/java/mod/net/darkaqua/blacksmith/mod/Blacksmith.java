@@ -5,33 +5,27 @@ import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.mod.block.blockstate.BS_BlockStateFactory;
 import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
+import net.darkaqua.blacksmith.mod.container.BS_ContainerFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.event.FMLEventRedirect;
 import net.darkaqua.blacksmith.mod.fluid.BS_FluidStackFactory;
+import net.darkaqua.blacksmith.mod.gui.BS_GuiFactory;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
-import net.darkaqua.blacksmith.mod.registry.Game;
-import net.darkaqua.blacksmith.mod.registry.RenderManager;
-import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
-import net.darkaqua.blacksmith.mod.registry.ResourceManager;
-import net.darkaqua.blacksmith.mod.render.BS_CustomModelLoader;
+import net.darkaqua.blacksmith.mod.network.BS_NetworkChannelFactory;
+import net.darkaqua.blacksmith.mod.registry.*;
 import net.darkaqua.blacksmith.mod.render.BS_TileEntityRenderer;
 import net.darkaqua.blacksmith.mod.storage.BS_DataElementFactory;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_ObjectScanner;
-import net.darkaqua.blacksmith.mod.util.BS_ResourceLoader;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.ModContainerFactory;
-import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -64,12 +58,15 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_ConfigurationFactory.init();
         BS_ObjectScanner.init();
         BS_DataElementFactory.init();
+        BS_ContainerFactory.init();
+        BS_GuiFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
     }
 
     public static void debug() {
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 //        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock()
+//        IModel
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 
@@ -78,29 +75,37 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
-        FMLEventRedirect.init();
-        BS_FluidStackFactory.init();
-        IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
-        manager.registerReloadListener(ResourceManager.INSTANCE);
-        if (Game.INSTANCE.isClient()) {
-            MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
-            manager.registerReloadListener(BS_ResourceLoader.INSTANCE);
-            ModelLoaderRegistry.registerLoader(BS_CustomModelLoader.INSTANCE);
-            ClientRegistry.bindTileEntitySpecialRenderer(BS_TileEntity.class, BS_TileEntityRenderer.INSTANCE);
+        try {
+            debug();
+            FMLEventRedirect.init();
+            BS_FluidStackFactory.init();
+            BS_NetworkChannelFactory.init();
+            IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+            manager.registerReloadListener(ResourceManager.INSTANCE);
+            if (Game.INSTANCE.isClient()) {
+                MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
+                MinecraftForge.EVENT_BUS.register(ModelRegistry.INSTANCE);
+                ClientRegistry.bindTileEntitySpecialRenderer(BS_TileEntity.class, BS_TileEntityRenderer.INSTANCE);
+            }
+            GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
+            ModLoaderManager.firePreInit(event);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
-        ModLoaderManager.firePreInit(event);
-        RenderRegistry.INSTANCE.onPreInitFinish();
         Log.info("PreInitEvent done");
     }
 
     @Subscribe
     public void Init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
-        if (Game.INSTANCE.isClient()) {
-            RenderManager.init();
+        try {
+            if (Game.INSTANCE.isClient()) {
+                RenderManager.init();
+            }
+            ModLoaderManager.fireInit(event);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ModLoaderManager.fireInit(event);
         Log.info("InitEvent done");
     }
 
@@ -121,7 +126,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     @Override
     public Object getMod() {
-        return this;
+        return INSTANCE;
     }
 
     @Override
@@ -147,6 +152,12 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     @Override
     public String getDisplayVersion() {
         return getVersion();
+    }
+
+    @Override
+    public boolean isImmutable()
+    {
+        return false;
     }
 
     //  IFMLLoadingPlugin code

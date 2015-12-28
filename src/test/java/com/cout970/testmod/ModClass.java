@@ -1,23 +1,26 @@
 package com.cout970.testmod;
 
 import com.cout970.testmod.blocks.TestBlock;
+import com.cout970.testmod.gui.GuiTestHandler;
 import com.cout970.testmod.items.TestItem;
+import com.cout970.testmod.network.NetworkManager;
 import net.darkaqua.blacksmith.api.block.Blocks;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.config.ConfigurationFactory;
 import net.darkaqua.blacksmith.api.config.IConfiguration;
 import net.darkaqua.blacksmith.api.event.EventSubscribe;
+import net.darkaqua.blacksmith.api.event.modloader.IInitEvent;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.item.Items;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
+import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.render.model.defaults.ItemFlatModelProvider;
 import net.darkaqua.blacksmith.api.render.model.defaults.SimpleBlockModelProvider;
 import net.darkaqua.blacksmith.api.render.model.defaults.SimpleModelPartBlock;
-import net.darkaqua.blacksmith.api.render.model.defaults.SimpleRenderModel;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.mod.util.Log;
 
@@ -33,12 +36,16 @@ public class ModClass {
     public static final String MOD_NAME = "mod_name";
     public static final String MOD_VERSION = "mod_version";
 
+    @ModInstance
+    public static ModClass instance;
+
     public static IBlock block;
     public static IItem item;
 
     @EventSubscribe
     public void preInit(IPreInitEvent event) {
         Log.debug("TestMod preinit");
+        Log.debug("Mos instance: "+instance);
         IBlockDefinition blockDef = new TestBlock();
         IItemDefinition itemDef = new TestItem();
         block = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
@@ -48,15 +55,22 @@ public class ModClass {
 //        SimpleItemModelProvider itemProvider = new SimpleItemModelProvider(model);
 //        StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef, itemProvider);
         StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
-                new ItemFlatModelProvider(new ResourceReference(MOD_ID, "blocks/texture_name")));
+                new ItemFlatModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
 
-        SimpleRenderModel blockModel = new SimpleRenderModel();
-        blockModel.addModelPart(new SimpleModelPartBlock(new ResourceReference("mod_id", "blocks/texture_name")));
-        SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(blockModel);
+        SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(new SimpleModelPartBlock(new ResourceReference(MOD_ID, "blocks/texture_name")));
         StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, blockProvider);
 
         StaticAccess.GAME.getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);
+        NetworkManager.init();
+
         Log.debug("TestMod preinit done");
+    }
+
+    @EventSubscribe
+    public void init(IInitEvent event){
+        Log.debug("TestMod init");
+        StaticAccess.GAME.getGuiRegistry().registerGuiCreationHandler(new GuiTestHandler());
+        Log.debug("TestMod init done");
     }
 
 

@@ -6,26 +6,31 @@ import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
 import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
 import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
-import net.darkaqua.blacksmith.mod.Blacksmith;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
-import net.darkaqua.blacksmith.mod.render.JsonCreator;
+import net.darkaqua.blacksmith.mod.render.model.BakedBlockModel;
+import net.darkaqua.blacksmith.mod.render.model.BakedItemModel;
+import net.darkaqua.blacksmith.mod.render.model.ItemBlockModelProvider;
+import net.darkaqua.blacksmith.mod.render.model.RenderModelWrapper;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by cout970 on 07/12/2015.
@@ -34,11 +39,14 @@ public class RenderRegistry implements IRenderRegistry {
 
     public static final RenderRegistry INSTANCE = new RenderRegistry();
     private static ModelRegistry modelRegistry = ModelRegistry.INSTANCE;
-    private static Map<ResourceLocation, IModelIdentifier> locationToIdentifier = new HashMap<>();
     private static Map<Class<? extends ITileEntityDefinition>, ITileEntityRenderer> tileRenders = new HashMap<>();
 
-    private RenderRegistry() {
-    }
+    private static Map<ModelResourceLocation, IBakedModel> locationToBakedModel = new HashMap<>();
+    private static Map<Block, IBlockModelProvider> registeredBlockModelProviders = new HashMap<>();
+    private static Map<Item, IItemModelProvider> registeredItemModelProviders = new HashMap<>();
+    private static Map<IRenderModel, IBakedModel> modelCache = new HashMap<>();
+
+    private RenderRegistry() {}
 
     @Override
     public boolean registerBlockModelProvider(IBlockDefinition def, final IBlockModelProvider provider) {
@@ -50,54 +58,34 @@ public class RenderRegistry implements IRenderRegistry {
         if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in block model provider registration: null");
 
-        final BlockRegistry.RegisteredBlock reg = BlockRegistry.INSTANCE.getRegistrationData(def);
+        BlockRegistry.RegisteredBlock reg = BlockRegistry.INSTANCE.getRegistrationData(def);
 
         if (reg == null)
             return false;
-        final String blockIdentifier = reg.getIdentifier();
 
-        provider.registerModels(modelRegistry);
-        Map<ResourceLocation, IModelIdentifier> inverseMap = new HashMap<>();
-
-        for(IModelIdentifier model : provider.getValidModels()){
-            ResourceLocation resource = new ResourceLocation(Blacksmith.MOD_ID, blockIdentifier);
-            reg.addModel(model, resource);
-            inverseMap.put(resource, model);
-            locationToIdentifier.put(new ResourceLocation(resource.getResourceDomain(), "models/block/"+resource.getResourcePath()+"/"+model.getModelName()), model);
-        }
-
-        //block
-        StateMapperBase stateMapper = new StateMapperBase() {
-
+        ModelLoader.setCustomStateMapper(reg.getBlock(), new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromIBlockState(state));
-                String stateName = getPropertyString(state.getProperties());
-                return new ModelResourceLocation(reg.getResourceLocation(identifier), stateName);
+                return new ModelResourceLocation(Block.blockRegistry.getNameForObject(state.getBlock()), "normal");
             }
-        };
+        });
 
-        for(Map.Entry<IBlockState, ModelResourceLocation> e : stateMapper.putStateModelLocations(reg.getBlock()).entrySet()){
-            IModelIdentifier identifier = inverseMap.get(new ResourceLocation(e.getValue().getResourceDomain(), e.getValue().getResourcePath()));
-            reg.addJsonState(new ModelResourceLocation(e.getValue().getResourceDomain()+":"+e.getValue().getResourcePath()+"/"+identifier.getModelName(), e.getValue().getVariant()));
-        }
+        locationToBakedModel.put(new ModelResourceLocation(Block.blockRegistry.getNameForObject(reg.getBlock()), "normal"), new BakedBlockModel(reg.getBlock()));
+        registeredBlockModelProviders.put(reg.getBlock(), provider);
+        provider.registerModels(modelRegistry);
 
-        ModelLoader.setCustomStateMapper(reg.getBlock(), stateMapper);
-
-        //itemblock
-        IModelIdentifier itemBlockModel = provider.getModelForVariant(MCInterface.fromIBlockState(reg.getBlock().getDefaultState()));
-        String itemIdentifier = reg.getItemBlock().getUnlocalizedName();
-
-        final ResourceLocation resource = new ResourceLocation(Blacksmith.MOD_ID, itemIdentifier+"/"+itemBlockModel.getModelName());
-        ModelLoader.addVariantName(reg.getItemBlock(), resource.toString());
-        locationToIdentifier.put(new ResourceLocation(resource.getResourceDomain(), "models/item/"+resource.getResourcePath()), itemBlockModel);
 
         ModelLoader.setCustomMeshDefinition(reg.getItemBlock(), new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return new ModelResourceLocation(resource, "inventory");
+                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "inventory");
             }
         });
+
+        IRenderModel itemBlockModel = provider.getModelForVariant(MCInterface.fromIBlockState(reg.getBlock().getDefaultState()));
+        locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItemBlock()), "inventory"), new BakedItemModel());
+        registeredItemModelProviders.put(reg.getItemBlock(), new ItemBlockModelProvider(itemBlockModel));
+
         return true;
     }
 
@@ -114,33 +102,21 @@ public class RenderRegistry implements IRenderRegistry {
         if(provider == null)
             throw new NullPointerException("Invalid IItemModelProvider: null");
 
-        final ItemRegistry.RegisteredItem reg = ItemRegistry.INSTANCE.getRegistrationData(def);
+        ItemRegistry.RegisteredItem reg = ItemRegistry.INSTANCE.getRegistrationData(def);
 
         if (reg == null)
             return false;
 
-        provider.registerModels(modelRegistry);
-
-        String itemIdentifier = reg.getIdentifier();
-
-        List<IModelIdentifier> identifiers = provider.getValidModels();
-        if(identifiers == null)
-            throw new NullPointerException("Invalid IItemModelProvider.getValidModels(): null");
-        for(IModelIdentifier model : identifiers){
-            ResourceLocation resource = new ResourceLocation(Blacksmith.MOD_ID, itemIdentifier+"/"+model.getModelName());
-            ModelLoader.addVariantName(reg.getItem(), resource.toString());
-            reg.addModel(model, new ModelResourceLocation(resource, "inventory"));
-            locationToIdentifier.put(new ResourceLocation(resource.getResourceDomain(), "models/item/"+resource.getResourcePath()), model);
-        }
-
         ModelLoader.setCustomMeshDefinition(reg.getItem(), new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                IModelIdentifier identifier = provider.getModelForVariant(MCInterface.fromItemStack(stack));
-                return reg.getModelResourceLocation(identifier);
+                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "normal");
             }
         });
 
+        locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItem()), "normal"), new BakedItemModel());
+        registeredItemModelProviders.put(reg.getItem(), provider);
+        provider.registerModels(modelRegistry);
         return true;
     }
 
@@ -164,49 +140,27 @@ public class RenderRegistry implements IRenderRegistry {
         return tileRenders.get(def);
     }
 
-    public Set<String> getRegisteredDomains() {
-        HashSet<String> domains = new HashSet<>();
-        domains.add(Blacksmith.MOD_ID);
-        return domains;
+    @SubscribeEvent
+    public void onBakedEvent(ModelBakeEvent event){
+        for(Map.Entry<ModelResourceLocation, IBakedModel> e : locationToBakedModel.entrySet()){
+            event.modelRegistry.putObject(e.getKey(), e.getValue());
+        }
+        ModelRegistry.bakeModels();
     }
 
-    public IModel getModel(ResourceLocation modelLocation) {
-        IModelIdentifier identifier = locationToIdentifier.get(modelLocation);
-        return modelRegistry.getModel(identifier);
+    public IBlockModelProvider getBlockModelProvider(Block block) {
+        return registeredBlockModelProviders.get(block);
     }
 
-    public boolean hasModelForLocation(ResourceLocation modelLocation) {
-        return locationToIdentifier.containsKey(modelLocation);
+    public IItemModelProvider getItemModelProvider(Item item) {
+        return registeredItemModelProviders.get(item);
     }
 
-    public void onPreInitFinish() {
-        for (BlockRegistry.RegisteredBlock block : BlockRegistry.INSTANCE.getAllRegisteredBlocks()) {
-            JsonCreator.createBlockStateJson(block);
+    public IBakedModel getBakedModel(IRenderModel id) {
+        if (id == null)return null;
+        if(!modelCache.containsKey(id)){
+            modelCache.put(id, new RenderModelWrapper(id));
         }
-    }
-
-    public static class ItemRenderRegister {
-
-        private Item item;
-        private int meta;
-        private ModelResourceLocation location;
-
-        public ItemRenderRegister(Item item, int meta, ModelResourceLocation location) {
-            this.item = item;
-            this.meta = meta;
-            this.location = location;
-        }
-
-        public Item getItem() {
-            return item;
-        }
-
-        public int getMeta() {
-            return meta;
-        }
-
-        public ModelResourceLocation getLocation() {
-            return location;
-        }
+        return modelCache.get(id);
     }
 }

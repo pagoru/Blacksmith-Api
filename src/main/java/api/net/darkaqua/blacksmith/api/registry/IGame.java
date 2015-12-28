@@ -25,6 +25,8 @@ public interface IGame {
 
     IRecipeRegistry getRecipeRegistry();
 
+    IGuiRegistry getGuiRegistry();
+
     boolean isClient();
 
     boolean isServer();

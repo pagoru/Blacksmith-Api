@@ -4,7 +4,7 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
-import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
@@ -117,7 +117,7 @@ public class BlockRegistry implements IBlockRegistry {
         private Block mcBlock;
         private String identifier;
         private String modID;
-        private Map<IModelIdentifier, ResourceLocation> blockModels;
+        private Map<IModelPartIdentifier, ResourceLocation> blockModels;
         private List<ModelResourceLocation> jsonStates;
 
         public RegisteredBlock(IBlockDefinition definition, IBlock block, ItemBlock itemBlock, Block mcBlock, String modID, String identifier) {
@@ -155,11 +155,11 @@ public class BlockRegistry implements IBlockRegistry {
             return modID;
         }
 
-        public void addModel(IModelIdentifier identifier, ResourceLocation model){
+        public void addModel(IModelPartIdentifier identifier, ResourceLocation model){
             blockModels.put(identifier, model);
         }
 
-        public ResourceLocation getResourceLocation(IModelIdentifier identifier) {
+        public ResourceLocation getResourceLocation(IModelPartIdentifier identifier) {
             return blockModels.get(identifier);
         }
 

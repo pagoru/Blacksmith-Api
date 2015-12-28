@@ -94,8 +94,6 @@ public class BlacksmithModContainer implements ModContainer {
         }
     }
 
-
-
     @Override
     public String getModId() {
         return (String) modDescriptor.get("id");

@@ -1,12 +1,11 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
+import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
-import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IModelIdentifier;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.*;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,25 +13,64 @@ import java.util.List;
  */
 public class SimpleBlockModelProvider implements IBlockModelProvider{
 
-    private IRenderModel model;
-    private IModelIdentifier identifier;
+    protected IModelPartIdentifier identifier;
+    protected IModelPart component;
+    protected IRenderModel model;
 
-    public SimpleBlockModelProvider(IRenderModel model){
-        this.model = model;
+    public SimpleBlockModelProvider(IModelPart component) {
+        this.component = component;
     }
 
     @Override
-    public IModelIdentifier getModelForVariant(IBlockVariant variant) {
-        return identifier;
+    public IRenderModel getModelForVariant(IBlockVariant variant) {
+        if (model == null){
+            model = new BlockModel(identifier);
+        }
+        return model;
     }
 
     @Override
     public void registerModels(IModelRegistry registry) {
-        identifier = registry.registerRenderModel(model);
+        identifier = registry.registerModelPart(component);
     }
 
-    @Override
-    public List<IModelIdentifier> getValidModels() {
-        return Arrays.asList(identifier);
+
+    public static class BlockModel implements IRenderModel{
+
+        protected IModelPartIdentifier component;
+
+        public BlockModel(IModelPartIdentifier component) {
+            this.component = component;
+        }
+
+        @Override
+        public String getName() {
+            return "BlockModel";
+        }
+
+        @Override
+        public RenderTransformation getTransformation(RenderPlace place) {
+            return null;
+        }
+
+        @Override
+        public List<IModelPartIdentifier> getParts() {
+            return Lists.newArrayList(component);
+        }
+
+        @Override
+        public boolean useAmbientOcclusion() {
+            return true;
+        }
+
+        @Override
+        public ResourceReference getParticleTexture() {
+            return null;
+        }
+
+        @Override
+        public boolean needsInventoryRotation() {
+            return true;
+        }
     }
 }
