@@ -15,6 +15,8 @@ public interface IBlockDefinition {
 
     void onCreate(IBlock block);
 
+    IBlockMaterial getBlockMaterial();
+
     /**
      * The internal name of the block
      * @return the name of the block

@@ -22,6 +22,6 @@ public class TestBlock extends DefaultBlockDefinition implements BlockMethod.OnA
     @Override
     public boolean onActivated(WorldRef ref, IBlockVariant state, IPlayer player, Direction side, Vect3d vector3d) {
         StaticAccess.GAME.getGuiRegistry().openGui(player, ref, 0, ModClass.instance);
-        return false;
+        return true;
     }
 }

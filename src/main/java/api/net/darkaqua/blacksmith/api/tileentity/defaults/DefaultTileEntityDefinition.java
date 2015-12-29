@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.tileentity.defaults;
 
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
-import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
+import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
@@ -35,12 +35,12 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     public void saveData(IDataCompound tag) {}
 
     @Override
-    public IDescriptionPacket getDescriptionPacket() {
+    public ITileEntityUpdatePacket getUpdatePacket() {
         return null;
     }
 
     @Override
-    public void onDescriptionPacketArrives(IDescriptionPacket packet) {}
+    public void onUpdatePacketArrives(ITileEntityUpdatePacket packet) {}
 
     @Override
     public void onChunkUnload() {}

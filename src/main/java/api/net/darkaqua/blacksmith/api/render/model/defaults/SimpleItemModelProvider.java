@@ -25,9 +25,13 @@ public class SimpleItemModelProvider implements IItemModelProvider {
     @Override
     public IRenderModel getModelForVariant(IItemStack stack) {
         if (model == null){
-            model = new ItemModel(identifier);
+            model = createRenderModel();
         }
         return model;
+    }
+
+    public IRenderModel createRenderModel(){
+        return new ItemModel(identifier);
     }
 
     @Override

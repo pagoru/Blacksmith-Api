@@ -22,7 +22,7 @@ public class BS_BlockContainer extends BS_Block implements ITileEntityProvider {
         this.isBlockContainer = true;
     }
 
-    //Block Container method, obfuscated, i don't know what they do
+    //Block Container methods, obfuscated, i don't know what they do
     protected boolean func_181086_a(World p_181086_1_, BlockPos p_181086_2_, EnumFacing p_181086_3_)
     {
         return p_181086_1_.getBlockState(p_181086_2_.offset(p_181086_3_)).getBlock().getMaterial() == Material.cactus;

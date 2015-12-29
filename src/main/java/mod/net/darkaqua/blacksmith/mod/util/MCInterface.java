@@ -1,8 +1,6 @@
 package net.darkaqua.blacksmith.mod.util;
 
-import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
-import net.darkaqua.blacksmith.api.block.IIProperty;
+import net.darkaqua.blacksmith.api.block.*;
 import net.darkaqua.blacksmith.api.container.ISlotDefinition;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
@@ -13,8 +11,8 @@ import net.darkaqua.blacksmith.api.fluid.IFluidStack;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
-import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
 import net.darkaqua.blacksmith.api.network.packet.IPacket;
+import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
@@ -26,7 +24,9 @@ import net.darkaqua.blacksmith.api.world.IChunk;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 import net.darkaqua.blacksmith.api.world.IIChunkProvider;
 import net.darkaqua.blacksmith.api.world.IWorld;
+import net.darkaqua.blacksmith.mod.block.BlockStateWrapper;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
+import net.darkaqua.blacksmith.mod.block.MaterialWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IPropertyWrapper;
 import net.darkaqua.blacksmith.mod.container.BS_Slot;
@@ -52,7 +52,9 @@ import net.darkaqua.blacksmith.mod.world.IBlockAccessWrapper;
 import net.darkaqua.blacksmith.mod.world.IChunkProviderWrapper;
 import net.darkaqua.blacksmith.mod.world.WorldWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -232,12 +234,12 @@ public class MCInterface {
         return null;
     }
 
-    public static IDescriptionPacket toDescriptionPacket(S35PacketUpdateTileEntity pack) {
+    public static ITileEntityUpdatePacket toDescriptionPacket(S35PacketUpdateTileEntity pack) {
         if (pack == null) return null;
         return new DescriptionPacketWrapper(pack);
     }
 
-    public static S35PacketUpdateTileEntity fromDescriptionPacket(IDescriptionPacket pack) {
+    public static S35PacketUpdateTileEntity fromDescriptionPacket(ITileEntityUpdatePacket pack) {
         if (pack instanceof DescriptionPacketWrapper)
             return ((DescriptionPacketWrapper) pack).getPacket();
         return null;
@@ -254,14 +256,14 @@ public class MCInterface {
         return null;
     }
 
-    public static IIProperty fromIProperty(IProperty prop) {
+    public static <T extends Comparable<T>> IIProperty<T> fromIProperty(IProperty<T> prop) {
         if (prop == null) return null;
-        return new IPropertyWrapper(prop);
+        return new IPropertyWrapper<>(prop);
     }
 
-    public static IProperty toIProperty(IIProperty prop) {
+    public static <T extends Comparable<T>> IProperty<T> toIProperty(IIProperty<T> prop) {
         if (prop instanceof IPropertyWrapper)
-            return ((IPropertyWrapper) prop).getIProperty();
+            return ((IPropertyWrapper<T>) prop).getIProperty();
         return null;
     }
 
@@ -425,5 +427,28 @@ public class MCInterface {
     public static IInventory toInventory(IInventoryHandler inv) {
         if (inv == null) return null;
         return new InventoryHandlerWrapper(inv);
+    }
+    public static IBlockMaterial toMaterial(Material mat) {
+        if (mat == null) return null;
+        return new MaterialWrapper(mat);
+    }
+
+    public static Material toMaterial(IBlockMaterial mat) {
+        if (mat instanceof MaterialWrapper){
+            return ((MaterialWrapper) mat).getMaterial();
+        }
+        return null;
+    }
+
+    public static IBlockVariantCreator fromBlockStateCreator(BlockState blockState) {
+        if (blockState == null) return null;
+        return new BlockStateWrapper(blockState);
+    }
+
+    public static BlockState toBlockStateCreator(IBlockVariantCreator blockState) {
+        if (blockState instanceof BlockStateWrapper){
+            return ((BlockStateWrapper) blockState).getBlockState();
+        }
+        return null;
     }
 }

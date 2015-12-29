@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.tileentity;
 
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
-import net.darkaqua.blacksmith.api.network.packet.IDescriptionPacket;
+import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.WorldRef;
@@ -21,9 +21,9 @@ public interface ITileEntityDefinition {
 
     void saveData(IDataCompound tag);
 
-    IDescriptionPacket getDescriptionPacket();
+    ITileEntityUpdatePacket getUpdatePacket();
 
-    void onDescriptionPacketArrives(IDescriptionPacket packet);
+    void onUpdatePacketArrives(ITileEntityUpdatePacket packet);
 
     void onChunkUnload();
 

@@ -3,13 +3,11 @@ package net.darkaqua.blacksmith.mod.registry;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.registry.IItemRegistry;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.item.BS_Item;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
@@ -103,7 +101,6 @@ public class ItemRegistry implements IItemRegistry {
         private Item mcItem;
         private String identifier;
         private String modID;
-        private Map<IModelPartIdentifier, ModelResourceLocation> itemModels;
 
         public RegisteredItem(IItemDefinition definition, IItem item, Item mcItem, String modID, String identifier) {
             this.definition = definition;
@@ -111,7 +108,6 @@ public class ItemRegistry implements IItemRegistry {
             this.mcItem = mcItem;
             this.identifier = identifier;
             this.modID = modID;
-            itemModels = new HashMap<>();
         }
 
         public IItemDefinition getDefinition() {
@@ -132,14 +128,6 @@ public class ItemRegistry implements IItemRegistry {
 
         public String getModID() {
             return modID;
-        }
-
-        public ModelResourceLocation getModelResourceLocation(IModelPartIdentifier i) {
-            return itemModels.get(i);
-        }
-
-        public void addModel(IModelPartIdentifier i, ModelResourceLocation model){
-            itemModels.put(i, model);
         }
     }
 }

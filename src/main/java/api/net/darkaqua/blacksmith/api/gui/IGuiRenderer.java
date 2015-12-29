@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.api.gui;
 
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.Color;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface IGuiRenderer {
     void drawRectangleWithCustomSizedTexture(Vect2i pos, float u, float v, int width, int height, float textureWidth, float textureHeight);
 
     void drawScaledCustomSizeRectangle(Vect2i pos, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight);
+
+    void bindTexture(ResourceReference texture);
 }

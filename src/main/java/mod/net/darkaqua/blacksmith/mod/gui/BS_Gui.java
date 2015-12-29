@@ -7,8 +7,10 @@ import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
 import net.darkaqua.blacksmith.api.gui.IGuiRenderer;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.Color;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 import net.darkaqua.blacksmith.mod.container.BS_Container;
+import net.darkaqua.blacksmith.mod.registry.RenderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
@@ -149,6 +151,11 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     }
 
     @Override
+    public void bindTexture(ResourceReference texture) {
+        RenderManager.INSTANCE.bindTexture(texture);
+    }
+
+    @Override
     public Vect2i getGuiSize() {
         return new Vect2i(xSize, ySize);
     }
@@ -159,7 +166,7 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     }
 
     @Override
-    public Vect2i getWindowStartingPoint() {
+    public Vect2i getGuiStartingPoint() {
         return new Vect2i(guiLeft, guiTop);
     }
 

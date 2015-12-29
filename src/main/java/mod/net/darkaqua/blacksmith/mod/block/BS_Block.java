@@ -7,7 +7,6 @@ import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,8 +24,9 @@ public class BS_Block extends Block {
     protected IBlockDefinition definition;
 
     public BS_Block(IBlockDefinition def) {
-        super(Material.rock);//Temp
+        super(MCInterface.toMaterial(def.getBlockMaterial()));
         definition = def;
+        def.onCreate(MCInterface.fromBlock(this));
         this.fullBlock = this.isOpaqueCube();
         setUnlocalizedName(def.getUnlocalizedName());
         setCreativeTab(MCInterface.fromCreativeTab(def.getCreativeTab()));

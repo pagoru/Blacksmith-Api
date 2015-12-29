@@ -72,11 +72,11 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox, I
     }
 
     public Packet getDescriptionPacket() {
-        return MCInterface.fromDescriptionPacket(def.getDescriptionPacket());
+        return MCInterface.fromDescriptionPacket(def.getUpdatePacket());
     }
 
     public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.S35PacketUpdateTileEntity pkt) {
-        def.onDescriptionPacketArrives(MCInterface.toDescriptionPacket(pkt));
+        def.onUpdatePacketArrives(MCInterface.toDescriptionPacket(pkt));
     }
 
     public double getMaxRenderDistanceSquared() {

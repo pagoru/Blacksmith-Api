@@ -27,7 +27,7 @@ public interface IGui {
 
     Vect2i getWindowSize();
 
-    Vect2i getWindowStartingPoint();
+    Vect2i getGuiStartingPoint();
 
     IGuiRenderer getGuiRenderer();
 

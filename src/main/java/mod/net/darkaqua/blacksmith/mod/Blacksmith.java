@@ -15,6 +15,7 @@ import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.network.BS_NetworkChannelFactory;
+import net.darkaqua.blacksmith.mod.network.packet.BS_PacketFactory;
 import net.darkaqua.blacksmith.mod.registry.*;
 import net.darkaqua.blacksmith.mod.render.BS_TileEntityRenderer;
 import net.darkaqua.blacksmith.mod.storage.BS_DataElementFactory;
@@ -60,6 +61,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_DataElementFactory.init();
         BS_ContainerFactory.init();
         BS_GuiFactory.init();
+        BS_PacketFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
     }
 
@@ -67,6 +69,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 //        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock()
 //        IModel
+
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 
@@ -76,7 +79,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public void preInit(FMLPreInitializationEvent event) {
         Log.info("Starting PreInitEvent");
         try {
-            debug();
             FMLEventRedirect.init();
             BS_FluidStackFactory.init();
             BS_NetworkChannelFactory.init();

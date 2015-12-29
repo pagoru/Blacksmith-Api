@@ -8,15 +8,15 @@ import java.util.Collection;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class IPropertyWrapper implements IIProperty{
+public class IPropertyWrapper<T extends Comparable<T>> implements IIProperty<T>{
 
-    private IProperty property;
+    private IProperty<T> property;
 
-    public IPropertyWrapper(IProperty property){
+    public IPropertyWrapper(IProperty<T> property){
         this.property = property;
     }
 
-    public IProperty getIProperty(){
+    public IProperty<T> getIProperty(){
         return property;
     }
 
@@ -26,19 +26,19 @@ public class IPropertyWrapper implements IIProperty{
     }
 
     @Override
-    public String getName(Comparable value) {
+    public String getName(T value) {
         return property.getName(value);
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Collection<Comparable<?>> getAllowedValues() {
+    public Collection<T> getAllowedValues() {
         return property.getAllowedValues();
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Class<? extends Comparable<?>> getValueClass() {
+    public Class<T> getValueClass() {
         return property.getValueClass();
     }
 

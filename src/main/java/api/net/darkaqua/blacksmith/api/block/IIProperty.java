@@ -5,7 +5,7 @@ import java.util.Collection;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public interface IIProperty {
+public interface IIProperty<T extends Comparable<T>> {
 
     /**
      * The name of this property
@@ -15,17 +15,17 @@ public interface IIProperty {
     /**
      * The name of the value of this property
      */
-    String getName(Comparable<?> value);
+    String getName(T value);
 
     /**
      * A collection of all possible values of this property
      */
-    Collection<Comparable<?>> getAllowedValues();
+    Collection<T> getAllowedValues();
 
     /**
      * The class of the values from this property
      */
-    Class<? extends Comparable<?>> getValueClass();
+    Class<T> getValueClass();
 
     /**
      * The internal IProperty

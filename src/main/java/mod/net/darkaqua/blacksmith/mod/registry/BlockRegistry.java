@@ -4,7 +4,6 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.registry.IBlockRegistry;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.mod.block.BS_Block;
 import net.darkaqua.blacksmith.mod.block.BS_BlockContainer;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
@@ -13,7 +12,6 @@ import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -117,8 +115,6 @@ public class BlockRegistry implements IBlockRegistry {
         private Block mcBlock;
         private String identifier;
         private String modID;
-        private Map<IModelPartIdentifier, ResourceLocation> blockModels;
-        private List<ModelResourceLocation> jsonStates;
 
         public RegisteredBlock(IBlockDefinition definition, IBlock block, ItemBlock itemBlock, Block mcBlock, String modID, String identifier) {
             this.definition = definition;
@@ -127,8 +123,6 @@ public class BlockRegistry implements IBlockRegistry {
             this.mcBlock = mcBlock;
             this.identifier = identifier;
             this.modID = modID;
-            blockModels = new HashMap<>();
-            jsonStates = new ArrayList<>();
         }
 
         public IBlockDefinition getDefinition() {
@@ -153,22 +147,6 @@ public class BlockRegistry implements IBlockRegistry {
 
         public String getModID() {
             return modID;
-        }
-
-        public void addModel(IModelPartIdentifier identifier, ResourceLocation model){
-            blockModels.put(identifier, model);
-        }
-
-        public ResourceLocation getResourceLocation(IModelPartIdentifier identifier) {
-            return blockModels.get(identifier);
-        }
-
-        public List<ModelResourceLocation> getJsonStates() {
-            return jsonStates;
-        }
-
-        public void addJsonState(ModelResourceLocation loc){
-            jsonStates.add(loc);
         }
     }
 }

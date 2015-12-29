@@ -15,11 +15,11 @@ public class GuiTestHandler implements IGuiCreationHandler {
 
     @Override
     public IContainer getServerContainer(IPlayer player, WorldRef ref, int id) {
-        return ContainerFactory.createContainer(new ContainerTest());
+        return ContainerFactory.createContainer(new ContainerTest(player, ref));
     }
 
     @Override
     public IGui getClientGui(IPlayer player, WorldRef ref, int id) {
-        return GuiFactory.createGui(new GuiTest(), ContainerFactory.createContainer(new ContainerTest()));
+        return GuiFactory.createGui(new GuiTest(), ContainerFactory.createContainer(new ContainerTest(player, ref)));
     }
 }

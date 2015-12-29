@@ -87,7 +87,7 @@ public class BlacksmithModContainer implements ModContainer {
             }catch (ReflectiveOperationException e){
                 Log.warn("Error trying to place a mod instance in a field marked with @ModInstance: "+clazz);
             }
-;
+
             CustomProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
         } catch (InstantiationException | MalformedURLException | ClassNotFoundException | IllegalAccessException e) {
             e.printStackTrace();
@@ -190,7 +190,7 @@ public class BlacksmithModContainer implements ModContainer {
 
     @Override
     public boolean isImmutable() {
-        return true;
+        return false;
     }
 
     @Override
@@ -278,6 +278,9 @@ public class BlacksmithModContainer implements ModContainer {
 
         public static void inject(ModContainer mod, ASMDataTable data, Side side, ILanguageAdapter languageAdapter)
         {
+
+            //Addapted to use @ModSidedProxy instead @SideProxy
+
             FMLLog.fine("Attempting to inject @ModSidedProxy classes into %s", mod.getModId());
             Set<ASMDataTable.ASMData> targets = data.getAnnotationsFor(mod).get(ModSidedProxy.class.getName());
             ModClassLoader mcl = Loader.instance().getModClassLoader();

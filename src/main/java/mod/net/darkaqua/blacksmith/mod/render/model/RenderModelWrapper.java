@@ -17,13 +17,12 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector3f;
 
 import javax.vecmath.Matrix4f;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -135,32 +134,11 @@ public class RenderModelWrapper implements IPerspectiveAwareModel{
         if (transformMap == null) {
             transformMap = new EnumMap<>(ItemCameraTransforms.TransformType.class);
         }
-        if (!transformMap.containsKey(cameraTransformType)) {
+//        if (!transformMap.containsKey(cameraTransformType)) {
             RenderTransformation trans = model.getTransformation(getRenderPlace(cameraTransformType));
-            Matrix4f mat = new Matrix4f();
-            mat.setIdentity();
-            if (trans != null) {
-                Vect3d t = trans.getTranslation();
-                Vect3d r = trans.getRotation();
-                Vect3d s = trans.getScale();
-                org.lwjgl.util.vector.Matrix4f mat2 = new org.lwjgl.util.vector.Matrix4f();
-                mat2.translate(new Vector3f((float) t.getX(), (float) t.getY(), (float) t.getZ()));
-
-                mat2.rotate((float) Math.toRadians(r.getX()), new Vector3f(1, 0, 0));
-                mat2.rotate((float) Math.toRadians(r.getY()), new Vector3f(0, 1, 0));
-                mat2.rotate((float) Math.toRadians(r.getZ()), new Vector3f(0, 0, 1));
-
-                mat2.scale(new Vector3f((float) s.getX(), (float) s.getY(), (float) s.getZ()));
-                FloatBuffer buff = BufferUtils.createFloatBuffer(16);
-                mat2.store(buff);
-                for (int i = 0; i < 4; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        mat.setElement(i, j, buff.get(i * 4 + j));
-                    }
-                }
-            }
-            transformMap.put(cameraTransformType, mat);
-        }
+            TRSRTransformation transf = new TRSRTransformation(toTransformVec(trans));
+            transformMap.put(cameraTransformType, TRSRTransformation.blockCornerToCenter(transf).getMatrix());
+//        }
         return new ImmutablePair<IPerspectiveAwareModel, Matrix4f>(this, transformMap.get(cameraTransformType));
     }
 
