@@ -16,7 +16,6 @@ import net.darkaqua.blacksmith.mod.render.model.BakedBlockModel;
 import net.darkaqua.blacksmith.mod.render.model.BakedItemModel;
 import net.darkaqua.blacksmith.mod.render.model.ItemBlockModelProvider;
 import net.darkaqua.blacksmith.mod.render.model.RenderModelWrapper;
-import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -63,6 +62,7 @@ public class RenderRegistry implements IRenderRegistry {
         if (reg == null)
             return false;
 
+        //Block
         ModelLoader.setCustomStateMapper(reg.getBlock(), new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
@@ -75,6 +75,7 @@ public class RenderRegistry implements IRenderRegistry {
         provider.registerModels(modelRegistry);
 
 
+        //Item
         ModelLoader.setCustomMeshDefinition(reg.getItemBlock(), new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
@@ -82,9 +83,8 @@ public class RenderRegistry implements IRenderRegistry {
             }
         });
 
-        IRenderModel itemBlockModel = provider.getModelForVariant(MCInterface.fromIBlockState(reg.getBlock().getDefaultState()));
         locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItemBlock()), "inventory"), new BakedItemModel());
-        registeredItemModelProviders.put(reg.getItemBlock(), new ItemBlockModelProvider(itemBlockModel));
+        registeredItemModelProviders.put(reg.getItemBlock(), new ItemBlockModelProvider(provider));
 
         return true;
     }

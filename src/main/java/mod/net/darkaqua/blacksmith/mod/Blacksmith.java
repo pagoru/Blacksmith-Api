@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod;
 import com.google.common.eventbus.Subscribe;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
+import net.darkaqua.blacksmith.mod.block.BS_BlockMaterialFactory;
 import net.darkaqua.blacksmith.mod.block.blockstate.BS_BlockStateFactory;
 import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
 import net.darkaqua.blacksmith.mod.container.BS_ContainerFactory;
@@ -62,6 +63,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_ContainerFactory.init();
         BS_GuiFactory.init();
         BS_PacketFactory.init();
+        BS_BlockMaterialFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
     }
 

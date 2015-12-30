@@ -9,7 +9,7 @@ import net.darkaqua.blacksmith.api.util.Cube;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public class DefaultBlockDefinition implements IBlockDefinition {
+public abstract class DefaultBlockDefinition implements IBlockDefinition {
 
     protected String blockName;
     protected IBlock parent;

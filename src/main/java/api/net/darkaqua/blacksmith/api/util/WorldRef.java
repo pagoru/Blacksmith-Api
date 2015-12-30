@@ -11,7 +11,7 @@ public class WorldRef {
 	
 	public WorldRef(IWorld world, Vect3i position) {
 		this.world = world;
-		this.position = position;
+		this.position = position.copy();
 	}
 
 	public IWorld getWorld() {
@@ -28,6 +28,22 @@ public class WorldRef {
 
 	public void setPosition(Vect3i position) {
 		this.position = position;
+	}
+
+	public WorldRef copy(){
+		return new WorldRef(world, position);
+	}
+
+	public WorldRef move(Vect3i dir){
+		WorldRef ref = copy();
+		ref.getPosition().add(dir);
+		return ref;
+	}
+
+	public WorldRef move(Direction dir){
+		WorldRef ref = copy();
+		ref.getPosition().add(dir);
+		return ref;
 	}
 
 	public IBlockVariant getBlockVariant() {

@@ -15,29 +15,30 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
 /**
  * Created by cout970 on 14/11/2015.
  */
-public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox, ISidedInventory{
+public class BS_TileEntity extends TileEntity implements ITickable, ISidedInventory{
 
     protected ITileEntityDefinition def;
 
     public void setDefinition(ITileEntityDefinition definition) {
         this.def = definition;
-        def.onLoad(MCInterface.fromTileEntity(this));
+        def.bindParent(MCInterface.fromTileEntity(this));
     }
 
     public ITileEntityDefinition getTileEntityDefinition(){
         return def;
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         Class<? extends ITileEntityDefinition> clazz =
@@ -57,12 +58,13 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox, I
         if (error) {
             invalidate();
         } else {
-            def.onLoad(MCInterface.fromTileEntity(this));
+            def.bindParent(MCInterface.fromTileEntity(this));
             NBTTagCompound cmp = (NBTTagCompound) compound.getTag("def_tag");
             def.loadData(MCInterface.fromNBTCompound(cmp));
         }
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setString("def_id", TileEntityRegistry.INSTANCE.getDefinitionID(def));
@@ -71,37 +73,45 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox, I
         compound.setTag("def_tag", cmp);
     }
 
+    @Override
     public Packet getDescriptionPacket() {
         return MCInterface.fromDescriptionPacket(def.getUpdatePacket());
     }
 
+    @Override
     public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.S35PacketUpdateTileEntity pkt) {
         def.onUpdatePacketArrives(MCInterface.toDescriptionPacket(pkt));
     }
 
+    @Override
     public double getMaxRenderDistanceSquared() {
         double dist = def.getRenderDistance();
         return dist * dist;
     }
 
+    @Override
     public boolean receiveClientEvent(int id, int type) {
         def.onClientDataArrive(id, type);
         return false;
     }
 
+    @Override
     public void updateContainingBlockInfo() {
         super.updateContainingBlockInfo();
         def.onBlockChange();
     }
 
+    @Override
     public void onChunkUnload() {
         def.onChunkUnload();
     }
 
+    @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return def.shouldRecreate(new WorldRef(MCInterface.fromWorld(world), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(oldState), MCInterface.fromIBlockState(newSate));
     }
 
+    @Override
     public net.minecraft.util.AxisAlignedBB getRenderBoundingBox(){
         return MCInterface.toAxisAlignedBB(def.getRenderBox());
     }
@@ -109,6 +119,11 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox, I
     @Override
     public void update() {
         def.update();
+    }
+
+    @Override
+    public void onLoad(){
+        def.onLoad();
     }
 
     @Override
@@ -213,9 +228,7 @@ public class BS_TileEntity extends TileEntity implements IUpdatePlayerListBox, I
     }
 
     @Override
-    public void setField(int id, int value) {
-
-    }
+    public void setField(int id, int value) {}
 
     @Override
     public int getFieldCount() {

@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.api.render.model;
 
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 
 /**
@@ -9,6 +10,8 @@ import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 public interface IBlockModelProvider {
 
     IRenderModel getModelForVariant(IBlockVariant variant);
+
+    IRenderModel getModelForItemBlock(IItemStack stack);
 
     void registerModels(IModelRegistry registry);
 }

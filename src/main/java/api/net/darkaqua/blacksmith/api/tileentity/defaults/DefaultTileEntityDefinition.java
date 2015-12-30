@@ -24,9 +24,15 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     }
 
     @Override
-    public void onLoad(ITileEntity parent) {
+    public void bindParent(ITileEntity parent) {
         this.parent = parent;
     }
+
+    @Override
+    public void onLoad() {}
+
+    @Override
+    public void onDelete() {}
 
     @Override
     public void loadData(IDataCompound tag) {}

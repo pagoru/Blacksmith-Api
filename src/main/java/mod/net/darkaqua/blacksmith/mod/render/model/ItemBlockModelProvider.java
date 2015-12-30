@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.mod.render.model;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
+import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
 import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
 import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 
@@ -10,15 +11,15 @@ import net.darkaqua.blacksmith.api.render.model.IRenderModel;
  */
 public class ItemBlockModelProvider implements IItemModelProvider {
 
-    protected IRenderModel model;
+    protected IBlockModelProvider provider;
 
-    public ItemBlockModelProvider(IRenderModel model) {
-        this.model = model;
+    public ItemBlockModelProvider(IBlockModelProvider provider) {
+        this.provider = provider;
     }
 
     @Override
     public IRenderModel getModelForVariant(IItemStack stack) {
-        return model;
+        return provider.getModelForItemBlock(stack);
     }
 
     @Override

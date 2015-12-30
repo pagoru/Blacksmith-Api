@@ -39,7 +39,7 @@ public enum Direction {
 		return values()[i % VALID_DIRECTIONS.length];
 	}
 
-	public Vect3i toVecInt() {
+	public Vect3i toVect3i() {
 		return offsets.copy();
 	}
 	

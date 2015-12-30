@@ -13,7 +13,11 @@ public interface ITileEntityDefinition {
 
     ITileEntity getParent();
 
-    void onLoad(ITileEntity parent);
+    void bindParent(ITileEntity parent);
+
+    void onLoad();
+
+    void onDelete();
 
     void update();
 

@@ -50,6 +50,10 @@ public class BS_Block extends Block {
         return definition == null || definition.isFullCube();
     }
 
+    public boolean isBlockNormalCube(){
+        return definition.isFullCube();
+    }
+
     private void setBlockBounds(Cube c) {
         setBlockBounds((float) c.minX(), (float) c.minY(), (float) c.minZ(), (float) c.maxX(), (float) c.maxY(), (float) c.maxZ());
     }

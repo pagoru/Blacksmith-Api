@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.api.render.model.defaults;
 
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
@@ -24,15 +25,18 @@ public class SimpleBlockModelProvider implements IBlockModelProvider{
 
     @Override
     public IRenderModel getModelForVariant(IBlockVariant variant) {
-        if (model == null){
-            model = new BlockModel(identifier);
-        }
+        return model;
+    }
+
+    @Override
+    public IRenderModel getModelForItemBlock(IItemStack stack) {
         return model;
     }
 
     @Override
     public void registerModels(IModelRegistry registry) {
         identifier = registry.registerModelPart(component);
+        model = new BlockModel(identifier);
     }
 
 
