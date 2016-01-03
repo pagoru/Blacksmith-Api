@@ -7,6 +7,7 @@ import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 public class BS_Block extends Block {
 
     protected IBlockDefinition definition;
+    protected BlockState blockstate;
 
     public BS_Block(IBlockDefinition def) {
         super(MCInterface.toMaterial(def.getBlockMaterial()));
@@ -36,20 +38,40 @@ public class BS_Block extends Block {
         setLightOpacity((int) (def.getLightOpacity() * 255f));
         setResistance(def.getResistance());
         useNeighborBrightness = false;
+        blockstate = MCInterface.toBlockStateCreator(definition.getBlockVariantCreator());
+        this.setDefaultState(blockstate.getBaseState());
+    }
+
+    @Override
+    public BlockState getBlockState(){
+        return blockstate;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta){
+        return MCInterface.toIBlockState(definition.translateMetadataToVariant(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state){
+        return definition.translateVariantToMetadata(MCInterface.fromIBlockState(state));
     }
 
     public IBlockDefinition getBlockDefinition(){
         return definition;
     }
 
+    @Override
     public int getRenderType(){
         return definition.shouldRender() ? 3 : -1;
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return definition == null || definition.isFullCube();
     }
 
+    @Override
     public boolean isBlockNormalCube(){
         return definition.isFullCube();
     }

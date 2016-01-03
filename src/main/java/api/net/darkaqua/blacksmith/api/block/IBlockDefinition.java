@@ -17,6 +17,8 @@ public interface IBlockDefinition {
 
     IBlockMaterial getBlockMaterial();
 
+    IBlockVariantCreator getBlockVariantCreator();
+
     /**
      * The internal name of the block
      * @return the name of the block
@@ -75,4 +77,8 @@ public interface IBlockDefinition {
     boolean shouldRender();
 
     boolean isFullCube();
+
+    IBlockVariant translateMetadataToVariant(int meta);
+
+    int translateVariantToMetadata(IBlockVariant variant);
 }

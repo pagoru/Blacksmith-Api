@@ -9,13 +9,13 @@ public interface IBlockVariant {
 
 	Collection<IIProperty> getProperties();
 
-	Comparable<?> getValue(IIProperty property);
+	<T extends Comparable<T>> T getValue(IIProperty<T> property);
 
-	IBlockVariant withProperty(IIProperty property, Comparable<?> value);
+	<T extends Comparable<T>> IBlockVariant withProperty(IIProperty<T> property, T value);
 
-	IBlockVariant cycleProperty(IIProperty property);
+	IBlockVariant cycleProperty(IIProperty<?> property);
 
-	Map<IIProperty, Comparable<?>> getPropertyMap();
+	<T extends Comparable<T>> Map<IIProperty<T>, T> getPropertyMap();
 
 	Object getInternalBlockState();
 }

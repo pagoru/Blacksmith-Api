@@ -54,6 +54,10 @@ public class WorldRef {
 		world.setBlockVariant(variant, position, flags);
 	}
 
+	public void setBlockVariant(IBlockVariant variant) {
+		world.setBlockVariant(variant, position, 3);
+	}
+
 	public ITileEntity getTileEntity() {
 		return world.getTileEntity(position);
 	}

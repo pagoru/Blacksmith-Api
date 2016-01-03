@@ -29,6 +29,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 /**
@@ -38,7 +39,7 @@ public class RenderRegistry implements IRenderRegistry {
 
     public static final RenderRegistry INSTANCE = new RenderRegistry();
     private static ModelRegistry modelRegistry = ModelRegistry.INSTANCE;
-    private static Map<Class<? extends ITileEntityDefinition>, ITileEntityRenderer> tileRenders = new HashMap<>();
+    private static Map<Class<? extends ITileEntityDefinition>, ITileEntityRenderer> tileRenders = new IdentityHashMap<>();
 
     private static Map<ModelResourceLocation, IBakedModel> locationToBakedModel = new HashMap<>();
     private static Map<Block, IBlockModelProvider> registeredBlockModelProviders = new HashMap<>();
@@ -121,7 +122,7 @@ public class RenderRegistry implements IRenderRegistry {
     }
 
     @Override
-    public boolean registerTileEntityRenderer(Class<? extends ITileEntityDefinition> def, ITileEntityRenderer renderer) {
+    public boolean registerTileEntityRenderer(Class<? extends ITileEntityDefinition> def, ITileEntityRenderer<? extends ITileEntityDefinition> renderer) {
         if (tileRenders.containsKey(def))
             return false;
         if (renderer == null) {

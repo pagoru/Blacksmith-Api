@@ -23,4 +23,11 @@ public interface IWorld extends IWorldAccess {
 	int getWorldDimension();
 
 	IIChunkProvider getChunkProvider();
+
+	long getWorldTime();
+
+	boolean isThundering();
+
+	boolean isRaining();
 }
+

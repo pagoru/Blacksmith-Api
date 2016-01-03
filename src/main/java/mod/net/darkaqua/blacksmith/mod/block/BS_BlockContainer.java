@@ -3,7 +3,6 @@ package net.darkaqua.blacksmith.mod.block;
 import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.mod.registry.TileEntityRegistry;
-import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -28,10 +27,6 @@ public class BS_BlockContainer extends BS_Block implements ITileEntityProvider {
     }
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
-        TileEntity e = worldIn.getTileEntity(pos);
-        if (e instanceof BS_TileEntity){
-            ((BS_TileEntity) e).getTileEntityDefinition().onDelete();
-        }
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
     }

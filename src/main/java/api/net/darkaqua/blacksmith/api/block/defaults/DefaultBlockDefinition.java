@@ -1,7 +1,6 @@
 package net.darkaqua.blacksmith.api.block.defaults;
 
-import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockDefinition;
+import net.darkaqua.blacksmith.api.block.*;
 import net.darkaqua.blacksmith.api.creativetab.CreativeTabFactory;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.util.Cube;
@@ -9,7 +8,7 @@ import net.darkaqua.blacksmith.api.util.Cube;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public abstract class DefaultBlockDefinition implements IBlockDefinition {
+public class DefaultBlockDefinition implements IBlockDefinition {
 
     protected String blockName;
     protected IBlock parent;
@@ -18,9 +17,23 @@ public abstract class DefaultBlockDefinition implements IBlockDefinition {
         blockName = name;
     }
 
+    public DefaultBlockDefinition(){
+        blockName = "noname";
+    }
+
     @Override
     public void onCreate(IBlock block) {
         parent = block;
+    }
+
+    @Override
+    public IBlockMaterial getBlockMaterial() {
+        return BlockMaterialFactory.IRON;
+    }
+
+    @Override
+    public IBlockVariantCreator getBlockVariantCreator() {
+        return BlockVariantCreatorFactory.createBlockVariantCreator(parent);
     }
 
     @Override
@@ -66,5 +79,15 @@ public abstract class DefaultBlockDefinition implements IBlockDefinition {
     @Override
     public boolean isFullCube() {
         return true;
+    }
+
+    @Override
+    public IBlockVariant translateMetadataToVariant(int meta) {
+        return parent.getDefaultVariant();
+    }
+
+    @Override
+    public int translateVariantToMetadata(IBlockVariant variant) {
+        return 0;
     }
 }

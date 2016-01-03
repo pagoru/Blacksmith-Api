@@ -84,6 +84,14 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     }
 
     @Override
+    public void invalidate() {
+        super.invalidate();
+        if(def != null) {
+            def.onDelete();
+        }
+    }
+
+    @Override
     public double getMaxRenderDistanceSquared() {
         double dist = def.getRenderDistance();
         return dist * dist;

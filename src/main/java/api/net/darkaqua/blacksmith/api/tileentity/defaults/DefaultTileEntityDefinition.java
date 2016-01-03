@@ -7,6 +7,7 @@ import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.world.IWorld;
 
 /**
  * Created by cout970 on 21/12/2015.
@@ -53,7 +54,7 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
 
     @Override
     public boolean shouldRecreate(WorldRef ref, IBlockVariant oldState, IBlockVariant newSate) {
-        return false;
+        return true;
     }
 
     @Override
@@ -70,5 +71,9 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     @Override
     public Cube getRenderBox() {
         return Cube.fullBlock().translate(parent.getWorldRef().getPosition().toVector3d());
+    }
+
+    public IWorld getWorld(){
+        return getParent().getWorldRef().getWorld();
     }
 }

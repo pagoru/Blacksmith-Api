@@ -64,4 +64,19 @@ public class WorldWrapper implements IWorld{
     public IIChunkProvider getChunkProvider() {
         return MCInterface.fromIChunkProvider(world.getChunkProvider());
     }
+
+    @Override
+    public long getWorldTime() {
+        return world.getTotalWorldTime();
+    }
+
+    @Override
+    public boolean isThundering() {
+        return world.isThundering();
+    }
+
+    @Override
+    public boolean isRaining() {
+        return world.isRaining();
+    }
 }

@@ -69,9 +69,8 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     public static void debug() {
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
-//        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock()
+//        Minecraft.getMinecraft().isCallingFromMinecraftThread()
 //        IModel
-
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 

@@ -46,12 +46,12 @@ public class IBlockStateWrapper implements IBlockVariant {
     }
 
     @Override
-    public Comparable<?> getValue(IIProperty property) {
+    public <T extends Comparable<T>> T getValue(IIProperty<T> property) {
         return state.getValue(MCInterface.toIProperty(property));
     }
 
     @Override
-    public IBlockVariant withProperty(IIProperty property, Comparable<?> value) {
+    public <T extends Comparable<T>> IBlockVariant withProperty(IIProperty<T> property, T value) {
         return MCInterface.fromIBlockState(state.withProperty(MCInterface.toIProperty(property), value));
     }
 
@@ -62,10 +62,10 @@ public class IBlockStateWrapper implements IBlockVariant {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Map<IIProperty, Comparable<?>> getPropertyMap() {
-        Map<IIProperty, Comparable<?>> properties = new HashMap<>();
+    public <T extends Comparable<T>> Map<IIProperty<T>, T> getPropertyMap() {
+        Map<IIProperty<T>, T> properties = new HashMap<>();
         for(Map.Entry<IProperty, Comparable> entry : state.getProperties().entrySet()){
-            properties.put(MCInterface.fromIProperty(entry.getKey()), entry.getValue());
+            properties.put(MCInterface.fromIProperty(entry.getKey()), (T) entry.getValue());
         }
         return properties;
     }

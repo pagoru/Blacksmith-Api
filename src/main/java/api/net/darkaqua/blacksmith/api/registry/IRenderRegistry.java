@@ -16,7 +16,7 @@ public interface IRenderRegistry {
 
     boolean registerItemModelProvider(IItemDefinition def, IItemModelProvider provider);
 
-    boolean registerTileEntityRenderer(Class<? extends ITileEntityDefinition> def, ITileEntityRenderer renderer);
+    boolean registerTileEntityRenderer(Class<? extends ITileEntityDefinition> def, ITileEntityRenderer<? extends ITileEntityDefinition> renderer);
 
     IModelRegistry getModelRegistry();
 }

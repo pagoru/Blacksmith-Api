@@ -22,10 +22,13 @@ public class BS_TileEntityRenderer extends TileEntitySpecialRenderer<BS_TileEnti
     public static final TileEntityRendererHelper HELPER = new TileEntityRendererHelper(DESTROY_STAGES);
 
     @Override
+    @SuppressWarnings(value = "unchecked")
     public void renderTileEntityAt(BS_TileEntity tile, double posX, double posY, double posZ, float partialTick, int breakingProgress) {
         ITileEntityRenderer renderer = RenderRegistry.INSTANCE.getTileEntityRenderer(tile.getTileEntityDefinition().getClass());
         if (renderer != null){
+            getWorld().theProfiler.startSection(tile.getTileEntityDefinition().getClass()+"");
             renderer.renderTileEntity(new TileEntityWrapper(tile), tile.getTileEntityDefinition(), HELPER, new Vect3d(posX, posY, posZ), partialTick, breakingProgress);
+            getWorld().theProfiler.endSection();
         }
     }
 
