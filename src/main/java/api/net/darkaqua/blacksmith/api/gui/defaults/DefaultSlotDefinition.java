@@ -1,6 +1,6 @@
-package net.darkaqua.blacksmith.api.container.defaults;
+package net.darkaqua.blacksmith.api.gui.defaults;
 
-import net.darkaqua.blacksmith.api.container.ISlotDefinition;
+import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;

@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.gui;
 
-import net.darkaqua.blacksmith.api.container.IContainer;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.util.GameSide;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 
 /**
@@ -9,7 +9,5 @@ import net.darkaqua.blacksmith.api.util.WorldRef;
  */
 public interface IGuiCreationHandler {
 
-    IContainer getServerContainer(IPlayer player, WorldRef ref, int id);
-
-    IGui getClientGui(IPlayer player, WorldRef ref, int id);
+    IGuiDefinition getGuiDefinition(IPlayer player, WorldRef ref, int id, GameSide side);
 }

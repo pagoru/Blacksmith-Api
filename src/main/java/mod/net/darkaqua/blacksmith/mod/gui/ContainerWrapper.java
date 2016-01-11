@@ -1,10 +1,10 @@
-package net.darkaqua.blacksmith.mod.container;
+package net.darkaqua.blacksmith.mod.gui;
 
-import net.darkaqua.blacksmith.api.container.IContainer;
-import net.darkaqua.blacksmith.api.container.IContainerDefinition;
-import net.darkaqua.blacksmith.api.container.IContainerListener;
-import net.darkaqua.blacksmith.api.container.ISlotDefinition;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.gui.IContainer;
+import net.darkaqua.blacksmith.api.gui.IContainerListener;
+import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
+import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.inventory.Slot;
@@ -14,20 +14,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by cout970 on 28/12/2015.
+ * Created by cout970 on 11/01/2016.
  */
-public class ContainerComponent implements IContainer {
+public class ContainerWrapper implements IContainer {
 
     private BS_Container cont;
-    private IContainerDefinition def;
 
-    public ContainerComponent(IContainerDefinition def) {
-        this.def = def;
+    public ContainerWrapper(BS_Container cont) {
+        this.cont = cont;
     }
 
-    public void bind(BS_Container cont) {
-        this.cont = cont;
-        def.initContainer(this);
+    public BS_Container getContainer() {
+        return cont;
     }
 
     @Override
@@ -85,17 +83,17 @@ public class ContainerComponent implements IContainer {
     }
 
     @Override
-    public void onClose(IPlayer player) {
-        def.onClose(player);
+    public void onContainerClose(IPlayer player) {
+        cont.getGuiDefinition().onContainerClose(player);
     }
 
     @Override
     public void detectAndSendChanges() {
-        def.detectAndSendChanges();
+        cont.getGuiDefinition().detectAndSendChanges();
     }
 
     @Override
-    public IContainerDefinition getDefinition() {
-        return def;
+    public IGuiDefinition getDefinition() {
+        return cont.getGuiDefinition();
     }
 }

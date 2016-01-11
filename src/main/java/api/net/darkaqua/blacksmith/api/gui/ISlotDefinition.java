@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.container;
+package net.darkaqua.blacksmith.api.gui;
 
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;

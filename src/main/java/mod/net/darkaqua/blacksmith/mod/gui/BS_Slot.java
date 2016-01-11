@@ -1,6 +1,6 @@
-package net.darkaqua.blacksmith.mod.container;
+package net.darkaqua.blacksmith.mod.gui;
 
-import net.darkaqua.blacksmith.api.container.ISlotDefinition;
+import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;

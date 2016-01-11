@@ -1,6 +1,5 @@
 package net.darkaqua.blacksmith.mod.gui;
 
-import net.darkaqua.blacksmith.api.container.IContainer;
 import net.darkaqua.blacksmith.api.gui.IGui;
 import net.darkaqua.blacksmith.api.gui.IGuiComponent;
 import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
@@ -9,7 +8,6 @@ import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
-import net.darkaqua.blacksmith.mod.container.BS_Container;
 import net.darkaqua.blacksmith.mod.registry.RenderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -26,12 +24,10 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
 
     private List<IGuiComponent> components = new LinkedList<>();
     private IGuiDefinition definition;
-    private IContainer container;
 
-    public BS_Gui(IGuiDefinition def, BS_Container inventorySlotsIn) {
-        super(inventorySlotsIn);
+    public BS_Gui(IGuiDefinition def) {
+        super(new BS_Container(def));
         definition = def;
-        container = inventorySlotsIn.getContainer();
         Vect2i guiSize = def.getGuiSize();
         xSize = guiSize.getX();
         ySize = guiSize.getY();
@@ -83,11 +79,6 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     @Override
     public void removeComponent(IGuiComponent comp) {
         components.remove(comp);
-    }
-
-    @Override
-    public IContainer getContainer() {
-        return container;
     }
 
     @Override
@@ -172,7 +163,7 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
 
     @Override
     public boolean doesGuiPauseGame() {
-        return definition.doesPauseGame();
+        return definition.doesGuiPauseGame();
     }
 
     @Override
@@ -192,7 +183,7 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
 
     @Override
     public void onGuiClosed() {
-        definition.onClosed();
+        definition.onGuiClosed();
         super.onGuiClosed();
     }
 

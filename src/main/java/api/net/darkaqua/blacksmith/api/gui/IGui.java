@@ -1,6 +1,5 @@
 package net.darkaqua.blacksmith.api.gui;
 
-import net.darkaqua.blacksmith.api.container.IContainer;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 
@@ -16,8 +15,6 @@ public interface IGui {
     void addComponent(IGuiComponent comp);
 
     void removeComponent(IGuiComponent comp);
-
-    IContainer getContainer();
 
     IGuiDefinition getDefinition();
 

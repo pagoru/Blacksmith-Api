@@ -40,7 +40,6 @@ public class TechneModelLoader {
 
     public static IModelPart loadModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
 
-
         List<IModelPart> parts = new LinkedList<>();
         InputStream stream;
         try {

@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.util;
 
 import net.darkaqua.blacksmith.api.block.*;
-import net.darkaqua.blacksmith.api.container.ISlotDefinition;
+import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
@@ -29,7 +29,7 @@ import net.darkaqua.blacksmith.mod.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.block.MaterialWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IPropertyWrapper;
-import net.darkaqua.blacksmith.mod.container.BS_Slot;
+import net.darkaqua.blacksmith.mod.gui.BS_Slot;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;

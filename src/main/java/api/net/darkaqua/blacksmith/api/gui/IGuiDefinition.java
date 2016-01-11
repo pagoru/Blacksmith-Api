@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.gui;
 
+import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 
 /**
@@ -11,7 +12,17 @@ public interface IGuiDefinition {
 
     Vect2i getGuiSize();
 
-    boolean doesPauseGame();
+    boolean doesGuiPauseGame();
 
-    void onClosed();
+    void onGuiClosed();
+
+    void initContainer(IContainer container);
+
+    void onContainerClose(IPlayer player);
+
+    void detectAndSendChanges();
+
+    void updateProgressBar(int id, int data);
+
+    boolean canInteractWith(IPlayer playerIn);
 }

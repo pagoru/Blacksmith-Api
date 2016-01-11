@@ -13,12 +13,12 @@ public abstract class ObjectScanner {
 
     protected static ObjectScanner INSTANCE;
 
-    public static <T> T findInItemStack(IItemStack toScan, Class<T> clazz) {
-        return findByClass(toScan.getItem(), clazz);
-    }
-
     public static <T> T findInItem(IItem toScan, Class<T> clazz) {
         return findByClass(toScan, clazz);
+    }
+
+    public static <T> T findInItemStack(IItemStack toScan, Class<T> clazz) {
+        return findByClass(toScan.getItem(), clazz);
     }
 
     public static <T> T findInBlock(IBlock toScan, Class<T> clazz) {
@@ -29,11 +29,12 @@ public abstract class ObjectScanner {
         return findByClass(toScan, clazz);
     }
 
+
     public static <T> T findInTileEntity(ITileEntity toScan, Class<T> clazz) {
         return findByClass(toScan, clazz);
     }
 
-    private static <T> T findByClass(Object toScan, Class<T> clazz){
+    private static <T> T findByClass(Object toScan, Class<T> clazz) {
         return INSTANCE.find(toScan, clazz);
     }
 

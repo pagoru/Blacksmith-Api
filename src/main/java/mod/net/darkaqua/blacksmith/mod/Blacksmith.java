@@ -6,12 +6,10 @@ import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.mod.block.BS_BlockMaterialFactory;
 import net.darkaqua.blacksmith.mod.block.blockstate.BS_BlockStateFactory;
 import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
-import net.darkaqua.blacksmith.mod.container.BS_ContainerFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.event.FMLEventRedirect;
 import net.darkaqua.blacksmith.mod.fluid.BS_FluidStackFactory;
-import net.darkaqua.blacksmith.mod.gui.BS_GuiFactory;
 import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
@@ -40,7 +38,7 @@ import java.util.Map;
 /**
  * Created by cout970 on 07/11/2015.
  */
-@IFMLLoadingPlugin.MCVersion("1.8.8")
+@IFMLLoadingPlugin.MCVersion("1.8.9")
 public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     public static Blacksmith INSTANCE;
@@ -60,8 +58,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_ConfigurationFactory.init();
         BS_ObjectScanner.init();
         BS_DataElementFactory.init();
-        BS_ContainerFactory.init();
-        BS_GuiFactory.init();
         BS_PacketFactory.init();
         BS_BlockMaterialFactory.init();
         StaticAccess.GAME = Game.INSTANCE;

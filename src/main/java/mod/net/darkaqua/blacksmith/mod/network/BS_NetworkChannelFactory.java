@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.mod.network;
 
 import net.darkaqua.blacksmith.api.network.INetworkChannel;
 import net.darkaqua.blacksmith.api.network.NetworkChannelFactory;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.darkaqua.blacksmith.mod.network.channel.SimpleChannel;
 
 /**
  * Created by cout970 on 24/12/2015.
@@ -17,6 +17,6 @@ public class BS_NetworkChannelFactory extends NetworkChannelFactory{
 
     @Override
     protected INetworkChannel newNetworkChannel(String channelName) {
-        return new BS_NetworkChannel(NetworkRegistry.INSTANCE.newSimpleChannel(channelName));
+        return new BS_NetworkChannel(new SimpleChannel(channelName));
     }
 }

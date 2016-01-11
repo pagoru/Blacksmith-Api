@@ -9,6 +9,7 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.config.ConfigurationFactory;
 import net.darkaqua.blacksmith.api.config.IConfiguration;
+import net.darkaqua.blacksmith.api.config.util.ConfigHandler;
 import net.darkaqua.blacksmith.api.event.EventSubscribe;
 import net.darkaqua.blacksmith.api.event.modloader.IInitEvent;
 import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
@@ -41,11 +42,17 @@ public class ModClass {
 
     public static IBlock block;
     public static IItem item;
+    public static ConfigHandler configHandler;
+    public static final ConfigHolder CONFIG = new ConfigHolder();
 
     @EventSubscribe
     public void preInit(IPreInitEvent event) {
         Log.debug("TestMod preinit");
-        Log.debug("Mos instance: "+instance);
+
+        configHandler = new ConfigHandler(CONFIG, ConfigurationFactory.create(event.getSuggestedConfigurationFile()));
+        configHandler.read();
+        configHandler.save();
+
         IBlockDefinition blockDef = new TestBlock();
         IItemDefinition itemDef = new TestItem();
         block = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");

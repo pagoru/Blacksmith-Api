@@ -7,23 +7,23 @@ import net.darkaqua.blacksmith.api.network.INetworkMessageHandler;
 import net.darkaqua.blacksmith.api.network.packet.IPacket;
 import net.darkaqua.blacksmith.api.util.GameSide;
 import net.darkaqua.blacksmith.api.util.Vect3d;
+import net.darkaqua.blacksmith.mod.network.channel.SimpleChannel;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 /**
  * Created by cout970 on 24/12/2015.
  */
 public class BS_NetworkChannel implements INetworkChannel {
 
-    private SimpleNetworkWrapper network;
+    private SimpleChannel network;
 
-    public BS_NetworkChannel(SimpleNetworkWrapper network) {
+    public BS_NetworkChannel(SimpleChannel network) {
         this.network = network;
     }
 
-    public SimpleNetworkWrapper getNetwork() {
+    public SimpleChannel getNetwork() {
         return network;
     }
 

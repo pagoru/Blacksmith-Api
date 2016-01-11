@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.container;
+package net.darkaqua.blacksmith.api.gui;
 
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
@@ -28,9 +28,9 @@ public interface IContainer {
 
     void putStackInSlot(int slotID, IItemStack stack);
 
-    void onClose(IPlayer player);
+    void onContainerClose(IPlayer player);
 
     void detectAndSendChanges();
 
-    IContainerDefinition getDefinition();
+    IGuiDefinition getDefinition();
 }
