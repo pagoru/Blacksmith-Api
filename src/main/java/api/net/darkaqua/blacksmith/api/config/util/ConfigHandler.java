@@ -77,10 +77,10 @@ public class ConfigHandler {
     public static abstract class FieldWrapper {
 
         protected Field field;
-        protected ConfigValueType type;
+        protected ConfigValueTypea type;
         protected ConfigValue annotation;
 
-        public FieldWrapper(Field field, ConfigValue annotation, ConfigValueType type) {
+        public FieldWrapper(Field field, ConfigValue annotation, ConfigValueTypea type) {
             this.field = field;
             this.type = type;
             this.annotation = annotation;
@@ -94,7 +94,7 @@ public class ConfigHandler {
             return annotation;
         }
 
-        public ConfigValueType getType() {
+        public ConfigValueTypea getType() {
             return type;
         }
 
@@ -111,7 +111,7 @@ public class ConfigHandler {
     public static class IntegerFieldWrapper extends FieldWrapper{
 
         public IntegerFieldWrapper(Field field, ConfigValue annotation) {
-            super(field, annotation, ConfigValueType.INT);
+            super(field, annotation, ConfigValueTypea.INT);
         }
 
         @Override
@@ -124,7 +124,7 @@ public class ConfigHandler {
     public static class DoubleFieldWrapper extends FieldWrapper{
 
         public DoubleFieldWrapper(Field field, ConfigValue annotation) {
-            super(field, annotation, ConfigValueType.DOUBLE);
+            super(field, annotation, ConfigValueTypea.DOUBLE);
         }
 
         @Override
@@ -137,7 +137,7 @@ public class ConfigHandler {
     public static class BooleanFieldWrapper extends FieldWrapper{
 
         public BooleanFieldWrapper(Field field, ConfigValue annotation) {
-            super(field, annotation, ConfigValueType.BOOLEAN);
+            super(field, annotation, ConfigValueTypea.BOOLEAN);
         }
 
         @Override
@@ -150,7 +150,7 @@ public class ConfigHandler {
     public static class StringFieldWrapper extends FieldWrapper{
 
         public StringFieldWrapper(Field field, ConfigValue annotation) {
-            super(field, annotation, ConfigValueType.STRING);
+            super(field, annotation, ConfigValueTypea.STRING);
         }
 
         @Override
