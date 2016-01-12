@@ -1,9 +1,9 @@
 package net.darkaqua.blacksmith.api.entity;
 
-import com.sun.javafx.geom.Vec2d;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.EntityRotation;
+import net.darkaqua.blacksmith.api.util.Vect2d;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
@@ -32,7 +32,7 @@ public interface IEntity {
     Cube getEntityBoundingBox();
     Cube getEntityCollisionBox();
 
-    Vec2d getEntitySize();
+    Vect2d getEntitySize();
 
     boolean isDead();
 
