@@ -23,7 +23,7 @@ minecraft {
     version = "1.8.9-11.15.0.1693"
     runDir = "run"
 
-    mappings = "stable_20"
+    mappings = "snapshot_20151122"
     // makeObfSourceJar = false
 }
 
