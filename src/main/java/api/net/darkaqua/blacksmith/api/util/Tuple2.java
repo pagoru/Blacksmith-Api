@@ -8,7 +8,7 @@ public class Tuple2<T1, T2> {
     private T1 fist;
     private T2 second;
 
-    public Tuple2(T1 a, T2 b){
+    public Tuple2(T1 a, T2 b) {
         fist = a;
         second = b;
     }

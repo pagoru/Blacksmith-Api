@@ -13,11 +13,11 @@ public class DescriptionPacketWrapper implements ITileEntityUpdatePacket {
 
     private S35PacketUpdateTileEntity packet;
 
-    public DescriptionPacketWrapper(S35PacketUpdateTileEntity packet){
+    public DescriptionPacketWrapper(S35PacketUpdateTileEntity packet) {
         this.packet = packet;
     }
 
-    public S35PacketUpdateTileEntity getPacket(){
+    public S35PacketUpdateTileEntity getPacket() {
         return packet;
     }
 
@@ -25,6 +25,7 @@ public class DescriptionPacketWrapper implements ITileEntityUpdatePacket {
     public Vect3i getPosition() {
         return MCInterface.fromBlockPos(packet.getPos());
     }
+
     @Override
     public IDataCompound getDataCompound() {
         return MCInterface.fromNBTCompound(packet.getNbtCompound());

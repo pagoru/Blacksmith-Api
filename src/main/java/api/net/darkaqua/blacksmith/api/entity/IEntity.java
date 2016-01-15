@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface IEntity {
 
     IWorld getWorld();
+
     void setWorld(IWorld w);
 
     void update();
@@ -19,17 +20,21 @@ public interface IEntity {
     Vect3d getLookVector();
 
     Vect3d getPosition();
+
     void setPosition(Vect3d pos);
 
     Vect3d getMotion();
+
     void setMotion(Vect3d mot);
 
     void moveEntity(Vect3d mot);
 
     EntityRotation getEntityRotation();
+
     void setEntityRotation(EntityRotation rot);
 
     Cube getEntityBoundingBox();
+
     Cube getEntityCollisionBox();
 
     Vect2d getEntitySize();
@@ -41,8 +46,10 @@ public interface IEntity {
     UUID getEntityUUID();
 
     void load(IDataCompound data);
+
     void save(IDataCompound data);
 
     IEntity getRiddingEntity();
+
     IEntity getRiddenByEntity();
 }

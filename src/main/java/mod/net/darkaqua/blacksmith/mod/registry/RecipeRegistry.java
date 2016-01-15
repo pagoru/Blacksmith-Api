@@ -17,8 +17,6 @@ import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -26,6 +24,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 23/12/2015.
@@ -34,21 +33,18 @@ public class RecipeRegistry implements IRecipeRegistry {
 
     public static final RecipeRegistry INSTANCE = new RecipeRegistry();
 
-    private RecipeRegistry() {}
+    private RecipeRegistry() {
+    }
 
     @Override
     public List<ICraftingRecipe> getCraftingRecipes() {
-        List<ICraftingRecipe> list = new LinkedList<>();
-        for(IRecipe e : CraftingManager.getInstance().getRecipeList()){
-            list.add(new RecipeWrapper(e));
-        }
-        return list;
+        return CraftingManager.getInstance().getRecipeList().stream().map(RecipeWrapper::new).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
     public List<IFurnaceRecipe> getFurnaceRecipes() {
         List<IFurnaceRecipe> list = new LinkedList<>();
-        for(Map.Entry<ItemStack, ItemStack> e : FurnaceRecipes.instance().getSmeltingList().entrySet()){
+        for (Map.Entry<ItemStack, ItemStack> e : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
             float exp = FurnaceRecipes.instance().getSmeltingExperience(e.getKey());
             list.add(new FurnaceRecipe(MCInterface.fromItemStack(e.getKey()), MCInterface.fromItemStack(e.getValue()), exp));
         }
@@ -92,29 +88,24 @@ public class RecipeRegistry implements IRecipeRegistry {
 
     @Override
     public void registerFuelProvider(final IFuelProvider provider) {
-            GameRegistry.registerFuelHandler(new IFuelHandler() {
-                @Override
-                public int getBurnTime(ItemStack fuel) {
-                    return provider.getBurnTime(MCInterface.fromItemStack(fuel));
-                }
-            });
+        GameRegistry.registerFuelHandler(fuel -> provider.getBurnTime(MCInterface.fromItemStack(fuel)));
     }
 
     private Object[] replaceRecipe(Object[] recipe) {
         for (int i = 0; i < recipe.length; i++) {
-            if(recipe[i] instanceof IItemStack){
+            if (recipe[i] instanceof IItemStack) {
                 recipe[i] = MCInterface.toItemStack((IItemStack) recipe[i]);
             }
-            if(recipe[i] instanceof IItem){
+            if (recipe[i] instanceof IItem) {
                 recipe[i] = MCInterface.toItem((IItem) recipe[i]);
             }
-            if(recipe[i] instanceof IBlock){
+            if (recipe[i] instanceof IBlock) {
                 recipe[i] = MCInterface.toBlock((IBlock) recipe[i]);
             }
-            if(recipe[i] instanceof Items){
+            if (recipe[i] instanceof Items) {
                 recipe[i] = MCInterface.toItem(((Items) recipe[i]).getItem());
             }
-            if(recipe[i] instanceof Blocks){
+            if (recipe[i] instanceof Blocks) {
                 recipe[i] = MCInterface.toBlock(((Blocks) recipe[i]).getBlock());
             }
         }

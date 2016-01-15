@@ -80,7 +80,7 @@ public class SimpleChannel {
     }
 
     private <REPLY extends INetworkMessage, REQ extends INetworkMessage> ChannelHandler<REQ, REPLY> getHandlerWrapper(INetworkMessageHandler<? super REQ, ? extends REPLY> messageHandler, Side side, Class<REQ> requestType) {
-        return new ChannelHandler<REQ, REPLY>(messageHandler, side, requestType);
+        return new ChannelHandler<>(messageHandler, side, requestType);
     }
 
     /**

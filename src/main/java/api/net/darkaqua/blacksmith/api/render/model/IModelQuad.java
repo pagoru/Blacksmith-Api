@@ -20,7 +20,7 @@ public interface IModelQuad {
 
     boolean useShade();
 
-    enum QuadVertex{
+    enum QuadVertex {
         FIRST,
         SECOND,
         THIRD,

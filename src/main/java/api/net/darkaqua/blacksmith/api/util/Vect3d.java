@@ -113,7 +113,7 @@ public class Vect3d {
         return this;
     }
 
-    public Vect3d substract(double a, double b, double c) {
+    public Vect3d subtract(double a, double b, double c) {
         x -= a;
         y -= b;
         z -= c;
@@ -236,9 +236,9 @@ public class Vect3d {
         double sin = Math.sin(angle);
         //@formatter:off
         Vect3d[] rotationMatrix = {
-                new Vect3d(cos + axis.x * axis.x * (1 - cos),               axis.y * axis.x * (1 - cos) + axis.z * sin,     axis.z * axis.x * (1 - cos) - axis.y * sin),
-                new Vect3d(axis.x * axis.y * (1 - cos) - axis.z * sin,      cos + axis.y * axis.y * (1 - cos),              axis.z * axis.y * (1 - cos) + axis.z * sin),
-                new Vect3d(axis.x * axis.z * (1 - cos) + axis.y * sin,      axis.y * axis.z * (1 - cos),                    cos + axis.z * axis.z * (1 - cos))
+                new Vect3d(cos + axis.x * axis.x * (1 - cos), axis.y * axis.x * (1 - cos) + axis.z * sin, axis.z * axis.x * (1 - cos) - axis.y * sin),
+                new Vect3d(axis.x * axis.y * (1 - cos) - axis.z * sin, cos + axis.y * axis.y * (1 - cos), axis.z * axis.y * (1 - cos) + axis.z * sin),
+                new Vect3d(axis.x * axis.z * (1 - cos) + axis.y * sin, axis.y * axis.z * (1 - cos), cos + axis.z * axis.z * (1 - cos))
         };
 
         //@formatter:on

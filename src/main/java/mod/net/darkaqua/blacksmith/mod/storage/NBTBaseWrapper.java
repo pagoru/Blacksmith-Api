@@ -11,11 +11,11 @@ public class NBTBaseWrapper implements IDataElement {
 
     private NBTBase nbt;
 
-    public NBTBaseWrapper(NBTBase nbt){
+    public NBTBaseWrapper(NBTBase nbt) {
         this.nbt = nbt;
     }
 
-    public NBTBase getNBTBase(){
+    public NBTBase getNBTBase() {
         return nbt;
     }
 
@@ -34,8 +34,8 @@ public class NBTBaseWrapper implements IDataElement {
         return nbt;
     }
 
-    public NBTTagCompound asNBTTagCompound(){
-        if (nbt instanceof NBTTagCompound){
+    public NBTTagCompound asNBTTagCompound() {
+        if (nbt instanceof NBTTagCompound) {
             return (NBTTagCompound) nbt;
         }
         throw new ClassCastException();

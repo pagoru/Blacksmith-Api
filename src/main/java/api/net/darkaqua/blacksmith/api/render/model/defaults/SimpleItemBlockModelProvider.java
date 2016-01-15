@@ -28,7 +28,7 @@ public class SimpleItemBlockModelProvider extends EmptyBlockModelProvider {
         model = fromModelPart(registry.registerModelPart(part));
     }
 
-    public IRenderModel fromModelPart(IModelPartIdentifier id){
+    public IRenderModel fromModelPart(IModelPartIdentifier id) {
         return new SimpleItemModelProvider.ItemModel(id);
     }
 }

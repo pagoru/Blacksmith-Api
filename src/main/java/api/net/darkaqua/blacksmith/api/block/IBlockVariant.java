@@ -5,17 +5,17 @@ import java.util.Map;
 
 public interface IBlockVariant {
 
-	IBlock getBlock();
+    IBlock getBlock();
 
-	Collection<IIProperty> getProperties();
+    Collection<IIProperty> getProperties();
 
-	<T extends Comparable<T>> T getValue(IIProperty<T> property);
+    <T extends Comparable<T>> T getValue(IIProperty<T> property);
 
-	<T extends Comparable<T>> IBlockVariant withProperty(IIProperty<T> property, T value);
+    <T extends Comparable<T>> IBlockVariant withProperty(IIProperty<T> property, T value);
 
-	IBlockVariant cycleProperty(IIProperty<?> property);
+    IBlockVariant cycleProperty(IIProperty<?> property);
 
-	<T extends Comparable<T>> Map<IIProperty<T>, T> getPropertyMap();
+    <T extends Comparable<T>> Map<IIProperty<T>, T> getPropertyMap();
 
-	Object getInternalBlockState();
+    Object getInternalBlockState();
 }

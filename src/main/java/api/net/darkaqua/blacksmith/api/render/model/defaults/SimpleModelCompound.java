@@ -23,7 +23,7 @@ public class SimpleModelCompound implements IRenderModel {
 
     public void addModelPart(IModelPartIdentifier part) {
         if (part == null) {
-            throw new NullPointerException("null model componente");
+            throw new NullPointerException("null model component");
         }
         parts.add(part);
     }

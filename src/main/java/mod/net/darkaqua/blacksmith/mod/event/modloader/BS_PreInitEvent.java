@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * Created by cout970 on 07/11/2015.
  */
-public class BS_PreInitEvent implements IPreInitEvent{
+public class BS_PreInitEvent implements IPreInitEvent {
 
     private FMLPreInitializationEvent event;
 
@@ -24,7 +24,8 @@ public class BS_PreInitEvent implements IPreInitEvent{
     }
 
     @Override
-    public void setEventCanceled(boolean value) {}
+    public void setEventCanceled(boolean value) {
+    }
 
     @Override
     public boolean isEventCanceled() {
@@ -53,7 +54,7 @@ public class BS_PreInitEvent implements IPreInitEvent{
 
     @Override
     public File getSuggestedConfigurationFile() {
-        return new File(event.getModConfigurationDirectory(), ModLoaderManager.getActiveMod().getModId()+".cfg");
+        return new File(event.getModConfigurationDirectory(), ModLoaderManager.getActiveMod().getModId() + ".cfg");
     }
 
     @Override

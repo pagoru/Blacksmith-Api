@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by cout970 on 29/12/2015.
  */
-public class BS_Property<T extends Comparable<T>> implements IProperty<T>{
+public class BS_Property<T extends Comparable<T>> implements IProperty<T> {
 
     private String name;
     private Map<T, String> values;
@@ -19,7 +19,7 @@ public class BS_Property<T extends Comparable<T>> implements IProperty<T>{
         this.name = name;
         this.clazz = valuesClass;
         values = new HashMap<>();
-        for(Map.Entry<String, T> e : val.entrySet()){
+        for (Map.Entry<String, T> e : val.entrySet()) {
             values.put(e.getValue(), e.getKey());
         }
     }
@@ -31,7 +31,7 @@ public class BS_Property<T extends Comparable<T>> implements IProperty<T>{
 
     @Override
     public Collection<T> getAllowedValues() {
-        return  values.keySet();
+        return values.keySet();
     }
 
     @Override

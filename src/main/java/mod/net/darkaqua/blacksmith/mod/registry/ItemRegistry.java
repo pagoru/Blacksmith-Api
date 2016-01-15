@@ -40,10 +40,10 @@ public class ItemRegistry implements IItemRegistry {
         if (identifier == null)
             throw new NullPointerException("ItemRegistry cannot use a null identifier to newCreativeTab a new item");
         BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
-        if(mod == null)
+        if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in item registration: null");
 
-        identifier = mod.getModId().toLowerCase()+"/"+identifier;
+        identifier = mod.getModId().toLowerCase() + "/" + identifier;
 
         BS_Item item = new BS_Item(definition);
         GameRegistry.registerItem(item, identifier);
@@ -75,7 +75,7 @@ public class ItemRegistry implements IItemRegistry {
     @Override
     public IItem getItemFromDefinition(IItemDefinition def) {
         RegisteredItem reg = registeredItems.get(def);
-        if (reg == null){
+        if (reg == null) {
             return null;
         }
         return reg.getIItem();

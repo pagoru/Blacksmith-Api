@@ -13,7 +13,8 @@ public class BaseEvent implements IEvent {
     }
 
     @Override
-    public void setEventCanceled(boolean value) {}
+    public void setEventCanceled(boolean value) {
+    }
 
     @Override
     public boolean isEventCanceled() {

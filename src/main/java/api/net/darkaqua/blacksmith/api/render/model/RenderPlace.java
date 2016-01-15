@@ -18,7 +18,7 @@ public enum RenderPlace {
 
     private String propertyName;
 
-    RenderPlace(String name){
+    RenderPlace(String name) {
         propertyName = name;
     }
 

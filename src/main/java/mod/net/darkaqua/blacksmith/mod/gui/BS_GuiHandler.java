@@ -25,12 +25,12 @@ public class BS_GuiHandler implements IGuiHandler {
     }
 
     public BS_Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        IGuiDefinition handler = this.handler.getGuiDefinition(MCInterface.toPlayer(player), new WorldRef(MCInterface.fromWorld(world), new Vect3i(x,y,z)), ID, GameSide.SERVER);
+        IGuiDefinition handler = this.handler.getGuiDefinition(MCInterface.toPlayer(player), new WorldRef(MCInterface.fromWorld(world), new Vect3i(x, y, z)), ID, GameSide.SERVER);
         return new BS_Container(handler);
     }
 
     public BS_Gui getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        IGuiDefinition handler = this.handler.getGuiDefinition(MCInterface.toPlayer(player), new WorldRef(MCInterface.fromWorld(world), new Vect3i(x,y,z)), ID, GameSide.CLIENT);
+        IGuiDefinition handler = this.handler.getGuiDefinition(MCInterface.toPlayer(player), new WorldRef(MCInterface.fromWorld(world), new Vect3i(x, y, z)), ID, GameSide.CLIENT);
         return new BS_Gui(handler);
     }
 }

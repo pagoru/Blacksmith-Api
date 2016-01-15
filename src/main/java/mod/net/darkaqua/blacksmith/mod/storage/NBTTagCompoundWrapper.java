@@ -82,9 +82,9 @@ public class NBTTagCompoundWrapper implements IDataCompound {
     public void setDataElement(String name, IDataElement value) {
         if (value instanceof NBTBaseWrapper) {
             nbt.setTag(name, ((NBTBaseWrapper) value).getNBTBase());
-        } else if(value instanceof NBTTagCompoundWrapper){
+        } else if (value instanceof NBTTagCompoundWrapper) {
             nbt.setTag(name, ((NBTTagCompoundWrapper) value).getNBTTagCompound());
-        } else if(value instanceof NBTTagListWrapper){
+        } else if (value instanceof NBTTagListWrapper) {
             nbt.setTag(name, ((NBTTagListWrapper) value).getNBTTagList());
         } else if (value != null) {
             throw new BlacksmithInternalException("Invalid IDataElement implementation: " + value + ", with class: " + value.getClass());
@@ -142,9 +142,9 @@ public class NBTTagCompoundWrapper implements IDataCompound {
         if (base != null) {
             if (base instanceof NBTTagCompound) {
                 return new NBTTagCompoundWrapper((NBTTagCompound) base);
-            } else if(base instanceof NBTTagList){
+            } else if (base instanceof NBTTagList) {
                 return new NBTTagListWrapper((NBTTagList) base);
-            }else {
+            } else {
                 return new NBTBaseWrapper(base);
             }
         }

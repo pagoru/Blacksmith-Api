@@ -21,7 +21,8 @@ public class RenderManager implements IRenderManager {
 
     public static final RenderManager INSTANCE = new RenderManager();
 
-    public static void init(){}
+    public static void init() {
+    }
 
     @Override
     public void renderItemStack(IItemStack stack, Vect3d pos, RenderPlace place) {
@@ -31,7 +32,7 @@ public class RenderManager implements IRenderManager {
         RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
         ItemStack itemstack = MCInterface.toItemStack(stack);
         IBakedModel model = renderItem.getItemModelMesher().getItemModel(itemstack);
-        model = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, MCInterface.toCamaraTransform(place));
+        model = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, MCInterface.toCameraTransform(place));
         renderItem.renderItem(itemstack, model);
         GL11.glPopMatrix();
     }

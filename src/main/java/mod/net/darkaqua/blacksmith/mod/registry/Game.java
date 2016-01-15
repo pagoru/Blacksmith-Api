@@ -8,11 +8,12 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public class Game implements IGame{
+public class Game implements IGame {
 
     public static final Game INSTANCE = new Game();
 
-    private Game(){}
+    private Game() {
+    }
 
     @Override
     public IBlockRegistry getBlockRegistry() {

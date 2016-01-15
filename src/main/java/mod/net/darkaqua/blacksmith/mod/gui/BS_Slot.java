@@ -22,20 +22,20 @@ public class BS_Slot extends Slot {
         return def;
     }
 
-    public void onSlotChanged(){
+    public void onSlotChanged() {
         super.onSlotChanged();
         def.onSlotUpdate();
     }
 
-    public int getSlotStackLimit(){
+    public int getSlotStackLimit() {
         return def.getMaxStackSize();
     }
 
-    public boolean isItemValid(ItemStack stack){
+    public boolean isItemValid(ItemStack stack) {
         return def.isItemValid(MCInterface.fromItemStack(stack));
     }
 
-    public boolean canTakeStack(EntityPlayer playerIn){
+    public boolean canTakeStack(EntityPlayer playerIn) {
         return def.canTakeStack(MCInterface.toPlayer(playerIn));
     }
 }

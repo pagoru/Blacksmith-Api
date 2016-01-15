@@ -7,15 +7,15 @@ import net.darkaqua.blacksmith.api.block.IIProperty;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 29/12/2015.
  */
-public class BlockStateWrapper implements IBlockVariantCreator{
+public class BlockStateWrapper implements IBlockVariantCreator {
 
     private BlockState state;
 
@@ -30,9 +30,7 @@ public class BlockStateWrapper implements IBlockVariantCreator{
     @Override
     public List<IBlockVariant> getValidVariants() {
         List<IBlockVariant> list = new ArrayList<>(16);
-        for(IBlockState s : state.getValidStates()){
-            list.add(MCInterface.fromIBlockState(s));
-        }
+        list.addAll(state.getValidStates().stream().map(MCInterface::fromIBlockState).collect(Collectors.toList()));
         return list;
     }
 
@@ -49,7 +47,7 @@ public class BlockStateWrapper implements IBlockVariantCreator{
     @Override
     public List<IIProperty> getProperties() {
         List<IIProperty> list = new ArrayList<>(16);
-        for(IProperty s : state.getProperties()){
+        for (IProperty s : state.getProperties()) {
             list.add(MCInterface.fromIProperty(s));
         }
         return list;

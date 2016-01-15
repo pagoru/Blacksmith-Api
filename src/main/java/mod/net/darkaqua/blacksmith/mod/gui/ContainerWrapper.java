@@ -7,11 +7,10 @@ import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
 import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 11/01/2016.
@@ -51,11 +50,7 @@ public class ContainerWrapper implements IContainer {
 
     @Override
     public List<ISlotDefinition> getSlots() {
-        List<ISlotDefinition> list = new LinkedList<>();
-        for(Slot s : cont.inventorySlots){
-            list.add(MCInterface.fromSlot(s));
-        }
-        return list;
+        return cont.inventorySlots.stream().map(MCInterface::fromSlot).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
@@ -65,11 +60,7 @@ public class ContainerWrapper implements IContainer {
 
     @Override
     public List<IItemStack> getInventoryContents() {
-        List<IItemStack> list = new LinkedList<>();
-        for(ItemStack s : cont.inventoryItemStacks){
-            list.add(MCInterface.fromItemStack(s));
-        }
-        return list;
+        return cont.inventoryItemStacks.stream().map(MCInterface::fromItemStack).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

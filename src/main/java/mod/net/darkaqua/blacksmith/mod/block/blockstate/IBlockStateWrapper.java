@@ -20,13 +20,13 @@ public class IBlockStateWrapper implements IBlockVariant {
 
     private IBlockState state;
 
-    public IBlockStateWrapper(IBlockState state){
-        if(state == null)
+    public IBlockStateWrapper(IBlockState state) {
+        if (state == null)
             throw new BlacksmithInternalException("Invalid blockstate");
         this.state = state;
     }
 
-    public IBlockState getIBlockState(){
+    public IBlockState getIBlockState() {
         return state;
     }
 
@@ -39,7 +39,7 @@ public class IBlockStateWrapper implements IBlockVariant {
     @SuppressWarnings(value = "unchecked")
     public Collection<IIProperty> getProperties() {
         LinkedList<IIProperty> list = new LinkedList<>();
-        for(IProperty p : state.getPropertyNames()){
+        for (IProperty p : state.getPropertyNames()) {
             list.add(MCInterface.fromIProperty(p));
         }
         return list;
@@ -64,7 +64,7 @@ public class IBlockStateWrapper implements IBlockVariant {
     @SuppressWarnings(value = "unchecked")
     public <T extends Comparable<T>> Map<IIProperty<T>, T> getPropertyMap() {
         Map<IIProperty<T>, T> properties = new HashMap<>();
-        for(Map.Entry<IProperty, Comparable> entry : state.getProperties().entrySet()){
+        for (Map.Entry<IProperty, Comparable> entry : state.getProperties().entrySet()) {
             properties.put(MCInterface.fromIProperty(entry.getKey()), (T) entry.getValue());
         }
         return properties;

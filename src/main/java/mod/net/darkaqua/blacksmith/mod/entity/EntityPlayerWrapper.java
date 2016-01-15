@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod.entity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -18,7 +19,7 @@ public class EntityPlayerWrapper extends EntityWrapper implements IPlayer {
         this.player = player;
     }
 
-    public EntityPlayer getPlayer(){
+    public EntityPlayer getPlayer() {
         return player;
     }
 
@@ -35,5 +36,15 @@ public class EntityPlayerWrapper extends EntityWrapper implements IPlayer {
     @Override
     public IInventoryHandler getInventory() {
         return MCInterface.fromInventory(player.inventory);
+    }
+
+    @Override
+    public boolean isSneaking() {
+        return player.isSneaking();
+    }
+
+    @Override
+    public void openGui(Object mod, int guiId, IWorld world, int x, int y, int z) {
+        player.openGui(mod, guiId, MCInterface.toWorld(world), x, y, z);
     }
 }

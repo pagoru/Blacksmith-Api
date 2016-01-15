@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 /**
  * Created by cout970 on 07/11/2015.
  */
-public class BS_InitEvent implements IInitEvent{
+public class BS_InitEvent implements IInitEvent {
 
     private FMLInitializationEvent event;
 
@@ -20,7 +20,8 @@ public class BS_InitEvent implements IInitEvent{
     }
 
     @Override
-    public void setEventCanceled(boolean value) {}
+    public void setEventCanceled(boolean value) {
+    }
 
     @Override
     public boolean isEventCanceled() {

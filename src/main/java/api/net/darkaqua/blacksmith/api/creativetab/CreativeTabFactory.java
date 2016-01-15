@@ -22,7 +22,7 @@ public abstract class CreativeTabFactory {
     public static ICreativeTab MATERIALS_TAB;
     public static ICreativeTab INVENTORY_TAB;
 
-    public static ICreativeTab createCreatibeTab(String label, IItemStack tabIcon){
+    public static ICreativeTab createCreativeTab(String label, IItemStack tabIcon) {
         return INSTANCE.newCreativeTab(label, tabIcon);
     }
 

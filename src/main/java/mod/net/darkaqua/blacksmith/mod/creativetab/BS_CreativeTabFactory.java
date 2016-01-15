@@ -11,9 +11,10 @@ import net.minecraft.creativetab.CreativeTabs;
  */
 public class BS_CreativeTabFactory extends CreativeTabFactory {
 
-    private BS_CreativeTabFactory(){}
+    private BS_CreativeTabFactory() {
+    }
 
-    public static void init(){
+    public static void init() {
         INSTANCE = new BS_CreativeTabFactory();
 
         BLOCKS_TAB = MCInterface.fromCreativeTab(CreativeTabs.tabBlock);
@@ -32,7 +33,8 @@ public class BS_CreativeTabFactory extends CreativeTabFactory {
 
     @Override
     protected ICreativeTab newCreativeTab(String label, IItemStack tabIcon) {
-        if(tabIcon == null)throw new NullPointerException("CreativeTabFactory cannot make a creative tab with a null tabIcon");
+        if (tabIcon == null)
+            throw new NullPointerException("CreativeTabFactory cannot make a creative tab with a null tabIcon");
         BS_CreativeTab tab = new BS_CreativeTab(label, tabIcon);
         return MCInterface.fromCreativeTab(tab);
     }

@@ -29,7 +29,7 @@ public class EntityRotation {
         this.yaw = yaw;
     }
 
-    public float getYawWrappedTo180(){
+    public float getYawWrappedTo180() {
         return wrapTo180(yaw);
     }
 
@@ -47,7 +47,7 @@ public class EntityRotation {
         return angle;
     }
 
-    public Direction toHorizontalAxis(){
+    public Direction toHorizontalAxis() {
         float yaw = getYawWrappedTo180();
         if ((yaw < 45 && yaw >= 0) || (yaw > -45 && yaw <= 0)) {
             return Direction.SOUTH;
@@ -58,6 +58,6 @@ public class EntityRotation {
         } else if ((yaw >= 135 && yaw <= 180) || (yaw <= -135 && yaw >= -180)) {
             return Direction.NORTH;
         }
-        throw new IllegalStateException("Invalid yaw: "+yaw);
+        throw new IllegalStateException("Invalid yaw: " + yaw);
     }
 }

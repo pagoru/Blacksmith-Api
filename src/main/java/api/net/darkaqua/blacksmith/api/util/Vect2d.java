@@ -22,8 +22,8 @@ public class Vect2d {
         this(vec.getX(), vec.getY());
     }
 
-    public static Vect2d nullVector(){
-        return new Vect2d(0,0);
+    public static Vect2d nullVector() {
+        return new Vect2d(0, 0);
     }
 
     public Vect2d(int[] ar) {
@@ -42,7 +42,7 @@ public class Vect2d {
         return new Vect2d(-x, -y);
     }
 
-    public Vect2i toVect2i(){
+    public Vect2i toVect2i() {
         return new Vect2i(getX(), getY());
     }
 
@@ -104,7 +104,7 @@ public class Vect2d {
      * Returns a array of doubles with the components of the vector
      */
     public double[] doubleArray() {
-        return new double[] { x, y};
+        return new double[]{x, y};
     }
 
     /**

@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by cout970 on 11/11/2015.
  */
-public class BS_CreativeTab extends CreativeTabs{
+public class BS_CreativeTab extends CreativeTabs {
 
     protected ItemStack icon;
 
@@ -18,7 +18,7 @@ public class BS_CreativeTab extends CreativeTabs{
         this.icon = MCInterface.toItemStack(icon);
     }
 
-    public ItemStack getIconItemStack(){
+    public ItemStack getIconItemStack() {
         return icon;
     }
 
@@ -28,7 +28,7 @@ public class BS_CreativeTab extends CreativeTabs{
     }
 
     @Override
-    public int getIconItemDamage(){
+    public int getIconItemDamage() {
         return icon.getItemDamage();
     }
 }

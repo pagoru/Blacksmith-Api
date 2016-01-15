@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by cout970 on 27/12/2015.
  */
-public class RenderModelWrapper implements IPerspectiveAwareModel{
+public class RenderModelWrapper implements IPerspectiveAwareModel {
 
     private IRenderModel model;
     protected List<BakedQuad> generalQuads;
@@ -42,18 +42,18 @@ public class RenderModelWrapper implements IPerspectiveAwareModel{
     public RenderModelWrapper(IRenderModel model) {
         this.model = model;
         faceQuads = new EnumMap<>(EnumFacing.class);
-        for(EnumFacing e : EnumFacing.values()){
-            faceQuads.put(e, new ArrayList<BakedQuad>());
+        for (EnumFacing e : EnumFacing.values()) {
+            faceQuads.put(e, new ArrayList<>());
         }
         generalQuads = new ArrayList<>();
         transformMap = new EnumMap<>(ItemCameraTransforms.TransformType.class);
-        for(IModelPartIdentifier id : model.getParts()){
+        for (IModelPartIdentifier id : model.getParts()) {
             IBakedModel baked = ModelRegistry.INSTANCE.getBakedModel(id);
-            if (baked == null){
-                throw new IllegalStateException("IRenderModel: "+model+", has a part that was not registered");
+            if (baked == null) {
+                throw new IllegalStateException("IRenderModel: " + model + ", has a part that was not registered");
             }
             generalQuads.addAll(baked.getGeneralQuads());
-            for(EnumFacing e : EnumFacing.values()){
+            for (EnumFacing e : EnumFacing.values()) {
                 List<BakedQuad> list = baked.getFaceQuads(e);
                 faceQuads.get(e).addAll(list);
             }
@@ -135,11 +135,11 @@ public class RenderModelWrapper implements IPerspectiveAwareModel{
             transformMap = new EnumMap<>(ItemCameraTransforms.TransformType.class);
         }
 //        if (!transformMap.containsKey(cameraTransformType)) {
-            RenderTransformation trans = model.getTransformation(getRenderPlace(cameraTransformType));
-            TRSRTransformation transf = new TRSRTransformation(toTransformVec(trans));
-            transformMap.put(cameraTransformType, TRSRTransformation.blockCornerToCenter(transf).getMatrix());
+        RenderTransformation trans = model.getTransformation(getRenderPlace(cameraTransformType));
+        TRSRTransformation transf = new TRSRTransformation(toTransformVec(trans));
+        transformMap.put(cameraTransformType, TRSRTransformation.blockCornerToCenter(transf).getMatrix());
 //        }
-        return new ImmutablePair<IPerspectiveAwareModel, Matrix4f>(this, transformMap.get(cameraTransformType));
+        return new ImmutablePair<>(this, transformMap.get(cameraTransformType));
     }
 
     private RenderPlace getRenderPlace(ItemCameraTransforms.TransformType cameraTransformType) {

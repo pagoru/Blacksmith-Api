@@ -6,7 +6,7 @@ import net.darkaqua.blacksmith.api.world.IWorld;
 /**
  * Created by cout970 on 23/12/2015.
  */
-public interface ICraftingRecipe{
+public interface ICraftingRecipe {
 
     /**
      * Returns true if the content of the crafting grid matches the recipe

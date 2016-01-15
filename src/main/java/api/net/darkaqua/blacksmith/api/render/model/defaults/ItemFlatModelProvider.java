@@ -18,13 +18,13 @@ public class ItemFlatModelProvider implements IItemModelProvider {
     protected ResourceReference texture;
     protected IRenderModel model;
 
-    public ItemFlatModelProvider(ResourceReference texture){
+    public ItemFlatModelProvider(ResourceReference texture) {
         this.texture = texture;
     }
 
     @Override
     public IRenderModel getModelForVariant(IItemStack stack) {
-        if(model == null){
+        if (model == null) {
             model = new ItemFlatModel(identifier);
         }
         return model;
@@ -36,7 +36,7 @@ public class ItemFlatModelProvider implements IItemModelProvider {
     }
 
 
-    public static class ItemFlatModel implements IRenderModel{
+    public static class ItemFlatModel implements IRenderModel {
 
         private IModelPartIdentifier component;
 
@@ -51,10 +51,10 @@ public class ItemFlatModelProvider implements IItemModelProvider {
 
         @Override
         public RenderTransformation getTransformation(RenderPlace place) {
-            if (place == RenderPlace.THIRD_PERSON){
-                return new RenderTransformation(new Vect3d(0, 1, -3).multiply(1/16d), new Vect3d(-90, 0, 0), new Vect3d(0.55, 0.55, 0.55));
-            }else if (place == RenderPlace.FIRST_PERSON){
-                return new RenderTransformation(new Vect3d(0, 4, 2).multiply(1/16d), new Vect3d(0, -135, 25), new Vect3d(1.7, 1.7, 1.7));
+            if (place == RenderPlace.THIRD_PERSON) {
+                return new RenderTransformation(new Vect3d(0, 1, -3).multiply(1 / 16d), new Vect3d(-90, 0, 0), new Vect3d(0.55, 0.55, 0.55));
+            } else if (place == RenderPlace.FIRST_PERSON) {
+                return new RenderTransformation(new Vect3d(0, 4, 2).multiply(1 / 16d), new Vect3d(0, -135, 25), new Vect3d(1.7, 1.7, 1.7));
             }
             return null;
         }

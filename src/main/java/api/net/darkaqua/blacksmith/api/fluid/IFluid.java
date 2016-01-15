@@ -15,24 +15,36 @@ public interface IFluid {
     IBlock getBlock();
 
     int getLuminosity(IFluidStack stack);
+
     int getDensity(IFluidStack stack);
+
     int getTemperature(IFluidStack stack);
+
     int getViscosity(IFluidStack stack);
+
     boolean isGaseous(IFluidStack stack);
+
     Color getColor(IFluidStack stack);
 
     int getLuminosity(WorldRef ref);
+
     int getDensity(WorldRef ref);
+
     int getTemperature(WorldRef ref);
+
     int getViscosity(WorldRef ref);
+
     boolean isGaseous(WorldRef ref);
+
     Color getColor(WorldRef ref);
 
     // This part may change with the time
     ResourceReference getStill(IFluidStack stack);
+
     ResourceReference getFlowing(IFluidStack stack);
 
     ResourceReference getStill(WorldRef ref);
+
     ResourceReference getFlowing(WorldRef ref);
 
     Object getInternalObject();

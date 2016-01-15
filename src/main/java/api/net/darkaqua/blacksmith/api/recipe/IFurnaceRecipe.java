@@ -8,7 +8,9 @@ import net.darkaqua.blacksmith.api.inventory.IItemStack;
 public interface IFurnaceRecipe {
 
     IItemStack getInput();
+
     IItemStack getOutput();
+
     float getExperience();
 
 }

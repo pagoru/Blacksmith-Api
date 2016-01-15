@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 /**
  * Created by cout970 on 14/11/2015.
  */
-public class BS_TileEntity extends TileEntity implements ITickable, ISidedInventory{
+public class BS_TileEntity extends TileEntity implements ITickable, ISidedInventory {
 
     protected ITileEntityDefinition def;
 
@@ -34,7 +34,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
         def.bindParent(MCInterface.fromTileEntity(this));
     }
 
-    public ITileEntityDefinition getTileEntityDefinition(){
+    public ITileEntityDefinition getTileEntityDefinition() {
         return def;
     }
 
@@ -86,7 +86,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     @Override
     public void invalidate() {
         super.invalidate();
-        if(def != null) {
+        if (def != null) {
             def.onDelete();
         }
     }
@@ -120,7 +120,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     }
 
     @Override
-    public net.minecraft.util.AxisAlignedBB getRenderBoundingBox(){
+    public net.minecraft.util.AxisAlignedBB getRenderBoundingBox() {
         return MCInterface.toAxisAlignedBB(def.getRenderBox());
     }
 
@@ -130,17 +130,17 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     }
 
     @Override
-    public void onLoad(){
+    public void onLoad() {
         def.onLoad();
     }
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        if(def instanceof IInventoryProvider){
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             int slots = inv.getSlots(MCInterface.fromEnumFacing(side));
             int[] res = new int[slots];
-            for(int i = 0; i < slots; i++){
+            for (int i = 0; i < slots; i++) {
                 res[i] = i;
             }
             return res;
@@ -150,7 +150,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        if(def instanceof IInventoryProvider) {
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             IItemStack stack = MCInterface.fromItemStack(itemStackIn);
             IItemStack stack2 = inv.insertItemStack(MCInterface.fromEnumFacing(direction), index, stack, true);
@@ -161,7 +161,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public boolean canExtractItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        if(def instanceof IInventoryProvider) {
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             return inv.extractItemStack(MCInterface.fromEnumFacing(direction), index, itemStackIn.stackSize, true) != null;
         }
@@ -170,7 +170,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public int getSizeInventory() {
-        if(def instanceof IInventoryProvider) {
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             return inv.getSlots(null);
         }
@@ -179,7 +179,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        if(def instanceof IInventoryProvider) {
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             return MCInterface.toItemStack(inv.getStackInSlot(null, index));
         }
@@ -188,7 +188,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        if(def instanceof IInventoryProvider) {
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             IItemStack ret = inv.extractItemStack(null, index, count, false);
             return MCInterface.toItemStack(ret);
@@ -203,7 +203,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        if(def instanceof IInventoryProvider) {
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             inv.setStackInSlot(null, index, MCInterface.fromItemStack(stack));
         }
@@ -220,10 +220,12 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {}
+    public void openInventory(EntityPlayer player) {
+    }
 
     @Override
-    public void closeInventory(EntityPlayer player) {}
+    public void closeInventory(EntityPlayer player) {
+    }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
@@ -236,7 +238,8 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     }
 
     @Override
-    public void setField(int id, int value) {}
+    public void setField(int id, int value) {
+    }
 
     @Override
     public int getFieldCount() {
@@ -245,7 +248,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public void clear() {
-        if(def instanceof IInventoryProvider) {
+        if (def instanceof IInventoryProvider) {
             IInventoryHandler inv = ((IInventoryProvider) def).getInventory();
             for (Direction d : Direction.values()) {
                 for (int i = 0; i < inv.getSlots(d); i++) {

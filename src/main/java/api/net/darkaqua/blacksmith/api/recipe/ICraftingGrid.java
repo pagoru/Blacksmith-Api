@@ -14,6 +14,7 @@ public interface ICraftingGrid {
     void setStackInSlot(IItemStack stack, int slot);
 
     int getHeight();
+
     int getWidth();
 
     int getMaxStackSize();

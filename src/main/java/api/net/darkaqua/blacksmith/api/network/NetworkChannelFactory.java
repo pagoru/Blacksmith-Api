@@ -7,7 +7,7 @@ public abstract class NetworkChannelFactory {
 
     protected static NetworkChannelFactory INSTANCE;
 
-    public static INetworkChannel createNetworkChannel(String channelName){
+    public static INetworkChannel createNetworkChannel(String channelName) {
         return INSTANCE.newNetworkChannel(channelName);
     }
 

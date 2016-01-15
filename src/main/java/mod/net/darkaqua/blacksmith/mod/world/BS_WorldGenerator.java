@@ -12,11 +12,11 @@ import java.util.Random;
 /**
  * Created by cout970 on 18/12/2015.
  */
-public class BS_WorldGenerator implements IWorldGenerator{
+public class BS_WorldGenerator implements IWorldGenerator {
 
     private IWorldGeneratorDefinition def;
 
-    public BS_WorldGenerator(IWorldGeneratorDefinition def){
+    public BS_WorldGenerator(IWorldGeneratorDefinition def) {
         this.def = def;
     }
 

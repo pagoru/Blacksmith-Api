@@ -7,27 +7,27 @@ import net.darkaqua.blacksmith.api.util.Vect3i;
 
 public interface IWorld extends IWorldAccess {
 
-	IBlockVariant getBlockVariant(Vect3i position);
+    IBlockVariant getBlockVariant(Vect3i position);
 
-	//flags argument will be changed
-	boolean setBlockVariant(IBlockVariant variant, Vect3i posiction, int flags);
+    //flags argument will be changed
+    boolean setBlockVariant(IBlockVariant variant, Vect3i position, int flags);
 
-	ITileEntity getTileEntity(Vect3i position);
+    ITileEntity getTileEntity(Vect3i position);
 
-	void removeTileEntity(Vect3i position);
+    void removeTileEntity(Vect3i position);
 
-	boolean isBlockLoaded(Vect3i position);
+    boolean isBlockLoaded(Vect3i position);
 
-	boolean isAreaLoaded(Cube area);
+    boolean isAreaLoaded(Cube area);
 
-	int getWorldDimension();
+    int getWorldDimension();
 
-	IIChunkProvider getChunkProvider();
+    IIChunkProvider getChunkProvider();
 
-	long getWorldTime();
+    long getWorldTime();
 
-	boolean isThundering();
+    boolean isThundering();
 
-	boolean isRaining();
+    boolean isRaining();
 }
 

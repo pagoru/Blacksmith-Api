@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by cout970 on 14/12/2015.
  */
-public class SimpleBlockModelProvider implements IBlockModelProvider{
+public class SimpleBlockModelProvider implements IBlockModelProvider {
 
     protected IModelPartIdentifier identifier;
     protected IModelPart component;
@@ -40,7 +40,7 @@ public class SimpleBlockModelProvider implements IBlockModelProvider{
     }
 
 
-    public static class BlockModel implements IRenderModel{
+    public static class BlockModel implements IRenderModel {
 
         protected IModelPartIdentifier component;
 

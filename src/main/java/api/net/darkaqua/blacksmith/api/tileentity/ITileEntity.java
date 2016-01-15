@@ -9,46 +9,46 @@ import net.minecraft.network.Packet;
 
 public interface ITileEntity {
 
-	/**
-	 * Returns the world and the position of the tileEntity
+    /**
+     * Returns the world and the position of the tileEntity
      */
-	WorldRef getWorldRef();
+    WorldRef getWorldRef();
 
-	void setWorldRef(WorldRef ref);
+    void setWorldRef(WorldRef ref);
 
-	boolean isValid();
-	
-	void setValid(boolean valid);
-	
-	void setModified();
-	
-	void loadData(IDataCompound tag);
-	
-	void saveData(IDataCompound tag);
-	
-	Packet getDescriptionPacket();
-	
-	void onChunkUnload();
-	
-	boolean shouldRecreate(WorldRef ref, IBlockVariant oldState, IBlockVariant newSate);
-	
-	void onBlockChange();
-	
-	void onClientDataArrive(int id, int data);
+    boolean isValid();
 
-	ITileEntityDefinition getTileEntityDefinition();
-	
-	@ClientSideOnly()
-	double getRenderDistance();
-	
-	@ClientSideOnly()
-	boolean canRenderInPass(int pass);
-	
-	@ClientSideOnly
-	Cube getRenderBox();
-	
-	@ClientSideOnly
-	boolean canRenderBreaking();
+    void setValid(boolean valid);
 
-	Object getInternalTileEntity();
+    void setModified();
+
+    void loadData(IDataCompound tag);
+
+    void saveData(IDataCompound tag);
+
+    Packet getDescriptionPacket();
+
+    void onChunkUnload();
+
+    boolean shouldRecreate(WorldRef ref, IBlockVariant oldState, IBlockVariant newSate);
+
+    void onBlockChange();
+
+    void onClientDataArrive(int id, int data);
+
+    ITileEntityDefinition getTileEntityDefinition();
+
+    @ClientSideOnly()
+    double getRenderDistance();
+
+    @ClientSideOnly()
+    boolean canRenderInPass(int pass);
+
+    @ClientSideOnly
+    Cube getRenderBox();
+
+    @ClientSideOnly
+    boolean canRenderBreaking();
+
+    Object getInternalTileEntity();
 }

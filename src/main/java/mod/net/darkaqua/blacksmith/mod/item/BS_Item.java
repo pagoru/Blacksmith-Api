@@ -18,19 +18,19 @@ public class BS_Item extends Item {
 
     protected IItemDefinition definition;
 
-    public BS_Item(IItemDefinition def){
+    public BS_Item(IItemDefinition def) {
         definition = def;
         definition.onCreate(MCInterface.fromItem(this));
         setUnlocalizedName(def.getUnlocalizedName());
         setCreativeTab(MCInterface.fromCreativeTab(def.getCreativeTab()));
     }
 
-    public IItemDefinition getItemDefinition(){
+    public IItemDefinition getItemDefinition() {
         return definition;
     }
 
-    public String getUnlocalizedName(ItemStack stack){
-        return "item."+definition.getUnlocalizedName(MCInterface.fromItemStack(stack));
+    public String getUnlocalizedName(ItemStack stack) {
+        return "item." + definition.getUnlocalizedName(MCInterface.fromItemStack(stack));
     }
 
     @Override
@@ -68,7 +68,8 @@ public class BS_Item extends Item {
     public int getMaxDamage() {
         return definition.getMaxDamage();
     }
-//
+
+    //
 //    @Override
 //    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
 //        return super.hitEntity(stack, target, attacker);
@@ -93,7 +94,8 @@ public class BS_Item extends Item {
     public boolean isFull3D() {
         return definition.is3DItem();
     }
-//
+
+    //
 //    @Override
 //    public boolean shouldRotateAroundWhenRendering() {
 //        return super.shouldRotateAroundWhenRendering();

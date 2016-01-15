@@ -6,17 +6,23 @@ import net.darkaqua.blacksmith.api.storage.IDataCompound;
 public interface IItemStack {
 
     IItem getItem();
+
     void setItem(IItem item);
 
     int getAmount();
+
     void setAmount(int amount);
+
     int getMaxAmount();
 
     int getDamage();
+
     void setDamage(int damage);
+
     int getMaxDamage();
 
     IDataCompound getDataCompound();
+
     void setDataCompound(IDataCompound cmp);
 
     String getUnlocalizedName();

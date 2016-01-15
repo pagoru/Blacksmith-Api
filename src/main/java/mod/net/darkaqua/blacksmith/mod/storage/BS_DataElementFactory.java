@@ -10,11 +10,12 @@ import net.minecraft.nbt.NBTTagList;
 /**
  * Created by cout970 on 21/12/2015.
  */
-public class BS_DataElementFactory extends DataElementFactory{
+public class BS_DataElementFactory extends DataElementFactory {
 
-    private BS_DataElementFactory(){}
+    private BS_DataElementFactory() {
+    }
 
-    public static void init(){
+    public static void init() {
         INSTANCE = new BS_DataElementFactory();
     }
 

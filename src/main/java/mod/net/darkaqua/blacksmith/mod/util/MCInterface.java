@@ -1,13 +1,13 @@
 package net.darkaqua.blacksmith.mod.util;
 
 import net.darkaqua.blacksmith.api.block.*;
-import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.fluid.IFluid;
 import net.darkaqua.blacksmith.api.fluid.IFluidStack;
+import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
@@ -29,12 +29,12 @@ import net.darkaqua.blacksmith.mod.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.block.MaterialWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.block.blockstate.IPropertyWrapper;
-import net.darkaqua.blacksmith.mod.gui.BS_Slot;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidStackWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidWrapper;
+import net.darkaqua.blacksmith.mod.gui.BS_Slot;
 import net.darkaqua.blacksmith.mod.inventory.InventoryHandlerWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
@@ -164,7 +164,7 @@ public class MCInterface {
 
     public static IItem fromItem(Item item) {
         if (item == null) return null;
-        if (item instanceof ItemBlock){
+        if (item instanceof ItemBlock) {
             return new ItemBlockWrapper((ItemBlock) item);
         }
         return new ItemWrapper(item);
@@ -312,7 +312,7 @@ public class MCInterface {
         return null;
     }
 
-    public static ItemCameraTransforms.TransformType toCamaraTransform(RenderPlace place) {
+    public static ItemCameraTransforms.TransformType toCameraTransform(RenderPlace place) {
         switch (place) {
 
             case NONE:
@@ -348,20 +348,20 @@ public class MCInterface {
     }
 
     public static IDataList fromNBTList(NBTTagList nbt) {
-        if(nbt == null) return null;
+        if (nbt == null) return null;
         return new NBTTagListWrapper(nbt);
     }
 
-    public static NBTTagList toNBTTagList(IDataList nbt){
-        if (nbt instanceof NBTTagListWrapper){
+    public static NBTTagList toNBTTagList(IDataList nbt) {
+        if (nbt instanceof NBTTagListWrapper) {
             return ((NBTTagListWrapper) nbt).getNBTTagList();
         }
         return null;
     }
 
     public static IInventoryHandler fromInventory(IInventory inv) {
-        if (inv == null)return null;
-        if (inv instanceof ISidedInventory){
+        if (inv == null) return null;
+        if (inv instanceof ISidedInventory) {
             return new SidedInventoryWrapper((ISidedInventory) inv);
         }
         return new SimpleInventoryWrapper(inv);
@@ -371,8 +371,9 @@ public class MCInterface {
         if (stack == null) return null;
         return new FluidStackWrapper(stack);
     }
+
     public static FluidStack toFluidStack(IFluidStack stack) {
-        if(stack instanceof FluidStackWrapper){
+        if (stack instanceof FluidStackWrapper) {
             return ((FluidStackWrapper) stack).getFluidStack();
         }
         return null;
@@ -383,8 +384,8 @@ public class MCInterface {
         return new FluidWrapper(fluid);
     }
 
-    public static Fluid toFluid(IFluid fluid){
-        if (fluid instanceof FluidWrapper){
+    public static Fluid toFluid(IFluid fluid) {
+        if (fluid instanceof FluidWrapper) {
             return ((FluidWrapper) fluid).getFluid();
         }
         return null;
@@ -396,7 +397,7 @@ public class MCInterface {
     }
 
     public static InventoryCrafting toInventoryCrafting(ICraftingGrid grid) {
-        if (grid instanceof InventoryCraftingWrapper){
+        if (grid instanceof InventoryCraftingWrapper) {
             return ((InventoryCraftingWrapper) grid).getInventory();
         }
         return null;
@@ -418,7 +419,7 @@ public class MCInterface {
     }
 
     public static ISlotDefinition fromSlot(Slot slot) {
-        if (slot instanceof BS_Slot){
+        if (slot instanceof BS_Slot) {
             return ((BS_Slot) slot).getDefinition();
         }
         return null;
@@ -428,13 +429,14 @@ public class MCInterface {
         if (inv == null) return null;
         return new InventoryHandlerWrapper(inv);
     }
+
     public static IBlockMaterial toMaterial(Material mat) {
         if (mat == null) return null;
         return new MaterialWrapper(mat);
     }
 
     public static Material toMaterial(IBlockMaterial mat) {
-        if (mat instanceof MaterialWrapper){
+        if (mat instanceof MaterialWrapper) {
             return ((MaterialWrapper) mat).getMaterial();
         }
         return null;
@@ -446,7 +448,7 @@ public class MCInterface {
     }
 
     public static BlockState toBlockStateCreator(IBlockVariantCreator blockState) {
-        if (blockState instanceof BlockStateWrapper){
+        if (blockState instanceof BlockStateWrapper) {
             return ((BlockStateWrapper) blockState).getBlockState();
         }
         return null;

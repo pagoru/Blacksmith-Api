@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 27/12/2015.
@@ -39,11 +40,9 @@ public class ModelPartBuilder implements IModelBuilder {
     public void onTexturesLoad(TextureMap textureGetter) {
         Set<ResourceReference> differentTextures = new HashSet<>();
         textures.clear();
-        for(IModelQuad q : model.getQuads()){
-            differentTextures.add(q.getTexture());
-        }
+        differentTextures.addAll(model.getQuads().stream().map(IModelQuad::getTexture).collect(Collectors.toList()));
 
-        for(ResourceReference res : differentTextures){
+        for (ResourceReference res : differentTextures) {
             TextureAtlasSprite tex = textureGetter.registerSprite(MCInterface.toResourceLocation(res));
             textures.put(res, tex);
         }
@@ -53,8 +52,8 @@ public class ModelPartBuilder implements IModelBuilder {
     public IBakedModel build() {
         List<BakedQuad> generalQuads = new LinkedList<>();
         EnumMap<EnumFacing, List<BakedQuad>> quads = new EnumMap<>(EnumFacing.class);
-        for(EnumFacing e : EnumFacing.values()){
-            quads.put(e, new LinkedList<BakedQuad>());
+        for (EnumFacing e : EnumFacing.values()) {
+            quads.put(e, new LinkedList<>());
         }
         TextureAtlasSprite particles = null;
         try {
@@ -71,7 +70,7 @@ public class ModelPartBuilder implements IModelBuilder {
                     if (sprite == null)
                         throw new IllegalStateException("Some IModelQuad(" + s + ") uses a texture(" + s.getTexture() + ") that is not provided by IModelPart(" + model + ")");
 
-                    if (particles == null){
+                    if (particles == null) {
                         particles = sprite;
                     }
 
@@ -146,7 +145,6 @@ public class ModelPartBuilder implements IModelBuilder {
         public boolean isBuiltInRenderer() {
             return false;
         }
-
 
 
         @Override

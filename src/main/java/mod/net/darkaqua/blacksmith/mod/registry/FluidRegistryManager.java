@@ -12,26 +12,28 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 23/12/2015.
  */
-public class FluidRegistryManager implements IFluidRegistry{
+public class FluidRegistryManager implements IFluidRegistry {
 
     public static final FluidRegistryManager INSTANCE = new FluidRegistryManager();
-    private static final Map<IFluidDefinition, RegistertedFluid> registeredFluids = new HashMap<>();
+    private static final Map<IFluidDefinition, RegisteredFluid> registeredFluids = new HashMap<>();
 
-    private FluidRegistryManager(){}
+    private FluidRegistryManager() {
+    }
 
     @Override
     public IFluid registerFluidDefinition(IFluidDefinition def) {
         Fluid fluid = new BS_Fluid(def);
 
-        if(!FluidRegistry.registerFluid(fluid)) {
+        if (!FluidRegistry.registerFluid(fluid)) {
             fluid = FluidRegistry.getFluid(fluid.getName());
         }
         IFluid iFluid = MCInterface.fromFluid(fluid);
-        registeredFluids.put(def, new RegistertedFluid(def, fluid, iFluid));
+        registeredFluids.put(def, new RegisteredFluid(def, fluid, iFluid));
         return iFluid;
     }
 
@@ -42,23 +44,19 @@ public class FluidRegistryManager implements IFluidRegistry{
 
     @Override
     public List<IFluid> getRegisteredFluids() {
-        List<IFluid> list = new LinkedList<>();
-        for(Map.Entry<String, Fluid> e : FluidRegistry.getRegisteredFluids().entrySet()){
-            list.add(MCInterface.fromFluid(e.getValue()));
-        }
-        return list;
+        return FluidRegistry.getRegisteredFluids().entrySet().stream().map(e -> MCInterface.fromFluid(e.getValue())).collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public RegistertedFluid getRegisteredFluid(IFluidDefinition def){
+    public RegisteredFluid getRegisteredFluid(IFluidDefinition def) {
         return registeredFluids.get(def);
     }
 
-    public static class RegistertedFluid {
+    public static class RegisteredFluid {
         private IFluidDefinition definition;
         private Fluid fluid;
         private IFluid iFluid;
 
-        public RegistertedFluid(IFluidDefinition definition, Fluid fluid, IFluid iFluid) {
+        public RegisteredFluid(IFluidDefinition definition, Fluid fluid, IFluid iFluid) {
             this.definition = definition;
             this.fluid = fluid;
             this.iFluid = iFluid;

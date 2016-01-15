@@ -8,15 +8,15 @@ import java.util.Collection;
 /**
  * Created by cout970 on 28/11/2015.
  */
-public class IPropertyWrapper<T extends Comparable<T>> implements IIProperty<T>{
+public class IPropertyWrapper<T extends Comparable<T>> implements IIProperty<T> {
 
     private IProperty<T> property;
 
-    public IPropertyWrapper(IProperty<T> property){
+    public IPropertyWrapper(IProperty<T> property) {
         this.property = property;
     }
 
-    public IProperty<T> getIProperty(){
+    public IProperty<T> getIProperty() {
         return property;
     }
 

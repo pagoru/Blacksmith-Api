@@ -54,7 +54,7 @@ public class TechneModelLoader {
         try {
 
             ZipInputStream zipInput = new ZipInputStream(stream);
-            Map<String, byte[]> zipContents = new HashMap<String, byte[]>();
+            Map<String, byte[]> zipContents = new HashMap<>();
             ZipEntry entry;
 
             while ((entry = zipInput.getNextEntry()) != null) {
@@ -155,18 +155,25 @@ public class TechneModelLoader {
                         if (shapeChildValue != null) {
                             shapeChildValue = shapeChildValue.trim();
 
-                            if (shapeChildName.equals("IsMirrored")) {
-                                mirrored = !shapeChildValue.equals("False");
-                            } else if (shapeChildName.equals("Offset")) {
-                                offset = shapeChildValue.split(",");
-                            } else if (shapeChildName.equals("Position")) {
-                                position = shapeChildValue.split(",");
-                            } else if (shapeChildName.equals("Rotation")) {
-                                rotation = shapeChildValue.split(",");
-                            } else if (shapeChildName.equals("Size")) {
-                                size = shapeChildValue.split(",");
-                            } else if (shapeChildName.equals("TextureOffset")) {
-                                textureOffset = shapeChildValue.split(",");
+                            switch (shapeChildName) {
+                                case "IsMirrored":
+                                    mirrored = !shapeChildValue.equals("False");
+                                    break;
+                                case "Offset":
+                                    offset = shapeChildValue.split(",");
+                                    break;
+                                case "Position":
+                                    position = shapeChildValue.split(",");
+                                    break;
+                                case "Rotation":
+                                    rotation = shapeChildValue.split(",");
+                                    break;
+                                case "Size":
+                                    size = shapeChildValue.split(",");
+                                    break;
+                                case "TextureOffset":
+                                    textureOffset = shapeChildValue.split(",");
+                                    break;
                             }
                         }
                     }
@@ -208,7 +215,7 @@ public class TechneModelLoader {
         return new TechneModelPart(parts);
     }
 
-    public static class TechneModelPart implements IModelPart{
+    public static class TechneModelPart implements IModelPart {
 
         protected List<IModelPart> modelParts;
 
@@ -223,7 +230,7 @@ public class TechneModelLoader {
         @Override
         public List<IModelQuad> getQuads() {
             List<IModelQuad> list = new LinkedList<>();
-            for(IModelPart part : modelParts){
+            for (IModelPart part : modelParts) {
                 list.addAll(part.getQuads());
             }
             return list;

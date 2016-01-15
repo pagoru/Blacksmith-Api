@@ -16,10 +16,12 @@ public class WorldGenerationRegistry implements IWorldGenerationRegistry {
     public static final WorldGenerationRegistry INSTANCE = new WorldGenerationRegistry();
     private static final List<IWorldGeneratorDefinition> generators = new LinkedList<>();
 
-    private WorldGenerationRegistry(){}
+    private WorldGenerationRegistry() {
+    }
+
     @Override
     public boolean registerWorldGenerator(IWorldGeneratorDefinition def, int priority) {
-        if (def == null || priority <= 0){
+        if (def == null || priority <= 0) {
             return false;
         }
         generators.add(def);

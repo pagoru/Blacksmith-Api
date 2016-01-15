@@ -12,11 +12,12 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
  */
 public class BS_PacketFactory extends PacketFactory {
 
-    public static void init(){
+    public static void init() {
         INSTANCE = new BS_PacketFactory();
     }
 
-    private BS_PacketFactory(){}
+    private BS_PacketFactory() {
+    }
 
     @Override
     protected ITileEntityUpdatePacket newTileEntityUpdatePacket(ITileEntity t, IDataCompound data) {

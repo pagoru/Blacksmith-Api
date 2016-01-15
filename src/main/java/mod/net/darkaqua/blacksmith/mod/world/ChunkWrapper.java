@@ -10,11 +10,11 @@ public class ChunkWrapper implements IChunk {
 
     private Chunk chunk;
 
-    public ChunkWrapper(Chunk chunk){
+    public ChunkWrapper(Chunk chunk) {
         this.chunk = chunk;
     }
 
-    public Chunk getChunk(){
+    public Chunk getChunk() {
         return chunk;
     }
 

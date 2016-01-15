@@ -14,15 +14,15 @@ import java.util.UUID;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public class EntityWrapper implements IEntity{
+public class EntityWrapper implements IEntity {
 
     private Entity entity;
 
-    public EntityWrapper(Entity ent){
+    public EntityWrapper(Entity ent) {
         this.entity = ent;
     }
 
-    public Entity getEntity(){
+    public Entity getEntity() {
         return entity;
     }
 

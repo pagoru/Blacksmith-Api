@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by cout970 on 07/12/2015.
  */
-public interface IRenderModel{
+public interface IRenderModel {
 
     String getName();
 

@@ -19,7 +19,8 @@ public class ResourceManager implements IResourceManagerReloadListener, net.dark
     public static final ResourceManager INSTANCE = new ResourceManager();
     private IResourceManager vanillaResourceManager;
 
-    private ResourceManager(){}
+    private ResourceManager() {
+    }
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
@@ -43,7 +44,7 @@ public class ResourceManager implements IResourceManagerReloadListener, net.dark
         return vanillaResourceManager;
     }
 
-    public static class ResourceFile implements IResourceFile{
+    public static class ResourceFile implements IResourceFile {
 
         private IResource resource;
 

@@ -9,7 +9,7 @@ public abstract class CraftingGridFactory {
 
     protected static CraftingGridFactory INSTANCE;
 
-    public static ICraftingGrid createCraftingGrid(IContainer container, int height, int width){
+    public static ICraftingGrid createCraftingGrid(IContainer container, int height, int width) {
         return INSTANCE.newCraftingGrid(container, height, width);
         //TODO
     }

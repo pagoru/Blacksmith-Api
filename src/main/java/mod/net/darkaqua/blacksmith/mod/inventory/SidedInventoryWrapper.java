@@ -2,7 +2,6 @@ package net.darkaqua.blacksmith.mod.inventory;
 
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.inventory.InventoryUtils;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.inventory.ISidedInventory;
@@ -34,6 +33,11 @@ public class SidedInventoryWrapper implements IInventoryHandler {
     }
 
     @Override
+    public int getInventoryStackLimit() {
+        return inv.getInventoryStackLimit();
+    }
+
+    @Override
     public void setStackInSlot(Direction side, int slot, IItemStack stack) {
         int[] slots = inv.getSlotsForFace(MCInterface.toEnumFacing(side));
         inv.setInventorySlotContents(slots[slot], MCInterface.toItemStack(stack));
@@ -46,55 +50,11 @@ public class SidedInventoryWrapper implements IInventoryHandler {
         int[] options = inv.getSlotsForFace(MCInterface.toEnumFacing(side));
         int slot = options[m];
 
-        if(!inv.canInsertItem(slot, MCInterface.toItemStack(stack), MCInterface.toEnumFacing(side))){
+        if (!inv.canInsertItem(slot, MCInterface.toItemStack(stack), MCInterface.toEnumFacing(side))) {
             return stack;
         }
 
-        if(inv.getStackInSlot(slot) == null){
-            int capacity = Math.min(inv.getInventoryStackLimit(), stack.getItem().getMaxStackSize(stack));
-            if(capacity >= stack.getAmount()){
-                if (!simulated){
-                    inv.setInventorySlotContents(slot, MCInterface.toItemStack(stack.copy()));
-                }
-                return null;
-            }else{
-                if (!simulated){
-                    IItemStack insert = stack.copy();
-                    insert.setAmount(capacity);
-                    inv.setInventorySlotContents(slot, MCInterface.toItemStack(insert));
-                    IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-capacity);
-                    return copy;
-                }else{
-                    IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-capacity);
-                    return copy;
-                }
-            }
-        }else if(InventoryUtils.areExactlyEqual(MCInterface.fromItemStack(inv.getStackInSlot(slot)), stack)){
-            int capacity = Math.min(inv.getInventoryStackLimit(), stack.getItem().getMaxStackSize(stack));
-            int space = capacity-inv.getStackInSlot(slot).stackSize;
-            if (space >= stack.getAmount()){
-                if(!simulated){
-                    IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()+inv.getStackInSlot(slot).stackSize);
-                    inv.setInventorySlotContents(slot, MCInterface.toItemStack(copy));
-                }
-                return null;
-            }else{
-                if (!simulated){
-                    IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-space);
-                    inv.getStackInSlot(slot).stackSize = capacity;
-                    return copy;
-                }else{
-                    IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-space);
-                    return copy;
-                }
-            }
-        }
-        return stack;
+        return IInventoryHandler.super.insertItemStack(side, m, stack, simulated);
     }
 
     @Override
@@ -104,26 +64,14 @@ public class SidedInventoryWrapper implements IInventoryHandler {
         int slot = options[m];
 
         IItemStack storage = MCInterface.fromItemStack(inv.getStackInSlot(slot));
-        if (storage == null || amount <= 0){
+        if (storage == null || amount <= 0) {
             return null;
         }
 
-        if(!inv.canExtractItem(slot, inv.getStackInSlot(slot), MCInterface.toEnumFacing(side))){
+        if (!inv.canExtractItem(slot, inv.getStackInSlot(slot), MCInterface.toEnumFacing(side))) {
             return null;
         }
 
-        if (storage.getAmount() > amount){
-            IItemStack ret = storage.copy();
-            if (!simulated){
-                storage.setAmount(storage.getAmount()-amount);
-            }
-            ret.setAmount(amount);
-            return ret;
-        }else{
-            if (!simulated){
-                inv.setInventorySlotContents(slot, null);
-            }
-            return storage.copy();
-        }
+        return IInventoryHandler.super.extractItemStack(side, m, amount, simulated);
     }
 }

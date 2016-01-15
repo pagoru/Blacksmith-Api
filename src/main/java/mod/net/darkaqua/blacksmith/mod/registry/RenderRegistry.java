@@ -18,12 +18,10 @@ import net.darkaqua.blacksmith.mod.render.model.ItemBlockModelProvider;
 import net.darkaqua.blacksmith.mod.render.model.RenderModelWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -46,7 +44,8 @@ public class RenderRegistry implements IRenderRegistry {
     private static Map<Item, IItemModelProvider> registeredItemModelProviders = new HashMap<>();
     private static Map<IRenderModel, IBakedModel> modelCache = new HashMap<>();
 
-    private RenderRegistry() {}
+    private RenderRegistry() {
+    }
 
     @Override
     public boolean registerBlockModelProvider(IBlockDefinition def, final IBlockModelProvider provider) {
@@ -77,12 +76,7 @@ public class RenderRegistry implements IRenderRegistry {
 
 
         //Item
-        ModelLoader.setCustomMeshDefinition(reg.getItemBlock(), new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "inventory");
-            }
-        });
+        ModelLoader.setCustomMeshDefinition(reg.getItemBlock(), stack -> new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "inventory"));
 
         locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItemBlock()), "inventory"), new BakedItemModel());
         registeredItemModelProviders.put(reg.getItemBlock(), new ItemBlockModelProvider(provider));
@@ -100,7 +94,7 @@ public class RenderRegistry implements IRenderRegistry {
         if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in item model provider registration: null");
 
-        if(provider == null)
+        if (provider == null)
             throw new NullPointerException("Invalid IItemModelProvider: null");
 
         ItemRegistry.RegisteredItem reg = ItemRegistry.INSTANCE.getRegistrationData(def);
@@ -108,12 +102,7 @@ public class RenderRegistry implements IRenderRegistry {
         if (reg == null)
             return false;
 
-        ModelLoader.setCustomMeshDefinition(reg.getItem(), new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "normal");
-            }
-        });
+        ModelLoader.setCustomMeshDefinition(reg.getItem(), stack -> new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "normal"));
 
         locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItem()), "normal"), new BakedItemModel());
         registeredItemModelProviders.put(reg.getItem(), provider);
@@ -142,8 +131,8 @@ public class RenderRegistry implements IRenderRegistry {
     }
 
     @SubscribeEvent
-    public void onBakedEvent(ModelBakeEvent event){
-        for(Map.Entry<ModelResourceLocation, IBakedModel> e : locationToBakedModel.entrySet()){
+    public void onBakedEvent(ModelBakeEvent event) {
+        for (Map.Entry<ModelResourceLocation, IBakedModel> e : locationToBakedModel.entrySet()) {
             event.modelRegistry.putObject(e.getKey(), e.getValue());
         }
         ModelRegistry.bakeModels();
@@ -158,8 +147,8 @@ public class RenderRegistry implements IRenderRegistry {
     }
 
     public IBakedModel getBakedModel(IRenderModel id) {
-        if (id == null)return null;
-        if(!modelCache.containsKey(id)){
+        if (id == null) return null;
+        if (!modelCache.containsKey(id)) {
             modelCache.put(id, new RenderModelWrapper(id));
         }
         return modelCache.get(id);

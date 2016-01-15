@@ -20,7 +20,8 @@ public class BS_PostInitEvent implements IPostInitEvent {
     }
 
     @Override
-    public void setEventCanceled(boolean value) {}
+    public void setEventCanceled(boolean value) {
+    }
 
     @Override
     public boolean isEventCanceled() {

@@ -7,7 +7,7 @@ import net.darkaqua.blacksmith.api.util.Cube;
  * This interface is mended to be implemented by the modders
  * This interface defines a new block
  * For a default implementation of this interface, see DefaultBlockDefinition
- *
+ * <p>
  * Created by cout970 on 08/11/2015.
  */
 public interface IBlockDefinition {
@@ -21,6 +21,7 @@ public interface IBlockDefinition {
 
     /**
      * The internal name of the block
+     *
      * @return the name of the block
      */
     String getUnlocalizedName();
@@ -28,6 +29,7 @@ public interface IBlockDefinition {
     /**
      * This attribute defines the default size, collision box and selection box of the block
      * The collision box and the selection box can be changes in dynamically in other methods
+     *
      * @return The size of the block
      */
     Cube getBounds();
@@ -40,6 +42,7 @@ public interface IBlockDefinition {
      * Dirt: 0.5F
      * Obsidian: 50F
      * Bedrock: -1F
+     *
      * @return The hardness of the block
      */
     float getHardness();
@@ -47,6 +50,7 @@ public interface IBlockDefinition {
     /**
      * This attribute defines the amount of light that the block will emit,
      * the value must be between 0F and 1F
+     *
      * @return the amount of light emitted by the block
      */
     float getLightEmitted();
@@ -54,6 +58,7 @@ public interface IBlockDefinition {
     /**
      * This attribute defines the amount of light that the block will absorb,
      * the value must be between 0F and 1F
+     *
      * @return the amount of light absorbed by the block
      */
     float getLightOpacity();
@@ -65,6 +70,7 @@ public interface IBlockDefinition {
      * Dirt: 2.5F
      * Obsidian: 2000F
      * Bedrock: 6000000F
+     *
      * @return the resistance of the block to explosions
      */
     float getResistance();

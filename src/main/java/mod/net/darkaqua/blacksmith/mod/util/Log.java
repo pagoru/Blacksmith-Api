@@ -17,7 +17,7 @@ public class Log {
     }
 
     public static void debug(Object s) {
-        LOGGER.info("[DEBUG]"+s);
+        LOGGER.info("[DEBUG]" + s);
     }
 
     public static void info(String s) {

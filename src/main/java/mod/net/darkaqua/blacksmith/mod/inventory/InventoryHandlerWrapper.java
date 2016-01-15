@@ -18,7 +18,7 @@ public class InventoryHandlerWrapper implements ISidedInventory {
 
     private IInventoryHandler inv;
 
-    public InventoryHandlerWrapper(IInventoryHandler inv){
+    public InventoryHandlerWrapper(IInventoryHandler inv) {
         this.inv = inv;
     }
 
@@ -80,7 +80,8 @@ public class InventoryHandlerWrapper implements ISidedInventory {
     }
 
     @Override
-    public void markDirty() {}
+    public void markDirty() {
+    }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
@@ -106,7 +107,8 @@ public class InventoryHandlerWrapper implements ISidedInventory {
     }
 
     @Override
-    public void setField(int id, int value) {}
+    public void setField(int id, int value) {
+    }
 
     @Override
     public int getFieldCount() {

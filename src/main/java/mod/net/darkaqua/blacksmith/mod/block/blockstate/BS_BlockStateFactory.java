@@ -18,16 +18,17 @@ import java.util.Map;
  */
 public class BS_BlockStateFactory extends BlockVariantCreatorFactory {
 
-    public static void init(){
+    public static void init() {
         INSTANCE = new BS_BlockStateFactory();
     }
 
-    private BS_BlockStateFactory(){}
+    private BS_BlockStateFactory() {
+    }
 
     @Override
     protected IBlockVariantCreator newBlockVariantCreator(IBlock block, IIProperty[] properties) {
         IProperty[] prop = new IProperty[properties.length];
-        for(int i = 0; i < properties.length; i++){
+        for (int i = 0; i < properties.length; i++) {
             prop[i] = MCInterface.toIProperty(properties[i]);
         }
         return MCInterface.fromBlockStateCreator(new BlockState(MCInterface.toBlock(block), prop));
@@ -45,7 +46,7 @@ public class BS_BlockStateFactory extends BlockVariantCreatorFactory {
 
     @Override
     protected <T extends Enum<T>> IIProperty<T> newPropertyEnum(String name, Class<T> clazz) {
-        return MCInterface.fromIProperty(new BS_PropertyEnum<T>(name, clazz, Lists.newArrayList(clazz.getEnumConstants())));
+        return MCInterface.fromIProperty(new BS_PropertyEnum<>(name, clazz, Lists.newArrayList(clazz.getEnumConstants())));
     }
 
     @Override
