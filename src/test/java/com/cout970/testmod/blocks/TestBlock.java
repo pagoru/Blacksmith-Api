@@ -5,7 +5,7 @@ import net.darkaqua.blacksmith.api.block.BlockMaterialFactory;
 import net.darkaqua.blacksmith.api.block.IBlockMaterial;
 import net.darkaqua.blacksmith.api.block.defaults.DefaultBlockDefinition;
 import net.darkaqua.blacksmith.api.block.methods.BlockMethod;
-import net.darkaqua.blacksmith.api.block.variants.IBlockData;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.Direction;

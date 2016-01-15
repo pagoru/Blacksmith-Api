@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.block;
 
-import net.darkaqua.blacksmith.api.block.variants.IBlockData;
-import net.darkaqua.blacksmith.api.block.variants.IBlockDataGenerator;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.annotations.Implementable;

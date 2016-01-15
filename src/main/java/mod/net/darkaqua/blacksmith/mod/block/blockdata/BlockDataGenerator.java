@@ -1,12 +1,13 @@
-package net.darkaqua.blacksmith.mod.block.blockstate.newest;
+package net.darkaqua.blacksmith.mod.block.blockdata;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.variants.IBlockAttribute;
-import net.darkaqua.blacksmith.api.block.variants.IBlockData;
-import net.darkaqua.blacksmith.api.block.variants.IBlockDataGenerator;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttribute;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockDataGenerator;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.state.BlockState;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,11 +15,11 @@ import java.util.stream.Collectors;
 /**
  * Created by cout970 on 15/01/2016.
  */
-public class BlockStateWrapper implements IBlockDataGenerator {
+public class BlockDataGenerator implements IBlockDataGenerator {
 
     private BlockState state;
 
-    public BlockStateWrapper(BlockState state) {
+    public BlockDataGenerator(BlockState state) {
         this.state = state;
     }
 
@@ -28,7 +29,7 @@ public class BlockStateWrapper implements IBlockDataGenerator {
 
     @Override
     public List<IBlockData> getAllStates() {
-        return state.getValidStates().stream().map(MCInterface::fromIBlockState).collect(Collectors.toList());
+        return state.getValidStates().stream().map(MCInterface::fromIBlockState).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

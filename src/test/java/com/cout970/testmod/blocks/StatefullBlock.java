@@ -1,10 +1,10 @@
 package com.cout970.testmod.blocks;
 
 import net.darkaqua.blacksmith.api.block.defaults.DefaultBlockDefinition;
-import net.darkaqua.blacksmith.api.block.variants.BlockDataFactory;
-import net.darkaqua.blacksmith.api.block.variants.IBlockAttribute;
-import net.darkaqua.blacksmith.api.block.variants.IBlockDataGenerator;
-import net.darkaqua.blacksmith.api.block.variants.defaults.BlockAttributeValueDirection;
+import net.darkaqua.blacksmith.api.block.blockdata.BlockDataFactory;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttribute;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockDataGenerator;
+import net.darkaqua.blacksmith.api.block.blockdata.defaults.BlockAttributeValueDirection;
 
 /**
  * Created by cout970 on 15/01/2016.

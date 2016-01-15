@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.mod.block.BS_BlockMaterialFactory;
-import net.darkaqua.blacksmith.mod.block.blockstate.newest.BS_BlockDataFactory;
+import net.darkaqua.blacksmith.mod.block.blockdata.BS_BlockDataFactory;
 import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
@@ -68,8 +68,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
 
     public static void debug() {
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
-//        Minecraft.getMinecraft().isCallingFromMinecraftThread()
-//        IModel
+
         Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 

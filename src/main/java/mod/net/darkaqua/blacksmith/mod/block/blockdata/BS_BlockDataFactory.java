@@ -1,11 +1,11 @@
-package net.darkaqua.blacksmith.mod.block.blockstate.newest;
+package net.darkaqua.blacksmith.mod.block.blockdata;
 
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.variants.BlockDataFactory;
-import net.darkaqua.blacksmith.api.block.variants.IBlockAttribute;
-import net.darkaqua.blacksmith.api.block.variants.IBlockAttributeValue;
-import net.darkaqua.blacksmith.api.block.variants.IBlockDataGenerator;
+import net.darkaqua.blacksmith.api.block.blockdata.BlockDataFactory;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttribute;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttributeValue;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockDataGenerator;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;

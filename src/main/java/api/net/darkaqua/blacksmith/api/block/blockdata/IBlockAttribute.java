@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.block.variants;
+package net.darkaqua.blacksmith.api.block.blockdata;
 
 import java.util.List;
 

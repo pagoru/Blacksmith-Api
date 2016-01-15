@@ -1,6 +1,6 @@
-package net.darkaqua.blacksmith.api.block.variants.defaults;
+package net.darkaqua.blacksmith.api.block.blockdata.defaults;
 
-import net.darkaqua.blacksmith.api.block.variants.IBlockAttributeValue;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.util.Direction;
 
 /**

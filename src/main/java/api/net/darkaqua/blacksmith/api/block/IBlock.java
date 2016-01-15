@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.api.block;
 
 import com.google.common.base.Predicate;
 import net.darkaqua.blacksmith.api.block.methods.BlockMethod;
-import net.darkaqua.blacksmith.api.block.variants.IBlockData;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Cube;

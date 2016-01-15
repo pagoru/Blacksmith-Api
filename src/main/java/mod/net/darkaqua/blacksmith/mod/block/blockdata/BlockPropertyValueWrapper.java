@@ -1,6 +1,6 @@
-package net.darkaqua.blacksmith.mod.block.blockstate.newest;
+package net.darkaqua.blacksmith.mod.block.blockdata;
 
-import net.darkaqua.blacksmith.api.block.variants.IBlockAttributeValue;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttributeValue;
 
 /**
  * Created by cout970 on 15/01/2016.
