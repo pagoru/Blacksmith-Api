@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.tileentity.defaults;
 
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
@@ -53,7 +53,7 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     public void onChunkUnload() {}
 
     @Override
-    public boolean shouldRecreate(WorldRef ref, IBlockVariant oldState, IBlockVariant newSate) {
+    public boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate) {
         return true;
     }
 

@@ -1,5 +1,8 @@
 package net.darkaqua.blacksmith.api.util;
 
+import net.darkaqua.blacksmith.api.storage.DataElementFactory;
+import net.darkaqua.blacksmith.api.storage.IDataCompound;
+
 /**
  * 
  * @author cout970
@@ -23,6 +26,10 @@ public class Vect3i {
 
 	public Vect3i(int[] ar) {
 		this(ar[0], ar[1], ar[2]);
+	}
+
+	public Vect3i(IDataCompound pos) {
+		this(pos.getInteger("x"), pos.getInteger("y"), pos.getInteger("z"));
 	}
 
 	public static Vect3i nullVector(){
@@ -65,6 +72,11 @@ public class Vect3i {
 
 	public int getZ() {
 		return this.z;
+	}
+
+	public Vect3i move(Direction dir, int amount){
+		add(dir.toVect3i().multiply(amount));
+		return this;
 	}
 
 	@Override
@@ -111,5 +123,13 @@ public class Vect3i {
 
 	public Vect3d toVector3d() {
 		return new Vect3d(getX(), getY(), getZ());
+	}
+
+	public IDataCompound save() {
+		IDataCompound list = DataElementFactory.createDataCompound();
+		list.setInteger("x", x);
+		list.setInteger("y", y);
+		list.setInteger("z", z);
+		return list;
 	}
 }

@@ -139,7 +139,7 @@ public class RenderModelWrapper implements IPerspectiveAwareModel{
             TRSRTransformation transf = new TRSRTransformation(toTransformVec(trans));
             transformMap.put(cameraTransformType, TRSRTransformation.blockCornerToCenter(transf).getMatrix());
 //        }
-        return new ImmutablePair<IPerspectiveAwareModel, Matrix4f>(this, transformMap.get(cameraTransformType));
+        return new ImmutablePair<>(this, transformMap.get(cameraTransformType));
     }
 
     private RenderPlace getRenderPlace(ItemCameraTransforms.TransformType cameraTransformType) {

@@ -1,5 +1,6 @@
 package com.cout970.testmod;
 
+import com.cout970.testmod.blocks.StatefullBlock;
 import com.cout970.testmod.blocks.TestBlock;
 import com.cout970.testmod.gui.GuiTestHandler;
 import com.cout970.testmod.items.TestItem;
@@ -40,7 +41,8 @@ public class ModClass {
     @ModInstance
     public static ModClass instance;
 
-    public static IBlock block;
+    public static IBlock testBlock;
+    public static IBlock blockStatefull;
     public static IItem item;
     public static ConfigHandler configHandler;
     public static final ConfigHolder CONFIG = new ConfigHolder();
@@ -55,9 +57,9 @@ public class ModClass {
 
         IBlockDefinition blockDef = new TestBlock();
         IItemDefinition itemDef = new TestItem();
-        block = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
+        testBlock = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
         item = StaticAccess.GAME.getItemRegistry().registerItemDefinition(itemDef, "item_identifier");
-
+        blockStatefull = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(new StatefullBlock(),"stateFullBlock");
 //        IRenderModel model = TechneModelLoader.loadModel(new ResourceReference("mod_id", "models/test.tcn"), new ResourceReference("mod_id", "misc/test_texture"));
 //        SimpleItemModelProvider itemProvider = new SimpleItemModelProvider(model);
 //        StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef, itemProvider);

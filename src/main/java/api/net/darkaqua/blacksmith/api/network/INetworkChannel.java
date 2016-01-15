@@ -12,7 +12,7 @@ public interface INetworkChannel {
 
     <REQ extends INetworkMessage, REPLY extends INetworkMessage> void registerMessage(INetworkMessageHandler<? super REQ, ? extends REPLY> handler, Class<REQ> messageType, int discriminator, GameSide gameSide);
 
-    IPacket<?> getPacketFrom(INetworkMessage message);
+    IPacket getPacketFrom(INetworkMessage message);
 
     void sendToAll(INetworkMessage message);
 

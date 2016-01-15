@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.item;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItemBlock;
@@ -33,7 +33,7 @@ public class ItemBlockWrapper extends ItemWrapper implements IItemBlock {
     }
 
     @Override
-    public boolean placeBlock(IItemStack stack, IPlayer player, IBlockVariant variant, WorldRef ref, Direction side, Vect3d hit) {
+    public boolean placeBlock(IItemStack stack, IPlayer player, IBlockData variant, WorldRef ref, Direction side, Vect3d hit) {
         return item.placeBlockAt(MCInterface.toItemStack(stack), MCInterface.fromPlayer(player), MCInterface.toWorld(ref.getWorld()),
                 MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEnumFacing(side),(float)hit.getX(), (float)hit.getY(),
                 (float)hit.getZ(), MCInterface.toIBlockState(variant));

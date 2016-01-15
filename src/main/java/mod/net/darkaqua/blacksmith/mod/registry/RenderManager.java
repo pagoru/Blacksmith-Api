@@ -31,7 +31,7 @@ public class RenderManager implements IRenderManager {
         RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
         ItemStack itemstack = MCInterface.toItemStack(stack);
         IBakedModel model = renderItem.getItemModelMesher().getItemModel(itemstack);
-        model = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, MCInterface.toCamaraTransform(place));
+        model = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, MCInterface.toCameraTransform(place));
         renderItem.renderItem(itemstack, model);
         GL11.glPopMatrix();
     }

@@ -1,14 +1,16 @@
 package net.darkaqua.blacksmith.api.tileentity;
 
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 /**
  * Created by cout970 on 13/11/2015.
  */
+@Implementable
 public interface ITileEntityDefinition {
 
     ITileEntity getParent();
@@ -31,7 +33,7 @@ public interface ITileEntityDefinition {
 
     void onChunkUnload();
 
-    boolean shouldRecreate(WorldRef ref, IBlockVariant oldState, IBlockVariant newSate);
+    boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate);
 
     void onBlockChange();
 

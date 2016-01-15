@@ -9,6 +9,7 @@ import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by cout970 on 16/12/2015.
  */
+@Implementable
 public interface IItemDefinition {
 
     void onCreate(IItem parent);

@@ -1,7 +1,10 @@
 package net.darkaqua.blacksmith.api.block;
 
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
+import net.darkaqua.blacksmith.api.block.variants.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.util.Cube;
+import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 /**
  * This interface is mended to be implemented by the modders
@@ -10,6 +13,7 @@ import net.darkaqua.blacksmith.api.util.Cube;
  *
  * Created by cout970 on 08/11/2015.
  */
+@Implementable
 public interface IBlockDefinition {
 
 
@@ -17,7 +21,7 @@ public interface IBlockDefinition {
 
     IBlockMaterial getBlockMaterial();
 
-    IBlockVariantCreator getBlockVariantCreator();
+    IBlockDataGenerator getBlockDataGenerator();
 
     /**
      * The internal name of the block
@@ -78,7 +82,9 @@ public interface IBlockDefinition {
 
     boolean isFullCube();
 
-    IBlockVariant translateMetadataToVariant(int meta);
+    IBlockData translateMetadataToVariant(int meta);
 
-    int translateVariantToMetadata(IBlockVariant variant);
+    int translateVariantToMetadata(IBlockData variant);
+
+    IBlock getBlock();
 }

@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.api.inventory;
 
 import net.darkaqua.blacksmith.api.util.Direction;
+import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 /**
  * Created by cout970 on 19/12/2015.
@@ -9,6 +10,7 @@ import net.darkaqua.blacksmith.api.util.Direction;
  *
  * Direction can be null in all methods, because vanilla
  */
+@Implementable
 public interface IInventoryHandler {
 
     /**

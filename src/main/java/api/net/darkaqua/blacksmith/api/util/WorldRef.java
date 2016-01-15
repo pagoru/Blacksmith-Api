@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.util;
 
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
@@ -46,15 +46,15 @@ public class WorldRef {
 		return ref;
 	}
 
-	public IBlockVariant getBlockVariant() {
+	public IBlockData getBlockData() {
 		return world.getBlockVariant(position);
 	}
 
-	public void setBlockVariant(IBlockVariant variant, int flags) {
+	public void setBlockData(IBlockData variant, int flags) {
 		world.setBlockVariant(variant, position, flags);
 	}
 
-	public void setBlockVariant(IBlockVariant variant) {
+	public void setBlockData(IBlockData variant) {
 		world.setBlockVariant(variant, position, 3);
 	}
 

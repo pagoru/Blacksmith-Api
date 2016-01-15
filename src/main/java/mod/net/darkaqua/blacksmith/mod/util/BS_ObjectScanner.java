@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.util;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceProvider;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
@@ -28,11 +28,11 @@ public class BS_ObjectScanner extends ObjectScanner {
             if (obj != null) return (T) obj;
         }
 
-        if(toScan instanceof IBlockVariant){
-            if(isInstance(((IBlockVariant) toScan).getInternalBlockState(), clazz)){
-                return (T) ((IBlockVariant) toScan).getInternalBlockState();
+        if(toScan instanceof IBlockData){
+            if(isInstance(((IBlockData) toScan).getInternalBlockState(), clazz)){
+                return (T) ((IBlockData) toScan).getInternalBlockState();
             }else{
-                toScan = ((IBlockVariant) toScan).getBlock();
+                toScan = ((IBlockData) toScan).getBlock();
             }
         }
 

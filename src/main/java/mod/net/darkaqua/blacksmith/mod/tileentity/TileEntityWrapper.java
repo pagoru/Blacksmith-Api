@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.mod.tileentity;
 
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
@@ -76,7 +76,7 @@ public class TileEntityWrapper implements ITileEntity {
     }
 
     @Override
-    public boolean shouldRecreate(WorldRef ref, IBlockVariant oldState, IBlockVariant newSate) {
+    public boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate) {
         return tile.shouldRefresh(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(oldState), MCInterface.toIBlockState(newSate));
     }
 

@@ -3,7 +3,7 @@ package net.darkaqua.blacksmith.api.world.generation;
 import com.google.common.base.Predicate;
 import net.darkaqua.blacksmith.api.block.Blocks;
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.util.Vect3i;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.api.world.IWorld;
@@ -16,29 +16,29 @@ import java.util.Random;
  */
 public class OreGenerator {
 
-    private IBlockVariant ore;
+    private IBlockData ore;
     private int numberOfBlocks;
-    private Predicate<IBlockVariant> predicate;
+    private Predicate<IBlockData> predicate;
 
     public OreGenerator(IBlock ore, int number) {
-        this(ore.getDefaultVariant(), number,
-                new Predicate<IBlockVariant>() {
+        this(ore.getDefaultBlockData(), number,
+                new Predicate<IBlockData>() {
 
                     @Override
-                    public boolean apply(@Nullable IBlockVariant input) {
+                    public boolean apply(@Nullable IBlockData input) {
                         return input != null && input.getBlock().equals(Blocks.STONE.getBlock());
                     }
                 }
         );
     }
 
-    public OreGenerator(IBlockVariant ore, int number, Predicate<IBlockVariant> target) {
+    public OreGenerator(IBlockData ore, int number, Predicate<IBlockData> target) {
         this.ore = ore;
         numberOfBlocks = number;
         predicate = target;
     }
 
-    public OreGenerator(IBlock ore, int meta, int number, Predicate<IBlockVariant> target) {
+    public OreGenerator(IBlock ore, int meta, int number, Predicate<IBlockData> target) {
         this(ore.getVariantFromMeta(meta), number, target);
     }
 
@@ -81,8 +81,8 @@ public class OreGenerator {
                                 WorldRef ref = new WorldRef(world, blockPos);
 
                                 if (xDistance * xDistance + yDistance * yDistance + zDistance * zDistance < 1.0D) {
-                                    if (ref.getBlockVariant().getBlock().canBeReplacedByOreGen(ref, predicate)) {
-                                        ref.setBlockVariant(ore, 2);
+                                    if (ref.getBlockData().getBlock().canBeReplacedByOreGen(ref, predicate)) {
+                                        ref.setBlockData(ore, 2);
                                     }
                                 }
                             }
@@ -98,7 +98,7 @@ public class OreGenerator {
         return value < (double) i ? i - 1 : i;
     }
 
-    public IBlockVariant getOre() {
+    public IBlockData getOre() {
         return ore;
     }
 

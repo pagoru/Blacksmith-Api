@@ -3,7 +3,7 @@ package net.darkaqua.blacksmith.mod.block;
 import com.google.common.base.Predicate;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
@@ -90,17 +90,17 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public IBlockVariant getDefaultVariant() {
+	public IBlockData getDefaultBlockData() {
 		return MCInterface.fromIBlockState(block.getDefaultState());
 	}
 
 	@Override
-	public IBlockVariant getVariantFromMeta(int meta) {
+	public IBlockData getVariantFromMeta(int meta) {
 		return MCInterface.fromIBlockState(block.getDefaultState());
 	}
 
 	@Override
-	public int getMetaFromVariant(IBlockVariant variant) {
+	public int getMetaFromVariant(IBlockData variant) {
 		return block.getMetaFromState(MCInterface.toIBlockState(variant));
 	}
 
@@ -110,7 +110,7 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public boolean canBeReplacedByOreGen(WorldRef ref, final Predicate<IBlockVariant> target) {
+	public boolean canBeReplacedByOreGen(WorldRef ref, final Predicate<IBlockData> target) {
 
 		return block.isReplaceableOreGen(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), new Predicate<IBlockState>() {
 			@Override
@@ -126,18 +126,18 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public boolean onActivated(WorldRef ref, IBlockVariant state, IPlayer player, Direction side, Vect3d v) {
+	public boolean onActivated(WorldRef ref, IBlockData state, IPlayer player, Direction side, Vect3d v) {
 		return block.onBlockActivated(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
 				MCInterface.toIBlockState(state), MCInterface.fromPlayer(player), MCInterface.toEnumFacing(side), (float) v.getX(), (float) v.getY(), (float) v.getZ());
 	}
 
 	@Override
-	public void onAdded(WorldRef ref, IBlockVariant state) {
+	public void onAdded(WorldRef ref, IBlockData state) {
 		block.onBlockAdded(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state));
 	}
 
 	@Override
-	public void onBreaks(WorldRef ref, IBlockVariant state) {
+	public void onBreaks(WorldRef ref, IBlockData state) {
 		block.breakBlock(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state));
 	}
 
@@ -152,22 +152,22 @@ public class BlockWrapper implements IBlock {
 	}
 
 	@Override
-	public void onHarvested(WorldRef ref, IBlockVariant variant, IPlayer player) {
+	public void onHarvested(WorldRef ref, IBlockData variant, IPlayer player) {
 		block.onBlockHarvested(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(variant), MCInterface.fromPlayer(player));
 	}
 
 	@Override
-	public void onNeighborBlockChange(WorldRef ref, IBlockVariant variant, IBlock neighbor) {
+	public void onNeighborBlockChange(WorldRef ref, IBlockData variant, IBlock neighbor) {
 		block.onNeighborBlockChange(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(variant), MCInterface.toBlock(neighbor));
 	}
 
 	@Override
-	public IBlockVariant onPlaced(WorldRef ref, Direction side, ILivingEntity entity, Vect3d hit, int metadata) {
+	public IBlockData onPlaced(WorldRef ref, Direction side, ILivingEntity entity, Vect3d hit, int metadata) {
 		return MCInterface.fromIBlockState(block.onBlockPlaced(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEnumFacing(side), (float)hit.getX(), (float)hit.getY(), (float)hit.getZ(), metadata, MCInterface.fromLivingEntity(entity)));
 	}
 
 	@Override
-	public void onPlacedBy(WorldRef ref, IBlockVariant state, ILivingEntity placer, IItemStack stack) {
+	public void onPlacedBy(WorldRef ref, IBlockData state, ILivingEntity placer, IItemStack stack) {
 		block.onBlockPlacedBy(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state), MCInterface.fromLivingEntity(placer), MCInterface.toItemStack(stack));
 	}
 

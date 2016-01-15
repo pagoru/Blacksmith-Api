@@ -5,4 +5,11 @@ package net.darkaqua.blacksmith.api.entity;
  */
 public interface ILivingEntity extends IEntity {
 
+
+    float getMaxHealth();
+
+    float getHealth();
+
+    void setHealth(float health);
+
 }

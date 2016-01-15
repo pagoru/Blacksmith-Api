@@ -3,9 +3,9 @@ package com.cout970.testmod.blocks;
 import com.cout970.testmod.ModClass;
 import net.darkaqua.blacksmith.api.block.BlockMaterialFactory;
 import net.darkaqua.blacksmith.api.block.IBlockMaterial;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
 import net.darkaqua.blacksmith.api.block.defaults.DefaultBlockDefinition;
 import net.darkaqua.blacksmith.api.block.methods.BlockMethod;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.Direction;
@@ -22,7 +22,7 @@ public class TestBlock extends DefaultBlockDefinition implements BlockMethod.OnA
     }
 
     @Override
-    public boolean onActivated(WorldRef ref, IBlockVariant state, IPlayer player, Direction side, Vect3d vector3d) {
+    public boolean onActivated(WorldRef ref, IBlockData state, IPlayer player, Direction side, Vect3d vector3d) {
         StaticAccess.GAME.getGuiRegistry().openGui(player, ref, 0, ModClass.instance);
         return true;
     }

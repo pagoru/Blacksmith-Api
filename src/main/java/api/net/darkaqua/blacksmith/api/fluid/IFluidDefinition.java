@@ -4,10 +4,12 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 /**
  * Created by cout970 on 23/12/2015.
  */
+@Implementable
 public interface IFluidDefinition {
 
     String getFluidName();

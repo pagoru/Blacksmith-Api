@@ -1,10 +1,12 @@
 package net.darkaqua.blacksmith.api.network;
 
 import io.netty.buffer.ByteBuf;
+import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 /**
  * Created by cout970 on 24/12/2015.
  */
+@Implementable
 public interface INetworkMessage{
 
     /**

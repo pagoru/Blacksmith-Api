@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.util;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
@@ -25,7 +25,7 @@ public abstract class ObjectScanner {
         return findByClass(toScan, clazz);
     }
 
-    public static <T> T findInBlockVariant(IBlockVariant toScan, Class<T> clazz) {
+    public static <T> T findInBlockVariant(IBlockData toScan, Class<T> clazz) {
         return findByClass(toScan, clazz);
     }
 

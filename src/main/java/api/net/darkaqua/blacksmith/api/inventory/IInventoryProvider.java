@@ -5,6 +5,8 @@ package net.darkaqua.blacksmith.api.inventory;
  *
  * Add this interface to an ITileEntityDefinition to make it an Inventory
  */
+@Deprecated
+//TODO redo this with the new IInterfaceProvider
 public interface IInventoryProvider {
 
     IInventoryHandler getInventory();

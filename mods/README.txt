@@ -1,0 +1,1 @@
+To load blacksmith in the development enviroment you need to add this file to the mods folder, so forge can detect the coremod

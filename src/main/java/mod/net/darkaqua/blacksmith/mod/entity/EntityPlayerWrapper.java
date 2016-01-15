@@ -1,15 +1,19 @@
 package net.darkaqua.blacksmith.mod.entity;
 
+import net.darkaqua.blacksmith.api.command.IChatMessage;
+import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.util.Vect3i;
+import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Created by cout970 on 15/11/2015.
  */
-public class EntityPlayerWrapper extends EntityWrapper implements IPlayer {
+public class EntityPlayerWrapper extends EntityLivingWrapper implements IPlayer {
 
     private EntityPlayer player;
 
@@ -35,5 +39,31 @@ public class EntityPlayerWrapper extends EntityWrapper implements IPlayer {
     @Override
     public IInventoryHandler getInventory() {
         return MCInterface.fromInventory(player.inventory);
+    }
+
+    @Override
+    public String getName() {
+        return player.getDisplayNameString();
+    }
+
+    @Override
+    public IChatMessage getDisplayName() {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public void sendChatMessage(IChatMessage msg) {
+        //TODO
+    }
+
+    @Override
+    public WorldRef getWorldRef() {
+        return new WorldRef(MCInterface.fromWorld(player.worldObj), new Vect3i(player.posX, player.posY, player.posZ));
+    }
+
+    @Override
+    public IEntity getEntity() {
+        return this;
     }
 }

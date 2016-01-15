@@ -1,10 +1,10 @@
 package net.darkaqua.blacksmith.api.tileentity;
 
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
-import net.darkaqua.blacksmith.api.util.ClientSideOnly;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.util.annotations.ClientSideOnly;
 import net.minecraft.network.Packet;
 
 public interface ITileEntity {
@@ -30,7 +30,7 @@ public interface ITileEntity {
 	
 	void onChunkUnload();
 	
-	boolean shouldRecreate(WorldRef ref, IBlockVariant oldState, IBlockVariant newSate);
+	boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate);
 	
 	void onBlockChange();
 	

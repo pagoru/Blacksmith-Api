@@ -38,7 +38,7 @@ public class BS_Block extends Block {
         setLightOpacity((int) (def.getLightOpacity() * 255f));
         setResistance(def.getResistance());
         useNeighborBrightness = false;
-        blockstate = MCInterface.toBlockStateCreator(definition.getBlockVariantCreator());
+        blockstate = MCInterface.fromBlockDataGenerator(definition.getBlockDataGenerator());
         this.setDefaultState(blockstate.getBaseState());
     }
 

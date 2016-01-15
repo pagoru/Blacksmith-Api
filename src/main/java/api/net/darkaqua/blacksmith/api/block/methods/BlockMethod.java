@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.block.methods;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
@@ -16,11 +16,11 @@ import net.darkaqua.blacksmith.api.util.WorldRef;
 public interface BlockMethod {
 
     interface OnHarvested extends BlockMethod {
-        void onHarvested(WorldRef ref, IBlockVariant variant, IPlayer player);
+        void onHarvested(WorldRef ref, IBlockData variant, IPlayer player);
     }
 
     interface OnPlacedBy extends BlockMethod {
-        void onPlacedBy(WorldRef ref, IBlockVariant state, ILivingEntity placer, IItemStack stack);
+        void onPlacedBy(WorldRef ref, IBlockData state, ILivingEntity placer, IItemStack stack);
     }
 
     interface OnRemovedByPlayer extends BlockMethod{
@@ -28,19 +28,19 @@ public interface BlockMethod {
     }
 
     interface OnAdded extends BlockMethod {
-        void onAdded(WorldRef ref, IBlockVariant fromBlockState);
+        void onAdded(WorldRef ref, IBlockData fromBlockState);
     }
 
     interface OnBreaks extends BlockMethod {
-        void onBreaks(WorldRef ref, IBlockVariant state);
+        void onBreaks(WorldRef ref, IBlockData state);
     }
 
     interface OnNeighborChange extends BlockMethod {
-        void onNeighborBlockChange(WorldRef ref, IBlockVariant state, IBlock neighbor);
+        void onNeighborBlockChange(WorldRef ref, IBlockData state, IBlock neighbor);
     }
 
     interface OnActivated extends BlockMethod {
-        boolean onActivated(WorldRef ref, IBlockVariant state, IPlayer player, Direction side, Vect3d vector3d);
+        boolean onActivated(WorldRef ref, IBlockData state, IPlayer player, Direction side, Vect3d vector3d);
     }
 
     interface OnEntityCollided extends BlockMethod {
@@ -48,7 +48,7 @@ public interface BlockMethod {
     }
 
     interface OnPlaced extends BlockMethod {
-        IBlockVariant onPlaced(WorldRef ref, Direction side, ILivingEntity entity, Vect3d hit, int metadata);
+        IBlockData onPlaced(WorldRef ref, Direction side, ILivingEntity entity, Vect3d hit, int metadata);
     }
 
     interface OnClicked extends BlockMethod {

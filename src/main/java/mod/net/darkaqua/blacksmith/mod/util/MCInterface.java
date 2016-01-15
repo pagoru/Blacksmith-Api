@@ -1,13 +1,17 @@
 package net.darkaqua.blacksmith.mod.util;
 
-import net.darkaqua.blacksmith.api.block.*;
-import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
+import net.darkaqua.blacksmith.api.block.IBlock;
+import net.darkaqua.blacksmith.api.block.IBlockMaterial;
+import net.darkaqua.blacksmith.api.block.variants.IBlockAttribute;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
+import net.darkaqua.blacksmith.api.block.variants.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.fluid.IFluid;
 import net.darkaqua.blacksmith.api.fluid.IFluidStack;
+import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
@@ -24,17 +28,18 @@ import net.darkaqua.blacksmith.api.world.IChunk;
 import net.darkaqua.blacksmith.api.world.IIBlockAccess;
 import net.darkaqua.blacksmith.api.world.IIChunkProvider;
 import net.darkaqua.blacksmith.api.world.IWorld;
-import net.darkaqua.blacksmith.mod.block.BlockStateWrapper;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.block.MaterialWrapper;
-import net.darkaqua.blacksmith.mod.block.blockstate.IBlockStateWrapper;
-import net.darkaqua.blacksmith.mod.block.blockstate.IPropertyWrapper;
-import net.darkaqua.blacksmith.mod.gui.BS_Slot;
+import net.darkaqua.blacksmith.mod.block.blockstate.newest.BlockPropertyWrapper;
+import net.darkaqua.blacksmith.mod.block.blockstate.newest.BlockStateWrapper;
+import net.darkaqua.blacksmith.mod.block.blockstate.newest.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
+import net.darkaqua.blacksmith.mod.entity.EntityLivingWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidStackWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidWrapper;
+import net.darkaqua.blacksmith.mod.gui.BS_Slot;
 import net.darkaqua.blacksmith.mod.inventory.InventoryHandlerWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
@@ -74,10 +79,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -147,7 +149,7 @@ public class MCInterface {
 
     public static Entity toEntity(IEntity entity) {
         if (entity instanceof EntityWrapper)
-            return ((EntityWrapper) entity).getEntity();
+            return ((EntityWrapper) entity).getMcEntity();
         return null;
     }
 
@@ -176,14 +178,14 @@ public class MCInterface {
         return null;
     }
 
-    public static IBlockVariant fromIBlockState(IBlockState state) {
+    public static IBlockData fromIBlockState(IBlockState state) {
         if (state == null) return null;
         return new IBlockStateWrapper(state);
     }
 
-    public static IBlockState toIBlockState(IBlockVariant state) {
+    public static IBlockState toIBlockState(IBlockData state) {
         if (state instanceof IBlockStateWrapper)
-            return ((IBlockStateWrapper) state).getIBlockState();
+            return ((IBlockStateWrapper) state).getBlockState();
         return null;
     }
 
@@ -256,17 +258,6 @@ public class MCInterface {
         return null;
     }
 
-    public static <T extends Comparable<T>> IIProperty<T> fromIProperty(IProperty<T> prop) {
-        if (prop == null) return null;
-        return new IPropertyWrapper<>(prop);
-    }
-
-    public static <T extends Comparable<T>> IProperty<T> toIProperty(IIProperty<T> prop) {
-        if (prop instanceof IPropertyWrapper)
-            return ((IPropertyWrapper<T>) prop).getIProperty();
-        return null;
-    }
-
     public static IFontRenderer fromFontRenderer(FontRenderer fontRenderer) {
         if (fontRenderer == null) {
             return null;
@@ -303,16 +294,18 @@ public class MCInterface {
     }
 
     public static ILivingEntity toLivingEntity(EntityLivingBase entity) {
-        //TODO
-        return null;
+        if (entity == null)return null;
+        return new EntityLivingWrapper(entity);
     }
 
     public static EntityLivingBase fromLivingEntity(ILivingEntity entity) {
-        //TODO
+        if (entity instanceof EntityLivingWrapper){
+            return ((EntityLivingWrapper) entity).getLivingEntity();
+        }
         return null;
     }
 
-    public static ItemCameraTransforms.TransformType toCamaraTransform(RenderPlace place) {
+    public static ItemCameraTransforms.TransformType toCameraTransform(RenderPlace place) {
         switch (place) {
 
             case NONE:
@@ -407,7 +400,7 @@ public class MCInterface {
         return Side.values()[gameSide.ordinal()];
     }
 
-    public static IPacket<?> fromPacket(Packet<?> packet) {
+    public static IPacket fromPacket(Packet<?> packet) {
         //TODO
         return null;
     }
@@ -440,14 +433,37 @@ public class MCInterface {
         return null;
     }
 
-    public static IBlockVariantCreator fromBlockStateCreator(BlockState blockState) {
-        if (blockState == null) return null;
-        return new BlockStateWrapper(blockState);
+    public static Vect3d fromVec3(Vec3 vec) {
+        if (vec == null) return null;
+        return new Vect3d(vec.xCoord, vec.yCoord, vec.zCoord);
     }
 
-    public static BlockState toBlockStateCreator(IBlockVariantCreator blockState) {
-        if (blockState instanceof BlockStateWrapper){
-            return ((BlockStateWrapper) blockState).getBlockState();
+    public static IProperty fromBlockAttribute(IBlockAttribute attr) {
+        if (attr instanceof IProperty){
+            return (IProperty) attr;
+        }
+        if (attr instanceof BlockPropertyWrapper){
+            return ((BlockPropertyWrapper) attr).getProperty();
+        }
+        return null;
+    }
+
+    public static IBlockAttribute toBlockAttribute(IProperty p) {
+        if (p == null) return null;
+        if (p instanceof IBlockAttribute){
+            return (IBlockAttribute) p;
+        }
+        return new BlockPropertyWrapper(p);
+    }
+
+    public static IBlockDataGenerator toBlockDataGenerator(BlockState gen) {
+        if (gen == null) return null;
+        return new BlockStateWrapper(gen);
+    }
+
+    public static BlockState fromBlockDataGenerator(IBlockDataGenerator gen) {
+        if (gen instanceof BlockStateWrapper){
+            return ((BlockStateWrapper) gen).getBlockState();
         }
         return null;
     }

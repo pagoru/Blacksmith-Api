@@ -1,6 +1,12 @@
 package net.darkaqua.blacksmith.api.block.defaults;
 
-import net.darkaqua.blacksmith.api.block.*;
+import net.darkaqua.blacksmith.api.block.BlockMaterialFactory;
+import net.darkaqua.blacksmith.api.block.IBlock;
+import net.darkaqua.blacksmith.api.block.IBlockDefinition;
+import net.darkaqua.blacksmith.api.block.IBlockMaterial;
+import net.darkaqua.blacksmith.api.block.variants.BlockDataFactory;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
+import net.darkaqua.blacksmith.api.block.variants.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.creativetab.CreativeTabFactory;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.util.Cube;
@@ -32,8 +38,8 @@ public class DefaultBlockDefinition implements IBlockDefinition {
     }
 
     @Override
-    public IBlockVariantCreator getBlockVariantCreator() {
-        return BlockVariantCreatorFactory.createBlockVariantCreator(parent);
+    public IBlockDataGenerator getBlockDataGenerator() {
+        return BlockDataFactory.createBlockDataGenerator(parent);
     }
 
     @Override
@@ -82,12 +88,17 @@ public class DefaultBlockDefinition implements IBlockDefinition {
     }
 
     @Override
-    public IBlockVariant translateMetadataToVariant(int meta) {
-        return parent.getDefaultVariant();
+    public IBlockData translateMetadataToVariant(int meta) {
+        return parent.getDefaultBlockData();
     }
 
     @Override
-    public int translateVariantToMetadata(IBlockVariant variant) {
+    public int translateVariantToMetadata(IBlockData variant) {
         return 0;
+    }
+
+    @Override
+    public IBlock getBlock() {
+        return parent;
     }
 }

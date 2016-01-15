@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
 import com.google.common.collect.Lists;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.*;
@@ -24,7 +24,7 @@ public class SimpleBlockModelProvider implements IBlockModelProvider{
     }
 
     @Override
-    public IRenderModel getModelForVariant(IBlockVariant variant) {
+    public IRenderModel getModelForVariant(IBlockData variant) {
         return model;
     }
 

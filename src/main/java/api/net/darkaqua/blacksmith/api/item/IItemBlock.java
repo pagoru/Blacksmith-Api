@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.item;
 
 import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockVariant;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.util.Direction;
@@ -15,5 +15,5 @@ public interface IItemBlock extends IItem {
 
     IBlock getBlock();
 
-    boolean placeBlock(IItemStack stack, IPlayer player, IBlockVariant variant, WorldRef ref, Direction side, Vect3d hit);
+    boolean placeBlock(IItemStack stack, IPlayer player, IBlockData variant, WorldRef ref, Direction side, Vect3d hit);
 }

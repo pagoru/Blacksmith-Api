@@ -33,7 +33,7 @@ public class BS_NetworkChannel implements INetworkChannel {
     }
 
     @Override
-    public IPacket<?> getPacketFrom(INetworkMessage message) {
+    public IPacket getPacketFrom(INetworkMessage message) {
         return MCInterface.fromPacket(network.getPacketFrom(message));
     }
 

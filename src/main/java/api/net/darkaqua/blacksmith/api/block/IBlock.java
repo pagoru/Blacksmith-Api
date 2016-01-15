@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.api.block;
 
 import com.google.common.base.Predicate;
 import net.darkaqua.blacksmith.api.block.methods.BlockMethod;
+import net.darkaqua.blacksmith.api.block.variants.IBlockData;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Cube;
@@ -82,15 +83,15 @@ public interface IBlock extends BlockMethod.AllBlockMethods {
 
 	boolean isOpaque();
 
-	IBlockVariant getDefaultVariant();
+	IBlockData getDefaultBlockData();
 
-	IBlockVariant getVariantFromMeta(int meta);
+	IBlockData getVariantFromMeta(int meta);
 
-	int getMetaFromVariant(IBlockVariant variant);
+	int getMetaFromVariant(IBlockData variant);
 
 	ICreativeTab getCreativeTab();
 
-	boolean canBeReplacedByOreGen(WorldRef ref, final Predicate<IBlockVariant> target);
+	boolean canBeReplacedByOreGen(WorldRef ref, final Predicate<IBlockData> target);
 
 	/**
 	 * The internal minecraft block
