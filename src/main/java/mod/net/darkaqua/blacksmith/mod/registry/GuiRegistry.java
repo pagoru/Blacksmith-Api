@@ -17,7 +17,8 @@ public class GuiRegistry implements IGuiRegistry {
 
     public static final GuiRegistry INSTANCE = new GuiRegistry();
 
-    private GuiRegistry(){}
+    private GuiRegistry() {
+    }
 
     @Override
     public void registerGuiCreationHandler(IGuiCreationHandler handler) {

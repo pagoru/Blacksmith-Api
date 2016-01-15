@@ -10,9 +10,10 @@ import java.io.File;
  */
 public class BS_ConfigurationFactory extends ConfigurationFactory {
 
-    private BS_ConfigurationFactory(){}
+    private BS_ConfigurationFactory() {
+    }
 
-    public static void init(){
+    public static void init() {
         INSTANCE = new BS_ConfigurationFactory();
     }
 

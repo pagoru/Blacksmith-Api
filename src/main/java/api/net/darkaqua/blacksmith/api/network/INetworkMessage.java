@@ -18,6 +18,7 @@ public interface INetworkMessage{
 
     /**
      * Deconstruct your message into the supplied byte buffer
+     *
      * @param buf
      */
     void toBytes(ByteBuf buf, ExtendedByteBuf helper);

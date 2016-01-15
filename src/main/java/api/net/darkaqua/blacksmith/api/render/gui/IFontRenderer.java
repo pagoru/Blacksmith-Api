@@ -6,9 +6,13 @@ package net.darkaqua.blacksmith.api.render.gui;
 public interface IFontRenderer {
 
     int drawStringWithShadow(String text, float x, float y, int color);
+
     int drawString(String text, int x, int y, int color);
+
     int getStringWidth(String text);
+
     int getCharWidth(char character);
+
     String trimStringToWidth(String text, int width);
 
     Object getInternalObject();

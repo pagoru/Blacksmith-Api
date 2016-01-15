@@ -13,15 +13,15 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public class WorldWrapper implements IWorld{
+public class WorldWrapper implements IWorld {
 
     private World world;
 
-    public WorldWrapper(World world){
+    public WorldWrapper(World world) {
         this.world = world;
     }
 
-    public World getWorld(){
+    public World getWorld() {
         return world;
     }
 
@@ -57,7 +57,7 @@ public class WorldWrapper implements IWorld{
 
     @Override
     public boolean isAreaLoaded(Cube area) {
-        return world.isAreaLoaded(new StructureBoundingBox((int)area.minX(), (int)area.minY(), (int)area.minZ(), (int)area.maxX(), (int)area.maxY(), (int)area.maxZ()));
+        return world.isAreaLoaded(new StructureBoundingBox((int) area.minX(), (int) area.minY(), (int) area.minZ(), (int) area.maxX(), (int) area.maxY(), (int) area.maxZ()));
     }
 
     @Override

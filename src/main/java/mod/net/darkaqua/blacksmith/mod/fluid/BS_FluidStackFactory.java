@@ -13,9 +13,10 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public class BS_FluidStackFactory extends FluidStackFactory {
 
-    private BS_FluidStackFactory(){}
+    private BS_FluidStackFactory() {
+    }
 
-    public static void init(){
+    public static void init() {
         INSTANCE = new BS_FluidStackFactory();
         WATER = MCInterface.fromFluid(FluidRegistry.WATER);
         LAVA = MCInterface.fromFluid(FluidRegistry.LAVA);

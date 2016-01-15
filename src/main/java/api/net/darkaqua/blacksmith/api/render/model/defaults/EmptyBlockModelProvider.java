@@ -12,6 +12,7 @@ import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 public class EmptyBlockModelProvider implements IBlockModelProvider {
 
     public static final IRenderModel model = new EmptyModel();
+
     @Override
     public IRenderModel getModelForVariant(IBlockData variant) {
         return model;
@@ -23,5 +24,6 @@ public class EmptyBlockModelProvider implements IBlockModelProvider {
     }
 
     @Override
-    public void registerModels(IModelRegistry registry) {}
+    public void registerModels(IModelRegistry registry) {
+    }
 }

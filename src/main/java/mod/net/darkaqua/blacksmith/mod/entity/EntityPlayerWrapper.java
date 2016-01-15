@@ -22,7 +22,7 @@ public class EntityPlayerWrapper extends EntityLivingWrapper implements IPlayer 
         this.player = player;
     }
 
-    public EntityPlayer getPlayer(){
+    public EntityPlayer getPlayer() {
         return player;
     }
 
@@ -65,5 +65,9 @@ public class EntityPlayerWrapper extends EntityLivingWrapper implements IPlayer 
     @Override
     public IEntity getEntity() {
         return this;
+    }
+
+    public boolean isSneaking() {
+        return player.isSneaking();
     }
 }

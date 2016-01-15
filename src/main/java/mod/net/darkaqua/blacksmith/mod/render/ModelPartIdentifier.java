@@ -30,8 +30,8 @@ public class ModelPartIdentifier implements IModelPartIdentifier {
 
         ModelPartIdentifier that = (ModelPartIdentifier) o;
 
-        if (modelID != that.modelID) return false;
-        return !(modID != null ? !modID.equals(that.modID) : that.modID != null);
+        return modelID == that.modelID
+                && !(modID != null ? !modID.equals(that.modID) : that.modID != null);
 
     }
 

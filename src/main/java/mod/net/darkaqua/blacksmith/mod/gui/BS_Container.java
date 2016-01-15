@@ -27,12 +27,12 @@ public class BS_Container extends Container {
         return def.canInteractWith(MCInterface.toPlayer(playerIn));
     }
 
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index){
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         //TODO this needs to be override to avoid shift click crash
         return null;
     }
 
-    public void addSlot(Slot s){
+    public void addSlot(Slot s) {
         addSlotToContainer(s);
     }
 

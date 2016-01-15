@@ -12,11 +12,11 @@ public class CreativeTabWrapper implements ICreativeTab {
 
     private CreativeTabs tab;
 
-    public CreativeTabWrapper(CreativeTabs tab){
+    public CreativeTabWrapper(CreativeTabs tab) {
         this.tab = tab;
     }
 
-    public CreativeTabs getCreativeTab(){
+    public CreativeTabs getCreativeTab() {
         return tab;
     }
 

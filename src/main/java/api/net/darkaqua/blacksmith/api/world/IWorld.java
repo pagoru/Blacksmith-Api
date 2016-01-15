@@ -14,22 +14,22 @@ public interface IWorld extends IWorldAccess {
 
 	boolean setBlockVariant(IBlockData variant, Vect3i posiction);
 
-	ITileEntity getTileEntity(Vect3i position);
+    ITileEntity getTileEntity(Vect3i position);
 
-	void removeTileEntity(Vect3i position);
+    void removeTileEntity(Vect3i position);
 
-	boolean isBlockLoaded(Vect3i position);
+    boolean isBlockLoaded(Vect3i position);
 
-	boolean isAreaLoaded(Cube area);
+    boolean isAreaLoaded(Cube area);
 
-	int getWorldDimension();
+    int getWorldDimension();
 
-	IIChunkProvider getChunkProvider();
+    IIChunkProvider getChunkProvider();
 
-	long getWorldTime();
+    long getWorldTime();
 
-	boolean isThundering();
+    boolean isThundering();
 
-	boolean isRaining();
+    boolean isRaining();
 }
 

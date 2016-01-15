@@ -31,15 +31,15 @@ public class ConfigHandler {
         return config;
     }
 
-    public void save(){
-        if (config.hasChanged()){
+    public void save() {
+        if (config.hasChanged()) {
             config.save();
         }
     }
 
-    public void read(){
-        for(FieldWrapper fw : wrappers){
-            try{
+    public void read() {
+        for (FieldWrapper fw : wrappers) {
+            try {
                 fw.read(this);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -47,27 +47,27 @@ public class ConfigHandler {
         }
     }
 
-    protected void loadFields(){
+    protected void loadFields() {
         Class<?> clazz = instance.getClass();
         Field[] fields = clazz.getDeclaredFields();
         wrappers = new LinkedList<>();
 
-        for(Field f : fields){
-            if(f.isAnnotationPresent(ConfigValue.class)){
+        for (Field f : fields) {
+            if (f.isAnnotationPresent(ConfigValue.class)) {
                 f.setAccessible(true);
                 Class type = f.getType();
                 ConfigValue annotation = f.getAnnotation(ConfigValue.class);
                 FieldWrapper wrapper = null;
-                if(type == Integer.TYPE){
+                if (type == Integer.TYPE) {
                     wrapper = new IntegerFieldWrapper(f, annotation);
-                }else if(type == Double.TYPE){
+                } else if (type == Double.TYPE) {
                     wrapper = new DoubleFieldWrapper(f, annotation);
-                }else if(type == Boolean.TYPE){
+                } else if (type == Boolean.TYPE) {
                     wrapper = new BooleanFieldWrapper(f, annotation);
-                }else if(type == String.class){
+                } else if (type == String.class) {
                     wrapper = new StringFieldWrapper(f, annotation);
                 }
-                if (wrapper != null){
+                if (wrapper != null) {
                     wrappers.add(wrapper);
                 }
             }
@@ -98,8 +98,8 @@ public class ConfigHandler {
             return type;
         }
 
-        protected String getKey(){
-            if(annotation.key().equals("")){
+        protected String getKey() {
+            if (annotation.key().equals("")) {
                 return field.getName();
             }
             return annotation.key();
@@ -108,7 +108,7 @@ public class ConfigHandler {
         public abstract void read(ConfigHandler handler) throws IllegalAccessException;
     }
 
-    public static class IntegerFieldWrapper extends FieldWrapper{
+    public static class IntegerFieldWrapper extends FieldWrapper {
 
         public IntegerFieldWrapper(Field field, ConfigValue annotation) {
             super(field, annotation, ConfigValueType.INT);
@@ -121,7 +121,7 @@ public class ConfigHandler {
         }
     }
 
-    public static class DoubleFieldWrapper extends FieldWrapper{
+    public static class DoubleFieldWrapper extends FieldWrapper {
 
         public DoubleFieldWrapper(Field field, ConfigValue annotation) {
             super(field, annotation, ConfigValueType.DOUBLE);
@@ -134,7 +134,7 @@ public class ConfigHandler {
         }
     }
 
-    public static class BooleanFieldWrapper extends FieldWrapper{
+    public static class BooleanFieldWrapper extends FieldWrapper {
 
         public BooleanFieldWrapper(Field field, ConfigValue annotation) {
             super(field, annotation, ConfigValueType.BOOLEAN);
@@ -147,7 +147,7 @@ public class ConfigHandler {
         }
     }
 
-    public static class StringFieldWrapper extends FieldWrapper{
+    public static class StringFieldWrapper extends FieldWrapper {
 
         public StringFieldWrapper(Field field, ConfigValue annotation) {
             super(field, annotation, ConfigValueType.STRING);
@@ -155,7 +155,7 @@ public class ConfigHandler {
 
         @Override
         public void read(ConfigHandler handler) throws IllegalAccessException {
-            String val = handler.config.getString(annotation.category(), getKey(), (String)field.get(handler.instance), annotation.comment());
+            String val = handler.config.getString(annotation.category(), getKey(), (String) field.get(handler.instance), annotation.comment());
             field.set(handler.instance, val);
         }
     }

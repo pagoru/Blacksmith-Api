@@ -12,9 +12,10 @@ import net.darkaqua.blacksmith.api.util.ObjectScanner;
  */
 public class BS_ObjectScanner extends ObjectScanner {
 
-    private BS_ObjectScanner(){}
+    private BS_ObjectScanner() {
+    }
 
-    public static void init(){
+    public static void init() {
         INSTANCE = new BS_ObjectScanner();
     }
 
@@ -23,7 +24,7 @@ public class BS_ObjectScanner extends ObjectScanner {
     protected <T> T find(Object toScan, Class<T> clazz) {
         if (clazz == null) return null;
 
-        if (toScan instanceof IInterfaceProvider){
+        if (toScan instanceof IInterfaceProvider) {
             Object obj = ((IInterfaceProvider) toScan).providerInterface(clazz.getCanonicalName(), clazz);
             if (obj != null) return (T) obj;
         }
@@ -36,41 +37,41 @@ public class BS_ObjectScanner extends ObjectScanner {
             }
         }
 
-        if (toScan instanceof IItem){
-            if (((IItem) toScan).getItemDefinition() instanceof IInterfaceProvider){
+        if (toScan instanceof IItem) {
+            if (((IItem) toScan).getItemDefinition() instanceof IInterfaceProvider) {
                 Object obj = ((IInterfaceProvider) ((IItem) toScan).getItemDefinition()).providerInterface(clazz.getCanonicalName(), clazz);
                 if (obj != null) return (T) obj;
             }
-            if(isInstance(((IItem) toScan).getItemDefinition(), clazz)){
+            if (isInstance(((IItem) toScan).getItemDefinition(), clazz)) {
                 return (T) ((IItem) toScan).getItemDefinition();
-            }else if(isInstance(((IItem) toScan).getInternalItem(), clazz)){
+            } else if (isInstance(((IItem) toScan).getInternalItem(), clazz)) {
                 return (T) ((IItem) toScan).getInternalItem();
             }
-        }else if(toScan instanceof IBlock){
-            if (((IBlock) toScan).getBlockDefinition() instanceof IInterfaceProvider){
+        } else if (toScan instanceof IBlock) {
+            if (((IBlock) toScan).getBlockDefinition() instanceof IInterfaceProvider) {
                 Object obj = ((IInterfaceProvider) ((IBlock) toScan).getBlockDefinition()).providerInterface(clazz.getCanonicalName(), clazz);
                 if (obj != null) return (T) obj;
             }
-            if(isInstance(((IBlock) toScan).getBlockDefinition(), clazz)){
+            if (isInstance(((IBlock) toScan).getBlockDefinition(), clazz)) {
                 return (T) ((IBlock) toScan).getBlockDefinition();
-            }else if(isInstance(((IBlock) toScan).getInternalBlock(), clazz)){
+            } else if (isInstance(((IBlock) toScan).getInternalBlock(), clazz)) {
                 return (T) ((IBlock) toScan).getInternalBlock();
             }
-        }else if(toScan instanceof ITileEntity){
-            if (((ITileEntity) toScan).getTileEntityDefinition() instanceof IInterfaceProvider){
+        } else if (toScan instanceof ITileEntity) {
+            if (((ITileEntity) toScan).getTileEntityDefinition() instanceof IInterfaceProvider) {
                 Object obj = ((IInterfaceProvider) ((ITileEntity) toScan).getTileEntityDefinition()).providerInterface(clazz.getCanonicalName(), clazz);
                 if (obj != null) return (T) obj;
             }
-            if(isInstance(((ITileEntity) toScan).getTileEntityDefinition(), clazz)){
+            if (isInstance(((ITileEntity) toScan).getTileEntityDefinition(), clazz)) {
                 return (T) ((ITileEntity) toScan).getTileEntityDefinition();
-            }else if(isInstance(((ITileEntity) toScan).getInternalTileEntity(), clazz)){
+            } else if (isInstance(((ITileEntity) toScan).getInternalTileEntity(), clazz)) {
                 return (T) ((ITileEntity) toScan).getInternalTileEntity();
             }
         }
         return null;
     }
 
-    private static boolean isInstance(Object obj, Class<?> clazz){
+    private static boolean isInstance(Object obj, Class<?> clazz) {
         return obj != null && clazz.isAssignableFrom(obj.getClass());
     }
 }

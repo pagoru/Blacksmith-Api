@@ -10,9 +10,11 @@ public interface IFluidStack {
     IFluid getFluid();
 
     int getAmount();
+
     void setAmount(int amount);
 
     IDataCompound getDataCompound();
+
     void setDataCompound(IDataCompound data);
 
     String getUnlocalizedName();

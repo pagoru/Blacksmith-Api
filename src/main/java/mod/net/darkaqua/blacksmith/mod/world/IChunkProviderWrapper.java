@@ -13,11 +13,11 @@ public class IChunkProviderWrapper implements IIChunkProvider {
 
     private IChunkProvider provider;
 
-    public IChunkProviderWrapper(IChunkProvider provider){
+    public IChunkProviderWrapper(IChunkProvider provider) {
         this.provider = provider;
     }
 
-    public IChunkProvider getChunkProvider(){
+    public IChunkProvider getChunkProvider() {
         return provider;
     }
 
@@ -30,6 +30,7 @@ public class IChunkProviderWrapper implements IIChunkProvider {
     public IChunk provideChunk(Vect2i pos) {
         return MCInterface.fromChunk(provider.provideChunk(pos.getX(), pos.getY()));
     }
+
     @Override
     public String makeString() {
         return provider.makeString();

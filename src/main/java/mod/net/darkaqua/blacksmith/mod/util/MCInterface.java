@@ -166,7 +166,7 @@ public class MCInterface {
 
     public static IItem fromItem(Item item) {
         if (item == null) return null;
-        if (item instanceof ItemBlock){
+        if (item instanceof ItemBlock) {
             return new ItemBlockWrapper((ItemBlock) item);
         }
         return new ItemWrapper(item);
@@ -341,20 +341,20 @@ public class MCInterface {
     }
 
     public static IDataList fromNBTList(NBTTagList nbt) {
-        if(nbt == null) return null;
+        if (nbt == null) return null;
         return new NBTTagListWrapper(nbt);
     }
 
-    public static NBTTagList toNBTTagList(IDataList nbt){
-        if (nbt instanceof NBTTagListWrapper){
+    public static NBTTagList toNBTTagList(IDataList nbt) {
+        if (nbt instanceof NBTTagListWrapper) {
             return ((NBTTagListWrapper) nbt).getNBTTagList();
         }
         return null;
     }
 
     public static IInventoryHandler fromInventory(IInventory inv) {
-        if (inv == null)return null;
-        if (inv instanceof ISidedInventory){
+        if (inv == null) return null;
+        if (inv instanceof ISidedInventory) {
             return new SidedInventoryWrapper((ISidedInventory) inv);
         }
         return new SimpleInventoryWrapper(inv);
@@ -364,8 +364,9 @@ public class MCInterface {
         if (stack == null) return null;
         return new FluidStackWrapper(stack);
     }
+
     public static FluidStack toFluidStack(IFluidStack stack) {
-        if(stack instanceof FluidStackWrapper){
+        if (stack instanceof FluidStackWrapper) {
             return ((FluidStackWrapper) stack).getFluidStack();
         }
         return null;
@@ -376,8 +377,8 @@ public class MCInterface {
         return new FluidWrapper(fluid);
     }
 
-    public static Fluid toFluid(IFluid fluid){
-        if (fluid instanceof FluidWrapper){
+    public static Fluid toFluid(IFluid fluid) {
+        if (fluid instanceof FluidWrapper) {
             return ((FluidWrapper) fluid).getFluid();
         }
         return null;
@@ -389,7 +390,7 @@ public class MCInterface {
     }
 
     public static InventoryCrafting toInventoryCrafting(ICraftingGrid grid) {
-        if (grid instanceof InventoryCraftingWrapper){
+        if (grid instanceof InventoryCraftingWrapper) {
             return ((InventoryCraftingWrapper) grid).getInventory();
         }
         return null;
@@ -411,7 +412,7 @@ public class MCInterface {
     }
 
     public static ISlotDefinition fromSlot(Slot slot) {
-        if (slot instanceof BS_Slot){
+        if (slot instanceof BS_Slot) {
             return ((BS_Slot) slot).getDefinition();
         }
         return null;
@@ -421,13 +422,14 @@ public class MCInterface {
         if (inv == null) return null;
         return new InventoryHandlerWrapper(inv);
     }
+
     public static IBlockMaterial toMaterial(Material mat) {
         if (mat == null) return null;
         return new MaterialWrapper(mat);
     }
 
     public static Material toMaterial(IBlockMaterial mat) {
-        if (mat instanceof MaterialWrapper){
+        if (mat instanceof MaterialWrapper) {
             return ((MaterialWrapper) mat).getMaterial();
         }
         return null;

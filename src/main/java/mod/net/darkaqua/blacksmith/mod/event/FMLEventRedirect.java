@@ -21,12 +21,12 @@ public class FMLEventRedirect {
     }
 
     @EventSubscribe
-    public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent e){
+    public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent e) {
         EventBus.postEvent(new BS_ConfigChangedEvent(e));
     }
 
     @EventSubscribe
-    public void postConfigChangedEvent(ConfigChangedEvent.PostConfigChangedEvent e){
+    public void postConfigChangedEvent(ConfigChangedEvent.PostConfigChangedEvent e) {
         EventBus.postEvent(new BS_PostConfigChangedEvent(e));
     }
 }

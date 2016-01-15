@@ -7,21 +7,19 @@ import net.darkaqua.blacksmith.api.storage.IDataCompound;
  */
 public final class InventoryUtils {
 
-    private InventoryUtils(){}
-
-    public static boolean areExactlyEqual(IItemStack a, IItemStack b){
-        if (a == b)return true;
-        if (a == null || b == null)return false;
-        if(a.getItem().equals(b.getItem()) && a.getAmount() == b.getAmount() && a.getDamage() == b.getDamage()){
-            return areDataCompoundEqual(a.getDataCompound(), b.getDataCompound());
-        }
-        return false;
+    private InventoryUtils() {
     }
 
-    public static boolean areDataCompoundEqual(IDataCompound a, IDataCompound b){
-        if (a == b)return true;
-        if (a == null || b == null)return false;
-        return a.equals(b);
+    public static boolean areExactlyEqual(IItemStack a, IItemStack b) {
+        return a == b || !(a == null || b == null)
+                && a.getItem().equals(b.getItem())
+                && a.getAmount() == b.getAmount()
+                && a.getDamage() == b.getDamage()
+                && areDataCompoundEqual(a.getDataCompound(), b.getDataCompound());
+    }
+
+    public static boolean areDataCompoundEqual(IDataCompound a, IDataCompound b) {
+        return a == b || !(a == null || b == null) && a.equals(b);
     }
 
     public static boolean areOreDictEquivalent(IItemStack a, IItemStack b) {

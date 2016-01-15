@@ -21,7 +21,8 @@ public class RenderManager implements IRenderManager {
 
     public static final RenderManager INSTANCE = new RenderManager();
 
-    public static void init(){}
+    public static void init() {
+    }
 
     @Override
     public void renderItemStack(IItemStack stack, Vect3d pos, RenderPlace place) {

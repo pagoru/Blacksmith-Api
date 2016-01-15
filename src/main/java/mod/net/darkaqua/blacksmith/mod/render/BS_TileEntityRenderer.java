@@ -25,20 +25,20 @@ public class BS_TileEntityRenderer extends TileEntitySpecialRenderer<BS_TileEnti
     @SuppressWarnings(value = "unchecked")
     public void renderTileEntityAt(BS_TileEntity tile, double posX, double posY, double posZ, float partialTick, int breakingProgress) {
         ITileEntityRenderer renderer = RenderRegistry.INSTANCE.getTileEntityRenderer(tile.getTileEntityDefinition().getClass());
-        if (renderer != null){
-            getWorld().theProfiler.startSection(tile.getTileEntityDefinition().getClass()+"");
+        if (renderer != null) {
+            getWorld().theProfiler.startSection(tile.getTileEntityDefinition().getClass() + "");
             renderer.renderTileEntity(new TileEntityWrapper(tile), tile.getTileEntityDefinition(), HELPER, new Vect3d(posX, posY, posZ), partialTick, breakingProgress);
             getWorld().theProfiler.endSection();
         }
     }
 
-    public static class TileEntityRendererHelper implements ITileEntityRendererHelper{
+    public static class TileEntityRendererHelper implements ITileEntityRendererHelper {
 
         private ResourceReference[] breakingTextures;
 
-        private TileEntityRendererHelper(ResourceLocation[] breaking){
+        private TileEntityRendererHelper(ResourceLocation[] breaking) {
             breakingTextures = new ResourceReference[breaking.length];
-            for (int i = 0; i < breaking.length; i++){
+            for (int i = 0; i < breaking.length; i++) {
                 breakingTextures[i] = new ResourceReference(breaking[i].getResourceDomain(), breaking[i].getResourcePath());
             }
         }

@@ -55,14 +55,14 @@ public class BlacksmithModContainer implements ModContainer {
 
         //default FML code, will work for now
         this.modLanguage = (String) modDescriptor.get("modLanguage");
-        String languageAdapterType = (String)modDescriptor.get("modLanguageAdapter");
-        if (Strings.isNullOrEmpty(languageAdapterType)){
+        String languageAdapterType = (String) modDescriptor.get("modLanguageAdapter");
+        if (Strings.isNullOrEmpty(languageAdapterType)) {
             this.languageAdapter = "scala".equals(modLanguage) ? new ILanguageAdapter.ScalaAdapter() : new ILanguageAdapter.JavaAdapter();
-        }else{
-            try{
-                this.languageAdapter = (ILanguageAdapter)Class.forName(languageAdapterType, true, Loader.instance().getModClassLoader()).newInstance();
+        } else {
+            try {
+                this.languageAdapter = (ILanguageAdapter) Class.forName(languageAdapterType, true, Loader.instance().getModClassLoader()).newInstance();
                 FMLLog.finer("Using custom language adapter %s (type %s) for %s (modid %s)", this.languageAdapter, languageAdapterType, this.modClass, getModId());
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 FMLLog.log(Level.ERROR, ex, "Error constructing custom mod language adapter %s (referenced by %s) (modid: %s)", languageAdapterType, this.modClass, getModId());
                 throw new LoaderException(ex);
             }
@@ -84,8 +84,8 @@ public class BlacksmithModContainer implements ModContainer {
                         f.set(modInstance, modInstance);
                     }
                 }
-            }catch (ReflectiveOperationException e){
-                Log.warn("Error trying to place a mod instance in a field marked with @ModInstance: "+clazz);
+            } catch (ReflectiveOperationException e) {
+                Log.warn("Error trying to place a mod instance in a field marked with @ModInstance: " + clazz);
             }
 
             CustomProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
@@ -215,12 +215,9 @@ public class BlacksmithModContainer implements ModContainer {
 
     @Override
     public Class<?> getCustomResourcePackClass() {
-        try
-        {
-            return getSource().isDirectory() ? Class.forName("net.minecraftforge.fml.client.FMLFolderResourcePack", true, getClass().getClassLoader()) : Class.forName("net.minecraftforge.fml.client.FMLFileResourcePack",true, getClass().getClassLoader());
-        }
-        catch (ClassNotFoundException e)
-        {
+        try {
+            return getSource().isDirectory() ? Class.forName("net.minecraftforge.fml.client.FMLFolderResourcePack", true, getClass().getClassLoader()) : Class.forName("net.minecraftforge.fml.client.FMLFileResourcePack", true, getClass().getClassLoader());
+        } catch (ClassNotFoundException e) {
             return null;
         }
     }
@@ -276,23 +273,19 @@ public class BlacksmithModContainer implements ModContainer {
 
     public static class CustomProxyInjector {
 
-        public static void inject(ModContainer mod, ASMDataTable data, Side side, ILanguageAdapter languageAdapter)
-        {
+        public static void inject(ModContainer mod, ASMDataTable data, Side side, ILanguageAdapter languageAdapter) {
 
-            //Addapted to use @ModSidedProxy instead @SideProxy
+            //Adapted to use @ModSidedProxy instead @SideProxy
 
             FMLLog.fine("Attempting to inject @ModSidedProxy classes into %s", mod.getModId());
             Set<ASMDataTable.ASMData> targets = data.getAnnotationsFor(mod).get(ModSidedProxy.class.getName());
             ModClassLoader mcl = Loader.instance().getModClassLoader();
 
-            for (ASMDataTable.ASMData targ : targets)
-            {
-                try
-                {
+            for (ASMDataTable.ASMData targ : targets) {
+                try {
                     Class<?> proxyTarget = Class.forName(targ.getClassName(), true, mcl);
                     Field target = proxyTarget.getDeclaredField(targ.getObjectName());
-                    if (target == null)
-                    {
+                    if (target == null) {
                         // Impossible?
                         FMLLog.severe("Attempted to load a proxy type into %s.%s but the field was not found", targ.getClassName(), targ.getObjectName());
                         throw new LoaderException(String.format("Attempted to load a proxy type into %s.%s but the field was not found", targ.getClassName(), targ.getObjectName()));
@@ -300,29 +293,24 @@ public class BlacksmithModContainer implements ModContainer {
                     target.setAccessible(true);
 
                     ModSidedProxy annotation = target.getAnnotation(ModSidedProxy.class);
-                    if (!Strings.isNullOrEmpty(annotation.modId()) && !annotation.modId().equals(mod.getModId()))
-                    {
+                    if (!Strings.isNullOrEmpty(annotation.modId()) && !annotation.modId().equals(mod.getModId())) {
                         FMLLog.fine("Skipping proxy injection for %s.%s since it is not for mod %s", targ.getClassName(), targ.getObjectName(), mod.getModId());
                         continue;
                     }
                     String targetType = side.isClient() ? annotation.clientSide() : annotation.serverSide();
-                    Object proxy=Class.forName(targetType, true, mcl).newInstance();
+                    Object proxy = Class.forName(targetType, true, mcl).newInstance();
 
-                    if (languageAdapter.supportsStatics() && (target.getModifiers() & Modifier.STATIC) == 0 )
-                    {
+                    if (languageAdapter.supportsStatics() && (target.getModifiers() & Modifier.STATIC) == 0) {
                         FMLLog.severe("Attempted to load a proxy type %s into %s.%s, but the field is not static", targetType, targ.getClassName(), targ.getObjectName());
                         throw new LoaderException(String.format("Attempted to load a proxy type %s into %s.%s, but the field is not static", targetType, targ.getClassName(), targ.getObjectName()));
                     }
-                    if (!target.getType().isAssignableFrom(proxy.getClass()))
-                    {
+                    if (!target.getType().isAssignableFrom(proxy.getClass())) {
                         FMLLog.severe("Attempted to load a proxy type %s into %s.%s, but the types don't match", targetType, targ.getClassName(), targ.getObjectName());
                         throw new LoaderException(String.format("Attempted to load a proxy type %s into %s.%s, but the types don't match", targetType, targ.getClassName(), targ.getObjectName()));
                     }
                     languageAdapter.setProxy(target, proxyTarget, proxy);
-                }
-                catch (Exception e)
-                {
-                    FMLLog.log(Level.ERROR, e, "An error occured trying to load a proxy into %s.%s", targ.getAnnotationInfo(), targ.getClassName(), targ.getObjectName());
+                } catch (Exception e) {
+                    FMLLog.log(Level.ERROR, e, "An error occurred trying to load a proxy into %s.%s", targ.getAnnotationInfo(), targ.getClassName(), targ.getObjectName());
                     throw new LoaderException(e);
                 }
             }

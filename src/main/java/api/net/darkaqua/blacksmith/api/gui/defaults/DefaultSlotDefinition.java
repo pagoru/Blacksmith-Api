@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.gui.defaults;
 
-import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.util.Vect2i;
@@ -37,7 +37,8 @@ public class DefaultSlotDefinition implements ISlotDefinition {
     }
 
     @Override
-    public void onSlotUpdate() {}
+    public void onSlotUpdate() {
+    }
 
     @Override
     public int getMaxStackSize() {

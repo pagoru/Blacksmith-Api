@@ -92,7 +92,7 @@ public class TileEntityWrapper implements ITileEntity {
 
     @Override
     public ITileEntityDefinition getTileEntityDefinition() {
-        if (tile instanceof BS_TileEntity){
+        if (tile instanceof BS_TileEntity) {
             return ((BS_TileEntity) tile).getTileEntityDefinition();
         }
         return null;

@@ -55,11 +55,11 @@ public class UnBakedQuad {
     }
 
     public static void fillNormal(int[] faceData) {
-        Vector3f v1 = new Vector3f(faceData[3 * 7 + 0], faceData[3 * 7 + 1], faceData[3 * 7 + 2]);
-        Vector3f v2 = new Vector3f(faceData[1 * 7 + 0], faceData[1 * 7 + 1], faceData[1 * 7 + 2]);
-        Vector3f v3 = new Vector3f(faceData[2 * 7 + 0], faceData[2 * 7 + 1], faceData[2 * 7 + 2]);
+        Vector3f v1 = new Vector3f(faceData[3 * 7], faceData[3 * 7 + 1], faceData[3 * 7 + 2]);
+        Vector3f v2 = new Vector3f(faceData[7], faceData[7 + 1], faceData[7 + 2]);
+        Vector3f v3 = new Vector3f(faceData[2 * 7], faceData[2 * 7 + 1], faceData[2 * 7 + 2]);
         v1.sub(v2);
-        v2.set(faceData[0 * 7 + 0], faceData[0 * 7 + 1], faceData[0 * 7 + 2]);
+        v2.set(faceData[0], faceData[1], faceData[2]);
         v3.sub(v2);
         v1.cross(v3, v1);
         v1.normalize();

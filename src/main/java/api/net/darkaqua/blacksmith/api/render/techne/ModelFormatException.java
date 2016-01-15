@@ -5,23 +5,19 @@ package net.darkaqua.blacksmith.api.render.techne;
  */
 public class ModelFormatException extends RuntimeException {
 
-    public ModelFormatException()
-    {
+    public ModelFormatException() {
         super();
     }
 
-    public ModelFormatException(String message, Throwable cause)
-    {
+    public ModelFormatException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ModelFormatException(String message)
-    {
+    public ModelFormatException(String message) {
         super(message);
     }
 
-    public ModelFormatException(Throwable cause)
-    {
+    public ModelFormatException(Throwable cause) {
         super(cause);
     }
 }

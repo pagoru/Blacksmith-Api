@@ -23,6 +23,7 @@ public interface IItemDefinition {
     void onCreate(IItem parent);
 
     String getUnlocalizedName();
+
     String getUnlocalizedName(IItemStack stack);
 
     int getMaxStackSize(IItemStack stack);
@@ -36,7 +37,9 @@ public interface IItemDefinition {
     boolean is3DItem();
 
     int getMetadata(IItemStack stack);
+
     int getDamage(IItemStack stack);
+
     int getMaxDamage();
 
     boolean isDamageable();

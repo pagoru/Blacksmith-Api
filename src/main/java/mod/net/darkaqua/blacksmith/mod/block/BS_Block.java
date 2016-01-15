@@ -43,26 +43,26 @@ public class BS_Block extends Block {
     }
 
     @Override
-    public BlockState getBlockState(){
+    public BlockState getBlockState() {
         return blockstate;
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta){
+    public IBlockState getStateFromMeta(int meta) {
         return MCInterface.toIBlockState(definition.translateMetadataToVariant(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state){
+    public int getMetaFromState(IBlockState state) {
         return definition.translateVariantToMetadata(MCInterface.fromIBlockState(state));
     }
 
-    public IBlockDefinition getBlockDefinition(){
+    public IBlockDefinition getBlockDefinition() {
         return definition;
     }
 
     @Override
-    public int getRenderType(){
+    public int getRenderType() {
         return definition.shouldRender() ? 3 : -1;
     }
 
@@ -72,7 +72,7 @@ public class BS_Block extends Block {
     }
 
     @Override
-    public boolean isBlockNormalCube(){
+    public boolean isBlockNormalCube() {
         return definition.isFullCube();
     }
 
@@ -156,9 +156,9 @@ public class BS_Block extends Block {
 
     @Override
     public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-        if (definition instanceof BlockMethod.OnRemovedByPlayer){
+        if (definition instanceof BlockMethod.OnRemovedByPlayer) {
             return ((BlockMethod.OnRemovedByPlayer) definition).onRemovedByPlayer(new WorldRef(MCInterface.fromWorld(world), MCInterface.fromBlockPos(pos)), MCInterface.toPlayer(player), willHarvest);
         }
-        return super.removedByPlayer(world, pos, player,willHarvest);
+        return super.removedByPlayer(world, pos, player, willHarvest);
     }
 }

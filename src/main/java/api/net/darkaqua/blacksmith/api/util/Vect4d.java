@@ -33,7 +33,7 @@ public class Vect4d {
         return w;
     }
 
-    public Vect4d set(double x, double y, double z, double w){
+    public Vect4d set(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -41,7 +41,7 @@ public class Vect4d {
         return this;
     }
 
-    public Vect4d add(double x, double y, double z, double w){
+    public Vect4d add(double x, double y, double z, double w) {
         this.x += x;
         this.y += y;
         this.z += z;
@@ -49,11 +49,11 @@ public class Vect4d {
         return this;
     }
 
-    public Vect4d getOpposite(){
-        return new Vect4d(-x, -y , -z , -w);
+    public Vect4d getOpposite() {
+        return new Vect4d(-x, -y, -z, -w);
     }
 
-    public Vect4d multiply(double a){
+    public Vect4d multiply(double a) {
         this.x *= a;
         this.y *= a;
         this.z *= a;
@@ -61,7 +61,7 @@ public class Vect4d {
         return this;
     }
 
-    public Vect4d copy(){
-        return  new Vect4d(x, y, z, w);
+    public Vect4d copy() {
+        return new Vect4d(x, y, z, w);
     }
 }

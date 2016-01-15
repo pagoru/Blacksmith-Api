@@ -11,13 +11,14 @@ import java.util.HashMap;
 /**
  * Created by cout970 on 14/11/2015.
  */
-public class TileEntityRegistry implements ITileEntityRegistry{
+public class TileEntityRegistry implements ITileEntityRegistry {
 
     public static final TileEntityRegistry INSTANCE = new TileEntityRegistry();
     public static final HashMap<Class<? extends ITileEntityDefinition>, String> classID = new HashMap<>();
     public static final HashMap<String, Class<? extends ITileEntityDefinition>> idClass = new HashMap<>();
 
-    private TileEntityRegistry(){}
+    private TileEntityRegistry() {
+    }
 
     @Override
     public ITileEntity createTileEntity(ITileEntityDefinition def) {
@@ -28,7 +29,7 @@ public class TileEntityRegistry implements ITileEntityRegistry{
 
     @Override
     public boolean registerTileEntityDefinition(Class<? extends ITileEntityDefinition> clazz, String id) {
-        if(!classID.containsKey(clazz)){
+        if (!classID.containsKey(clazz)) {
             classID.put(clazz, id);
             idClass.put(id, clazz);
             return true;
@@ -36,8 +37,8 @@ public class TileEntityRegistry implements ITileEntityRegistry{
         return false;
     }
 
-    public String getDefinitionID(ITileEntityDefinition def){
-        if(def == null)return null;
+    public String getDefinitionID(ITileEntityDefinition def) {
+        if (def == null) return null;
         return classID.get(def.getClass());
     }
 

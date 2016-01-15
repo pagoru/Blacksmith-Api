@@ -14,17 +14,18 @@ import java.util.HashMap;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public class BS_EventBus extends EventBus{
+public class BS_EventBus extends EventBus {
 
-    private static HashMap<Class<?>, ArrayList<SubscribedMethod>> listeners = new HashMap<Class<?>, ArrayList<SubscribedMethod>>();
+    private static HashMap<Class<?>, ArrayList<SubscribedMethod>> listeners = new HashMap<>();
 
-    private BS_EventBus() {}
+    private BS_EventBus() {
+    }
 
     public static void init() {
         INSTANCE = new BS_EventBus();
     }
 
-    public static HashMap<Class<?>, ArrayList<SubscribedMethod>> getEventListeners(){
+    public static HashMap<Class<?>, ArrayList<SubscribedMethod>> getEventListeners() {
         return listeners;
     }
 

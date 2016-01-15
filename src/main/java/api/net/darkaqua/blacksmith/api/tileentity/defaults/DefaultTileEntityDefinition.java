@@ -17,7 +17,8 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     protected ITileEntity parent;
 
     @Override
-    public void update() {}
+    public void update() {
+    }
 
     @Override
     public ITileEntity getParent() {
@@ -30,16 +31,20 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     }
 
     @Override
-    public void onLoad() {}
+    public void onLoad() {
+    }
 
     @Override
-    public void onDelete() {}
+    public void onDelete() {
+    }
 
     @Override
-    public void loadData(IDataCompound tag) {}
+    public void loadData(IDataCompound tag) {
+    }
 
     @Override
-    public void saveData(IDataCompound tag) {}
+    public void saveData(IDataCompound tag) {
+    }
 
     @Override
     public ITileEntityUpdatePacket getUpdatePacket() {
@@ -47,10 +52,12 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     }
 
     @Override
-    public void onUpdatePacketArrives(ITileEntityUpdatePacket packet) {}
+    public void onUpdatePacketArrives(ITileEntityUpdatePacket packet) {
+    }
 
     @Override
-    public void onChunkUnload() {}
+    public void onChunkUnload() {
+    }
 
     @Override
     public boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate) {
@@ -58,10 +65,12 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     }
 
     @Override
-    public void onBlockChange() {}
+    public void onBlockChange() {
+    }
 
     @Override
-    public void onClientDataArrive(int id, int data) {}
+    public void onClientDataArrive(int id, int data) {
+    }
 
     @Override
     public double getRenderDistance() {
@@ -73,7 +82,7 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
         return Cube.fullBlock().translate(parent.getWorldRef().getPosition().toVector3d());
     }
 
-    public IWorld getWorld(){
+    public IWorld getWorld() {
         return getParent().getWorldRef().getWorld();
     }
 }

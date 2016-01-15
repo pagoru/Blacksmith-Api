@@ -9,8 +9,8 @@ import net.minecraft.network.Packet;
 
 public interface ITileEntity {
 
-	/**
-	 * Returns the world and the position of the tileEntity
+    /**
+     * Returns the world and the position of the tileEntity
      */
 	WorldRef getWorldRef();
 

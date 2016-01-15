@@ -18,27 +18,35 @@ public interface IItem {
     String getUnlocalizedName();
 
     int getMaxStackSize(IItemStack stack);
+
     void setMaxStackSize(IItemStack stack, int size);
 
     int getMaxDamage(IItemStack stack);
+
     void setMaxDamage(IItemStack stack, int max);
 
     boolean hasSubtypes();
+
     void setSubtypes(boolean has);
 
     IItemStack getContainerItemStack(IItemStack stack);
+
     void setContainerItemStack(IItemStack item);
 
     String getUnlocalizedName(IItemStack stack);
+
     void setUnlocalizedName(String name);
+
     String getLocalizedName(IItemStack stack);
 
     ICreativeTab getCreativeTab();
+
     void setCreativeTab(ICreativeTab tab);
 
     boolean is3DItem();
 
     int getMetadata(IItemStack stack);
+
     int getDamage(IItemStack stack);
 
     boolean isDamageable();

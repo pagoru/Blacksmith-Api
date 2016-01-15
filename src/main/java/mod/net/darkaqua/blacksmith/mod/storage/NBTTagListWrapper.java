@@ -16,7 +16,7 @@ public class NBTTagListWrapper implements IDataList {
         this.nbt = nbt;
     }
 
-    public NBTTagList getNBTTagList(){
+    public NBTTagList getNBTTagList() {
         return nbt;
     }
 

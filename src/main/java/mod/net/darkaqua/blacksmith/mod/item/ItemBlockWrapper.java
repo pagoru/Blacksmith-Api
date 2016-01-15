@@ -35,7 +35,7 @@ public class ItemBlockWrapper extends ItemWrapper implements IItemBlock {
     @Override
     public boolean placeBlock(IItemStack stack, IPlayer player, IBlockData variant, WorldRef ref, Direction side, Vect3d hit) {
         return item.placeBlockAt(MCInterface.toItemStack(stack), MCInterface.fromPlayer(player), MCInterface.toWorld(ref.getWorld()),
-                MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEnumFacing(side),(float)hit.getX(), (float)hit.getY(),
-                (float)hit.getZ(), MCInterface.toIBlockState(variant));
+                MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEnumFacing(side), (float) hit.getX(), (float) hit.getY(),
+                (float) hit.getZ(), MCInterface.toIBlockState(variant));
     }
 }

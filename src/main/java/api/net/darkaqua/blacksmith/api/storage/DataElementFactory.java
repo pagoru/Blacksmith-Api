@@ -7,14 +7,15 @@ public abstract class DataElementFactory {
 
     protected static DataElementFactory INSTANCE;
 
-    public static IDataCompound createDataCompound(){
+    public static IDataCompound createDataCompound() {
         return INSTANCE.newDataCompound();
     }
 
-    public static IDataList createDataList(){
+    public static IDataList createDataList() {
         return INSTANCE.newDataList();
     }
 
     protected abstract IDataCompound newDataCompound();
+
     protected abstract IDataList newDataList();
 }

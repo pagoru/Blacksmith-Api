@@ -11,6 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 22/12/2015.
@@ -19,7 +20,8 @@ public class OreDictionaryManager implements IOreDictionary {
 
     public static final OreDictionaryManager INSTANCE = new OreDictionaryManager();
 
-    private OreDictionaryManager(){}
+    private OreDictionaryManager() {
+    }
 
     @Override
     public void registerOre(String name, IItemStack stack) {
@@ -39,11 +41,7 @@ public class OreDictionaryManager implements IOreDictionary {
     @Override
     public List<IItemStack> getOres(String name) {
         List<ItemStack> list = OreDictionary.getOres(name);
-        List<IItemStack> result = new LinkedList<>();
-        for(ItemStack i : list){
-            result.add(MCInterface.fromItemStack(i));
-        }
-        return result;
+        return list.stream().map(MCInterface::fromItemStack).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
@@ -51,7 +49,7 @@ public class OreDictionaryManager implements IOreDictionary {
         ItemStack stack = MCInterface.toItemStack(item);
         int[] ids = OreDictionary.getOreIDs(stack);
         List<String> list = Lists.newLinkedList();
-        for(int id : ids) {
+        for (int id : ids) {
             list.add(OreDictionary.getOreName(id));
         }
         return list;

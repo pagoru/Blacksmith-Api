@@ -15,7 +15,9 @@ public interface IOreDictionary {
 
 
     void registerOre(String name, IItemStack stack);
+
     void registerOre(String name, IItem item);
+
     void registerOre(String name, IBlock block);
 
     List<IItemStack> getOres(String name);

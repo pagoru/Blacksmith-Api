@@ -5,7 +5,8 @@ package net.darkaqua.blacksmith.api.registry;
  */
 public final class StaticAccess {
 
-    private StaticAccess(){}
+    private StaticAccess() {
+    }
 
     public static IGame GAME;
 

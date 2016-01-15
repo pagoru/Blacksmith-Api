@@ -8,7 +8,6 @@ import net.darkaqua.blacksmith.api.util.Vect3i;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 /**
@@ -22,13 +21,7 @@ public class OreGenerator {
 
     public OreGenerator(IBlock ore, int number) {
         this(ore.getDefaultBlockData(), number,
-                new Predicate<IBlockData>() {
-
-                    @Override
-                    public boolean apply(@Nullable IBlockData input) {
-                        return input != null && input.getBlock().equals(Blocks.STONE.getBlock());
-                    }
-                }
+                input -> input != null && input.getBlock().equals(Blocks.STONE.getBlock())
         );
     }
 

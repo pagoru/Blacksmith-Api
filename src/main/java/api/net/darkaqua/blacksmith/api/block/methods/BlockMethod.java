@@ -23,7 +23,7 @@ public interface BlockMethod {
         void onPlacedBy(WorldRef ref, IBlockData state, ILivingEntity placer, IItemStack stack);
     }
 
-    interface OnRemovedByPlayer extends BlockMethod{
+    interface OnRemovedByPlayer extends BlockMethod {
         boolean onRemovedByPlayer(WorldRef ref, IPlayer player, boolean willHarvest);
     }
 
@@ -57,5 +57,6 @@ public interface BlockMethod {
 
     interface AllBlockMethods extends OnHarvested, OnPlacedBy,
             OnRemovedByPlayer, OnAdded, OnBreaks, OnNeighborChange,
-            OnActivated, OnEntityCollided, OnPlaced, OnClicked {}
+            OnActivated, OnEntityCollided, OnPlaced, OnClicked {
+    }
 }

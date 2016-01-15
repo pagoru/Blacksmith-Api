@@ -21,8 +21,8 @@ public class ResourceReference {
         return path;
     }
 
-    public String toString(){
-        return getDomain()+":"+getPath();
+    public String toString() {
+        return getDomain() + ":" + getPath();
     }
 
     @Override

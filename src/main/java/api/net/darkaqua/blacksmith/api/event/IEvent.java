@@ -15,7 +15,7 @@ public interface IEvent {
 
     EventResult getEventResult();
 
-    public static enum EventResult {
+    enum EventResult {
         DENY, DEFAULT, ALLOW
     }
 }

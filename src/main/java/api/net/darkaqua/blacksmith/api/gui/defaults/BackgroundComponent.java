@@ -26,10 +26,12 @@ public class BackgroundComponent implements IGuiComponent {
     }
 
     @Override
-    public void renderForeground(IGui gui, int mouseX, int mouseY) {}
+    public void renderForeground(IGui gui, int mouseX, int mouseY) {
+    }
 
     @Override
-    public void onMouseClick(IGui gui, int mouseX, int mouseY, int button) {}
+    public void onMouseClick(IGui gui, int mouseX, int mouseY, int button) {
+    }
 
     @Override
     public boolean onKeyPressed(IGui gui, int code, char character) {

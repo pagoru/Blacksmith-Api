@@ -12,7 +12,7 @@ public class BS_ConfigChangedEvent extends BaseEvent implements IConfigChangedEv
 
     private ConfigChangedEvent.OnConfigChangedEvent event;
 
-    public BS_ConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event){
+    public BS_ConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event == null)
             throw new BlacksmithInternalException("Error trying to newCreativeTab a ConfigChangedEvent");
         this.event = event;

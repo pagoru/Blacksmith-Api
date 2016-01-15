@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 08/11/2015.
@@ -154,9 +155,7 @@ public class ItemWrapper implements IItem {
     public void getSubItems(IItem item1, ICreativeTab tab, List<IItemStack> subItems) {
         List<ItemStack> list = Lists.newArrayList();
         item.getSubItems(MCInterface.toItem(item1), MCInterface.fromCreativeTab(tab), list);
-        for (ItemStack o : list) {
-            subItems.add(MCInterface.fromItemStack(o));
-        }
+        subItems.addAll(list.stream().map(MCInterface::fromItemStack).collect(Collectors.toList()));
     }
 
     @Override

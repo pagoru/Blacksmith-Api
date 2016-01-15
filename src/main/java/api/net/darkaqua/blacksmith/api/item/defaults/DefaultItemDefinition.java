@@ -159,7 +159,8 @@ public class DefaultItemDefinition implements IItemDefinition {
     }
 
     @Override
-    public void onPlayerStoppedUsing(IItemStack stack, IWorld world, IPlayer player, int timeLeft) {}
+    public void onPlayerStoppedUsing(IItemStack stack, IWorld world, IPlayer player, int timeLeft) {
+    }
 
     @Override
     public boolean hitEntity(IItemStack stack, IEntity target, IEntity attacker) {
@@ -182,11 +183,14 @@ public class DefaultItemDefinition implements IItemDefinition {
     }
 
     @Override
-    public void onUpdate(IItemStack stack, IWorld world, IEntity entity, int itemSlot, boolean isSelected) {}
+    public void onUpdate(IItemStack stack, IWorld world, IEntity entity, int itemSlot, boolean isSelected) {
+    }
 
     @Override
-    public void onCreated(IItemStack stack, IWorld world, IPlayer player) {}
+    public void onCreated(IItemStack stack, IWorld world, IPlayer player) {
+    }
 
     @Override
-    public void addInformation(IItemStack stack, IPlayer player, List tooltip, boolean advanced) {}
+    public void addInformation(IItemStack stack, IPlayer player, List tooltip, boolean advanced) {
+    }
 }

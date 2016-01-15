@@ -5,9 +5,10 @@ package net.darkaqua.blacksmith.mod.exceptions;
  */
 public class BlacksmithInternalException extends RuntimeException {
 
-    public BlacksmithInternalException(){}
+    public BlacksmithInternalException() {
+    }
 
-    public BlacksmithInternalException(String message){
+    public BlacksmithInternalException(String message) {
         super(message);
     }
 }

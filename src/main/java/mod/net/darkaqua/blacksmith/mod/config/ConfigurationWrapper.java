@@ -8,7 +8,7 @@ import java.io.File;
 /**
  * Created by cout970 on 06/12/2015.
  */
-public class ConfigurationWrapper extends Configuration implements IConfiguration{
+public class ConfigurationWrapper extends Configuration implements IConfiguration {
 
     public ConfigurationWrapper(File config, String version, boolean caseSensitiveCustomCategories) {
         super(config, version, caseSensitiveCustomCategories);
@@ -35,7 +35,7 @@ public class ConfigurationWrapper extends Configuration implements IConfiguratio
     }
 
     @Override
-    public String getString(String category, String key, String defaultValue, String comment){
+    public String getString(String category, String key, String defaultValue, String comment) {
         return super.getString(key, category, defaultValue, comment);
     }
 
@@ -45,7 +45,7 @@ public class ConfigurationWrapper extends Configuration implements IConfiguratio
     }
 
     @Override
-    public boolean getBoolean(String category, String key, boolean defaultValue, String comment){
+    public boolean getBoolean(String category, String key, boolean defaultValue, String comment) {
         return super.getBoolean(key, category, defaultValue, comment);
     }
 
@@ -75,7 +75,7 @@ public class ConfigurationWrapper extends Configuration implements IConfiguratio
     }
 
     @Override
-    public String getString(String category, String key, String defaultValue, String comment, String[] validValues){
+    public String getString(String category, String key, String defaultValue, String comment, String[] validValues) {
         return super.getString(key, category, defaultValue, comment, validValues);
     }
 

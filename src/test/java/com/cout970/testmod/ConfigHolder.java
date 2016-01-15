@@ -16,6 +16,6 @@ public class ConfigHolder {
     @ConfigValue(comment = "boolean enable = true")
     public boolean enable = true;
 
-    @ConfigValue(comment = "String name = \"unknow\"")
-    public String name = "unknow";
+    @ConfigValue(comment = "String name = \"unknown\"")
+    public String name = "unknown";
 }

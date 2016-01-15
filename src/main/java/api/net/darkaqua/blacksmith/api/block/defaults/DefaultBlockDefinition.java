@@ -19,11 +19,11 @@ public class DefaultBlockDefinition implements IBlockDefinition {
     protected String blockName;
     protected IBlock parent;
 
-    public DefaultBlockDefinition(String name){
+    public DefaultBlockDefinition(String name) {
         blockName = name;
     }
 
-    public DefaultBlockDefinition(){
+    public DefaultBlockDefinition() {
         blockName = "noname";
     }
 
@@ -43,7 +43,7 @@ public class DefaultBlockDefinition implements IBlockDefinition {
     }
 
     @Override
-    public String getUnlocalizedName(){
+    public String getUnlocalizedName() {
         return blockName;
     }
 

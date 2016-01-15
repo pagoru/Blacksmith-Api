@@ -20,20 +20,19 @@ public class ItemLayerModelBuilder implements IModelBuilder {
     private ResourceLocation texture;
     private TextureAtlasSprite sprite;
 
-    public ItemLayerModelBuilder(ResourceLocation texture){
+    public ItemLayerModelBuilder(ResourceLocation texture) {
         this.texture = texture;
     }
 
-    public IBakedModel build(){
+    public IBakedModel build() {
         ItemLayerModel model = new ItemLayerModel(ImmutableList.of(texture));
-        IBakedModel b = model.bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM, new Function<ResourceLocation, TextureAtlasSprite>() {
+        return model.bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM, new Function<ResourceLocation, TextureAtlasSprite>() {
             @Nullable
             @Override
             public TextureAtlasSprite apply(@Nullable ResourceLocation input) {
                 return sprite;
             }
         });
-        return b;
     }
 
     @Override

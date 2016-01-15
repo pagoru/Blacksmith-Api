@@ -29,7 +29,8 @@ public class BlockRegistry implements IBlockRegistry {
 
     private static final Map<IBlockDefinition, RegisteredBlock> registeredBlocks = new HashMap<>();
 
-    private BlockRegistry() {}
+    private BlockRegistry() {
+    }
 
     @Override
     public IBlock registerBlockDefinition(IBlockDefinition definition, String identifier) {
@@ -41,11 +42,11 @@ public class BlockRegistry implements IBlockRegistry {
         if (identifier == null)
             throw new NullPointerException("BlockRegistry cannot use a null identifier to newCreativeTab a new block");
         BlacksmithModContainer mod = ModLoaderManager.getActiveMod();
-        if(mod == null)
+        if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in item registration: null");
 
         Block result;
-        identifier = mod.getModId().toLowerCase()+"/"+identifier;
+        identifier = mod.getModId().toLowerCase() + "/" + identifier;
         //creating and registering the block
         if (definition instanceof IBlockContainerDefinition) {
             BS_BlockContainer block = new BS_BlockContainer((IBlockContainerDefinition) definition);
@@ -93,9 +94,9 @@ public class BlockRegistry implements IBlockRegistry {
         return MCInterface.fromBlock(i);
     }
 
-    public IBlock getBlockFromDefinition(IBlockDefinition def){
+    public IBlock getBlockFromDefinition(IBlockDefinition def) {
         RegisteredBlock reg = registeredBlocks.get(def);
-        if(reg == null)return null;
+        if (reg == null) return null;
         return reg.getIBlock();
     }
 
@@ -107,7 +108,7 @@ public class BlockRegistry implements IBlockRegistry {
         return registeredBlocks.values();
     }
 
-    public static class RegisteredBlock{
+    public static class RegisteredBlock {
 
         private IBlockDefinition definition;
         private IBlock block;

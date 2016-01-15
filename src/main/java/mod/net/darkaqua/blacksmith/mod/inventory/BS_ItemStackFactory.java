@@ -12,13 +12,14 @@ import net.minecraft.nbt.NBTTagCompound;
 /**
  * Created by cout970 on 08/11/2015.
  */
-public class BS_ItemStackFactory extends ItemStackFactory{
+public class BS_ItemStackFactory extends ItemStackFactory {
 
     public static void init() {
         INSTANCE = new BS_ItemStackFactory();
     }
 
-    private BS_ItemStackFactory(){}
+    private BS_ItemStackFactory() {
+    }
 
     @Override
     protected IItemStack load(IDataCompound data) {
@@ -34,13 +35,15 @@ public class BS_ItemStackFactory extends ItemStackFactory{
 
     @Override
     protected IItemStack newItemStack(IItem item, int amount, int metadata) {
-        if(item == null) throw new NullPointerException("The ItemStackFactory cannot make an ItemStack with an null item");
+        if (item == null)
+            throw new NullPointerException("The ItemStackFactory cannot make an ItemStack with an null item");
         return MCInterface.fromItemStack(new ItemStack(MCInterface.toItem(item), amount, metadata));
     }
 
     @Override
     protected IItemStack newItemStack(IBlock block, int amount, int metadata) {
-        if(block == null) throw new NullPointerException("The ItemStackFactory cannot make an ItemStack with an null item");
+        if (block == null)
+            throw new NullPointerException("The ItemStackFactory cannot make an ItemStack with an null item");
         return MCInterface.fromItemStack(new ItemStack(MCInterface.toBlock(block), amount, metadata));
     }
 }

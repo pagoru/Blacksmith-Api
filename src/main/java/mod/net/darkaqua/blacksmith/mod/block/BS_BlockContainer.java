@@ -22,16 +22,16 @@ public class BS_BlockContainer extends BS_Block implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        ITileEntityDefinition tile = ((IBlockContainerDefinition)definition).createTileEntity(MCInterface.fromWorld(worldIn), MCInterface.fromIBlockState(getStateFromMeta(meta)));
+        ITileEntityDefinition tile = ((IBlockContainerDefinition) definition).createTileEntity(MCInterface.fromWorld(worldIn), MCInterface.fromIBlockState(getStateFromMeta(meta)));
         return MCInterface.toTileEntity(TileEntityRegistry.INSTANCE.createTileEntity(tile));
     }
 
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
     }
 
-    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam){
+    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
         super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
         TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);

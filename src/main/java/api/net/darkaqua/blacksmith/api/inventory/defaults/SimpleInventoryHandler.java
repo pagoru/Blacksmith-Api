@@ -17,7 +17,7 @@ public class SimpleInventoryHandler implements IInventoryHandler {
     protected IItemStack[] inventory;
     protected int maxStackSize = 64;
 
-    public SimpleInventoryHandler(int slots){
+    public SimpleInventoryHandler(int slots) {
         inventory = new IItemStack[slots];
     }
 
@@ -41,46 +41,46 @@ public class SimpleInventoryHandler implements IInventoryHandler {
         if (stack == null)
             return null;
 
-        if(inventory[slot] == null){
+        if (inventory[slot] == null) {
             int capacity = Math.min(maxStackSize, stack.getItem().getMaxStackSize(stack));
-            if(capacity >= stack.getAmount()){
-                if (!simulated){
+            if (capacity >= stack.getAmount()) {
+                if (!simulated) {
                     inventory[slot] = stack.copy();
                 }
                 return null;
-            }else{
-                if (!simulated){
+            } else {
+                if (!simulated) {
                     IItemStack insert = stack.copy();
                     insert.setAmount(capacity);
                     inventory[slot] = insert;
                     IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-capacity);
+                    copy.setAmount(copy.getAmount() - capacity);
                     return copy;
-                }else{
+                } else {
                     IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-capacity);
+                    copy.setAmount(copy.getAmount() - capacity);
                     return copy;
                 }
             }
-        }else if(InventoryUtils.areExactlyEqual(inventory[slot], stack)){
+        } else if (InventoryUtils.areExactlyEqual(inventory[slot], stack)) {
             int capacity = Math.min(maxStackSize, stack.getItem().getMaxStackSize(stack));
-            int space = capacity-inventory[slot].getAmount();
-            if (space >= stack.getAmount()){
-                if(!simulated){
+            int space = capacity - inventory[slot].getAmount();
+            if (space >= stack.getAmount()) {
+                if (!simulated) {
                     IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()+inventory[slot].getAmount());
+                    copy.setAmount(copy.getAmount() + inventory[slot].getAmount());
                     inventory[slot] = copy;
                 }
                 return null;
-            }else{
-                if (!simulated){
+            } else {
+                if (!simulated) {
                     IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-space);
+                    copy.setAmount(copy.getAmount() - space);
                     inventory[slot].setAmount(capacity);
                     return copy;
-                }else{
+                } else {
                     IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount()-space);
+                    copy.setAmount(copy.getAmount() - space);
                     return copy;
                 }
             }
@@ -91,18 +91,18 @@ public class SimpleInventoryHandler implements IInventoryHandler {
     @Override
     public IItemStack extractItemStack(Direction side, int slot, int amount, boolean simulated) {
         IItemStack storage = inventory[slot];
-        if (storage == null || amount <= 0){
+        if (storage == null || amount <= 0) {
             return null;
         }
-        if (storage.getAmount() > amount){
+        if (storage.getAmount() > amount) {
             IItemStack ret = storage.copy();
-            if (!simulated){
-                storage.setAmount(storage.getAmount()-amount);
+            if (!simulated) {
+                storage.setAmount(storage.getAmount() - amount);
             }
             ret.setAmount(amount);
             return ret;
-        }else{
-            if (!simulated){
+        } else {
+            if (!simulated) {
                 inventory[slot] = null;
             }
             return storage.copy();
@@ -111,7 +111,7 @@ public class SimpleInventoryHandler implements IInventoryHandler {
 
     public void load(IDataCompound tag, String key) {
         IDataList list = tag.getDataList(key);
-        for(int i = 0; i < list.getSize(); i++){
+        for (int i = 0; i < list.getSize(); i++) {
             IDataCompound cmp = list.getDataCompound(i);
             int slot = cmp.getByte("Slot") & 0xFF;
             if (slot >= 0 && slot < inventory.length) {
@@ -123,7 +123,7 @@ public class SimpleInventoryHandler implements IInventoryHandler {
     public void save(IDataCompound tag, String key) {
         IDataList list = DataElementFactory.createDataList();
         for (int i = 0; i < inventory.length; i++) {
-            if(inventory[i] != null){
+            if (inventory[i] != null) {
                 IDataCompound data = DataElementFactory.createDataCompound();
                 data.setByte("Slot", (byte) i);
                 ItemStackFactory.saveItemStack(data, inventory[i]);

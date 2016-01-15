@@ -8,13 +8,13 @@ import net.minecraft.world.IBlockAccess;
  */
 public class IBlockAccessWrapper implements IIBlockAccess {
 
-    private IBlockAccess acccess;
+    private IBlockAccess access;
 
-    public IBlockAccessWrapper(IBlockAccess acccess){
-        this.acccess = acccess;
+    public IBlockAccessWrapper(IBlockAccess access) {
+        this.access = access;
     }
 
-    public IBlockAccess getIBlockAccess(){
-        return acccess;
+    public IBlockAccess getIBlockAccess() {
+        return access;
     }
 }

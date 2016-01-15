@@ -10,13 +10,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface BlacksmithMod {
 
-	String id();
+    String id();
 
-	String name();
+    String name();
 
-	String version();
+    String version();
 
-	String dependencies() default "";
+    String dependencies() default "";
 
-	String updateURL() default "";
+    String updateURL() default "";
 }
