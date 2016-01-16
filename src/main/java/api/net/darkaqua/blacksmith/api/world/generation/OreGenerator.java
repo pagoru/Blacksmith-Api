@@ -25,6 +25,12 @@ public class OreGenerator {
         );
     }
 
+    public OreGenerator(IBlockData ore, int number) {
+        this(ore, number,
+                input -> input != null && input.getBlock().equals(Blocks.STONE.getBlock())
+        );
+    }
+
     public OreGenerator(IBlockData ore, int number, Predicate<IBlockData> target) {
         this.ore = ore;
         numberOfBlocks = number;
