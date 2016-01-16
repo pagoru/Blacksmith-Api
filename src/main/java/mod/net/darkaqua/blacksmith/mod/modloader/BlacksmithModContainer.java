@@ -8,6 +8,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.modloader.ModSidedProxy;
+import net.darkaqua.blacksmith.mod.registry.InterModRegistry;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -89,6 +90,8 @@ public class BlacksmithModContainer implements ModContainer {
             }
 
             CustomProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
+
+            InterModRegistry.onModConstructs(event.getASMHarvestedData());
         } catch (InstantiationException | MalformedURLException | ClassNotFoundException | IllegalAccessException e) {
             e.printStackTrace();
         }

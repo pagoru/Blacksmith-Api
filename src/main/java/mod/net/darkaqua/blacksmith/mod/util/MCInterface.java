@@ -12,10 +12,10 @@ import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.fluid.IFluid;
 import net.darkaqua.blacksmith.api.fluid.IFluidStack;
 import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
+import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
-import net.darkaqua.blacksmith.api.network.packet.IPacket;
 import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
@@ -40,6 +40,9 @@ import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidStackWrapper;
 import net.darkaqua.blacksmith.mod.fluid.FluidWrapper;
 import net.darkaqua.blacksmith.mod.gui.BS_Slot;
+import net.darkaqua.blacksmith.mod.intermod.CapabilityWrapper;
+import net.darkaqua.blacksmith.mod.intermod.IStorageWrapper;
+import net.darkaqua.blacksmith.mod.intermod.StorageHandlerWrapper;
 import net.darkaqua.blacksmith.mod.inventory.InventoryHandlerWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
@@ -76,7 +79,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -84,6 +86,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -294,12 +297,12 @@ public class MCInterface {
     }
 
     public static ILivingEntity toLivingEntity(EntityLivingBase entity) {
-        if (entity == null)return null;
+        if (entity == null) return null;
         return new EntityLivingWrapper(entity);
     }
 
     public static EntityLivingBase fromLivingEntity(ILivingEntity entity) {
-        if (entity instanceof EntityLivingWrapper){
+        if (entity instanceof EntityLivingWrapper) {
             return ((EntityLivingWrapper) entity).getLivingEntity();
         }
         return null;
@@ -401,11 +404,6 @@ public class MCInterface {
         return Side.values()[gameSide.ordinal()];
     }
 
-    public static IPacket fromPacket(Packet<?> packet) {
-        //TODO
-        return null;
-    }
-
     public static Slot toSlot(ISlotDefinition slot) {
         if (slot == null) return null;
         return new BS_Slot(slot);
@@ -441,10 +439,10 @@ public class MCInterface {
     }
 
     public static IProperty fromBlockAttribute(IBlockAttribute attr) {
-        if (attr instanceof IProperty){
+        if (attr instanceof IProperty) {
             return (IProperty) attr;
         }
-        if (attr instanceof BlockPropertyWrapper){
+        if (attr instanceof BlockPropertyWrapper) {
             return ((BlockPropertyWrapper) attr).getProperty();
         }
         return null;
@@ -452,7 +450,7 @@ public class MCInterface {
 
     public static IBlockAttribute toBlockAttribute(IProperty p) {
         if (p == null) return null;
-        if (p instanceof IBlockAttribute){
+        if (p instanceof IBlockAttribute) {
             return (IBlockAttribute) p;
         }
         return new BlockPropertyWrapper(p);
@@ -464,9 +462,36 @@ public class MCInterface {
     }
 
     public static BlockState fromBlockDataGenerator(IBlockDataGenerator gen) {
-        if (gen instanceof BlockStateWrapper){
+        if (gen instanceof BlockStateWrapper) {
             return ((BlockStateWrapper) gen).getBlockState();
         }
         return null;
+    }
+
+    public static IInterfaceIdentifier fromCapability(Capability<?> cap) {
+        if (cap == null) return null;
+        return new CapabilityWrapper(cap);
+    }
+
+    public static Capability<?> toCapability(IInterfaceIdentifier id) {
+        if (id instanceof CapabilityWrapper) {
+            return ((CapabilityWrapper) id).getCapability();
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Capability.IStorage<T> fromStorageHandler(IInterfaceIdentifier.IStorageHandler storage) {
+        if (storage instanceof IStorageWrapper) {
+            return (Capability.IStorage<T>) ((IStorageWrapper) storage).getStorage();
+        }
+        return new StorageHandlerWrapper(storage);
+    }
+
+    public static IInterfaceIdentifier.IStorageHandler toStorageHandler(Capability.IStorage<?> storage) {
+        if (storage instanceof StorageHandlerWrapper) {
+            return ((StorageHandlerWrapper) storage).getHandler();
+        }
+        return new IStorageWrapper(storage);
     }
 }

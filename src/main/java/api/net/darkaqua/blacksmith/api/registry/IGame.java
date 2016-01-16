@@ -28,6 +28,8 @@ public interface IGame {
 
     IGuiRegistry getGuiRegistry();
 
+    IInterModRegistry getInterModRegistry();
+
     boolean isClient();
 
     boolean isServer();

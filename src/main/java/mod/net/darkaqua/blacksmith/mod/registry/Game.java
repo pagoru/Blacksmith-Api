@@ -71,6 +71,11 @@ public class Game implements IGame {
     }
 
     @Override
+    public IInterModRegistry getInterModRegistry() {
+        return InterModRegistry.INSTANCE;
+    }
+
+    @Override
     public boolean isClient() {
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
     }

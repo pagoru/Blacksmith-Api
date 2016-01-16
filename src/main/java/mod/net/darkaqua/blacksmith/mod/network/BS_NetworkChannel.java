@@ -4,7 +4,6 @@ import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.network.INetworkChannel;
 import net.darkaqua.blacksmith.api.network.INetworkMessage;
 import net.darkaqua.blacksmith.api.network.INetworkMessageHandler;
-import net.darkaqua.blacksmith.api.network.packet.IPacket;
 import net.darkaqua.blacksmith.api.util.GameSide;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.mod.network.channel.SimpleChannel;
@@ -30,11 +29,6 @@ public class BS_NetworkChannel implements INetworkChannel {
     @Override
     public <REQ extends INetworkMessage, REPLY extends INetworkMessage> void registerMessage(INetworkMessageHandler<? super REQ, ? extends REPLY> handler, Class<REQ> messageType, int discriminator, GameSide side) {
         network.registerMessage(handler, messageType, discriminator, MCInterface.toSide(side));
-    }
-
-    @Override
-    public IPacket getPacketFrom(INetworkMessage message) {
-        return MCInterface.fromPacket(network.getPacketFrom(message));
     }
 
     @Override

@@ -1,15 +1,22 @@
 package net.darkaqua.blacksmith.mod.item;
 
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by cout970 on 16/12/2015.
@@ -185,4 +192,11 @@ public class BS_Item extends Item {
 //    public double getDurabilityForDisplay(ItemStack stack) {
 //        return super.getDurabilityForDisplay(stack);
 //    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems){
+        List<IItemStack> sub = new LinkedList<>();
+        definition.getSubItems(MCInterface.fromItem(itemIn), MCInterface.fromCreativeTab(tab), sub);
+        sub.stream().map(MCInterface::toItemStack).forEach(subItems::add);
+    }
 }

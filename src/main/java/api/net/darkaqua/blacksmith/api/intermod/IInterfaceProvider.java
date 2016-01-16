@@ -1,11 +1,13 @@
 package net.darkaqua.blacksmith.api.intermod;
 
+import net.darkaqua.blacksmith.api.util.Direction;
+
 /**
  * Created by cout970 on 29/12/2015.
  */
-@Deprecated
-//TODO redo this system
 public interface IInterfaceProvider {
 
-    Object providerInterface(String className, Class<?> interfaceClass);
+    boolean hasInterface(IInterfaceIdentifier identifier, Direction side);
+
+    Object getInterface(IInterfaceIdentifier identifier, Direction side);
 }

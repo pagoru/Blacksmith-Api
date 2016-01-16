@@ -8,4 +8,6 @@ import net.darkaqua.blacksmith.api.world.generation.IWorldGeneratorDefinition;
 public interface IWorldGenerationRegistry {
 
     boolean registerWorldGenerator(IWorldGeneratorDefinition def, int priority);
+
+
 }

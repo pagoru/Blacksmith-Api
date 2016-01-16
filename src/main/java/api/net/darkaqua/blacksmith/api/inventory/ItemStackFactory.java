@@ -8,6 +8,10 @@ public abstract class ItemStackFactory {
 
     protected static ItemStackFactory INSTANCE;
 
+    public static IItemStack createItemStack(IItemStack stack, int amount) {
+        return createItemStack(stack.getItem(), amount, stack.getDamage());
+    }
+
     public static IItemStack createItemStack(IItem item) {
         return INSTANCE.newItemStack(item, 1, 0);
     }
