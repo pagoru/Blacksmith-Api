@@ -55,7 +55,6 @@ public class InterModRegistry implements IInterModRegistry {
         if (callbacks == null) {
             getCallBacks();
         }
-        Log.debug("callbacks: " + System.identityHashCode(data));
         for (ASMDataTable.ASMData entry : data.getAll(InterfaceIdentifierInject.class.getName())) {
 
             int hash = System.identityHashCode(entry);

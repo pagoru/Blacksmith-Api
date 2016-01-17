@@ -20,6 +20,7 @@ public class ModelPartTechneCube implements IModelPart {
     protected Vect3d rotation;
     protected int textureSize = 32;
     protected Vect2i textureOffset;
+    protected boolean mirrored;
 
     public ModelPartTechneCube(ResourceReference all) {
         texture = all;
@@ -42,7 +43,7 @@ public class ModelPartTechneCube implements IModelPart {
             textureOffset = new Vect2i(0, 0);
         }
         for (Direction dir : Direction.values()) {
-            quads.add(new Quad(dir, texture, size, textureSize, textureOffset));
+            quads.add(new Quad(dir, texture, size, textureSize, textureOffset, mirrored));
         }
         for (IModelQuad p : quads) {
             Quad q = (Quad) p;
@@ -93,6 +94,10 @@ public class ModelPartTechneCube implements IModelPart {
         textureSize = size;
     }
 
+    public void setTextureMirrored(boolean mirrored) {
+        this.mirrored = mirrored;
+    }
+
     private static class Quad implements IModelQuad {
 
         private static final double[][][] FULL_UV = new double[][][]{
@@ -118,7 +123,7 @@ public class ModelPartTechneCube implements IModelPart {
         private Vect3d[] vertex;
         private Vect2d[] uv;
 
-        public Quad(Direction dir, ResourceReference texture, Vect3d size, int textureSize, Vect2i textureOffset) {
+        public Quad(Direction dir, ResourceReference texture, Vect3d size, int textureSize, Vect2i textureOffset, boolean mirrored) {
             this.side = dir;
             this.texture = texture;
             vertex = new Vect3d[4];
@@ -128,43 +133,84 @@ public class ModelPartTechneCube implements IModelPart {
             }
             double pixel = 1d / textureSize;
             size = size.copy().multiply(16);
-            switch (dir) {
-                case DOWN:  //bottom
-                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, textureOffset.getY() * pixel);
-                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, textureOffset.getY() * pixel);
-                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    break;
-                case UP:    //top
-                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel, textureOffset.getY() * pixel);
-                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, textureOffset.getY() * pixel);
-                    break;
-                case NORTH: //Back
-                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    break;
-                case SOUTH: //Front
-                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    break;
-                case WEST:  //Right
-                    uv[0] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    break;
-                case EAST:  //Left
-                    uv[0] = new Vect2d(textureOffset.getX() * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    uv[1] = new Vect2d(textureOffset.getX() * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    uv[2] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
-                    uv[3] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
-                    break;
+            if (!mirrored) {
+                switch (dir) {
+                    case DOWN:  //top
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, textureOffset.getY() * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, textureOffset.getY() * pixel);
+                        break;
+                    case UP:    //bottom
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, textureOffset.getY() * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel, textureOffset.getY() * pixel);
+                        break;
+                    case NORTH: //front
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        break;
+                    case SOUTH: //back
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        break;
+                    case WEST:  //left
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        break;
+                    case EAST:  //right
+                        uv[0] = new Vect2d(textureOffset.getX() * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d(textureOffset.getX() * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        break;
+                }
+            }else{
+                switch (dir) {
+                    case DOWN:  //top
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, textureOffset.getY() * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, textureOffset.getY() * pixel);
+                        break;
+                    case UP:    //bottom
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel, textureOffset.getY() * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, textureOffset.getY() * pixel);
+                        break;
+                    case NORTH: //front
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX() * 2) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        break;
+                    case SOUTH: //back
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        break;
+                    case WEST:  //left
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[2] = new Vect2d((textureOffset.getX() + size.getZ() * 2 + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[3] = new Vect2d((textureOffset.getX() + size.getZ() + size.getX()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        break;
+                    case EAST:  //right
+                        uv[0] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        uv[1] = new Vect2d((textureOffset.getX() + size.getZ()) * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[2] = new Vect2d(textureOffset.getX() * pixel, (textureOffset.getY() + size.getZ() + size.getY()) * pixel);
+                        uv[3] = new Vect2d(textureOffset.getX() * pixel, (textureOffset.getY() + size.getZ()) * pixel);
+                        break;
+                }
             }
         }
 

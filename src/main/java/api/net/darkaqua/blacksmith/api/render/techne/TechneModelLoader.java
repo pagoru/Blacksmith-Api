@@ -38,9 +38,9 @@ public class TechneModelLoader {
             "de81aa14-bd60-4228-8d8d-5238bcd3caaa"
     );
 
-    public static IModelPart loadModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
+    public static TechneModelPart loadModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
 
-        List<IModelPart> parts = new LinkedList<>();
+        List<ModelPartTechneCube> parts = new LinkedList<>();
         InputStream stream;
         try {
             IResourceManager.IResourceFile res = StaticAccess.GAME.getResourceManager().getResource(file);
@@ -194,6 +194,8 @@ public class TechneModelLoader {
                     cube.setOffset(cubeOffset.multiply(1 / 16d));
                     cube.setRotation(cubeRotation);
                     cube.setTextureOffset(cubeTextureOffset);
+                    cube.setTextureMirrored(mirrored);
+                    Log.debug("Techne model Loader: loading part: part settings: part mirrored:"+mirrored);
                     cube.setTextureSize((int) Math.max(textureDims != null ? textureDims.getWidth() : 32, textureDims != null ? textureDims.getHeight() : 32));
 
                     parts.add(cube);
@@ -217,13 +219,13 @@ public class TechneModelLoader {
 
     public static class TechneModelPart implements IModelPart {
 
-        protected List<IModelPart> modelParts;
+        protected List<ModelPartTechneCube> modelParts;
 
-        public TechneModelPart(List<IModelPart> modelParts) {
+        public TechneModelPart(List<ModelPartTechneCube> modelParts) {
             this.modelParts = modelParts;
         }
 
-        public List<IModelPart> getModelParts() {
+        public List<ModelPartTechneCube> getModelParts() {
             return modelParts;
         }
 

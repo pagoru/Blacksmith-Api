@@ -24,7 +24,7 @@ public class DefaultItemDefinition implements IItemDefinition {
 
     protected String name;
     protected IItem parent;
-    protected int maxDamage = 1;
+    protected int maxDamage = 0;
     protected int maxStackSize = 64;
     protected boolean hasSubtypes = false;
     protected ICreativeTab creativeTab = CreativeTabFactory.DECORATIONS_TAB;
