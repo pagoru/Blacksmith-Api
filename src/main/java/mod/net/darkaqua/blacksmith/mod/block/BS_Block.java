@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -55,6 +56,10 @@ public class BS_Block extends Block {
     @Override
     public int getMetaFromState(IBlockState state) {
         return definition.translateVariantToMetadata(MCInterface.fromIBlockState(state));
+    }
+
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos){
+        return !this.blockMaterial.blocksMovement() || isFullBlock();
     }
 
     public IBlockDefinition getBlockDefinition() {

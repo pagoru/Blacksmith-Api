@@ -3,7 +3,7 @@ package net.darkaqua.blacksmith.mod.registry;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
-import net.darkaqua.blacksmith.api.intermod.InterfaceIdentifierInject;
+import net.darkaqua.blacksmith.api.intermod.InterfaceIdentifierHolder;
 import net.darkaqua.blacksmith.api.registry.IInterModRegistry;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
@@ -55,7 +55,7 @@ public class InterModRegistry implements IInterModRegistry {
         if (callbacks == null) {
             getCallBacks();
         }
-        for (ASMDataTable.ASMData entry : data.getAll(InterfaceIdentifierInject.class.getName())) {
+        for (ASMDataTable.ASMData entry : data.getAll(InterfaceIdentifierHolder.class.getName())) {
 
             int hash = System.identityHashCode(entry);
             if (uniqueASMData.contains(hash)) continue;

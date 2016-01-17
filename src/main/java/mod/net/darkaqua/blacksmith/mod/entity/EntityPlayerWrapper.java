@@ -3,8 +3,10 @@ package net.darkaqua.blacksmith.mod.entity;
 import net.darkaqua.blacksmith.api.command.IChatMessage;
 import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vect3i;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
@@ -69,5 +71,15 @@ public class EntityPlayerWrapper extends EntityLivingWrapper implements IPlayer 
 
     public boolean isSneaking() {
         return player.isSneaking();
+    }
+
+    @Override
+    public boolean hasInterface(IInterfaceIdentifier identifier, Direction side) {
+        return identifier == IInventoryHandler.IDENTIFIER;
+    }
+
+    @Override
+    public Object getInterface(IInterfaceIdentifier identifier, Direction side) {
+        return identifier == IInventoryHandler.IDENTIFIER ? getInventory() : null;
     }
 }

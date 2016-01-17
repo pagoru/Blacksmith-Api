@@ -1,5 +1,7 @@
 package net.darkaqua.blacksmith.api.inventory;
 
+import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
+import net.darkaqua.blacksmith.api.intermod.InterfaceIdentifierHolder;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
@@ -12,6 +14,10 @@ import net.darkaqua.blacksmith.api.util.annotations.Implementable;
  */
 @Implementable
 public interface IInventoryHandler {
+
+    @InterfaceIdentifierHolder(IInventoryHandler.class)
+    IInterfaceIdentifier IDENTIFIER = null;
+
     /**
      * Gets the number of slot that are accessible from this side
      */

@@ -195,7 +195,6 @@ public class TechneModelLoader {
                     cube.setRotation(cubeRotation);
                     cube.setTextureOffset(cubeTextureOffset);
                     cube.setTextureMirrored(mirrored);
-                    Log.debug("Techne model Loader: loading part: part settings: part mirrored:"+mirrored);
                     cube.setTextureSize((int) Math.max(textureDims != null ? textureDims.getWidth() : 32, textureDims != null ? textureDims.getHeight() : 32));
 
                     parts.add(cube);
