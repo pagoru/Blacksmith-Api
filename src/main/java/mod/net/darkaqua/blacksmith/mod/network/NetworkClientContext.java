@@ -5,7 +5,6 @@ import net.darkaqua.blacksmith.api.network.INetworkContext;
 import net.darkaqua.blacksmith.api.world.IWorld;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.DimensionManager;
 
 /**
  * Created by cout970 on 17/01/2016.
@@ -20,10 +19,5 @@ public class NetworkClientContext implements INetworkContext.IClientContext {
     @Override
     public IWorld getWorld() {
         return MCInterface.fromWorld(Minecraft.getMinecraft().theWorld);
-    }
-
-    @Override
-    public IWorld getWorld(int dimension) {
-        return MCInterface.fromWorld(DimensionManager.getWorld(dimension));
     }
 }

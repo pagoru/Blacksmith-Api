@@ -59,15 +59,16 @@ public class ModClass {
         IItemDefinition itemDef = new TestItem();
         testBlock = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
         item = StaticAccess.GAME.getItemRegistry().registerItemDefinition(itemDef, "item_identifier");
-        blockStatefull = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(new StatefullBlock(),"stateFullBlock");
-//        IRenderModel model = TechneModelLoader.loadModel(new ResourceReference("mod_id", "models/test.tcn"), new ResourceReference("mod_id", "misc/test_texture"));
-//        SimpleItemModelProvider itemProvider = new SimpleItemModelProvider(model);
-//        StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef, itemProvider);
-        StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
-                new ItemFlatModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
+        blockStatefull = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(new StatefullBlock(), "stateFullBlock");
 
-        SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(new SimpleModelPartBlock(new ResourceReference(MOD_ID, "blocks/texture_name")));
-        StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, blockProvider);
+
+        if (StaticAccess.GAME.isClient()) {
+            StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
+                    new ItemFlatModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
+
+            SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(new SimpleModelPartBlock(new ResourceReference(MOD_ID, "blocks/texture_name")));
+            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, blockProvider);
+        }
 
         StaticAccess.GAME.getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);
         NetworkManager.init();
@@ -76,7 +77,7 @@ public class ModClass {
     }
 
     @EventSubscribe
-    public void init(IInitEvent event){
+    public void init(IInitEvent event) {
         Log.debug("TestMod init");
         StaticAccess.GAME.getGuiRegistry().registerGuiCreationHandler(new GuiTestHandler());
         Log.debug("TestMod init done");

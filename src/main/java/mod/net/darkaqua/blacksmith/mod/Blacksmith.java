@@ -14,7 +14,6 @@ import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.network.BS_NetworkChannelFactory;
-import net.darkaqua.blacksmith.mod.network.packet.BS_PacketFactory;
 import net.darkaqua.blacksmith.mod.registry.*;
 import net.darkaqua.blacksmith.mod.render.BS_TileEntityRenderer;
 import net.darkaqua.blacksmith.mod.storage.BS_DataElementFactory;
@@ -60,7 +59,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_ConfigurationFactory.init();
         BS_ObjectScanner.init();
         BS_DataElementFactory.init();
-        BS_PacketFactory.init();
         BS_BlockMaterialFactory.init();
         BS_BlockDataFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
@@ -80,9 +78,9 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
             FMLEventRedirect.init();
             BS_FluidStackFactory.init();
             BS_NetworkChannelFactory.init();
-            IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
-            manager.registerReloadListener(ResourceManager.INSTANCE);
             if (Game.INSTANCE.isClient()) {
+                IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+                manager.registerReloadListener(ResourceManager.INSTANCE);
                 MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
                 MinecraftForge.EVENT_BUS.register(ModelRegistry.INSTANCE);
                 ClientRegistry.bindTileEntitySpecialRenderer(BS_TileEntity.class, BS_TileEntityRenderer.INSTANCE);

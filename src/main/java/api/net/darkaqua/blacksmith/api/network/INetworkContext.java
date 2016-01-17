@@ -23,8 +23,6 @@ public interface INetworkContext {
         IPlayer getPlayer();
 
         IWorld getWorld();
-
-        IWorld getWorld(int dimension);
     }
 
     interface IServerContext {
