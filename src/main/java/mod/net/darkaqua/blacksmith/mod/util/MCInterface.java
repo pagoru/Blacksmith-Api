@@ -16,7 +16,6 @@ import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
-import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
 import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
@@ -49,7 +48,6 @@ import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SimpleInventoryWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemBlockWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
-import net.darkaqua.blacksmith.mod.network.packet.DescriptionPacketWrapper;
 import net.darkaqua.blacksmith.mod.recipe.InventoryCraftingWrapper;
 import net.darkaqua.blacksmith.mod.render.gui.FontRendererWrapper;
 import net.darkaqua.blacksmith.mod.storage.NBTTagCompoundWrapper;
@@ -79,7 +77,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
@@ -236,17 +233,6 @@ public class MCInterface {
     public static TileEntity toTileEntity(ITileEntity tile) {
         if (tile instanceof TileEntityWrapper)
             return ((TileEntityWrapper) tile).getTileEntity();
-        return null;
-    }
-
-    public static ITileEntityUpdatePacket toDescriptionPacket(S35PacketUpdateTileEntity pack) {
-        if (pack == null) return null;
-        return new DescriptionPacketWrapper(pack);
-    }
-
-    public static S35PacketUpdateTileEntity fromDescriptionPacket(ITileEntityUpdatePacket pack) {
-        if (pack instanceof DescriptionPacketWrapper)
-            return ((DescriptionPacketWrapper) pack).getPacket();
         return null;
     }
 

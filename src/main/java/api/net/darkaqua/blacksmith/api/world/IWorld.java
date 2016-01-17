@@ -1,9 +1,12 @@
 package net.darkaqua.blacksmith.api.world;
 
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Vect3i;
+
+import java.util.List;
 
 public interface IWorld extends IWorldAccess {
 
@@ -31,5 +34,7 @@ public interface IWorld extends IWorldAccess {
     boolean isThundering();
 
     boolean isRaining();
+
+    List<IPlayer> getPlayers();
 }
 

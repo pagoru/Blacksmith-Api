@@ -114,7 +114,7 @@ public class Vect3i {
         return x * x + y * y + z * z;
     }
 
-    public Vect3d toVector3d() {
+    public Vect3d toVect3d() {
         return new Vect3d(getX(), getY(), getZ());
     }
 

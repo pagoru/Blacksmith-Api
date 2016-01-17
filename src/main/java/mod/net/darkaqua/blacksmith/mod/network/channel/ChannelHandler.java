@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.darkaqua.blacksmith.api.network.INetworkMessage;
 import net.darkaqua.blacksmith.api.network.INetworkMessageHandler;
+import net.darkaqua.blacksmith.mod.network.NetworkContext;
 import net.minecraft.network.INetHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler;
@@ -34,8 +35,7 @@ public class ChannelHandler<REQ extends INetworkMessage, REPLY extends INetworkM
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, REQ msg) throws Exception {
         INetHandler iNetHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
-        //TODO add INetworkContext implementation, waiting for IServerHandler
-        REPLY result = messageHandler.onMessage(msg, null);
+        REPLY result = messageHandler.onMessage(msg, new NetworkContext());
         if (result != null) {
             ctx.channel().attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.REPLY);
             ctx.writeAndFlush(result).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);

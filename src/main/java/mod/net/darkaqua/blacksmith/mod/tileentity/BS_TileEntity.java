@@ -15,6 +15,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -75,12 +76,12 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
 
     @Override
     public Packet getDescriptionPacket() {
-        return MCInterface.fromDescriptionPacket(def.getUpdatePacket());
+        return new S35PacketUpdateTileEntity(getPos(), 0, MCInterface.toNBTCompound(def.getUpdateData()));
     }
 
     @Override
     public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.S35PacketUpdateTileEntity pkt) {
-        def.onUpdatePacketArrives(MCInterface.toDescriptionPacket(pkt));
+        def.onUpdateDataArrives(MCInterface.fromNBTCompound(pkt.getNbtCompound()));
     }
 
     @Override

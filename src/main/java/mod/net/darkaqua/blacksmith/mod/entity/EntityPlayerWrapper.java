@@ -82,4 +82,27 @@ public class EntityPlayerWrapper extends EntityLivingWrapper implements IPlayer 
     public Object getInterface(IInterfaceIdentifier identifier, Direction side) {
         return identifier == IInventoryHandler.IDENTIFIER ? getInventory() : null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EntityPlayerWrapper)) return false;
+
+        EntityPlayerWrapper that = (EntityPlayerWrapper) o;
+
+        return !(player != null ? !player.equals(that.player) : that.player != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return player != null ? player.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "EntityPlayerWrapper{" +
+                "player=" + player +
+                '}';
+    }
 }

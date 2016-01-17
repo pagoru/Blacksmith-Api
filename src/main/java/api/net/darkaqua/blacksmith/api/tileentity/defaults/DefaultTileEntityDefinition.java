@@ -1,11 +1,11 @@
 package net.darkaqua.blacksmith.api.tileentity.defaults;
 
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
-import net.darkaqua.blacksmith.api.network.packet.ITileEntityUpdatePacket;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.api.util.Cube;
+import net.darkaqua.blacksmith.api.util.Vect3i;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.api.world.IWorld;
 
@@ -47,13 +47,12 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
     }
 
     @Override
-    public ITileEntityUpdatePacket getUpdatePacket() {
+    public IDataCompound getUpdateData(){
         return null;
     }
 
     @Override
-    public void onUpdatePacketArrives(ITileEntityUpdatePacket packet) {
-    }
+    public void onUpdateDataArrives(IDataCompound data){}
 
     @Override
     public void onChunkUnload() {
@@ -79,10 +78,14 @@ public class DefaultTileEntityDefinition implements ITileEntityDefinition {
 
     @Override
     public Cube getRenderBox() {
-        return Cube.fullBlock().translate(parent.getWorldRef().getPosition().toVector3d());
+        return Cube.fullBlock().translate(parent.getWorldRef().getPosition().toVect3d());
     }
 
     public IWorld getWorld() {
         return getParent().getWorldRef().getWorld();
+    }
+
+    public Vect3i getPosition(){
+        return getParent().getWorldRef().getPosition();
     }
 }
