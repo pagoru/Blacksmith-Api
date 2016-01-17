@@ -83,6 +83,10 @@ public class Vect3i {
         z *= i;
         return this;
     }
+    
+    public boolean isDirectionalOffset() {
+        return ((x + y + z) == 1) && ((x == 1) || (y == 1) || (z == 1));
+    }
 
     public Vect3i add(Vect3i v) {
         x += v.x;
