@@ -1,7 +1,9 @@
 package net.darkaqua.blacksmith.mod.block;
 
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.block.methods.BlockMethod;
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
@@ -9,14 +11,21 @@ import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by cout970 on 08/11/2015.
@@ -40,7 +49,8 @@ public class BS_Block extends Block {
         setResistance(def.getResistance());
         useNeighborBrightness = false;
         blockstate = MCInterface.fromBlockDataGenerator(definition.getBlockDataGenerator());
-        this.setDefaultState(blockstate.getBaseState());
+        IBlockData data = def.onCreateDefaultBlockData(MCInterface.fromIBlockState(blockstate.getBaseState()));
+        this.setDefaultState(MCInterface.toIBlockState(data));
     }
 
     @Override
@@ -69,6 +79,13 @@ public class BS_Block extends Block {
     @Override
     public int getRenderType() {
         return definition.shouldRender() ? 3 : -1;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list){
+        List<IItemStack> list2 = new LinkedList<>();
+        definition.getSubBlocks(MCInterface.fromItem(itemIn), MCInterface.fromCreativeTab(tab), list2);
+        list2.stream().map(MCInterface::toItemStack).forEach(list::add);
     }
 
     @Override

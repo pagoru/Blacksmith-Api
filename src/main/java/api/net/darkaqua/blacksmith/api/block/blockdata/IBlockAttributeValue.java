@@ -11,4 +11,6 @@ public interface IBlockAttributeValue extends Comparable<IBlockAttributeValue> {
     String getName();
 
     Object getValue();
+
+    IBlockAttributeValue getCanonicalValue();
 }

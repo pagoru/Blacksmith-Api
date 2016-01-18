@@ -15,9 +15,9 @@ import java.util.Random;
  */
 public class OreGenerator {
 
-    private IBlockData ore;
-    private int numberOfBlocks;
-    private Predicate<IBlockData> predicate;
+    protected IBlockData ore;
+    protected int numberOfBlocks;
+    protected Predicate<IBlockData> predicate;
 
     public OreGenerator(IBlock ore, int number) {
         this(ore.getDefaultBlockData(), number,

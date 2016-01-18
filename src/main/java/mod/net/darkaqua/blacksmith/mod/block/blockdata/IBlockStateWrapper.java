@@ -53,13 +53,16 @@ public class IBlockStateWrapper implements IBlockData {
 
     @Override
     public IBlockData setValue(IBlockAttribute attr, IBlockAttributeValue value) {
-        for(IBlockAttributeValue val : attr.getValidValues()){
-            if(val.equals(value)){
-                value = val;
-                break;
+        IBlockAttributeValue value2 = value.getCanonicalValue();
+        if (value2 == null) {
+            for (IBlockAttributeValue val : attr.getValidValues()) {
+                if (val.equals(value)) {
+                    value2 = val;
+                    break;
+                }
             }
         }
-        return MCInterface.fromIBlockState(state.withProperty(fromBlockAttribute(attr), value));
+        return MCInterface.fromIBlockState(state.withProperty(fromBlockAttribute(attr), value2));
     }
 
     @Override

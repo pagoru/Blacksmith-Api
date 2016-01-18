@@ -3,8 +3,13 @@ package net.darkaqua.blacksmith.api.block;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
+import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.Cube;
 import net.darkaqua.blacksmith.api.util.annotations.Implementable;
+
+import java.util.List;
 
 /**
  * This interface is mended to be implemented by the modders
@@ -16,12 +21,15 @@ import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 @Implementable
 public interface IBlockDefinition {
 
-
     void onCreate(IBlock block);
 
     IBlockMaterial getBlockMaterial();
 
     IBlockDataGenerator getBlockDataGenerator();
+
+    default IBlockData onCreateDefaultBlockData(IBlockData iBlockData) {return iBlockData;}
+
+
 
     /**
      * The internal name of the block
@@ -93,4 +101,8 @@ public interface IBlockDefinition {
     int translateVariantToMetadata(IBlockData variant);
 
     IBlock getBlock();
+
+    default void getSubBlocks(IItem iItem, ICreativeTab iCreativeTab, List<IItemStack> list2){
+        list2.add(ItemStackFactory.createItemStack(iItem));
+    }
 }

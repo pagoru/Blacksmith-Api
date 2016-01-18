@@ -8,19 +8,25 @@ import net.darkaqua.blacksmith.api.util.Direction;
  */
 public class BlockAttributeValueDirection implements IBlockAttributeValue {
 
-    public static final BlockAttributeValueDirection[] VALUES = {
-            new BlockAttributeValueDirection(Direction.DOWN),new BlockAttributeValueDirection(Direction.UP),
-            new BlockAttributeValueDirection(Direction.NORTH),new BlockAttributeValueDirection(Direction.SOUTH),
-            new BlockAttributeValueDirection(Direction.WEST),new BlockAttributeValueDirection(Direction.EAST)};
+    public static final BlockAttributeValueDirection DOWN = new BlockAttributeValueDirection(Direction.DOWN);
+    public static final BlockAttributeValueDirection UP = new BlockAttributeValueDirection(Direction.UP);
+    public static final BlockAttributeValueDirection NORTH = new BlockAttributeValueDirection(Direction.NORTH);
+    public static final BlockAttributeValueDirection SOUTH = new BlockAttributeValueDirection(Direction.SOUTH);
+    public static final BlockAttributeValueDirection WEST = new BlockAttributeValueDirection(Direction.WEST);
+    public static final BlockAttributeValueDirection EAST = new BlockAttributeValueDirection(Direction.EAST);
 
-    public static final BlockAttributeValueDirection[] HORIZONTAL_VALUES = {
-            new BlockAttributeValueDirection(Direction.NORTH),new BlockAttributeValueDirection(Direction.SOUTH),
-            new BlockAttributeValueDirection(Direction.WEST),new BlockAttributeValueDirection(Direction.EAST)};
+    public static final BlockAttributeValueDirection[] VALUES = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
 
-    protected Direction value;
+    public static final BlockAttributeValueDirection[] HORIZONTAL_VALUES = {NORTH, SOUTH, WEST, EAST};
 
-    public BlockAttributeValueDirection(Direction value) {
+    private Direction value;
+
+    private BlockAttributeValueDirection(Direction value) {
         this.value = value;
+    }
+
+    public Direction getDirection(){
+        return value;
     }
 
     @Override
@@ -36,6 +42,11 @@ public class BlockAttributeValueDirection implements IBlockAttributeValue {
     @Override
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public IBlockAttributeValue getCanonicalValue() {
+        return VALUES[value.ordinal()];
     }
 
     @Override
@@ -57,5 +68,9 @@ public class BlockAttributeValueDirection implements IBlockAttributeValue {
     @Override
     public int hashCode() {
         return value != null ? value.hashCode() : 0;
+    }
+
+    public static BlockAttributeValueDirection fromDirection(Direction direction) {
+        return VALUES[direction.ordinal()];
     }
 }

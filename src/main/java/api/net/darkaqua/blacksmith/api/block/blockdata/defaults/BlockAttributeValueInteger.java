@@ -7,23 +7,22 @@ import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttributeValue;
  */
 public class BlockAttributeValueInteger implements IBlockAttributeValue {
 
+    public static final BlockAttributeValueInteger[] VALUES;
     public final Integer value;
 
-    public BlockAttributeValueInteger(Integer value) {
+    static{
+        VALUES = new BlockAttributeValueInteger[16];
+        for(int i = 0; i < 16; i++){
+            VALUES[i] = new BlockAttributeValueInteger(i);
+        }
+    }
+
+    private BlockAttributeValueInteger(Integer value) {
         this.value = value;
     }
 
-    public static BlockAttributeValueInteger[] generateValues(int min, int max){
-        max++;
-        if(min >= max){
-            throw new IllegalArgumentException("Min cannot be bigger than max");
-        }
-
-        BlockAttributeValueInteger[] array = new BlockAttributeValueInteger[max-min];
-        for(int i = min; i < max; i++){
-            array[i] = new BlockAttributeValueInteger(i);
-        }
-        return array;
+    public static BlockAttributeValueInteger getValueByInt(int i){
+        return VALUES[i % VALUES.length];
     }
 
     @Override
@@ -34,6 +33,11 @@ public class BlockAttributeValueInteger implements IBlockAttributeValue {
     @Override
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public IBlockAttributeValue getCanonicalValue() {
+        return VALUES[value];
     }
 
     @Override

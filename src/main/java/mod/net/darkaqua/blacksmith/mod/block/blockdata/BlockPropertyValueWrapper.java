@@ -24,6 +24,11 @@ public class BlockPropertyValueWrapper implements IBlockAttributeValue {
     }
 
     @Override
+    public IBlockAttributeValue getCanonicalValue() {
+        return this;
+    }
+
+    @Override
     public int compareTo(IBlockAttributeValue o) {
         return o instanceof BlockPropertyValueWrapper ? ((BlockPropertyValueWrapper) o).value.compareTo(value) : -1;
     }

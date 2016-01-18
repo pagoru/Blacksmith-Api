@@ -7,12 +7,13 @@ import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttributeValue;
  */
 public class BlockAttributeValueBoolean implements IBlockAttributeValue {
 
-    public static final BlockAttributeValueBoolean[] VALUES = {
-            new BlockAttributeValueBoolean(false), new BlockAttributeValueBoolean(true)};
+    public static final BlockAttributeValueBoolean TRUE = new BlockAttributeValueBoolean(true);
+    public static final BlockAttributeValueBoolean FALSE = new BlockAttributeValueBoolean(false);
+    public static final BlockAttributeValueBoolean[] VALUES = {FALSE, TRUE};
 
     public final Boolean value;
 
-    public BlockAttributeValueBoolean(boolean value) {
+    private BlockAttributeValueBoolean(boolean value) {
         this.value = value;
     }
 
@@ -24,6 +25,11 @@ public class BlockAttributeValueBoolean implements IBlockAttributeValue {
     @Override
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public IBlockAttributeValue getCanonicalValue() {
+        return value ? TRUE : FALSE;
     }
 
     @Override
