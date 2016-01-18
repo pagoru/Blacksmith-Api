@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.render.tileentity;
 
-import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
+import net.darkaqua.blacksmith.api.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.world.IWorld;
 

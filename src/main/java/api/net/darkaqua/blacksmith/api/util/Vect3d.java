@@ -1,5 +1,7 @@
 package net.darkaqua.blacksmith.api.util;
 
+import java.util.Random;
+
 /**
  * Created by cout970 on 15/12/2015.
  */
@@ -255,5 +257,10 @@ public class Vect3d {
         y *= size.getY();
         z *= size.getZ();
         return this;
+    }
+
+    public static Vect3d randomVector() {
+        Random r = new Random();
+        return new Vect3d(r.nextDouble(), r.nextDouble(), r.nextDouble()).normalize();
     }
 }

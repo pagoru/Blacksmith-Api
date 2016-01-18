@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.registry.*;
+import net.darkaqua.blacksmith.api.server.IServerHandler;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -76,6 +77,16 @@ public class Game implements IGame {
     }
 
     @Override
+    public IParticleManager getParticleManager() {
+        return ParticleManager.INSTANCE;
+    }
+
+    @Override
+    public IServerHandler getServer() {
+        return ServerHandler.INSTANCE;
+    }
+
+    @Override
     public boolean isClient() {
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
     }
@@ -83,6 +94,11 @@ public class Game implements IGame {
     @Override
     public boolean isServer() {
         return FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER;
+    }
+
+    @Override
+    public boolean isDedicatedServer() {
+        return FMLCommonHandler.instance().getSide() == Side.SERVER;
     }
 
     @Override

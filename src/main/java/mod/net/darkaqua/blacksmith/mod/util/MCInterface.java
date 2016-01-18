@@ -17,7 +17,7 @@ import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
-import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
+import net.darkaqua.blacksmith.api.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.storage.IDataList;

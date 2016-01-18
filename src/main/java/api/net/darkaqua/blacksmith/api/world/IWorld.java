@@ -2,8 +2,11 @@ package net.darkaqua.blacksmith.api.world;
 
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
+import net.darkaqua.blacksmith.api.registry.StaticAccess;
+import net.darkaqua.blacksmith.api.render.particle.IParticle;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Cube;
+import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.Vect3i;
 
 import java.util.List;
@@ -36,5 +39,9 @@ public interface IWorld extends IWorldAccess {
     boolean isRaining();
 
     List<IPlayer> getPlayers();
+
+    default void addParticle(IParticle particle, Vect3d pos, Vect3d motion){
+        StaticAccess.GAME.getParticleManager().addParticle(this, particle, pos, motion);
+    }
 }
 

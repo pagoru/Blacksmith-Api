@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.mod.render;
 
-import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
+import net.darkaqua.blacksmith.api.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRendererHelper;
 import net.darkaqua.blacksmith.api.util.ResourceReference;

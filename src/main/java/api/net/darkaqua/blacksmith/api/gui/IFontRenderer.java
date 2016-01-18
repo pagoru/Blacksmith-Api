@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.render.gui;
+package net.darkaqua.blacksmith.api.gui;
 
 /**
  * Created by cout970 on 16/12/2015.

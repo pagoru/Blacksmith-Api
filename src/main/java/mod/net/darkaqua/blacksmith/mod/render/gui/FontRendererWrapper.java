@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.mod.render.gui;
 
-import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
+import net.darkaqua.blacksmith.api.gui.IFontRenderer;
 import net.minecraft.client.gui.FontRenderer;
 
 /**

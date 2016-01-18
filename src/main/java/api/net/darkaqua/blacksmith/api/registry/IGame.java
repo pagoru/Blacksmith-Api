@@ -1,9 +1,10 @@
 package net.darkaqua.blacksmith.api.registry;
 
+import net.darkaqua.blacksmith.api.server.IServerHandler;
+
 /**
  * Created by cout970 on 08/11/2015.
  */
-//TODO change this to a static class
 public interface IGame {
 
     IBlockRegistry getBlockRegistry();
@@ -30,9 +31,15 @@ public interface IGame {
 
     IInterModRegistry getInterModRegistry();
 
+    IParticleManager getParticleManager();
+
+    IServerHandler getServer();
+
     boolean isClient();
 
     boolean isServer();
+
+    boolean isDedicatedServer();
 
     boolean isDeobfuscatedEnvironment();
 }

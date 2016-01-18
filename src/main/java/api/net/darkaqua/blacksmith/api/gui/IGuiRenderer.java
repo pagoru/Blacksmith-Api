@@ -1,6 +1,5 @@
 package net.darkaqua.blacksmith.api.gui;
 
-import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;

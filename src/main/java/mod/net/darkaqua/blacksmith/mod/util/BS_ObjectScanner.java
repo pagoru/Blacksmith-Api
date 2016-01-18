@@ -4,10 +4,12 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceProvider;
+import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.ObjectScanner;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
  * Created by cout970 on 21/12/2015.
@@ -29,6 +31,12 @@ public class BS_ObjectScanner extends ObjectScanner {
                 return provider.getInterface(id, dir);
             }
         }
+        ICapabilityProvider prov = find(toScan, ICapabilityProvider.class);
+        if(prov != null){
+            if(prov.hasCapability(MCInterface.toCapability(id), MCInterface.toEnumFacing(dir))){
+                return prov.getCapability(MCInterface.toCapability(id), MCInterface.toEnumFacing(dir));
+            }
+        }
         return null;
     }
 
@@ -37,7 +45,13 @@ public class BS_ObjectScanner extends ObjectScanner {
     protected <T> T find(Object toScan, Class<T> clazz) {
         if (clazz == null) return null;
 
-        if(toScan instanceof IBlockData){
+        if(toScan instanceof IItemStack){
+            if(isInstance(((IItemStack) toScan).getInternalItemStack(), clazz)){
+                return (T) ((IItemStack) toScan).getInternalItemStack();
+            }else{
+                return find(((IItemStack) toScan).getInternalItemStack(), clazz);
+            }
+        }else if(toScan instanceof IBlockData){
             if(isInstance(((IBlockData) toScan).getInternalBlockState(), clazz)){
                 return (T) ((IBlockData) toScan).getInternalBlockState();
             }else{

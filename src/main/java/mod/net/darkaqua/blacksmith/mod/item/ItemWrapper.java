@@ -248,4 +248,27 @@ public class ItemWrapper implements IItem {
     public Object getInternalItem() {
         return item;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ItemWrapper)) return false;
+
+        ItemWrapper that = (ItemWrapper) o;
+
+        return !(item != null ? !item.equals(that.item) : that.item != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return item != null ? item.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemWrapper{" +
+                "item=" + item +
+                '}';
+    }
 }

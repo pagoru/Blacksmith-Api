@@ -4,7 +4,7 @@ import net.darkaqua.blacksmith.api.gui.IGui;
 import net.darkaqua.blacksmith.api.gui.IGuiComponent;
 import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
 import net.darkaqua.blacksmith.api.gui.IGuiRenderer;
-import net.darkaqua.blacksmith.api.render.gui.IFontRenderer;
+import net.darkaqua.blacksmith.api.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
