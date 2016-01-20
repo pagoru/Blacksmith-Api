@@ -480,4 +480,8 @@ public class MCInterface {
         }
         return new IStorageWrapper(storage);
     }
+
+    public static WorldRef toWorldRef(World worldIn, BlockPos pos) {
+        return new WorldRef(fromWorld(worldIn), fromBlockPos(pos));
+    }
 }

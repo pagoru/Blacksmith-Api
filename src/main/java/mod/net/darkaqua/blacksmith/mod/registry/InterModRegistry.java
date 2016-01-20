@@ -4,7 +4,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
 import net.darkaqua.blacksmith.api.intermod.InterfaceIdentifierHolder;
+import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
+import net.darkaqua.blacksmith.api.inventory.defaults.SimpleInventoryHandler;
 import net.darkaqua.blacksmith.api.registry.IInterModRegistry;
+import net.darkaqua.blacksmith.api.storage.IDataCompound;
+import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraftforge.common.capabilities.Capability;
@@ -126,6 +130,21 @@ public class InterModRegistry implements IInterModRegistry {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void registerDefaultInterfaces() {
+        INSTANCE.registerInterface(IInventoryHandler.class, new IInterfaceIdentifier.IStorageHandler() {
+            @Override
+            public IDataCompound saveData(IInterfaceIdentifier identifier, Object instance, Direction dir) {
+                return null;
+            }
+
+            @Override
+            public void loadData(IInterfaceIdentifier identifier, Object instance, Direction dir, IDataCompound data) {
+
+            }
+        }, () -> new SimpleInventoryHandler(0));
+
     }
 
     public class InterfaceRegistration<T> {

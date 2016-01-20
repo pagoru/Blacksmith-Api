@@ -5,6 +5,7 @@ import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttribute;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 
 import java.util.Set;
@@ -62,7 +63,18 @@ public class IBlockStateWrapper implements IBlockData {
                 }
             }
         }
-        return MCInterface.fromIBlockState(state.withProperty(fromBlockAttribute(attr), value2));
+
+        IProperty property = fromBlockAttribute(attr);
+        if(!state.getPropertyNames().contains(property))
+            throw new IllegalArgumentException("BlockData: {"+this+"}, do not have the attribute: {"+attr+"}, so the value: {"+value+"} cannot be set");
+        IBlockState st;
+        if (value2 instanceof BlockPropertyValueWrapper){
+            st = state.withProperty(property, ((BlockPropertyValueWrapper) value2).value);
+        }else {
+            st = state.withProperty(property, value2);
+        }
+
+        return MCInterface.fromIBlockState(st);
     }
 
     @Override

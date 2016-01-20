@@ -1,5 +1,7 @@
 package net.darkaqua.blacksmith.api.block.blockdata.defaults;
 
+import net.darkaqua.blacksmith.api.block.blockdata.BlockDataFactory;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttribute;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.util.Direction;
 
@@ -16,8 +18,10 @@ public class BlockAttributeValueDirection implements IBlockAttributeValue {
     public static final BlockAttributeValueDirection EAST = new BlockAttributeValueDirection(Direction.EAST);
 
     public static final BlockAttributeValueDirection[] VALUES = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
-
     public static final BlockAttributeValueDirection[] HORIZONTAL_VALUES = {NORTH, SOUTH, WEST, EAST};
+
+    public static IBlockAttribute HORIZONTAL_DIRECTION = BlockDataFactory.createBlockAttribute("horizontal_direction", HORIZONTAL_VALUES);
+    public static IBlockAttribute DIRECTION = BlockDataFactory.createBlockAttribute("direction", VALUES);
 
     private Direction value;
 

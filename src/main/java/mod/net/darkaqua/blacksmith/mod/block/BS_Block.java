@@ -17,8 +17,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,15 +44,36 @@ public class BS_Block extends Block {
         this.fullBlock = this.isOpaqueCube();
         setUnlocalizedName(def.getUnlocalizedName());
         setCreativeTab(MCInterface.fromCreativeTab(def.getCreativeTab()));
-        setBlockBounds(def.getBounds());
-        setHardness(def.getHardness());
         setLightLevel(def.getLightEmitted());
+        setBlockBounds(0, 0, 0, 1, 1, 1);
         setLightOpacity((int) (def.getLightOpacity() * 255f));
-        setResistance(def.getResistance());
         useNeighborBrightness = false;
         blockstate = MCInterface.fromBlockDataGenerator(definition.getBlockDataGenerator());
         IBlockData data = def.onCreateDefaultBlockData(MCInterface.fromIBlockState(blockstate.getBaseState()));
         this.setDefaultState(MCInterface.toIBlockState(data));
+    }
+
+    public boolean isFullCube(){
+        return definition.isFullCube();
+    }
+
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+        return definition.getExplosionResistance(MCInterface.toWorldRef(world, pos), MCInterface.fromEntity(exploder));
+    }
+
+    public float getBlockHardness(World worldIn, BlockPos pos) {
+        return definition.getHardness(MCInterface.toWorldRef(worldIn, pos));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos) {
+        return MCInterface.toAxisAlignedBB(definition.getSelectionCube(MCInterface.toWorldRef(worldIn, pos)).translate(MCInterface.fromBlockPos(pos).toVect3d()));
+    }
+
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity) {
+        List<Cube> boxes = definition.getCollisionCubes(MCInterface.toWorldRef(worldIn, pos), MCInterface.fromEntity(collidingEntity));
+        Vect3d vec = MCInterface.fromBlockPos(pos).toVect3d();
+        boxes.stream().map((c) -> c.translate(vec)).map(MCInterface::toAxisAlignedBB).filter(mask::intersectsWith).forEach(list::add);
     }
 
     @Override
@@ -68,8 +91,8 @@ public class BS_Block extends Block {
         return definition.translateVariantToMetadata(MCInterface.fromIBlockState(state));
     }
 
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos){
-        return !this.blockMaterial.blocksMovement() || isFullBlock();
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+        return !this.blockMaterial.blocksMovement() || !isFullBlock();
     }
 
     public IBlockDefinition getBlockDefinition() {
@@ -82,7 +105,7 @@ public class BS_Block extends Block {
     }
 
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list){
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         List<IItemStack> list2 = new LinkedList<>();
         definition.getSubBlocks(MCInterface.fromItem(itemIn), MCInterface.fromCreativeTab(tab), list2);
         list2.stream().map(MCInterface::toItemStack).forEach(list::add);
@@ -96,10 +119,6 @@ public class BS_Block extends Block {
     @Override
     public boolean isBlockNormalCube() {
         return definition.isFullCube();
-    }
-
-    private void setBlockBounds(Cube c) {
-        setBlockBounds((float) c.minX(), (float) c.minY(), (float) c.minZ(), (float) c.maxX(), (float) c.maxY(), (float) c.maxZ());
     }
 
     @Override

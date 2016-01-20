@@ -4,12 +4,8 @@ import net.darkaqua.blacksmith.api.block.BlockMaterialFactory;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.block.IBlockMaterial;
-import net.darkaqua.blacksmith.api.block.blockdata.BlockDataFactory;
-import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
-import net.darkaqua.blacksmith.api.block.blockdata.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.creativetab.CreativeTabFactory;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
-import net.darkaqua.blacksmith.api.util.Cube;
 
 /**
  * Created by cout970 on 08/11/2015.
@@ -24,7 +20,7 @@ public class DefaultBlockDefinition implements IBlockDefinition {
     }
 
     public DefaultBlockDefinition() {
-        blockName = "noname";
+        blockName = getClass().getName();
     }
 
     @Override
@@ -38,63 +34,13 @@ public class DefaultBlockDefinition implements IBlockDefinition {
     }
 
     @Override
-    public IBlockDataGenerator getBlockDataGenerator() {
-        return BlockDataFactory.createBlockDataGenerator(parent);
-    }
-
-    @Override
     public String getUnlocalizedName() {
         return blockName;
     }
 
     @Override
-    public Cube getBounds() {
-        return Cube.fullBlock();
-    }
-
-    @Override
-    public float getHardness() {
-        return 1.5F;
-    }
-
-    @Override
-    public float getLightEmitted() {
-        return 0F;
-    }
-
-    @Override
-    public float getLightOpacity() {
-        return 1F;
-    }
-
-    @Override
-    public float getResistance() {
-        return 10F;
-    }
-
-    @Override
     public ICreativeTab getCreativeTab() {
         return CreativeTabFactory.BLOCKS_TAB;
-    }
-
-    @Override
-    public boolean shouldRender() {
-        return true;
-    }
-
-    @Override
-    public boolean isFullCube() {
-        return true;
-    }
-
-    @Override
-    public IBlockData translateMetadataToVariant(int meta) {
-        return parent.getDefaultBlockData();
-    }
-
-    @Override
-    public int translateVariantToMetadata(IBlockData variant) {
-        return 0;
     }
 
     @Override

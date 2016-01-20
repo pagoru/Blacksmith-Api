@@ -62,7 +62,7 @@ public class SimpleInventoryHandler implements IInventoryHandler {
                     return copy;
                 }
             }
-        } else if (InventoryUtils.areExactlyEqual(inventory[slot], stack)) {
+        } else if (InventoryUtils.areEqual(inventory[slot], stack)) {
             int capacity = Math.min(maxStackSize, stack.getItem().getMaxStackSize(stack));
             int space = capacity - inventory[slot].getAmount();
             if (space >= stack.getAmount()) {

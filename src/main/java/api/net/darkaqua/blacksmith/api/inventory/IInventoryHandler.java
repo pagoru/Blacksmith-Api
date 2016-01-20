@@ -33,22 +33,26 @@ public interface IInventoryHandler {
      */
     void setStackInSlot(Direction side, int slot, IItemStack stack);
 
+    /**
+     * Inserts an amount of items to a slot on a given side, if simulated is true, no changes will be made.
+     * Returns the excess items that cannot fit in the slot
+     */
     default IItemStack insertItemStack(Direction side, int slot, IItemStack stack, boolean simulated) {
         if (stack == null)
             return null;
 
-        if (getStackInSlot(null, slot) == null) {
+        if (getStackInSlot(side, slot) == null) {
             int capacity = Math.min(64, stack.getItem().getMaxStackSize(stack));
             if (capacity >= stack.getAmount()) {
                 if (!simulated) {
-                    setStackInSlot(null, slot, stack.copy());
+                    setStackInSlot(side, slot, stack.copy());
                 }
                 return null;
             } else {
                 if (!simulated) {
                     IItemStack insert = stack.copy();
                     insert.setAmount(capacity);
-                    setStackInSlot(null, slot, insert);
+                    setStackInSlot(side, slot, insert);
                     IItemStack copy = stack.copy();
                     copy.setAmount(copy.getAmount() - capacity);
                     return copy;
@@ -58,21 +62,21 @@ public interface IInventoryHandler {
                     return copy;
                 }
             }
-        } else if (InventoryUtils.areExactlyEqual(getStackInSlot(null, slot), stack)) {
+        } else if (InventoryUtils.areEqual(getStackInSlot(side, slot), stack)) {
             int capacity = Math.min(64, stack.getItem().getMaxStackSize(stack));
-            int space = capacity - getStackInSlot(null, slot).getAmount();
+            int space = capacity - getStackInSlot(side, slot).getAmount();
             if (space >= stack.getAmount()) {
                 if (!simulated) {
                     IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount() + getStackInSlot(null, slot).getAmount());
-                    setStackInSlot(null, slot, copy);
+                    copy.setAmount(copy.getAmount() + getStackInSlot(side, slot).getAmount());
+                    setStackInSlot(side, slot, copy);
                 }
                 return null;
             } else {
                 if (!simulated) {
                     IItemStack copy = stack.copy();
                     copy.setAmount(copy.getAmount() - space);
-                    getStackInSlot(null, slot).setAmount(capacity);
+                    getStackInSlot(side, slot).setAmount(capacity);
                     return copy;
                 } else {
                     IItemStack copy = stack.copy();
@@ -86,9 +90,10 @@ public interface IInventoryHandler {
 
     /**
      * Extract an amount of items from a slot on a given side, if simulated is true, no changes will be made.
+     * Returns the items extracted
      */
     default IItemStack extractItemStack(Direction side, int slot, int amount, boolean simulated) {
-        IItemStack storage = getStackInSlot(null, slot);
+        IItemStack storage = getStackInSlot(side, slot);
         if (storage == null || amount <= 0) {
             return null;
         }
@@ -102,7 +107,7 @@ public interface IInventoryHandler {
             return ret;
         } else {
             if (!simulated) {
-                setStackInSlot(null, slot, null);
+                setStackInSlot(side, slot, null);
             }
             return storage.copy();
         }

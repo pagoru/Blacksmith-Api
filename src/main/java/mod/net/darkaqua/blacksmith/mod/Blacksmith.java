@@ -7,6 +7,7 @@ import net.darkaqua.blacksmith.mod.block.BS_BlockMaterialFactory;
 import net.darkaqua.blacksmith.mod.block.blockdata.BS_BlockDataFactory;
 import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
 import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
+import net.darkaqua.blacksmith.mod.entity.BS_EntityFactory;
 import net.darkaqua.blacksmith.mod.event.BS_EventBus;
 import net.darkaqua.blacksmith.mod.event.FMLEventRedirect;
 import net.darkaqua.blacksmith.mod.fluid.BS_FluidStackFactory;
@@ -61,6 +62,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_DataElementFactory.init();
         BS_BlockMaterialFactory.init();
         BS_BlockDataFactory.init();
+        BS_EntityFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
     }
 
@@ -86,6 +88,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
                 ClientRegistry.bindTileEntitySpecialRenderer(BS_TileEntity.class, BS_TileEntityRenderer.INSTANCE);
             }
             GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
+            InterModRegistry.registerDefaultInterfaces();
             ModLoaderManager.firePreInit(event);
         } catch (Exception e) {
             e.printStackTrace();

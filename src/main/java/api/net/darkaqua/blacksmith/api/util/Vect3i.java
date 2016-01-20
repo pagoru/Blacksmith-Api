@@ -85,7 +85,7 @@ public class Vect3i {
     }
     
     public boolean isDirectionalOffset() {
-        return ((x + y + z) == 1) && ((x == 1) || (y == 1) || (z == 1));
+        return ((Math.abs(x) + Math.abs(y) + Math.abs(z)) == 1) && ((Math.abs(x) == 1) || (Math.abs(y) == 1) || (Math.abs(z) == 1));
     }
 
     public Vect3i add(Vect3i v) {

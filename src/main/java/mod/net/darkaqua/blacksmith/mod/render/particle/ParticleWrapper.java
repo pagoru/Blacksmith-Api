@@ -4,6 +4,9 @@ import net.darkaqua.blacksmith.api.render.particle.IParticle;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
@@ -42,12 +45,15 @@ public class ParticleWrapper implements IParticle {
     }
 
     public void spawn(World w, Vect3d pos, Vect3d motion) {
+        EffectRenderer eff = Minecraft.getMinecraft().effectRenderer;
+        EntityFX particle;
         if (item != null) {
-            w.spawnParticle(type, pos.getX(), pos.getY(), pos.getZ(), motion.getX(), motion.getY(), motion.getZ(), Item.getIdFromItem(item.getItem()), item.getItemDamage());
+            particle = eff.spawnEffectParticle(type.getParticleID(), pos.getX(), pos.getY(), pos.getZ(), motion.getX(), motion.getY(), motion.getZ(), Item.getIdFromItem(item.getItem()), item.getItemDamage());
         } else if (block != null) {
-            w.spawnParticle(type, pos.getX(), pos.getY(), pos.getZ(), motion.getX(), motion.getY(), motion.getZ(), Block.getStateId(block));
+            particle = eff.spawnEffectParticle(type.getParticleID(), pos.getX(), pos.getY(), pos.getZ(), motion.getX(), motion.getY(), motion.getZ(), Block.getStateId(block));
         } else {
-            w.spawnParticle(type, pos.getX(), pos.getY(), pos.getZ(), motion.getX(), motion.getY(), motion.getZ());
+            particle = eff.spawnEffectParticle(type.getParticleID(), pos.getX(), pos.getY(), pos.getZ(), motion.getX(), motion.getY(), motion.getZ());
         }
+        particle.multipleParticleScaleBy(0.5f);
     }
 }

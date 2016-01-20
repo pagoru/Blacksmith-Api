@@ -1,7 +1,6 @@
 package net.darkaqua.blacksmith.api.registry;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
@@ -12,8 +11,6 @@ import net.darkaqua.blacksmith.api.util.Vect3d;
 public interface IRenderManager {
 
     void renderItemStack(IItemStack stack, Vect3d pos, RenderPlace place);
-
-    void renderModel(IModelPartIdentifier model);
 
     void bindTexture(ResourceReference resourceReference);
 }

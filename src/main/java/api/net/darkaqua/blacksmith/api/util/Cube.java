@@ -81,4 +81,36 @@ public class Cube {
                 && box.maxY() > minY() && box.minY() < maxY()
                 && box.maxZ() > minZ() && box.minZ() < maxZ();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cube)) return false;
+
+        Cube cube = (Cube) o;
+
+        if (min != null ? !min.equals(cube.min) : cube.min != null) return false;
+        return !(max != null ? !max.equals(cube.max) : cube.max != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = min != null ? min.hashCode() : 0;
+        result = 31 * result + (max != null ? max.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Cube{" +
+                "min=" + min +
+                ", max=" + max +
+                '}';
+    }
+
+    public Cube extend(Direction dir, double amount) {
+        Vect3d vec = dir.toVect3i().toVect3d().multiply(amount);
+        return union(translate(vec));
+    }
 }
