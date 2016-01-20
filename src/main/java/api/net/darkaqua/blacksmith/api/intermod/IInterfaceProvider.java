@@ -7,7 +7,7 @@ import net.darkaqua.blacksmith.api.util.Direction;
  */
 public interface IInterfaceProvider {
 
-    boolean hasInterface(IInterfaceIdentifier identifier, Direction side);
+    boolean hasInterface(IInterfaceIdentifier<?> identifier, Direction side);
 
-    Object getInterface(IInterfaceIdentifier identifier, Direction side);
+    <T> T getInterface(IInterfaceIdentifier<T> identifier, Direction side);
 }
