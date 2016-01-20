@@ -47,7 +47,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public static Blacksmith INSTANCE;
     public static final String MOD_ID = "blacksmith";
     public static final String MOD_NAME = "Blacksmith";
-    public static final String MOD_VERSION = "0.0.0";
+    public static final String MOD_VERSION = "@VERSION@";
 
     public Blacksmith() {
         super(new ModMetadata());
@@ -97,7 +97,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     }
 
     @Subscribe
-    public void Init(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
         Log.info("Starting InitEvent");
         try {
             if (Game.INSTANCE.isClient()) {

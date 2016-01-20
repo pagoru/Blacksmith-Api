@@ -6,19 +6,19 @@ import net.darkaqua.blacksmith.api.util.Direction;
 /**
  * Created by cout970 on 16/01/2016.
  */
-public interface IInterfaceIdentifier {
+public interface IInterfaceIdentifier<T> {
 
     String getName();
 
-    Class<?> getInterfaceClass();
+    Class<T> getInterfaceClass();
 
     Object getDefaultInstance();
 
     IStorageHandler getStorageHandler();
 
-    interface IStorageHandler {
-        IDataCompound saveData(IInterfaceIdentifier identifier, Object instance, Direction dir);
+    interface IStorageHandler<T> {
+        IDataCompound saveData(IInterfaceIdentifier<T> identifier, T instance, Direction dir);
 
-        void loadData(IInterfaceIdentifier identifier, Object instance, Direction dir, IDataCompound data);
+        void loadData(IInterfaceIdentifier<T> identifier, T instance, Direction dir, IDataCompound data);
     }
 }
