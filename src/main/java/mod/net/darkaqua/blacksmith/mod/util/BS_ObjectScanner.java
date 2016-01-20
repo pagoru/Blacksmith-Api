@@ -9,6 +9,7 @@ import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.ObjectScanner;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 /**
@@ -24,7 +25,7 @@ public class BS_ObjectScanner extends ObjectScanner {
     }
 
     @Override
-    protected Object findInterface(Object toScan, IInterfaceIdentifier id, Direction dir) {
+    protected <T> T findInterface(Object toScan, IInterfaceIdentifier<T> id, Direction dir) {
         IInterfaceProvider provider = find(toScan, IInterfaceProvider.class);
         if (provider != null){
             if (provider.hasInterface(id, dir)){
@@ -34,7 +35,7 @@ public class BS_ObjectScanner extends ObjectScanner {
         ICapabilityProvider prov = find(toScan, ICapabilityProvider.class);
         if(prov != null){
             if(prov.hasCapability(MCInterface.toCapability(id), MCInterface.toEnumFacing(dir))){
-                return prov.getCapability(MCInterface.toCapability(id), MCInterface.toEnumFacing(dir));
+                return prov.getCapability((Capability<T>) MCInterface.toCapability(id), MCInterface.toEnumFacing(dir));
             }
         }
         return null;

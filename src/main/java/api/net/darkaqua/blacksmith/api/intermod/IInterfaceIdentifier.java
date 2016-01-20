@@ -12,11 +12,12 @@ public interface IInterfaceIdentifier<T> {
 
     Class<T> getInterfaceClass();
 
-    Object getDefaultInstance();
+    T getDefaultInstance();
 
-    IStorageHandler getStorageHandler();
+    IStorageHandler<T> getStorageHandler();
 
     interface IStorageHandler<T> {
+
         IDataCompound saveData(IInterfaceIdentifier<T> identifier, T instance, Direction dir);
 
         void loadData(IInterfaceIdentifier<T> identifier, T instance, Direction dir, IDataCompound data);

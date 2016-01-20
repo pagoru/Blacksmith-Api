@@ -16,7 +16,7 @@ import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 public interface IInventoryHandler {
 
     @InterfaceIdentifierHolder(IInventoryHandler.class)
-    IInterfaceIdentifier IDENTIFIER = null;
+    IInterfaceIdentifier<IInventoryHandler> IDENTIFIER = null;
 
     /**
      * Gets the number of slot that are accessible from this side
