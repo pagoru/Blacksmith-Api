@@ -1,10 +1,12 @@
 package net.darkaqua.blacksmith.api.item;
 
-import net.darkaqua.blacksmith.api.block.IBlock;
+import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.entity.IEntity;
+import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.Vect3d;
@@ -20,71 +22,142 @@ import java.util.List;
 @Implementable
 public interface IItemDefinition {
 
+    IItem getItem();
+
     void onCreate(IItem parent);
 
     String getUnlocalizedName();
 
-    String getUnlocalizedName(IItemStack stack);
+    default String getUnlocalizedName(IItemStack stack) {
+        return getUnlocalizedName();
+    }
 
-    int getMaxStackSize(IItemStack stack);
+    default int getMaxStackSize(IItemStack stack) {
+        return 64;
+    }
 
-    boolean hasSubtypes();
+    default boolean hasSubtypes() {
+        return false;
+    }
 
-    IItemStack getContainerItemStack(IItemStack stack);
+    default IItemStack getContainerItemStack(IItemStack stack) {
+        return null;
+    }
 
     ICreativeTab getCreativeTab();
 
-    boolean is3DItem();
+    default boolean is3DItem() {
+        return false;
+    }
 
-    int getMetadata(IItemStack stack);
+    default int getMetadata(IItemStack stack) {
+        return stack.getDamage();
+    }
 
-    int getDamage(IItemStack stack);
+    default int getDamage(IItemStack stack) {
+        return stack.getDamage();
+    }
 
-    int getMaxDamage();
+    default int getMaxDamage() {
+        return 0;
+    }
 
-    boolean isDamageable();
+    default int getMaxDamage(IItemStack stack){
+        return getMaxDamage();
+    }
 
-    boolean shouldRotateWhenRenderingInHand();
+    default boolean isDamageable() {
+        return getMaxDamage() > 0;
+    }
 
-    Color getColorFromItemStack(IItemStack stack, int renderPass);
+    default boolean shouldRotateWhenRenderingInHand() {
+        return false;
+    }
 
-    int getItemUseMaxDuration(IItemStack stack);
+    default Color getColorFromItemStack(IItemStack stack, int renderPass) {
+        return new Color(0xFFFFFF);
+    }
 
-    boolean isTool(IItemStack stack);
+    default int getItemUseMaxDuration(IItemStack stack) {
+        return 0;
+    }
 
-    int getItemEnchantability(IItemStack stack);
+    default boolean isTool(IItemStack stack) {
+        return false;
+    }
 
-    void getSubItems(IItem item, ICreativeTab tab, List<IItemStack> subItems);
+    default int getItemEnchantability(IItemStack stack) {
+        return 0;
+    }
 
-    boolean canItemModifyBlocks();
+    default void getSubItems(IItem item, ICreativeTab tab, List<IItemStack> subItems) {
+        subItems.add(ItemStackFactory.createItemStack(getItem()));
+    }
 
-    boolean isRepairable(IItemStack toRepair, IItemStack repair);
+    default boolean canItemModifyBlocks() {
+        return false;
+    }
 
-    int getEntityLifespan(IItemStack itemStack, IWorld world);
+    default boolean isRepairable(IItemStack toRepair, IItemStack repaired) {
+        return false;
+    }
 
-    boolean onItemUse(IItemStack stack, IPlayer player, WorldRef ref, Direction side, Vect3d hit);
+    default int getEntityLifespan(IItemStack itemStack, IWorld world) {
+        return 6000;//5 minutes
+    }
 
-    float getStrengthVsBlock(IItemStack stack, IBlock block);
+    default boolean onItemUse(IItemStack stack, IPlayer player, WorldRef ref, Direction side, Vect3d hit) {
+        return false;
+    }
 
-    IItemStack onItemRightClick(IItemStack stack, IWorld world, IPlayer player);
+    default float getStrengthVsBlock(IItemStack stack, IBlockData block) {
+        return 1f;
+    }
+
+    default IItemStack onItemRightClick(IItemStack stack, IWorld world, IPlayer player) {
+        return stack;
+    }
 
     //Called when the player finishes using this Item
-    IItemStack onPlayerEndsUsing(IItemStack stack, IWorld world, IPlayer player);
+    default IItemStack onPlayerEndsUsing(IItemStack stack, IWorld world, IPlayer player) {
+        return stack;
+    }
 
-    void onPlayerStoppedUsing(IItemStack stack, IWorld world, IPlayer player, int timeLeft);
+    default void onPlayerStoppedUsing(IItemStack stack, IWorld world, IPlayer player, int timeLeft) {
+    }
 
-    boolean hitEntity(IItemStack stack, IEntity target, IEntity attacker);
+    default boolean hitEntity(IItemStack stack, ILivingEntity target, ILivingEntity attacker) {
+        return false;
+    }
 
-    boolean onBlockDestroyed(IItemStack stack, WorldRef ref, IBlock block, IEntity player);
+    default boolean onBlockDestroyed(IItemStack stack, WorldRef ref, ILivingEntity player) {
+        return false;
+    }
 
-    boolean canHarvestBlock(IItemStack stack, IBlock block);
+    default boolean canHarvestBlock(IItemStack stack, IBlockData block) {
+        return true;
+    }
 
-    boolean canInteractWithEntity(IItemStack stack, IPlayer player, IEntity target);
+    default boolean canInteractWithEntity(IItemStack stack, IPlayer player, ILivingEntity target) {
+        return true;
+    }
 
-    void onUpdate(IItemStack stack, IWorld world, IEntity entity, int itemSlot, boolean isSelected);
+    default void onUpdate(IItemStack stack, IWorld world, IEntity entity, int itemSlot, boolean isSelected) {
+    }
 
-    void onCreated(IItemStack stack, IWorld world, IPlayer player);
+    default void onCreated(IItemStack stack, IWorld world, IPlayer player) {
+    }
 
-    void addInformation(IItemStack stack, IPlayer player, List tooltip, boolean advanced);
+    default void addInformation(IItemStack stack, IPlayer player, List<String> tooltip, boolean advanced) {
+    }
+
+    default boolean isDamaged(IItemStack stack){
+        return stack.getDamage() > 0;
+    }
+
+    default double getDurabilityBarValue(IItemStack stack){
+        return (double) stack.getDamage() / stack.getMaxDamage();
+    }
+
 
 }
