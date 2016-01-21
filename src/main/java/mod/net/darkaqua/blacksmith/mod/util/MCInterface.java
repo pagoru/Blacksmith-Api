@@ -11,13 +11,13 @@ import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.fluid.IFluid;
 import net.darkaqua.blacksmith.api.fluid.IFluidStack;
+import net.darkaqua.blacksmith.api.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
-import net.darkaqua.blacksmith.api.gui.IFontRenderer;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.storage.IDataList;
@@ -44,7 +44,6 @@ import net.darkaqua.blacksmith.mod.intermod.IStorageWrapper;
 import net.darkaqua.blacksmith.mod.intermod.StorageHandlerWrapper;
 import net.darkaqua.blacksmith.mod.inventory.InventoryHandlerWrapper;
 import net.darkaqua.blacksmith.mod.inventory.ItemStackWrapper;
-import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
 import net.darkaqua.blacksmith.mod.inventory.SimpleInventoryWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemBlockWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
@@ -69,7 +68,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -343,9 +341,6 @@ public class MCInterface {
 
     public static IInventoryHandler fromInventory(IInventory inv) {
         if (inv == null) return null;
-        if (inv instanceof ISidedInventory) {
-            return new SidedInventoryWrapper((ISidedInventory) inv);
-        }
         return new SimpleInventoryWrapper(inv);
     }
 

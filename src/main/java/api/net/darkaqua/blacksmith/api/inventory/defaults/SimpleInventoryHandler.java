@@ -1,18 +1,14 @@
 package net.darkaqua.blacksmith.api.inventory.defaults;
 
-import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
-import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.inventory.InventoryUtils;
-import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
+import net.darkaqua.blacksmith.api.inventory.*;
 import net.darkaqua.blacksmith.api.storage.DataElementFactory;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.storage.IDataList;
-import net.darkaqua.blacksmith.api.util.Direction;
 
 /**
  * Created by cout970 on 20/12/2015.
  */
-public class SimpleInventoryHandler implements IInventoryHandler {
+public class SimpleInventoryHandler implements IInternalInventoryHandler {
 
     protected IItemStack[] inventory;
     protected int maxStackSize = 64;
@@ -22,22 +18,17 @@ public class SimpleInventoryHandler implements IInventoryHandler {
     }
 
     @Override
-    public int getSlots(Direction side) {
+    public int getSlots() {
         return inventory.length;
     }
 
     @Override
-    public IItemStack getStackInSlot(Direction side, int slot) {
+    public IItemStack getStackInSlot(int slot) {
         return inventory[slot];
     }
 
     @Override
-    public void setStackInSlot(Direction side, int slot, IItemStack stack) {
-        inventory[slot] = stack;
-    }
-
-    @Override
-    public IItemStack insertItemStack(Direction side, int slot, IItemStack stack, boolean simulated) {
+    public IItemStack insertItemStack(int slot, IItemStack stack, boolean simulated) {
         if (stack == null)
             return null;
 
@@ -89,7 +80,7 @@ public class SimpleInventoryHandler implements IInventoryHandler {
     }
 
     @Override
-    public IItemStack extractItemStack(Direction side, int slot, int amount, boolean simulated) {
+    public IItemStack extractItemStack(int slot, int amount, boolean simulated) {
         IItemStack storage = inventory[slot];
         if (storage == null || amount <= 0) {
             return null;
@@ -131,5 +122,10 @@ public class SimpleInventoryHandler implements IInventoryHandler {
             }
         }
         tag.setDataElement(key, list);
+    }
+
+    @Override
+    public void setStackInSlot(int slot, IItemStack stack) {
+        inventory[slot] = stack;
     }
 }

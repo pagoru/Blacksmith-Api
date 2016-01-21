@@ -2,19 +2,16 @@ package net.darkaqua.blacksmith.mod.inventory;
 
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.inventory.InventoryUtils;
-import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 
 /**
  * Created by cout970 on 21/12/2015.
  */
-public class InventoryHandlerWrapper implements ISidedInventory {
+public class InventoryHandlerWrapper implements IInventory {
 
     private IInventoryHandler inv;
 
@@ -26,41 +23,20 @@ public class InventoryHandlerWrapper implements ISidedInventory {
         return inv;
     }
 
-    @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        int slots = inv.getSlots(MCInterface.fromEnumFacing(side));
-        int[] res = new int[slots];
-        for (int i = 0; i < slots; i++) {
-            res[i] = i;
-        }
-        return res;
-    }
-
-    @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        IItemStack stack = MCInterface.fromItemStack(itemStackIn);
-        IItemStack stack2 = inv.insertItemStack(MCInterface.fromEnumFacing(direction), index, stack, true);
-        return !InventoryUtils.areExactlyEqual(stack, stack2);
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return inv.extractItemStack(MCInterface.fromEnumFacing(direction), index, itemStackIn.stackSize, true) != null;
-    }
 
     @Override
     public int getSizeInventory() {
-        return inv.getSlots(null);
+        return inv.getSlots();
     }
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        return MCInterface.toItemStack(inv.getStackInSlot(null, index));
+        return MCInterface.toItemStack(inv.getStackInSlot(index));
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        IItemStack ret = inv.extractItemStack(null, index, count, false);
+        IItemStack ret = inv.extractItemStack(index, count, false);
         return MCInterface.toItemStack(ret);
     }
 
@@ -71,7 +47,8 @@ public class InventoryHandlerWrapper implements ISidedInventory {
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        inv.setStackInSlot(null, index, MCInterface.fromItemStack(stack));
+        inv.extractItemStack(index, Integer.MAX_VALUE, false);
+        inv.insertItemStack(index, MCInterface.fromItemStack(stack), false);
     }
 
     @Override
@@ -116,13 +93,7 @@ public class InventoryHandlerWrapper implements ISidedInventory {
     }
 
     @Override
-    public void clear() {
-        for (Direction d : Direction.values()) {
-            for (int i = 0; i < inv.getSlots(d); i++) {
-                inv.setStackInSlot(d, i, null);
-            }
-        }
-    }
+    public void clear() {}
 
     @Override
     public String getCommandSenderName() {

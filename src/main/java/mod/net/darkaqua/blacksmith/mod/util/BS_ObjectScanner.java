@@ -4,11 +4,16 @@ import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceIdentifier;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceProvider;
+import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.ObjectScanner;
+import net.darkaqua.blacksmith.mod.inventory.SidedInventoryWrapper;
+import net.darkaqua.blacksmith.mod.inventory.SimpleInventoryWrapper;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -25,6 +30,7 @@ public class BS_ObjectScanner extends ObjectScanner {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected <T> T findInterface(Object toScan, IInterfaceIdentifier<T> id, Direction dir) {
         IInterfaceProvider provider = find(toScan, IInterfaceProvider.class);
         if (provider != null){
@@ -36,6 +42,18 @@ public class BS_ObjectScanner extends ObjectScanner {
         if(prov != null){
             if(prov.hasCapability(MCInterface.toCapability(id), MCInterface.toEnumFacing(dir))){
                 return prov.getCapability((Capability<T>) MCInterface.toCapability(id), MCInterface.toEnumFacing(dir));
+            }
+        }
+
+        //adding forge inventories
+        if (id == IInventoryHandler.IDENTIFIER){
+            IInventory inv = find(toScan, IInventory.class);
+            if (inv != null){
+                if (inv instanceof ISidedInventory){
+                    return (T) new SidedInventoryWrapper(MCInterface.toEnumFacing(dir), (ISidedInventory) inv);
+                }else{
+                    return (T) new SimpleInventoryWrapper(inv);
+                }
             }
         }
         return null;

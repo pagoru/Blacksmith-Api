@@ -3,22 +3,19 @@ package net.darkaqua.blacksmith.mod.tileentity;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceProvider;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.inventory.InventoryUtils;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
-import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.registry.TileEntityRegistry;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
@@ -26,7 +23,7 @@ import net.minecraft.world.World;
 /**
  * Created by cout970 on 14/11/2015.
  */
-public class BS_TileEntity extends TileEntity implements ITickable, ISidedInventory {
+public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
 
     protected ITileEntityDefinition def;
 
@@ -136,44 +133,10 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            int slots = inv.getSlots(MCInterface.fromEnumFacing(side));
-            int[] res = new int[slots];
-            for (int i = 0; i < slots; i++) {
-                res[i] = i;
-            }
-            return res;
-        }
-        return new int[0];
-    }
-
-    @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            IItemStack stack = MCInterface.fromItemStack(itemStackIn);
-            IItemStack stack2 = inv.insertItemStack(MCInterface.fromEnumFacing(direction), index, stack, true);
-            return !InventoryUtils.areExactlyEqual(stack, stack2);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            return inv.extractItemStack(MCInterface.fromEnumFacing(direction), index, itemStackIn.stackSize, true) != null;
-        }
-        return false;
-    }
-
-    @Override
     public int getSizeInventory() {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
             IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            return inv.getSlots(null);
+            return inv.getSlots();
         }
         return 0;
     }
@@ -182,7 +145,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     public ItemStack getStackInSlot(int index) {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
             IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            return MCInterface.toItemStack(inv.getStackInSlot(null, index));
+            return MCInterface.toItemStack(inv.getStackInSlot(index));
         }
         return null;
     }
@@ -191,7 +154,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     public ItemStack decrStackSize(int index, int count) {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
             IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            IItemStack ret = inv.extractItemStack(null, index, count, false);
+            IItemStack ret = inv.extractItemStack(index, count, false);
             return MCInterface.toItemStack(ret);
         }
         return null;
@@ -206,8 +169,13 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     public void setInventorySlotContents(int index, ItemStack stack) {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
             IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            inv.setStackInSlot(null, index, MCInterface.fromItemStack(stack));
+            setStackInSlot(inv, index, MCInterface.fromItemStack(stack));
         }
+    }
+
+    private void setStackInSlot(IInventoryHandler inv, int index, IItemStack iItemStack) {
+        inv.extractItemStack(index, Integer.MAX_VALUE, false);
+        inv.insertItemStack(index, iItemStack, false);
     }
 
     @Override
@@ -251,11 +219,9 @@ public class BS_TileEntity extends TileEntity implements ITickable, ISidedInvent
     public void clear() {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
             IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            for (Direction d : Direction.values()) {
-                for (int i = 0; i < inv.getSlots(d); i++) {
-                    inv.setStackInSlot(d, i, null);
+                for (int i = 0; i < inv.getSlots(); i++) {
+                    setStackInSlot(inv, i, null);
                 }
-            }
         }
     }
 
