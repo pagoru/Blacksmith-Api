@@ -9,8 +9,7 @@ import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
 import net.darkaqua.blacksmith.api.item.IItem;
-import net.darkaqua.blacksmith.api.util.Cube;
-import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.util.*;
 import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 import java.util.List;
@@ -91,6 +90,25 @@ public interface IBlockDefinition {
      */
     default Cube getSelectionCube(WorldRef ref) {
         return Cube.fullBlock();
+    }
+
+    /**
+     * This method checks if the ray(start, end) collides with this block and returns
+     * the point where the ray intersects with this block
+     *
+     * @param ref the block reference
+     * @param start the start point of the ray
+     * @param end the end point of the ray
+     * @return the result of the ray trace
+     */
+    default RayTraceResult rayTraceBlock(WorldRef ref, Vect3d start, Vect3d end){
+        for(Cube c : getCollisionCubes(ref, null)){
+            RayTraceResult res = RayTraceUtil.collisionRayTrace(ref.getPosition(), c, start, end);
+            if (res != null) {
+                return res;
+            }
+        }
+        return null;
     }
 
     /**

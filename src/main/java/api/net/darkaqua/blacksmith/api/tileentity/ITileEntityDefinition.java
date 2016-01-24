@@ -16,29 +16,37 @@ public interface ITileEntityDefinition {
 
     void bindParent(ITileEntity parent);
 
-    void onLoad();
+    default void onLoad(){}
 
-    void onDelete();
+    default void onDelete(){}
 
-    void update();
+    default void update(){}
 
-    void loadData(IDataCompound tag);
+    default void loadData(IDataCompound tag){};
 
-    void saveData(IDataCompound tag);
+    default void saveData(IDataCompound tag){}
 
-    IDataCompound getUpdateData();
+    default IDataCompound getUpdateData(){
+        return null;
+    }
 
-    void onUpdateDataArrives(IDataCompound data);
+    default void onUpdateDataArrives(IDataCompound data){}
 
-    void onChunkUnload();
+    default void onChunkUnload(){}
 
-    boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate);
+    default boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate){
+        return true;
+    }
 
-    void onBlockChange();
+    default void onBlockChange(){}
 
-    void onClientDataArrive(int id, int data);
+    default void onClientDataArrive(int id, int data){}
 
-    double getRenderDistance();
+    default double getRenderDistance(){
+        return 64;
+    }
 
-    Cube getRenderBox();
+    default Cube getRenderBox(){
+        return Cube.fullBlock();
+    }
 }

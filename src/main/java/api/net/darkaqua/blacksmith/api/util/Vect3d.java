@@ -155,6 +155,14 @@ public class Vect3d {
         return Math.sqrt(line.magSquared());
     }
 
+    /**
+     * Returns the distance squared from this point to the point specified by the first argument
+     */
+    public double distanceSquared(Vect3d vector) {
+        Vect3d line = vector.copy().add(getOpposite());
+        return line.magSquared();
+    }
+
     public Vect3i toVector3i() {
         return new Vect3i(getX(), getY(), getZ());
     }

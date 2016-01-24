@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.gui;
 
+import net.darkaqua.blacksmith.api.util.Vect2i;
 import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 /**
@@ -8,11 +9,27 @@ import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 @Implementable
 public interface IGuiComponent {
 
-    void renderBackground(IGui gui, int mouseX, int mouseY, float partialTicks);
+    void renderBackground(IGui gui, Vect2i mouse, float partialTicks);
 
-    void renderForeground(IGui gui, int mouseX, int mouseY);
+    void renderForeground(IGui gui, Vect2i mouse);
 
-    void onMouseClick(IGui gui, int mouseX, int mouseY, int button);
+    void onMouseClick(IGui gui, Vect2i mouse, MouseButton button);
 
     boolean onKeyPressed(IGui gui, int code, char character);
+
+    enum MouseButton {
+        LEFT, MIDDLE, RIGHT;
+
+        public static MouseButton fromID(int id) {
+            switch (id){
+                case 0:
+                    return LEFT;
+                case 1:
+                    return RIGHT;
+                case 2:
+                    return MIDDLE;
+            }
+            return null;
+        }
+    }
 }

@@ -1,8 +1,6 @@
 package net.darkaqua.blacksmith.api.gui;
 
-import net.darkaqua.blacksmith.api.util.Color;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
-import net.darkaqua.blacksmith.api.util.Vect2i;
+import net.darkaqua.blacksmith.api.util.*;
 
 import java.util.List;
 
@@ -19,19 +17,19 @@ public interface IGuiRenderer {
 
     void drawVerticalLine(int x, int startY, int endY, Color color);
 
-    void drawRectangle(int left, int top, int right, int bottom, Color color);
+    void drawRectangle(Vect2i start, Vect2i end, Color color);
 
-    void drawGradientRectangle(int left, int top, int right, int bottom, Color startColor, Color endColor);
+    void drawGradientRectangle(Vect2i start, Vect2i end, Color startColor, Color endColor);
 
     void drawCenteredString(String text, Vect2i pos, Color color);
 
     void drawString(String text, Vect2i pos, Color color);
 
-    void drawTexturedRectangle(Vect2i pos, int textureX, int textureY, int width, int height);
+    void drawTexturedRectangle(Vect2i pos, Vect2i texturePos, Vect2i size);
 
-    void drawRectangleWithCustomSizedTexture(Vect2i pos, float u, float v, int width, int height, float textureWidth, float textureHeight);
+    void drawRectangleWithCustomSizedTexture(Vect2i pos, Vect2i size, Vect2d textureUV, Vect2d textureSize);
 
-    void drawScaledCustomSizeRectangle(Vect2i pos, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight);
+    void drawScaledCustomSizeRectangle(Vect2i pos, Vect2i size, Vect2d textureUV, Vect2i textureSize, Vect2d tileSize);
 
     void bindTexture(ResourceReference texture);
 }

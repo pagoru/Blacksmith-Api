@@ -40,6 +40,11 @@ public class CapabilityWrapper implements IInterfaceIdentifier {
     }
 
     @Override
+    public boolean matches(IInterfaceIdentifier inter) {
+        return inter != null && ((CapabilityWrapper) inter).capability == capability;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CapabilityWrapper)) return false;

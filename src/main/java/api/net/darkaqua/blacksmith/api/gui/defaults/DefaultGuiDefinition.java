@@ -50,6 +50,10 @@ public abstract class DefaultGuiDefinition implements IGuiDefinition {
         return true;
     }
 
+    public void bindPlayerInventory(IContainer container){
+        bindPlayerInventory(container, Vect2i.nullVector());
+    }
+
     public void bindPlayerInventory(IContainer container, Vect2i pos) {
         for (int i = 0; i < 9; i++) {
             container.addSlot(new DefaultSlotDefinition(player.getInventory(), i, new Vect2i(8 + i * 18, 142).add(pos)));

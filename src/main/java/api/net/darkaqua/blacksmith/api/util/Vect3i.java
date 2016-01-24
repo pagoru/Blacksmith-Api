@@ -95,6 +95,10 @@ public class Vect3i {
         return this;
     }
 
+    public Vect3i sub(Vect3i v) {
+        return add(v.getOpposite());
+    }
+
     public Vect3i add(int a, int b, int c) {
         x += a;
         y += b;

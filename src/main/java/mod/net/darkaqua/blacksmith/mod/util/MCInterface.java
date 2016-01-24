@@ -419,6 +419,11 @@ public class MCInterface {
         return new Vect3d(vec.xCoord, vec.yCoord, vec.zCoord);
     }
 
+    public static Vec3 toVec3(Vect3d vec) {
+        if (vec == null) return null;
+        return new Vec3(vec.getX(), vec.getY(), vec.getZ());
+    }
+
     public static IProperty fromBlockAttribute(IBlockAttribute attr) {
         if (attr instanceof IProperty) {
             return (IProperty) attr;
@@ -478,5 +483,42 @@ public class MCInterface {
 
     public static WorldRef toWorldRef(World worldIn, BlockPos pos) {
         return new WorldRef(fromWorld(worldIn), fromBlockPos(pos));
+    }
+
+    public static RayTraceResult fromMOP(MovingObjectPosition mop) {
+        if (mop == null) return null;
+        RayTraceResult res = null;
+        switch (mop.typeOfHit) {
+            case MISS:
+                res = new RayTraceResult(MCInterface.fromVec3(mop.hitVec));
+                break;
+            case BLOCK:
+                res = new RayTraceResult(MCInterface.fromVec3(mop.hitVec), MCInterface.fromEnumFacing(mop.sideHit),
+                        MCInterface.fromBlockPos(mop.getBlockPos()));
+                break;
+            case ENTITY:
+                res = new RayTraceResult(MCInterface.fromVec3(mop.hitVec), MCInterface.fromEntity(mop.entityHit));
+                break;
+        }
+        res.setExtraData(mop.hitInfo);
+        return res;
+    }
+
+    public static MovingObjectPosition toMOP(RayTraceResult res){
+        if (res == null) return null;
+        MovingObjectPosition mop = null;
+        switch (res.getType()){
+            case MISS:
+                mop = new MovingObjectPosition(MovingObjectPosition.MovingObjectType.MISS, MCInterface.toVec3(res.getHit()), MCInterface.toEnumFacing(res.getSide()), MCInterface.toBlockPos(res.getPosition()));
+                break;
+            case BLOCK:
+                mop = new MovingObjectPosition(MCInterface.toVec3(res.getHit()), MCInterface.toEnumFacing(res.getSide()), MCInterface.toBlockPos(res.getPosition()));
+                break;
+            case ENTITY:
+                mop = new MovingObjectPosition(MCInterface.toEntity(res.getEntity()), MCInterface.toVec3(res.getHit()));
+                break;
+        }
+        mop.hitInfo = res.getExtraData();
+        return mop;
     }
 }

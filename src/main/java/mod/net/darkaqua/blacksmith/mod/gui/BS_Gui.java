@@ -1,12 +1,9 @@
 package net.darkaqua.blacksmith.mod.gui;
 
-import net.darkaqua.blacksmith.api.gui.IGui;
-import net.darkaqua.blacksmith.api.gui.IGuiComponent;
-import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
-import net.darkaqua.blacksmith.api.gui.IGuiRenderer;
-import net.darkaqua.blacksmith.api.gui.IFontRenderer;
+import net.darkaqua.blacksmith.api.gui.*;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
+import net.darkaqua.blacksmith.api.util.Vect2d;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 import net.darkaqua.blacksmith.mod.registry.RenderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
@@ -37,14 +34,14 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         for (IGuiComponent c : components) {
-            c.renderBackground(this, mouseX, mouseY, partialTicks);
+            c.renderBackground(this, new Vect2i(mouseX, mouseY), partialTicks);
         }
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         for (IGuiComponent c : components) {
-            c.renderForeground(this, x, y);
+            c.renderForeground(this, new Vect2i(x, y));
         }
     }
 
@@ -52,7 +49,7 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     protected void mouseClicked(int x, int y, int b) throws IOException {
         super.mouseClicked(x, y, b);
         for (IGuiComponent c : components) {
-            c.onMouseClick(this, x, y, b);
+            c.onMouseClick(this, new Vect2i(x, y), IGuiComponent.MouseButton.fromID(b));
         }
     }
 
@@ -107,13 +104,13 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     }
 
     @Override
-    public void drawRectangle(int left, int top, int right, int bottom, Color color) {
-        drawRect(left, top, right, bottom, color.toInt());
+    public void drawRectangle(Vect2i start, Vect2i end, Color color) {
+        drawRect(start.getX(), start.getY(), end.getX(), end.getY(), color.toInt());
     }
 
     @Override
-    public void drawGradientRectangle(int left, int top, int right, int bottom, Color startColor, Color endColor) {
-        drawGradientRect(left, top, right, bottom, startColor.toInt(), endColor.toInt());
+    public void drawGradientRectangle(Vect2i start, Vect2i end, Color startColor, Color endColor) {
+        drawGradientRect(start.getX(), start.getY(), end.getX(), end.getY(), startColor.toInt(), endColor.toInt());
     }
 
     @Override
@@ -127,18 +124,20 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     }
 
     @Override
-    public void drawTexturedRectangle(Vect2i pos, int textureX, int textureY, int width, int height) {
-        drawTexturedModalRect(pos.getX(), pos.getY(), textureX, textureY, width, height);
+    public void drawTexturedRectangle(Vect2i pos, Vect2i texturePos, Vect2i size) {
+        drawTexturedModalRect(pos.getX(), pos.getY(), texturePos.getX(), texturePos.getY(), size.getX(), size.getY());
     }
 
     @Override
-    public void drawRectangleWithCustomSizedTexture(Vect2i pos, float u, float v, int width, int height, float textureWidth, float textureHeight) {
-        drawModalRectWithCustomSizedTexture(pos.getX(), pos.getY(), u, v, width, height, textureWidth, textureHeight);
+    public void drawRectangleWithCustomSizedTexture(Vect2i pos, Vect2i size, Vect2d textureUV, Vect2d textureSize) {
+        drawModalRectWithCustomSizedTexture(pos.getX(), pos.getY(), (float)textureUV.getX(), (float)textureUV.getY(),
+                size.getX(), size.getY(), (float)textureSize.getX(), (float)textureSize.getY());
     }
 
     @Override
-    public void drawScaledCustomSizeRectangle(Vect2i pos, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight) {
-        drawScaledCustomSizeModalRect(pos.getX(), pos.getY(), u, v, uWidth, vHeight, width, height, tileWidth, tileHeight);
+    public void drawScaledCustomSizeRectangle(Vect2i pos, Vect2i size, Vect2d textureUV, Vect2i textureSize, Vect2d tileSize) {
+        drawScaledCustomSizeModalRect(pos.getX(), pos.getY(), (float)textureUV.getX(), (float)textureUV.getY(),
+                size.getX(), size.getY(), textureSize.getX(), textureSize.getY(), (float)tileSize.getX(), (float)tileSize.getY());
     }
 
     @Override

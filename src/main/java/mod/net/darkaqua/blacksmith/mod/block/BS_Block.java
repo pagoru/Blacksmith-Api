@@ -17,9 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -53,7 +51,11 @@ public class BS_Block extends Block {
         this.setDefaultState(MCInterface.toIBlockState(data));
     }
 
-    public boolean isFullCube(){
+    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end) {
+        return MCInterface.toMOP(definition.rayTraceBlock(MCInterface.toWorldRef(worldIn, pos), MCInterface.fromVec3(start), MCInterface.fromVec3(end)));
+    }
+
+    public boolean isFullCube() {
         return definition.isFullCube();
     }
 

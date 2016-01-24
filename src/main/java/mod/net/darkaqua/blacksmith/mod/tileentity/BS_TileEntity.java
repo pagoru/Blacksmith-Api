@@ -16,9 +16,11 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 
 /**
  * Created by cout970 on 14/11/2015.
@@ -135,7 +137,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
     @Override
     public int getSizeInventory() {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
+            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
             return inv.getSlots();
         }
         return 0;
@@ -144,7 +146,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
     @Override
     public ItemStack getStackInSlot(int index) {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
+            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
             return MCInterface.toItemStack(inv.getStackInSlot(index));
         }
         return null;
@@ -153,7 +155,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
     @Override
     public ItemStack decrStackSize(int index, int count) {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
+            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
             IItemStack ret = inv.extractItemStack(index, count, false);
             return MCInterface.toItemStack(ret);
         }
@@ -168,7 +170,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
+            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
             setStackInSlot(inv, index, MCInterface.fromItemStack(stack));
         }
     }
@@ -218,10 +220,10 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
     @Override
     public void clear() {
         if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv =  ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-                for (int i = 0; i < inv.getSlots(); i++) {
-                    setStackInSlot(inv, i, null);
-                }
+            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
+            for (int i = 0; i < inv.getSlots(); i++) {
+                setStackInSlot(inv, i, null);
+            }
         }
     }
 
@@ -237,6 +239,20 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
 
     @Override
     public IChatComponent getDisplayName() {
+        return null;
+    }
+
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (def instanceof IInterfaceProvider){
+            ((IInterfaceProvider) def).hasInterface(MCInterface.fromCapability(capability), MCInterface.fromEnumFacing(facing));
+        }
+        return false;
+    }
+
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (def instanceof IInterfaceProvider){
+            ((IInterfaceProvider) def).getInterface(MCInterface.fromCapability(capability), MCInterface.fromEnumFacing(facing));
+        }
         return null;
     }
 }

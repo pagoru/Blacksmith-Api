@@ -40,7 +40,17 @@ public interface BlockMethod {
     }
 
     interface OnActivated extends BlockMethod {
-        boolean onActivated(WorldRef ref, IBlockData state, IPlayer player, Direction side, Vect3d vector3d);
+        /**
+         * Called when the player right click the block
+         *
+         * @param ref    the block reference
+         * @param data   the block data
+         * @param player the player who click the block
+         * @param side   the side of the block clicked
+         * @param ray    the the point where the player hit the block
+         * @return true if the player should not try to do more stuff before calling this method, like placing a block or use an item
+         */
+        boolean onActivated(WorldRef ref, IBlockData data, IPlayer player, Direction side, Vect3d ray);
     }
 
     interface OnEntityCollided extends BlockMethod {

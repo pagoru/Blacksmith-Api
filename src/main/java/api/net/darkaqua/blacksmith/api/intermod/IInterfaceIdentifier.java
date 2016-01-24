@@ -16,6 +16,8 @@ public interface IInterfaceIdentifier<T> {
 
     IStorageHandler<T> getStorageHandler();
 
+    boolean matches(IInterfaceIdentifier<?> inter);
+
     interface IStorageHandler<T> {
 
         IDataCompound saveData(IInterfaceIdentifier<T> identifier, T instance, Direction dir);

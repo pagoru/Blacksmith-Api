@@ -1,8 +1,9 @@
-package net.darkaqua.blacksmith.api.gui.defaults;
+package net.darkaqua.blacksmith.api.gui.defaults.components;
 
 import net.darkaqua.blacksmith.api.gui.IGui;
 import net.darkaqua.blacksmith.api.gui.IGuiComponent;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
+import net.darkaqua.blacksmith.api.util.Vect2i;
 
 /**
  * Created by cout970 on 28/12/2015.
@@ -20,17 +21,17 @@ public class BackgroundComponent implements IGuiComponent {
     }
 
     @Override
-    public void renderBackground(IGui gui, int mouseX, int mouseY, float partialTicks) {
+    public void renderBackground(IGui gui, Vect2i mouse, float partialTicks) {
         gui.getGuiRenderer().bindTexture(texture);
-        gui.getGuiRenderer().drawTexturedRectangle(gui.getGuiStartingPoint(), 0, 0, gui.getGuiSize().getX(), gui.getGuiSize().getY());
+        gui.getGuiRenderer().drawTexturedRectangle(gui.getGuiStartingPoint(), Vect2i.nullVector(), gui.getGuiSize());
     }
 
     @Override
-    public void renderForeground(IGui gui, int mouseX, int mouseY) {
+    public void renderForeground(IGui gui, Vect2i mouse) {
     }
 
     @Override
-    public void onMouseClick(IGui gui, int mouseX, int mouseY, int button) {
+    public void onMouseClick(IGui gui, Vect2i mouse, MouseButton button) {
     }
 
     @Override
