@@ -19,6 +19,7 @@ import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.recipe.ICraftingGrid;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
+import net.darkaqua.blacksmith.api.sound.ISoundEffect;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.storage.IDataList;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
@@ -33,6 +34,7 @@ import net.darkaqua.blacksmith.mod.block.blockdata.BlockPropertyWrapper;
 import net.darkaqua.blacksmith.mod.block.blockdata.BlockStateWrapper;
 import net.darkaqua.blacksmith.mod.block.blockdata.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.creativetab.CreativeTabWrapper;
+import net.darkaqua.blacksmith.mod.entity.BS_EntityFactory;
 import net.darkaqua.blacksmith.mod.entity.EntityLivingWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityPlayerWrapper;
 import net.darkaqua.blacksmith.mod.entity.EntityWrapper;
@@ -49,6 +51,7 @@ import net.darkaqua.blacksmith.mod.item.ItemBlockWrapper;
 import net.darkaqua.blacksmith.mod.item.ItemWrapper;
 import net.darkaqua.blacksmith.mod.recipe.InventoryCraftingWrapper;
 import net.darkaqua.blacksmith.mod.render.gui.FontRendererWrapper;
+import net.darkaqua.blacksmith.mod.sound.SoundWrapper;
 import net.darkaqua.blacksmith.mod.storage.NBTTagCompoundWrapper;
 import net.darkaqua.blacksmith.mod.storage.NBTTagListWrapper;
 import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
@@ -61,6 +64,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.creativetab.CreativeTabs;
@@ -142,7 +146,7 @@ public class MCInterface {
 
     public static IEntity fromEntity(Entity entity) {
         if (entity == null) return null;
-        return new EntityWrapper(entity);
+        return BS_EntityFactory.fromEntity(entity);
     }
 
     public static Entity toEntity(IEntity entity) {
@@ -520,5 +524,18 @@ public class MCInterface {
         }
         mop.hitInfo = res.getExtraData();
         return mop;
+    }
+
+    public static ISound toSound(ISoundEffect sound) {
+        if (sound instanceof SoundWrapper){
+            return ((SoundWrapper) sound).getSound();
+        }
+        return null;
+    }
+
+    public static ISoundEffect fromSound(ISound sound) {
+        if (sound == null) return null;
+        return new SoundWrapper(sound);
+
     }
 }

@@ -61,12 +61,16 @@ public enum Direction {
         return Direction.getDirection(rotation[axis.ordinal()][ordinal()]);
     }
 
+    public Direction rotate(Axis axis, boolean clockwise) {
+        return step(clockwise ? axis.getNegativeDir() : axis.getPositiveDir());
+    }
+
     public boolean isPerpendicular(Direction dir) {
-        return Math.abs(dir.getOffsetX()) != Math.abs(getOffsetX()) || Math.abs(dir.getOffsetY()) != Math.abs(getOffsetY()) || Math.abs(dir.getOffsetZ()) != Math.abs(getOffsetZ());
+        return !isParallel(dir);
     }
 
     public boolean isParallel(Direction dir) {
-        return !isPerpendicular(dir);
+        return dir.getAxis() == getAxis();
     }
 
     public boolean matches(Vect3i offset) {
@@ -74,8 +78,22 @@ public enum Direction {
     }
 
     public enum Axis {
-        X,
-        Y,
-        Z
+        X(4),
+        Y(0),
+        Z(2);
+
+        private int negative;
+
+        Axis(int neg){
+            this.negative = neg;
+        }
+
+        public Direction getPositiveDir(){
+            return getDirection(negative).opposite();
+        }
+
+        public Direction getNegativeDir(){
+            return getDirection(negative);
+        }
     }
 }

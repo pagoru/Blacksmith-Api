@@ -1,6 +1,8 @@
 package net.darkaqua.blacksmith.mod.gui;
 
 import net.darkaqua.blacksmith.api.gui.*;
+import net.darkaqua.blacksmith.api.registry.ISoundHandler;
+import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2d;
@@ -189,6 +191,11 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     @Override
     public IGuiRenderer getGuiRenderer() {
         return this;
+    }
+
+    @Override
+    public ISoundHandler getSoundHandler() {
+        return StaticAccess.GAME.getSoundHandler();
     }
 
 }

@@ -11,32 +11,36 @@ import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.client.model.TRSRTransformation;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cout970 on 27/12/2015.
  */
 public class ItemLayerModelBuilder implements IModelBuilder {
 
-    private ResourceLocation texture;
-    private TextureAtlasSprite sprite;
+    private List<ResourceLocation> textures;
+    private Map<ResourceLocation, TextureAtlasSprite> sprites;
 
-    public ItemLayerModelBuilder(ResourceLocation texture) {
-        this.texture = texture;
+    public ItemLayerModelBuilder(List<ResourceLocation> texture) {
+        this.textures = texture;
     }
 
     public IBakedModel build() {
-        ItemLayerModel model = new ItemLayerModel(ImmutableList.of(texture));
+        ItemLayerModel model = new ItemLayerModel(ImmutableList.copyOf(textures));
         return model.bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM, new Function<ResourceLocation, TextureAtlasSprite>() {
             @Nullable
             @Override
             public TextureAtlasSprite apply(@Nullable ResourceLocation input) {
-                return sprite;
+                return sprites.get(input);
             }
         });
     }
 
     @Override
     public void onTexturesLoad(TextureMap textureGetter) {
-        sprite = textureGetter.registerSprite(texture);
+        for(ResourceLocation r : textures){
+            sprites.put(r, textureGetter.registerSprite(r));
+        }
     }
 }

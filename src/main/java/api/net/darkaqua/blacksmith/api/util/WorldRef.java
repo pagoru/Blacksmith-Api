@@ -45,15 +45,15 @@ public class WorldRef {
     }
 
 	public IBlockData getBlockData() {
-		return world.getBlockVariant(position);
+		return world.getBlockData(position);
 	}
 
 	public void setBlockData(IBlockData variant, int flags) {
-		world.setBlockVariant(variant, position, flags);
+		world.setBlockData(variant, position, flags);
 	}
 
 	public void setBlockData(IBlockData variant) {
-		world.setBlockVariant(variant, position, 3);
+		world.setBlockData(variant, position, 3);
 	}
 
     public ITileEntity getTileEntity() {

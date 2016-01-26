@@ -7,19 +7,17 @@ import net.darkaqua.blacksmith.api.server.IServerHandler;
  */
 public interface IGame {
 
+    //Common
+
     IBlockRegistry getBlockRegistry();
 
     IItemRegistry getItemRegistry();
-
-    IRenderRegistry getRenderRegistry();
 
     ITileEntityRegistry getTileEntityRegistry();
 
     IWorldGenerationRegistry getWorldGenerationRegistry();
 
     IResourceManager getResourceManager();
-
-    IRenderManager getRenderManager();
 
     IOreDictionary getOreDictionary();
 
@@ -31,9 +29,21 @@ public interface IGame {
 
     IInterModRegistry getInterModRegistry();
 
-    IParticleManager getParticleManager();
+    //Server
 
     IServerHandler getServer();
+
+    //Client
+
+    IRenderRegistry getRenderRegistry();
+
+    IRenderManager getRenderManager();
+
+    IParticleManager getParticleManager();
+
+    ISoundHandler getSoundHandler();
+
+    // Misc
 
     boolean isClient();
 

@@ -126,6 +126,10 @@ public class Vect3i {
         return new Vect3d(getX(), getY(), getZ());
     }
 
+    public Vect3i move(Direction dir, int times){
+        return add(dir.toVect3i().multiply(times));
+    }
+
     public Vect3i up(int times) {
         return add(Direction.UP.toVect3i().multiply(times));
     }

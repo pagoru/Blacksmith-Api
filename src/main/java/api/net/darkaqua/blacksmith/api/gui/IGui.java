@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.gui;
 
+import net.darkaqua.blacksmith.api.registry.ISoundHandler;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface IGui {
     Vect2i getGuiStartingPoint();
 
     IGuiRenderer getGuiRenderer();
+
+    ISoundHandler getSoundHandler();
 
     boolean isAltKeyPressed();
 

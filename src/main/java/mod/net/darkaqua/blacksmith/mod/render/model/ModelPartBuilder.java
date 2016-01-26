@@ -58,7 +58,7 @@ public class ModelPartBuilder implements IModelBuilder {
         TextureAtlasSprite particles = null;
         try {
             for (IModelQuad s : model.getQuads()) {
-                UnBakedQuad uQuad = new UnBakedQuad(MCInterface.toEnumFacing(s.getNormal()));
+                UnBakedQuad uQuad = new UnBakedQuad(MCInterface.toEnumFacing(s.getSide()));
 
                 for (IModelQuad.QuadVertex v : IModelQuad.QuadVertex.values()) {
                     Vect2d in_uv = s.getUV(v);
@@ -84,10 +84,10 @@ public class ModelPartBuilder implements IModelBuilder {
                 }
 
                 uQuad.setShade(s.useShade());
-                if (s.getNormal() == null) {
+                if (s.getSide() == null) {
                     generalQuads.add(uQuad.bake());
                 } else {
-                    quads.get(MCInterface.toEnumFacing(s.getNormal())).add(uQuad.bake());
+                    quads.get(MCInterface.toEnumFacing(s.getSide())).add(uQuad.bake());
                 }
             }
             return new BakedModelPart(generalQuads, quads, particles);

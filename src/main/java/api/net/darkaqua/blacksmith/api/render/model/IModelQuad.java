@@ -16,7 +16,12 @@ public interface IModelQuad {
 
     Vect2d getUV(QuadVertex pos);
 
-    Direction getNormal();
+    /**
+     * This is not the normal vector of the texture, this is the side that minecraft will use to exclude the quad to render
+     * if there are other block covering the side
+     * @return the side, can be null
+     */
+    Direction getSide();
 
     ResourceReference getTexture();
 

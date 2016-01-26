@@ -11,5 +11,5 @@ public interface IModelRegistry {
 
     IModelPartIdentifier registerModelPart(IModelPart model);
 
-    IModelPartIdentifier registerFlatItemModel(ResourceReference texture);
+    IModelPartIdentifier registerFlatItemModel(ResourceReference... texture);
 }

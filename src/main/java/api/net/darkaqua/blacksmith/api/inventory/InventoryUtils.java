@@ -37,4 +37,38 @@ public final class InventoryUtils {
         List<String> namesB = StaticAccess.GAME.getOreDictionary().getNames(b);
         return namesA.stream().anyMatch(namesB::contains);
     }
+
+    public static boolean canInsertSomething(IInventoryHandler inv, int slot, IItemStack stack) {
+        IItemStack result = inv.insertItemStack(slot, stack, true);
+        return !areExactlyEqual(stack, result);
+    }
+
+    public static boolean insertAllInInventory(IInventoryHandler inv, IItemStack stack) {
+        if (canInsertAllInInventory(inv, stack)) {
+            if (stack == null)
+                return true;
+            for (int i = 0; i < inv.getSlots(); i++) {
+                stack = inv.insertItemStack(i, stack, false);
+                if (stack == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean canInsertAllInInventory(IInventoryHandler inv, IItemStack stack) {
+        if (inv == null)
+            return false;
+        if (stack == null)
+            return true;
+
+        for (int i = 0; i < inv.getSlots(); i++) {
+            stack = inv.insertItemStack(i, stack, true);
+            if (stack == null) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

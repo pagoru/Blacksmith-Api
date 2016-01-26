@@ -47,6 +47,6 @@ public interface ITileEntityDefinition {
     }
 
     default Cube getRenderBox(){
-        return Cube.fullBlock();
+        return Cube.fullBlock().translate(getParent().getWorldRef().getPosition().toVect3d());
     }
 }

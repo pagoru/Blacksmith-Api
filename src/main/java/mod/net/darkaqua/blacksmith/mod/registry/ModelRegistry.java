@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.mod.registry;
 
+import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 22/12/2015.
@@ -63,9 +65,9 @@ public class ModelRegistry implements IModelRegistry {
     }
 
     @Override
-    public IModelPartIdentifier registerFlatItemModel(ResourceReference texture) {
-        if (texture == null)
-            throw new NullPointerException("Attempt to register a null texture");
+    public IModelPartIdentifier registerFlatItemModel(ResourceReference... texture) {
+        if (texture.length == 0)
+            throw new IllegalArgumentException("Attempt to register 0 textures in IModelRegistry.registerFlatItemModel");
         if (ModLoaderManager.getLoadingState() != ModLoaderManager.LoadingState.PREINIT) {
             throw new IllegalStateException("Models should be registered only in preInit");
         }
@@ -74,7 +76,7 @@ public class ModelRegistry implements IModelRegistry {
             throw new BlacksmithInternalException("Invalid mod container in IModelRegistry.registerFlatItemModel: null");
 
         IModelPartIdentifier id = generateIdentifier(mod.getModId());
-        modelBuilders.put(id, new ItemLayerModelBuilder(MCInterface.toResourceLocation(texture)));
+        modelBuilders.put(id, new ItemLayerModelBuilder(Lists.newArrayList(texture).stream().map(MCInterface::toResourceLocation).collect(Collectors.toList())));
         return id;
     }
 

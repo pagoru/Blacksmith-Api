@@ -242,6 +242,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
         return null;
     }
 
+    @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         if (def instanceof IInterfaceProvider){
             ((IInterfaceProvider) def).hasInterface(MCInterface.fromCapability(capability), MCInterface.fromEnumFacing(facing));
@@ -249,6 +250,7 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
         return false;
     }
 
+    @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if (def instanceof IInterfaceProvider){
             ((IInterfaceProvider) def).getInterface(MCInterface.fromCapability(capability), MCInterface.fromEnumFacing(facing));

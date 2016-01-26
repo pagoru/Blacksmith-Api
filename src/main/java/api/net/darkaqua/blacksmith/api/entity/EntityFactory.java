@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.entity;
 
-import net.darkaqua.blacksmith.api.entity.types.EntityItem;
+import net.darkaqua.blacksmith.api.entity.types.IEntityItem;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.world.IWorld;
@@ -12,9 +12,9 @@ public abstract class EntityFactory {
 
     protected static EntityFactory INSTANCE;
 
-    public EntityItem createEntityItem(IWorld world, Vect3d pos, IItemStack stack){
+    public static IEntityItem createEntityItem(IWorld world, Vect3d pos, IItemStack stack){
         return INSTANCE.newEntityItem(world, pos, stack);
     }
 
-    protected abstract EntityItem newEntityItem(IWorld world, Vect3d pos, IItemStack stack);
+    protected abstract IEntityItem newEntityItem(IWorld world, Vect3d pos, IItemStack stack);
 }

@@ -13,6 +13,11 @@ public class SimpleInventoryHandler implements IInternalInventoryHandler {
     protected IItemStack[] inventory;
     protected int maxStackSize = 64;
 
+    public SimpleInventoryHandler(int slots, int stackSize){
+        this(slots);
+        maxStackSize = stackSize;
+    }
+
     public SimpleInventoryHandler(int slots) {
         inventory = new IItemStack[slots];
     }

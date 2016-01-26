@@ -17,6 +17,7 @@ import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.network.BS_NetworkChannelFactory;
 import net.darkaqua.blacksmith.mod.registry.*;
 import net.darkaqua.blacksmith.mod.render.BS_TileEntityRenderer;
+import net.darkaqua.blacksmith.mod.sound.BS_SoundEffectFactory;
 import net.darkaqua.blacksmith.mod.storage.BS_DataElementFactory;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.util.BS_ObjectScanner;
@@ -63,6 +64,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_BlockMaterialFactory.init();
         BS_BlockDataFactory.init();
         BS_EntityFactory.init();
+        BS_SoundEffectFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
     }
 

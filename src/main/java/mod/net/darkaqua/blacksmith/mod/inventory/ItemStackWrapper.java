@@ -97,14 +97,16 @@ public class ItemStackWrapper implements IItemStack {
         if (!(o instanceof ItemStackWrapper)) return false;
 
         ItemStackWrapper that = (ItemStackWrapper) o;
-
-        return !(stack != null ? !stack.equals(that.stack) : that.stack != null);
-
+        return ItemStack.areItemStacksEqual(that.stack, stack);
     }
 
     @Override
     public int hashCode() {
-        return stack != null ? stack.hashCode() : 0;
+        int hash = (stack.getItem().hashCode() * 31 + stack.stackSize) * 31 + stack.getItemDamage();
+        if(stack.getTagCompound() != null){
+            hash = hash * 31 + stack.getTagCompound().hashCode();
+        }
+        return hash;
     }
 
     @Override

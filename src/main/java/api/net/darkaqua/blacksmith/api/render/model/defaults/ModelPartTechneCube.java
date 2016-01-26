@@ -225,7 +225,7 @@ public class ModelPartTechneCube implements IModelPart {
         }
 
         @Override
-        public Direction getNormal() {
+        public Direction getSide() {
             return null;
         }
 

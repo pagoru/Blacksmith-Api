@@ -92,7 +92,7 @@ public class SimpleModelPartBlock implements IModelPart {
         }
 
         @Override
-        public Direction getNormal() {
+        public Direction getSide() {
             return side;
         }
 

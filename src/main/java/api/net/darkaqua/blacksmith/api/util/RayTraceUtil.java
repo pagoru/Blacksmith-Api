@@ -131,7 +131,7 @@ public class RayTraceUtil {
 
         Vect3d diff = end.copy().sub(start);
 
-        if (diff.getX() * diff.getX() < EPSILON) {
+        if (diff.getY() * diff.getY() < EPSILON) {
             return null;
         } else {
             double d3 = (y - start.getY()) / diff.getY();
@@ -142,7 +142,7 @@ public class RayTraceUtil {
     public static Vect3d getIntermediateWithZValue(Vect3d start, Vect3d end, double z) {
         Vect3d diff = end.copy().sub(start);
 
-        if (diff.getX() * diff.getX() < EPSILON) {
+        if (diff.getZ() * diff.getZ() < EPSILON) {
             return null;
         } else {
             double d3 = (z - start.getZ()) / diff.getZ();

@@ -82,6 +82,11 @@ public class Game implements IGame {
     }
 
     @Override
+    public ISoundHandler getSoundHandler() {
+        return SoundHandler.INSTANCE;
+    }
+
+    @Override
     public IServerHandler getServer() {
         return ServerHandler.INSTANCE;
     }

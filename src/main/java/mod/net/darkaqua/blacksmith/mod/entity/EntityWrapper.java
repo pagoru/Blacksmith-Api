@@ -131,4 +131,27 @@ public class EntityWrapper implements IEntity {
     public IEntity getRiddenByEntity() {
         return MCInterface.fromEntity(entity.riddenByEntity);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EntityWrapper)) return false;
+
+        EntityWrapper that = (EntityWrapper) o;
+
+        return !(entity != null ? !entity.equals(that.entity) : that.entity != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return entity != null ? entity.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "EntityWrapper{" +
+                "entity=" + entity +
+                '}';
+    }
 }

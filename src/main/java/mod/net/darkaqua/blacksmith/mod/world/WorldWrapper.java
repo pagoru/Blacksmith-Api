@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.mod.world;
 
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.Cube;
@@ -31,18 +32,13 @@ public class WorldWrapper implements IWorld {
     }
 
     @Override
-    public IBlockData getBlockVariant(Vect3i pos) {
+    public IBlockData getBlockData(Vect3i pos) {
         return MCInterface.fromIBlockState(world.getBlockState(MCInterface.toBlockPos(pos)));
     }
 
     @Override
-    public boolean setBlockVariant(IBlockData variant, Vect3i posiction, int flags) {
+    public boolean setBlockData(IBlockData variant, Vect3i posiction, int flags) {
         return world.setBlockState(MCInterface.toBlockPos(posiction), MCInterface.toIBlockState(variant), flags);
-    }
-
-    @Override
-    public boolean setBlockVariant(IBlockData variant, Vect3i posiction) {
-        return setBlockVariant(variant, posiction, 3);
     }
 
     @Override
@@ -93,5 +89,20 @@ public class WorldWrapper implements IWorld {
     @Override
     public List<IPlayer> getPlayers() {
         return world.getPlayers(EntityPlayer.class, input -> true).stream().map(MCInterface::toPlayer).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IEntity> getLoadedEntities() {
+        return world.getLoadedEntityList().stream().map(MCInterface::fromEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IEntity> getEntitiesInsideCube(Cube cube) {
+        return world.getEntitiesWithinAABBExcludingEntity(null, MCInterface.toAxisAlignedBB(cube)).stream().map(MCInterface::fromEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public void spawnEntity(IEntity entity) {
+        world.spawnEntityInWorld(MCInterface.toEntity(entity));
     }
 }

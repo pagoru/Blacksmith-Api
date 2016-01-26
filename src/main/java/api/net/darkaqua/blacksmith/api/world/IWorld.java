@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.api.world;
 
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.entity.IEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.render.particle.IParticle;
@@ -13,12 +14,13 @@ import java.util.List;
 
 public interface IWorld extends IWorldAccess {
 
-	IBlockData getBlockVariant(Vect3i position);
+	IBlockData getBlockData(Vect3i position);
 
-	//flags argument will be changed
-	boolean setBlockVariant(IBlockData variant, Vect3i posiction, int flags);
+	boolean setBlockData(IBlockData variant, Vect3i position, int flags);
 
-	boolean setBlockVariant(IBlockData variant, Vect3i posiction);
+	default boolean setBlockData(IBlockData variant, Vect3i position){
+        return setBlockData(variant, position, 3);
+    }
 
     ITileEntity getTileEntity(Vect3i position);
 
@@ -40,8 +42,14 @@ public interface IWorld extends IWorldAccess {
 
     List<IPlayer> getPlayers();
 
+    List<IEntity> getLoadedEntities();
+
+    List<IEntity> getEntitiesInsideCube(Cube cube);
+
     default void addParticle(IParticle particle, Vect3d pos, Vect3d motion){
         StaticAccess.GAME.getParticleManager().addParticle(this, particle, pos, motion);
     }
+
+    void spawnEntity(IEntity entity);
 }
 
