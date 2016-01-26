@@ -50,10 +50,6 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public static final String MOD_NAME = "Blacksmith";
     public static final String MOD_VERSION = "@VERSION@";
 
-    static {
-        System.out.println("Creating Blacksmith main class...");
-    }
-
     public Blacksmith() {
         super(new ModMetadata());
         INSTANCE = this;

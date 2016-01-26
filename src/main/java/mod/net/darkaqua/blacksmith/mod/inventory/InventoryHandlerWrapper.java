@@ -41,8 +41,8 @@ public class InventoryHandlerWrapper implements IInventory {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        return null;
+    public ItemStack removeStackFromSlot(int index) {
+        return decrStackSize(index, 64);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class InventoryHandlerWrapper implements IInventory {
     public void clear() {}
 
     @Override
-    public String getCommandSenderName() {
+    public String getName() {
         return null;
     }
 

@@ -64,11 +64,11 @@ public class BakedBlockModel implements ISmartBlockModel {
     }
 
     @Override
-    public TextureAtlasSprite getTexture() {
+    public TextureAtlasSprite getParticleTexture() {
         IBlockModelProvider provider = RenderRegistry.INSTANCE.getBlockModelProvider(block);
         IRenderModel id = provider.getModelForVariant(MCInterface.fromIBlockState(block.getDefaultState()));
         IBakedModel model = RenderRegistry.INSTANCE.getBakedModel(id);
-        return model.getTexture();
+        return model.getParticleTexture();
     }
 
     @Override

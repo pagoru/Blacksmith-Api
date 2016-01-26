@@ -120,7 +120,7 @@ public class ModelPartBuilder implements IModelBuilder {
         }
 
         @Override
-        public TextureAtlasSprite getTexture() {
+        public TextureAtlasSprite getParticleTexture() {
             return particles;
         }
 

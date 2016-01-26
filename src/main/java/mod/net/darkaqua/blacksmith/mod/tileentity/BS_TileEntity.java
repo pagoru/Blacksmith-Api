@@ -1,23 +1,17 @@
 package net.darkaqua.blacksmith.mod.tileentity;
 
 import net.darkaqua.blacksmith.api.intermod.IInterfaceProvider;
-import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
-import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.registry.TileEntityRegistry;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,7 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 /**
  * Created by cout970 on 14/11/2015.
  */
-public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
+public class BS_TileEntity extends TileEntity implements ITickable {
 
     protected ITileEntityDefinition def;
 
@@ -132,114 +126,6 @@ public class BS_TileEntity extends TileEntity implements ITickable, IInventory {
     @Override
     public void onLoad() {
         def.onLoad();
-    }
-
-    @Override
-    public int getSizeInventory() {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            return inv.getSlots();
-        }
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            return MCInterface.toItemStack(inv.getStackInSlot(index));
-        }
-        return null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            IItemStack ret = inv.extractItemStack(index, count, false);
-            return MCInterface.toItemStack(ret);
-        }
-        return null;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            setStackInSlot(inv, index, MCInterface.fromItemStack(stack));
-        }
-    }
-
-    private void setStackInSlot(IInventoryHandler inv, int index, IItemStack iItemStack) {
-        inv.extractItemStack(index, Integer.MAX_VALUE, false);
-        inv.insertItemStack(index, iItemStack, false);
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
-    public void clear() {
-        if (def instanceof IInterfaceProvider && ((IInterfaceProvider) def).hasInterface(IInventoryHandler.IDENTIFIER, null)) {
-            IInventoryHandler inv = ((IInterfaceProvider) def).getInterface(IInventoryHandler.IDENTIFIER, null);
-            for (int i = 0; i < inv.getSlots(); i++) {
-                setStackInSlot(inv, i, null);
-            }
-        }
-    }
-
-    @Override
-    public String getCommandSenderName() {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public IChatComponent getDisplayName() {
-        return null;
     }
 
     @Override

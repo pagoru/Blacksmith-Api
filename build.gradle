@@ -1,3 +1,5 @@
+
+// For those who want the bleeding edge
 buildscript {
     repositories {
         jcenter()
@@ -12,18 +14,20 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.0.1alpha7"
+
+version = "0.0.1alpha8"
 group= "net.darkaqua.blacksmith.mod"
 archivesBaseName = "blacksmith-api"
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
-
 minecraft {
-    version = "1.8.9-11.15.0.1699"
+    version = "1.8.9-11.15.1.1722"
     runDir = "run"
+    
+    mappings = "stable_20"
+    makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+}
 
-    mappings = "snapshot_20151122"
+dependencies {
 }
 
 jar {
@@ -38,25 +42,23 @@ task devJar(type: Jar) {
     classifier = 'dev'
 }
 
-dependencies {
-}
-
 artifacts {
     archives devJar
 }
 
-processResources {
+processResources
+{
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-
+                
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
+        
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
 }
+

@@ -58,7 +58,7 @@ public class RenderModelWrapper implements IPerspectiveAwareModel {
                 faceQuads.get(e).addAll(list);
             }
             if (texture == null) {
-                texture = baked.getTexture();
+                texture = baked.getParticleTexture();
             }
         }
         if (texture == null) {
@@ -96,7 +96,7 @@ public class RenderModelWrapper implements IPerspectiveAwareModel {
     }
 
     @Override
-    public TextureAtlasSprite getTexture() {
+    public TextureAtlasSprite getParticleTexture() {
         return texture;
     }
 
