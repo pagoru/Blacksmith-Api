@@ -16,11 +16,11 @@ import net.darkaqua.blacksmith.api.util.WorldRef;
 public interface BlockMethod {
 
     interface OnHarvested extends BlockMethod {
-        void onHarvested(WorldRef ref, IBlockData variant, IPlayer player);
+        void onHarvested(WorldRef ref, IBlockData data, IPlayer player);
     }
 
     interface OnPlacedBy extends BlockMethod {
-        void onPlacedBy(WorldRef ref, IBlockData state, ILivingEntity placer, IItemStack stack);
+        void onPlacedBy(WorldRef ref, IBlockData data, ILivingEntity placer, IItemStack stack);
     }
 
     interface OnRemovedByPlayer extends BlockMethod {
@@ -28,15 +28,15 @@ public interface BlockMethod {
     }
 
     interface OnAdded extends BlockMethod {
-        void onAdded(WorldRef ref, IBlockData fromBlockState);
+        void onAdded(WorldRef ref, IBlockData fromBlockData);
     }
 
     interface OnBreaks extends BlockMethod {
-        void onBreaks(WorldRef ref, IBlockData state);
+        void onBreaks(WorldRef ref, IBlockData data);
     }
 
     interface OnNeighborChange extends BlockMethod {
-        void onNeighborBlockChange(WorldRef ref, IBlockData state, IBlock neighbor);
+        void onNeighborBlockChange(WorldRef ref, IBlockData data, IBlock neighbor);
     }
 
     interface OnActivated extends BlockMethod {

@@ -24,10 +24,7 @@ import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.storage.IDataList;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
 import net.darkaqua.blacksmith.api.util.*;
-import net.darkaqua.blacksmith.api.world.IChunk;
-import net.darkaqua.blacksmith.api.world.IIBlockAccess;
-import net.darkaqua.blacksmith.api.world.IIChunkProvider;
-import net.darkaqua.blacksmith.api.world.IWorld;
+import net.darkaqua.blacksmith.api.world.*;
 import net.darkaqua.blacksmith.mod.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.block.MaterialWrapper;
 import net.darkaqua.blacksmith.mod.block.blockdata.BlockPropertyWrapper;
@@ -93,14 +90,14 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MCInterface {
 
-    public static IIBlockAccess fromBlockAccess(IBlockAccess world) {
+    public static IWorldAccess fromBlockAccess(IBlockAccess world) {
         if (world == null) return null;
         return new IBlockAccessWrapper(world);
     }
 
-    public static IBlockAccess toBlockAccess(IIBlockAccess world) {
+    public static IBlockAccess toBlockAccess(IWorldAccess world) {
         if (world instanceof IBlockAccessWrapper)
-            return ((IBlockAccessWrapper) world).getIBlockAccess();
+            return ((IBlockAccessWrapper) world).getWorldAccess();
         return null;
     }
 

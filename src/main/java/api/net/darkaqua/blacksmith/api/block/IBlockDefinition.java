@@ -11,6 +11,7 @@ import net.darkaqua.blacksmith.api.inventory.ItemStackFactory;
 import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.util.*;
 import net.darkaqua.blacksmith.api.util.annotations.Implementable;
+import net.darkaqua.blacksmith.api.world.IWorldAccess;
 
 import java.util.List;
 
@@ -93,6 +94,17 @@ public interface IBlockDefinition {
     }
 
     /**
+     * This method gets the collision cubes used to collide entities with the block
+     *
+     * @param ref    the block reference
+     * @param entity the entity colliding, may be null
+     * @return the collision cubes
+     */
+    default List<Cube> getCollisionCubes(WorldRef ref, IEntity entity) {
+        return Lists.newArrayList(Cube.fullBlock());
+    }
+
+    /**
      * This method checks if the ray(start, end) collides with this block and returns
      * the point where the ray intersects with this block
      *
@@ -109,17 +121,6 @@ public interface IBlockDefinition {
             }
         }
         return null;
-    }
-
-    /**
-     * This method gets the collision cubes used to collide entities with the block
-     *
-     * @param ref    the block reference
-     * @param entity the entity colliding
-     * @return the collision cubes
-     */
-    default List<Cube> getCollisionCubes(WorldRef ref, IEntity entity) {
-        return Lists.newArrayList(Cube.fullBlock());
     }
 
     /**
@@ -143,7 +144,11 @@ public interface IBlockDefinition {
      *
      * @return the amount of light emitted by the block
      */
-    default float getLightEmitted() {
+    default float getLightEmitted(IWorldAccess access, Vect3i pos) {
+        return getLightEmitted();
+    }
+
+    default float getLightEmitted(){
         return 0F;
     }
 
@@ -153,7 +158,11 @@ public interface IBlockDefinition {
      *
      * @return the amount of light absorbed by the block
      */
-    default float getLightOpacity() {
+    default float getLightOpacity(IWorldAccess access, Vect3i pos) {
+        return getLightOpacity();
+    }
+
+    default float getLightOpacity(){
         return 1F;
     }
 

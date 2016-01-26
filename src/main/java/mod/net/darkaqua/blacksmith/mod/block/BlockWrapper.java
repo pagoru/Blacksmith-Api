@@ -10,15 +10,18 @@ import net.darkaqua.blacksmith.api.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.item.IItem;
-import net.darkaqua.blacksmith.api.util.Cube;
-import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.util.Vect3d;
-import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.api.util.*;
+import net.darkaqua.blacksmith.api.world.IWorldAccess;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
+import net.minecraft.util.AxisAlignedBB;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BlockWrapper implements IBlock {
-	
+
     private Block block;
 
     public BlockWrapper(Block block) {
@@ -40,31 +43,48 @@ public class BlockWrapper implements IBlock {
     }
 
     @Override
-    public Cube getBlockBounds() {
-        return new Cube(block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(),
-                block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ());
+    public Cube getSelectionCube(WorldRef ref) {
+        return MCInterface.fromAxisAlignedBB(block.getSelectedBoundingBox(MCInterface.toWorld(ref.getWorld()),
+                MCInterface.toBlockPos(ref.getPosition())));
     }
 
     @Override
-    public float getHardness() {
-        //TODO
-        return block.getBlockHardness(null, null);
+    public List<Cube> getCollisionCubes(WorldRef ref, IEntity entity) {
+        List<AxisAlignedBB> list = new LinkedList<>();
+        block.addCollisionBoxesToList(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
+                MCInterface.toIBlockState(ref.getBlockData()), MCInterface.toAxisAlignedBB(Cube.fullBlock().
+                        translate(ref.getPosition().toVect3d())), list, MCInterface.toEntity(entity));
+        return list.stream().map(MCInterface::fromAxisAlignedBB).collect(Collectors.toList());
     }
 
     @Override
-    public float getLightEmitted() {
-        return block.getLightValue();
+    public RayTraceResult rayTraceBlock(WorldRef ref, Vect3d start, Vect3d end) {
+        return MCInterface.fromMOP(block.collisionRayTrace(MCInterface.toWorld(ref.getWorld()),
+                MCInterface.toBlockPos(ref.getPosition()), MCInterface.toVec3(start), MCInterface.toVec3(end)));
     }
 
     @Override
-    public float getLightOpacity() {
-        return block.getLightOpacity();
+    public float getHardness(WorldRef ref) {
+        return block.getBlockHardness(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()));
     }
 
     @Override
-    public float getResistance() {
-        //TODO
-        return block.getExplosionResistance(null);
+    public float getLightEmitted(IWorldAccess access, Vect3i pos) {
+        float val = block.getLightValue(MCInterface.toBlockAccess(access), MCInterface.toBlockPos(pos));
+        return val / 15f;
+    }
+
+    @Override
+    public float getLightOpacity(IWorldAccess access, Vect3i pos) {
+        float val = block.getLightOpacity(MCInterface.toBlockAccess(access), MCInterface.toBlockPos(pos));
+        return val / 255f;
+    }
+
+    @Override
+    public float getResistance(WorldRef ref, IEntity entity) {
+        //TODO add IExplosion
+        return block.getExplosionResistance(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
+                MCInterface.toEntity(entity), null);
     }
 
 
@@ -86,18 +106,18 @@ public class BlockWrapper implements IBlock {
         return block.isOpaqueCube();
     }
 
-	@Override
-	public IBlockData getDefaultBlockData() {
-		return MCInterface.fromIBlockState(block.getDefaultState());
-	}
-
     @Override
-    public IBlockData getVariantFromMeta(int meta) {
+    public IBlockData getDefaultBlockData() {
         return MCInterface.fromIBlockState(block.getDefaultState());
     }
 
     @Override
-    public int getMetaFromVariant(IBlockData variant) {
+    public IBlockData getBlockDataFromMeta(int meta) {
+        return MCInterface.fromIBlockState(block.getDefaultState());
+    }
+
+    @Override
+    public int getMetaFromBlockData(IBlockData variant) {
         return block.getMetaFromState(MCInterface.toIBlockState(variant));
     }
 

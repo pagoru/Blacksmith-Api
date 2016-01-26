@@ -42,13 +42,21 @@ public class BS_Block extends Block {
         this.fullBlock = this.isOpaqueCube();
         setUnlocalizedName(def.getUnlocalizedName());
         setCreativeTab(MCInterface.fromCreativeTab(def.getCreativeTab()));
-        setLightLevel(def.getLightEmitted());
+        setLightOpacity((int)(def.getLightOpacity()* 255));
+        setLightLevel((int)(def.getLightEmitted()* 15));
         setBlockBounds(0, 0, 0, 1, 1, 1);
-        setLightOpacity((int) (def.getLightOpacity() * 255f));
         useNeighborBrightness = false;
         blockstate = MCInterface.fromBlockDataGenerator(definition.getBlockDataGenerator());
         IBlockData data = def.onCreateDefaultBlockData(MCInterface.fromIBlockState(blockstate.getBaseState()));
         this.setDefaultState(MCInterface.toIBlockState(data));
+    }
+
+    public int getLightValue(IBlockAccess world, BlockPos pos) {
+        return (int)(definition.getLightEmitted(MCInterface.fromBlockAccess(world), MCInterface.fromBlockPos(pos)) * 15f);
+    }
+
+    public int getLightOpacity(IBlockAccess world, BlockPos pos){
+        return (int)(definition.getLightOpacity(MCInterface.fromBlockAccess(world), MCInterface.fromBlockPos(pos))* 255f);
     }
 
     public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end) {

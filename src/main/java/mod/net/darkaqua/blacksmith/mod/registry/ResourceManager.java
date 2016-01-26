@@ -6,6 +6,8 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +16,7 @@ import java.util.Set;
 /**
  * Created by cout970 on 20/12/2015.
  */
+@SideOnly(Side.CLIENT)
 public class ResourceManager implements IResourceManagerReloadListener, net.darkaqua.blacksmith.api.registry.IResourceManager {
 
     public static final ResourceManager INSTANCE = new ResourceManager();
@@ -26,6 +29,7 @@ public class ResourceManager implements IResourceManagerReloadListener, net.dark
     public void onResourceManagerReload(IResourceManager resourceManager) {
         vanillaResourceManager = resourceManager;
     }
+
 
     @Override
     public IResourceFile getResource(ResourceReference ref) throws IOException {

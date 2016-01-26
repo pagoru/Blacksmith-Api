@@ -14,11 +14,11 @@ import java.util.List;
 
 public interface IWorld extends IWorldAccess {
 
-	IBlockData getBlockData(Vect3i position);
+    IBlockData getBlockData(Vect3i position);
 
-	boolean setBlockData(IBlockData variant, Vect3i position, int flags);
+    boolean setBlockData(IBlockData variant, Vect3i position, int flags);
 
-	default boolean setBlockData(IBlockData variant, Vect3i position){
+    default boolean setBlockData(IBlockData variant, Vect3i position) {
         return setBlockData(variant, position, 3);
     }
 
@@ -46,7 +46,7 @@ public interface IWorld extends IWorldAccess {
 
     List<IEntity> getEntitiesInsideCube(Cube cube);
 
-    default void addParticle(IParticle particle, Vect3d pos, Vect3d motion){
+    default void addParticle(IParticle particle, Vect3d pos, Vect3d motion) {
         StaticAccess.GAME.getParticleManager().addParticle(this, particle, pos, motion);
     }
 

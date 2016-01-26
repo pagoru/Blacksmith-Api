@@ -16,47 +16,45 @@ import java.util.Random;
 public class OreGenerator {
 
     protected IBlockData ore;
-    protected int numberOfBlocks;
+    protected int blocksPerVein;
     protected Predicate<IBlockData> predicate;
 
     public OreGenerator(IBlock ore, int number) {
-        this(ore.getDefaultBlockData(), number,
-                input -> input != null && input.getBlock().equals(Blocks.STONE.getBlock())
+        this(ore.getDefaultBlockData(), number, input -> input != null && input.getBlock().equals(Blocks.STONE.getBlock())
         );
     }
 
     public OreGenerator(IBlockData ore, int number) {
-        this(ore, number,
-                input -> input != null && input.getBlock().equals(Blocks.STONE.getBlock())
+        this(ore, number, input -> input != null && input.getBlock().equals(Blocks.STONE.getBlock())
         );
     }
 
     public OreGenerator(IBlockData ore, int number, Predicate<IBlockData> target) {
         this.ore = ore;
-        numberOfBlocks = number;
+        blocksPerVein = number;
         predicate = target;
     }
 
     public OreGenerator(IBlock ore, int meta, int number, Predicate<IBlockData> target) {
-        this(ore.getVariantFromMeta(meta), number, target);
+        this(ore.getBlockDataFromMeta(meta), number, target);
     }
 
     public void generate(IWorld world, Random random, int x, int y, int z) {
         float angle = random.nextFloat() * (float) Math.PI;
-        double posX = (x + 8) + Math.sin(angle) * numberOfBlocks / 8.0F;
-        double negX = (x + 8) - Math.sin(angle) * numberOfBlocks / 8.0F;
-        double posZ = (z + 8) + Math.cos(angle) * numberOfBlocks / 8.0F;
-        double negZ = (z + 8) - Math.cos(angle) * numberOfBlocks / 8.0F;
+        double posX = (x + 8) + Math.sin(angle) * blocksPerVein / 8.0F;
+        double negX = (x + 8) - Math.sin(angle) * blocksPerVein / 8.0F;
+        double posZ = (z + 8) + Math.cos(angle) * blocksPerVein / 8.0F;
+        double negZ = (z + 8) - Math.cos(angle) * blocksPerVein / 8.0F;
         double y1 = y + random.nextInt(3) - 2;
         double y2 = y + random.nextInt(3) - 2;
 
-        for (int n = 0; n <= numberOfBlocks; ++n) {
+        for (int n = 0; n <= blocksPerVein; ++n) {
 
-            double xPlace = posX + (negX - posX) * n / numberOfBlocks;
-            double yPlace = y1 + (y2 - y1) * n / numberOfBlocks;
-            double zPlace = posZ + (negZ - posZ) * n / numberOfBlocks;
-            double scale = random.nextDouble() * numberOfBlocks / 16.0D;
-            double desp = (Math.sin(n * Math.PI / numberOfBlocks) + 1.0F) * scale + 1.0D;
+            double xPlace = posX + (negX - posX) * n / blocksPerVein;
+            double yPlace = y1 + (y2 - y1) * n / blocksPerVein;
+            double zPlace = posZ + (negZ - posZ) * n / blocksPerVein;
+            double scale = random.nextDouble() * blocksPerVein / 16.0D;
+            double desp = (Math.sin(n * Math.PI / blocksPerVein) + 1.0F) * scale + 1.0D;
 
             int minX = floor_double(xPlace - desp / 2.0D);
             int minY = floor_double(yPlace - desp / 2.0D);
@@ -101,11 +99,11 @@ public class OreGenerator {
         return ore;
     }
 
-    public int getNumberOfBlocks() {
-        return numberOfBlocks;
+    public int getBlocksPerVein() {
+        return blocksPerVein;
     }
 
-    public void setNumberOfBlocks(int numberOfBlocks) {
-        this.numberOfBlocks = numberOfBlocks;
+    public void setBlocksPerVein(int blocksPerVein) {
+        this.blocksPerVein = blocksPerVein;
     }
 }

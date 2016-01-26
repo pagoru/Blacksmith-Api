@@ -12,7 +12,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.0.1"
+version = "0.0.1alpha7"
 group= "net.darkaqua.blacksmith.mod"
 archivesBaseName = "blacksmith-api"
 
@@ -24,7 +24,6 @@ minecraft {
     runDir = "run"
 
     mappings = "snapshot_20151122"
-    makeObfSourceJar = false
 }
 
 jar {
@@ -40,6 +39,10 @@ task devJar(type: Jar) {
 }
 
 dependencies {
+}
+
+artifacts {
+    archives devJar
 }
 
 processResources {

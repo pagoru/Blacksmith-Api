@@ -50,11 +50,16 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public static final String MOD_NAME = "Blacksmith";
     public static final String MOD_VERSION = "@VERSION@";
 
+    static {
+        System.out.println("Creating Blacksmith main class...");
+    }
+
     public Blacksmith() {
         super(new ModMetadata());
-        ModContainerFactory.instance().registerContainerType(Type.getType(BlacksmithMod.class), BlacksmithModContainer.class);
         INSTANCE = this;
         Log.init();
+        Log.info("Starting Blacksmith...");
+        ModContainerFactory.instance().registerContainerType(Type.getType(BlacksmithMod.class), BlacksmithModContainer.class);
         BS_ItemStackFactory.init();
         BS_CreativeTabFactory.init();
         BS_EventBus.init();
@@ -66,6 +71,7 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         BS_EntityFactory.init();
         BS_SoundEffectFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
+        Log.info("Blacksmith starting done.");
     }
 
     public static void debug() {
@@ -84,9 +90,9 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
             BS_NetworkChannelFactory.init();
             if (Game.INSTANCE.isClient()) {
                 IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
-                manager.registerReloadListener(ResourceManager.INSTANCE);
                 MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
                 MinecraftForge.EVENT_BUS.register(ModelRegistry.INSTANCE);
+                manager.registerReloadListener(ResourceManager.INSTANCE);
                 ClientRegistry.bindTileEntitySpecialRenderer(BS_TileEntity.class, BS_TileEntityRenderer.INSTANCE);
             }
             GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
@@ -97,6 +103,8 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
         }
         Log.info("PreInitEvent done");
     }
+
+
 
     @Subscribe
     public void init(FMLInitializationEvent event) {

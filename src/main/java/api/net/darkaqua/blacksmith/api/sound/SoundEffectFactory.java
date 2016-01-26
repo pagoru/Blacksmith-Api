@@ -10,24 +10,22 @@ public abstract class SoundEffectFactory {
 
     protected static SoundEffectFactory INSTANCE;
 
-    public ISoundEffect createSoundEffect(ResourceReference ref) {
-        return INSTANCE.createSoundEffect(ref);
+    public static ISoundEffect createSoundEffect(ResourceReference soundResource) {
+        return INSTANCE.newSoundEffect(soundResource, 1F, 1f, false, 0, ISoundEffect.AttenuationType.NONE, Vect3d.nullVector());
     }
 
-    public ISoundEffect createSoundEffect(ResourceReference ref, float pitch) {
-        return INSTANCE.createSoundEffect(ref, pitch);
+    public static ISoundEffect createSoundEffect(ResourceReference ref, Vect3d pos, float volume, float pitch) {
+        return INSTANCE.newSoundEffect(ref, volume, pitch, false, 0, ISoundEffect.AttenuationType.NONE, pos);
     }
 
-    public ISoundEffect createSoundEffect(ResourceReference ref, float volume, float pitch, Vect3d pos) {
-        return INSTANCE.createSoundEffect(ref, volume, pitch, pos);
+    public static ISoundEffect createSoundEffect(ResourceReference ref, Vect3d pos) {
+        return INSTANCE.newSoundEffect(ref, 1F, 1f, false, 0, ISoundEffect.AttenuationType.NONE, pos);
     }
 
-    public ISoundEffect createSoundEffect(ResourceReference ref, Vect3d pos) {
-        return INSTANCE.createSoundEffect(ref, pos);
+    public static ISoundEffect createSoundEffect(ResourceReference ref, Vect3d pos, float volume, float pitch, boolean repeat, int repeatDelay, ISoundEffect.AttenuationType attenuationType) {
+        return INSTANCE.newSoundEffect(ref, volume, pitch, repeat, repeatDelay, attenuationType, pos);
     }
 
-    public abstract ISoundEffect newSoundEffect(ResourceReference ref);
-    public abstract ISoundEffect newSoundEffect(ResourceReference ref, float pitch);
-    public abstract ISoundEffect newSoundEffect(ResourceReference ref, Vect3d pos);
-    public abstract ISoundEffect newSoundEffect(ResourceReference ref, float volume, float pitch, Vect3d pos);
+
+    public abstract ISoundEffect newSoundEffect(ResourceReference ref, float volume, float pitch, boolean repeat, int repeatDelay, ISoundEffect.AttenuationType attenuationType, Vect3d pos);
 }

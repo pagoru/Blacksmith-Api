@@ -11,6 +11,7 @@ import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.client.model.TRSRTransformation;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ public class ItemLayerModelBuilder implements IModelBuilder {
 
     public ItemLayerModelBuilder(List<ResourceLocation> texture) {
         this.textures = texture;
+        sprites = new HashMap<>();
     }
 
     public IBakedModel build() {
