@@ -11,5 +11,5 @@ import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 @Implementable
 public interface ITileEntityRenderer<T extends ITileEntityDefinition> {
 
-    void renderTileEntity(ITileEntity tile, T def, ITileEntityRendererHelper helper, Vect3d pos, float partialTick, int breakingProgress);
+    void renderTileEntity(ITileEntity tile, T def, ITileEntityRendererHelper helper, Vect3d offset, float partialTick, int breakingProgress);
 }

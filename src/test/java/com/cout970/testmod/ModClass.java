@@ -4,7 +4,9 @@ import com.cout970.testmod.blocks.StatefullBlock;
 import com.cout970.testmod.blocks.TestBlock;
 import com.cout970.testmod.gui.GuiTestHandler;
 import com.cout970.testmod.items.TestItem;
+import com.cout970.testmod.model.TileTestBlockRenderer;
 import com.cout970.testmod.network.NetworkManager;
+import com.cout970.testmod.tile.TileTestBlock;
 import net.darkaqua.blacksmith.api.block.Blocks;
 import net.darkaqua.blacksmith.api.block.IBlock;
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
@@ -20,9 +22,10 @@ import net.darkaqua.blacksmith.api.item.Items;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.render.model.defaults.ItemFlatModelProvider;
-import net.darkaqua.blacksmith.api.render.model.defaults.SimpleBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.defaults.SimpleModelPartBlock;
+import net.darkaqua.blacksmith.api.render.model.providers.defaults.EmptyBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.model.providers.defaults.ItemFlatModelProvider;
+import net.darkaqua.blacksmith.api.render.model.providers.defaults.SimpleBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.techne.TechneModelLoader;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.mod.util.Log;
 
@@ -60,14 +63,17 @@ public class ModClass {
         testBlock = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
         item = StaticAccess.GAME.getItemRegistry().registerItemDefinition(itemDef, "item_identifier");
         blockStatefull = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(new StatefullBlock(), "stateFullBlock");
-
+        StaticAccess.GAME.getTileEntityRegistry().registerTileEntityDefinition(TileTestBlock.class, "TileTestBlock");
 
         if (StaticAccess.GAME.isClient()) {
+
+            TileTestBlockRenderer.model = TechneModelLoader.loadDynamicModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block"));
             StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
                     new ItemFlatModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
 
-            SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(new SimpleModelPartBlock(new ResourceReference(MOD_ID, "blocks/texture_name")));
-            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, blockProvider);
+            SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
+            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
+            StaticAccess.GAME.getRenderRegistry().registerTileEntityRenderer(TileTestBlock.class, new TileTestBlockRenderer());
         }
 
         StaticAccess.GAME.getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);

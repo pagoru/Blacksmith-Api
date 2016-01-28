@@ -6,8 +6,8 @@ import net.darkaqua.blacksmith.api.world.IWorld;
 
 public class WorldRef {
 
-    private IWorld world;
-    private Vect3i position;
+    private final IWorld world;
+    private final Vect3i position;
 
     public WorldRef(IWorld world, Vect3i position) {
         this.world = world;
@@ -18,16 +18,8 @@ public class WorldRef {
         return world;
     }
 
-    public void setWorld(IWorld world) {
-        this.world = world;
-    }
-
     public Vect3i getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vect3i position) {
-        this.position = position;
+        return position.copy();
     }
 
     public WorldRef copy() {
@@ -35,9 +27,7 @@ public class WorldRef {
     }
 
     public WorldRef move(Vect3i dir) {
-        WorldRef ref = copy();
-        ref.getPosition().add(dir);
-        return ref;
+        return new WorldRef(world, getPosition().add(dir));
     }
 
     public WorldRef move(Direction dir) {

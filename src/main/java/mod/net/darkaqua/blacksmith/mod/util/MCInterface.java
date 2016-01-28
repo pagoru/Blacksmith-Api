@@ -177,12 +177,12 @@ public class MCInterface {
         return null;
     }
 
-    public static IBlockData fromIBlockState(IBlockState state) {
+    public static IBlockData fromBlockState(IBlockState state) {
         if (state == null) return null;
         return new IBlockStateWrapper(state);
     }
 
-    public static IBlockState toIBlockState(IBlockData state) {
+    public static IBlockState toBlockState(IBlockData state) {
         if (state instanceof IBlockStateWrapper)
             return ((IBlockStateWrapper) state).getBlockState();
         return null;

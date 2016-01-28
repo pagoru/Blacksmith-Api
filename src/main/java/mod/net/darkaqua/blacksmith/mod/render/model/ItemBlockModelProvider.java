@@ -2,9 +2,9 @@ package net.darkaqua.blacksmith.mod.render.model;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
-import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.providers.IBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.model.providers.IItemModelProvider;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 
 /**
  * Created by cout970 on 27/12/2015.
@@ -18,7 +18,7 @@ public class ItemBlockModelProvider implements IItemModelProvider {
     }
 
     @Override
-    public IRenderModel getModelForVariant(IItemStack stack) {
+    public IStaticModel getModelForVariant(IItemStack stack) {
         return provider.getModelForItemBlock(stack);
     }
 

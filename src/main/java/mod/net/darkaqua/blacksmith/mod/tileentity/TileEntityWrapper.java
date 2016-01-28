@@ -77,7 +77,7 @@ public class TileEntityWrapper implements ITileEntity {
 
     @Override
     public boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate) {
-        return tile.shouldRefresh(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(oldState), MCInterface.toIBlockState(newSate));
+        return tile.shouldRefresh(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toBlockState(oldState), MCInterface.toBlockState(newSate));
     }
 
     @Override

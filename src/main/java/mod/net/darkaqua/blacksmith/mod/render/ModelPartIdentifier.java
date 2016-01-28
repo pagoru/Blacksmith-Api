@@ -41,4 +41,12 @@ public class ModelPartIdentifier implements IModelPartIdentifier {
         result = 31 * result + modelID;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "ModelPartIdentifier{" +
+                "modID='" + modID + '\'' +
+                ", modelID=" + modelID +
+                '}';
+    }
 }

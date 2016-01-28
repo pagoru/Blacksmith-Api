@@ -2,11 +2,13 @@ package net.darkaqua.blacksmith.mod.render.model;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.client.model.TRSRTransformation;
 
@@ -28,21 +30,45 @@ public class ItemLayerModelBuilder implements IModelBuilder {
         sprites = new HashMap<>();
     }
 
-    public IBakedModel build() {
+    public IBakedModelPart build() {
         ItemLayerModel model = new ItemLayerModel(ImmutableList.copyOf(textures));
-        return model.bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM, new Function<ResourceLocation, TextureAtlasSprite>() {
+        return new BakedModelPartWrapper(model.bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM, new Function<ResourceLocation, TextureAtlasSprite>() {
             @Nullable
             @Override
             public TextureAtlasSprite apply(@Nullable ResourceLocation input) {
                 return sprites.get(input);
             }
-        });
+        }));
     }
 
     @Override
     public void onTexturesLoad(TextureMap textureGetter) {
-        for(ResourceLocation r : textures){
+        for (ResourceLocation r : textures) {
             sprites.put(r, textureGetter.registerSprite(r));
+        }
+    }
+
+    private class BakedModelPartWrapper implements IBakedModelPart {
+
+        private IFlexibleBakedModel model;
+
+        public BakedModelPartWrapper(IFlexibleBakedModel bake) {
+            model = bake;
+        }
+
+        @Override
+        public List<BakedQuad> getFaceQuads(EnumFacing side) {
+            return model.getFaceQuads(side);
+        }
+
+        @Override
+        public List<BakedQuad> getGeneralQuads() {
+            return model.getGeneralQuads();
+        }
+
+        @Override
+        public TextureAtlasSprite getParticleTexture() {
+            return model.getParticleTexture();
         }
     }
 }

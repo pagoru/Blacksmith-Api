@@ -33,12 +33,12 @@ public class WorldWrapper implements IWorld {
 
     @Override
     public IBlockData getBlockData(Vect3i pos) {
-        return MCInterface.fromIBlockState(world.getBlockState(MCInterface.toBlockPos(pos)));
+        return MCInterface.fromBlockState(world.getBlockState(MCInterface.toBlockPos(pos)));
     }
 
     @Override
     public boolean setBlockData(IBlockData variant, Vect3i posiction, int flags) {
-        return world.setBlockState(MCInterface.toBlockPos(posiction), MCInterface.toIBlockState(variant), flags);
+        return world.setBlockState(MCInterface.toBlockPos(posiction), MCInterface.toBlockState(variant), flags);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class IBlockStateWrapper implements IBlockData {
 
     @Override
     public IBlockData getCycleValue(IBlockAttribute attr) {
-        return MCInterface.fromIBlockState(state.cycleProperty(fromBlockAttribute(attr)));
+        return MCInterface.fromBlockState(state.cycleProperty(fromBlockAttribute(attr)));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class IBlockStateWrapper implements IBlockData {
             st = state.withProperty(property, value2);
         }
 
-        return MCInterface.fromIBlockState(st);
+        return MCInterface.fromBlockState(st);
     }
 
     @Override

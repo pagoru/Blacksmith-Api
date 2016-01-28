@@ -29,12 +29,12 @@ public class BlockDataGenerator implements IBlockDataGenerator {
 
     @Override
     public List<IBlockData> getAllStates() {
-        return state.getValidStates().stream().map(MCInterface::fromIBlockState).collect(Collectors.toCollection(LinkedList::new));
+        return state.getValidStates().stream().map(MCInterface::fromBlockState).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
     public IBlockData getDefaultData() {
-        return MCInterface.fromIBlockState(state.getBaseState());
+        return MCInterface.fromBlockState(state.getBaseState());
     }
 
     @Override

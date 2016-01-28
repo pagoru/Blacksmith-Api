@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
 import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by cout970 on 21/12/2015.
  */
-public class EmptyModel implements IRenderModel {
+public class EmptyModel implements IStaticModel {
 
     @Override
     public String getName() {

@@ -28,12 +28,12 @@ public class BlockStateWrapper implements IBlockDataGenerator {
 
     @Override
     public List<IBlockData> getAllStates() {
-        return state.getValidStates().stream().map(MCInterface::fromIBlockState).collect(Collectors.toList());
+        return state.getValidStates().stream().map(MCInterface::fromBlockState).collect(Collectors.toList());
     }
 
     @Override
     public IBlockData getDefaultData() {
-        return MCInterface.fromIBlockState(state.getBaseState());
+        return MCInterface.fromBlockState(state.getBaseState());
     }
 
     @Override

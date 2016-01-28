@@ -1,10 +1,10 @@
-package net.darkaqua.blacksmith.api.render.model.defaults;
+package net.darkaqua.blacksmith.api.render.model.providers.defaults;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 
 /**
  * Created by cout970 on 29/12/2015.
@@ -12,14 +12,14 @@ import net.darkaqua.blacksmith.api.render.model.IRenderModel;
 public class SimpleItemBlockModelProvider extends EmptyBlockModelProvider {
 
     protected IModelPart part;
-    protected IRenderModel model;
+    protected IStaticModel model;
 
     public SimpleItemBlockModelProvider(IModelPart part) {
         this.part = part;
     }
 
     @Override
-    public IRenderModel getModelForItemBlock(IItemStack stack) {
+    public IStaticModel getModelForItemBlock(IItemStack stack) {
         return model;
     }
 
@@ -28,7 +28,7 @@ public class SimpleItemBlockModelProvider extends EmptyBlockModelProvider {
         model = fromModelPart(registry.registerModelPart(part));
     }
 
-    public IRenderModel fromModelPart(IModelPartIdentifier id) {
+    public IStaticModel fromModelPart(IModelPartIdentifier id) {
         return new SimpleItemModelProvider.ItemModel(id);
     }
 }

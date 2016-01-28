@@ -1,9 +1,10 @@
-package net.darkaqua.blacksmith.api.render.model.defaults;
+package net.darkaqua.blacksmith.api.render.model.providers.defaults;
 
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.*;
+import net.darkaqua.blacksmith.api.render.model.providers.IItemModelProvider;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 
@@ -16,14 +17,14 @@ public class ItemFlatModelProvider implements IItemModelProvider {
 
     protected IModelPartIdentifier identifier;
     protected ResourceReference texture;
-    protected IRenderModel model;
+    protected IStaticModel model;
 
     public ItemFlatModelProvider(ResourceReference texture) {
         this.texture = texture;
     }
 
     @Override
-    public IRenderModel getModelForVariant(IItemStack stack) {
+    public IStaticModel getModelForVariant(IItemStack stack) {
         if (model == null) {
             model = new ItemFlatModel(identifier);
         }
@@ -36,7 +37,7 @@ public class ItemFlatModelProvider implements IItemModelProvider {
     }
 
 
-    public static class ItemFlatModel implements IRenderModel {
+    public static class ItemFlatModel implements IStaticModel {
 
         private IModelPartIdentifier component;
 

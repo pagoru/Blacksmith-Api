@@ -46,11 +46,11 @@ public class ParticleManager implements IParticleManager{
 
     @Override
     public IParticle getBlockCrackParticle(IBlockData block) {
-        return new ParticleWrapper(MCInterface.toIBlockState(block), false);
+        return new ParticleWrapper(MCInterface.toBlockState(block), false);
     }
 
     @Override
     public IParticle getBlockDustParticle(IBlockData block) {
-        return new ParticleWrapper(MCInterface.toIBlockState(block), true);
+        return new ParticleWrapper(MCInterface.toBlockState(block), true);
     }
 }

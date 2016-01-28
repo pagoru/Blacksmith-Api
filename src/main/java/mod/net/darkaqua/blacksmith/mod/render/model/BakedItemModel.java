@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.render.model;
 
-import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.providers.IItemModelProvider;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -23,7 +23,7 @@ public class BakedItemModel implements ISmartItemModel {
     @Override
     public IBakedModel handleItemState(ItemStack stack) {
         IItemModelProvider provider = RenderRegistry.INSTANCE.getItemModelProvider(stack.getItem());
-        IRenderModel id = provider.getModelForVariant(MCInterface.fromItemStack(stack));
+        IStaticModel id = provider.getModelForVariant(MCInterface.fromItemStack(stack));
         return RenderRegistry.INSTANCE.getBakedModel(id);
     }
 

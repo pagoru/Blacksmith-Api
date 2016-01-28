@@ -24,7 +24,7 @@ public class IBlockAccessWrapper implements IWorldAccess {
 
     @Override
     public IBlockData getBlockData(Vect3i position) {
-        return MCInterface.fromIBlockState(access.getBlockState(MCInterface.toBlockPos(position)));
+        return MCInterface.fromBlockState(access.getBlockState(MCInterface.toBlockPos(position)));
     }
 
     @Override

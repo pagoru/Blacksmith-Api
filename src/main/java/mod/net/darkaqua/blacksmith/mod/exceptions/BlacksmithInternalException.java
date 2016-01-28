@@ -11,4 +11,8 @@ public class BlacksmithInternalException extends RuntimeException {
     public BlacksmithInternalException(String message) {
         super(message);
     }
+
+    public BlacksmithInternalException(Throwable error) {
+        super(error);
+    }
 }

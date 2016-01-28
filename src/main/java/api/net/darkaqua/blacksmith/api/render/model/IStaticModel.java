@@ -9,7 +9,7 @@ import java.util.List;
  * Created by cout970 on 07/12/2015.
  */
 @Implementable
-public interface IRenderModel{
+public interface IStaticModel {
 
     String getName();
 

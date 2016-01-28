@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.render.model;
 
 import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
 import net.darkaqua.blacksmith.api.util.Vect3d;
@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
@@ -32,14 +31,14 @@ import java.util.List;
  */
 public class RenderModelWrapper implements IPerspectiveAwareModel {
 
-    private IRenderModel model;
+    private IStaticModel model;
     protected List<BakedQuad> generalQuads;
     protected EnumMap<EnumFacing, List<BakedQuad>> faceQuads;
     protected TextureAtlasSprite texture;
     protected ItemCameraTransforms trans;
     protected EnumMap<ItemCameraTransforms.TransformType, Matrix4f> transformMap;
 
-    public RenderModelWrapper(IRenderModel model) {
+    public RenderModelWrapper(IStaticModel model) {
         this.model = model;
         faceQuads = new EnumMap<>(EnumFacing.class);
         for (EnumFacing e : EnumFacing.values()) {
@@ -48,9 +47,9 @@ public class RenderModelWrapper implements IPerspectiveAwareModel {
         generalQuads = new ArrayList<>();
         transformMap = new EnumMap<>(ItemCameraTransforms.TransformType.class);
         for (IModelPartIdentifier id : model.getParts()) {
-            IBakedModel baked = ModelRegistry.INSTANCE.getBakedModel(id);
+            IBakedModelPart baked = ModelRegistry.INSTANCE.getBakedModelPart(id);
             if (baked == null) {
-                throw new IllegalStateException("IRenderModel: " + model + ", has a part that was not registered");
+                throw new IllegalStateException("IStaticModel: " + model + ", has a part that was not registered");
             }
             generalQuads.addAll(baked.getGeneralQuads());
             for (EnumFacing e : EnumFacing.values()) {
@@ -66,7 +65,7 @@ public class RenderModelWrapper implements IPerspectiveAwareModel {
         }
     }
 
-    public IRenderModel getModel() {
+    public IStaticModel getModel() {
         return model;
     }
 

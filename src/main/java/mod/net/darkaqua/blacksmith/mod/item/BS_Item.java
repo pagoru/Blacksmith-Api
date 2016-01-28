@@ -55,7 +55,7 @@ public class BS_Item extends Item {
     @Override
     public float getStrVsBlock(ItemStack stack, Block block) {
         return definition.getStrengthVsBlock(MCInterface.fromItemStack(stack),
-                MCInterface.fromIBlockState(block.getDefaultState()));
+                MCInterface.fromBlockState(block.getDefaultState()));
     }
 
     @Override

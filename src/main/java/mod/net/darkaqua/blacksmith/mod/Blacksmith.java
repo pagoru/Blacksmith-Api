@@ -34,16 +34,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.objectweb.asm.Type;
-
-import java.util.Map;
 
 /**
  * Created by cout970 on 07/11/2015.
  */
-@IFMLLoadingPlugin.MCVersion("1.8.9")
-public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
+
+public class Blacksmith extends DummyModContainer {
 
     public static Blacksmith INSTANCE;
     public static final String MOD_ID = "blacksmith";
@@ -53,37 +50,33 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public Blacksmith() {
         super(new ModMetadata());
         INSTANCE = this;
-        Log.init();
-        Log.info("Starting Blacksmith...");
+        System.out.println("Blacksmith instance created");
         ModContainerFactory.instance().registerContainerType(Type.getType(BlacksmithMod.class), BlacksmithModContainer.class);
-        BS_ItemStackFactory.init();
-        BS_CreativeTabFactory.init();
         BS_EventBus.init();
-        BS_ConfigurationFactory.init();
-        BS_ObjectScanner.init();
-        BS_DataElementFactory.init();
-        BS_BlockMaterialFactory.init();
-        BS_BlockDataFactory.init();
-        BS_EntityFactory.init();
-        BS_SoundEffectFactory.init();
         StaticAccess.GAME = Game.INSTANCE;
-        Log.info("Blacksmith starting done.");
-    }
-
-    public static void debug() {
-        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
-        Log.debug("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 
     //  Events code
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
-        Log.info("Starting PreInitEvent");
+        Log.init();
         try {
+            Log.info("[BLACKSMITH] Starting Blacksmith...");
+            BS_ItemStackFactory.init();
+            BS_CreativeTabFactory.init();
+            BS_ConfigurationFactory.init();
+            BS_ObjectScanner.init();
+            BS_DataElementFactory.init();
+            BS_BlockMaterialFactory.init();
+            BS_BlockDataFactory.init();
+            BS_EntityFactory.init();
+            BS_SoundEffectFactory.init();
             FMLEventRedirect.init();
             BS_FluidStackFactory.init();
             BS_NetworkChannelFactory.init();
+            Log.info("[BLACKSMITH] Starting done.");
+
             if (Game.INSTANCE.isClient()) {
                 IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
                 MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
@@ -93,34 +86,44 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
             }
             GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
             InterModRegistry.registerDefaultInterfaces();
+            Log.info("[BLACKSMITH] Starting PreInitEvent");
             ModLoaderManager.firePreInit(event);
+            Log.info("[BLACKSMITH] PreInitEvent done");
         } catch (Exception e) {
+            Log.error("Error in Blacksmith preInit, please report this to the authors");
             e.printStackTrace();
         }
-        Log.info("PreInitEvent done");
     }
 
 
 
     @Subscribe
     public void init(FMLInitializationEvent event) {
-        Log.info("Starting InitEvent");
+
         try {
+            Log.info("[BLACKSMITH] Starting InitEvent");
             if (Game.INSTANCE.isClient()) {
                 RenderManager.init();
             }
             ModLoaderManager.fireInit(event);
+            Log.info("[BLACKSMITH] InitEvent done");
         } catch (Exception e) {
+            Log.error("Error in Blacksmith Init, please report this to the authors");
             e.printStackTrace();
         }
-        Log.info("InitEvent done");
+
     }
 
     @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
+        try {
         Log.info("Starting PostInitEvent");
         ModLoaderManager.firePostInit(event);
         Log.info("PostInitEvent done");
+        } catch (Exception e) {
+            Log.error("Error in Blacksmith postInit, please report this to the authors");
+            e.printStackTrace();
+        }
     }
 
     //  DummyModContainer code
@@ -165,31 +168,4 @@ public class Blacksmith extends DummyModContainer implements IFMLLoadingPlugin {
     public boolean isImmutable() {
         return false;
     }
-
-    //  IFMLLoadingPlugin code
-
-    @Override
-    public String[] getASMTransformerClass() {
-        return null;
-    }
-
-    @Override
-    public String getModContainerClass() {
-        return "net.darkaqua.blacksmith.mod.Blacksmith";
-    }
-
-    @Override
-    public String getSetupClass() {
-        return null;
-    }
-
-    @Override
-    public void injectData(Map<String, Object> data) {
-    }
-
-    @Override
-    public String getAccessTransformerClass() {
-        return null;
-    }
-
 }

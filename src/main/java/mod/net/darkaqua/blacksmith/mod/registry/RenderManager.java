@@ -2,17 +2,36 @@ package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IRenderManager;
+import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
+import net.darkaqua.blacksmith.api.util.Vect3i;
+import net.darkaqua.blacksmith.api.util.WorldRef;
+import net.darkaqua.blacksmith.mod.render.model.IBakedModelPart;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 20/12/2015.
@@ -20,6 +39,7 @@ import net.minecraft.item.ItemStack;
 public class RenderManager implements IRenderManager {
 
     public static final RenderManager INSTANCE = new RenderManager();
+    private CachedModel dummyModel = new CachedModel();
 
     public static void init() {
     }
@@ -68,5 +88,91 @@ public class RenderManager implements IRenderManager {
     @Override
     public void bindTexture(ResourceReference resourceReference) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(MCInterface.toResourceLocation(resourceReference));
+    }
+
+    @Override
+    public void renderModelParts(Collection<IModelPartIdentifier> parts, WorldRef ref, Vect3d offset) {
+        if (parts.isEmpty()) return;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.enableBlend();
+        GlStateManager.disableCull();
+
+        if (Minecraft.isAmbientOcclusionEnabled()) {
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        } else {
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+        }
+        IBlockAccess world = MinecraftForgeClient.getRegionRenderCache(MCInterface.toWorld(ref.getWorld()),
+                MCInterface.toBlockPos(ref.getPosition()));
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+
+        dummyModel.setBaked(parts.stream().map(ModelRegistry.INSTANCE::getBakedModelPart).collect(Collectors.toList()));
+
+        Vect3i pos = ref.getPosition();
+        worldRenderer.setTranslation(offset.getX() - pos.getX(), offset.getY() - pos.getY(), offset.getZ() - pos.getZ());
+        Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer()
+                .renderModel(world, dummyModel, MCInterface.toBlockState(ref.getBlockData()), MCInterface.toBlockPos(ref.getPosition()), worldRenderer, false);
+
+        worldRenderer.setTranslation(0, 0, 0);
+        tessellator.draw();
+        RenderHelper.enableStandardItemLighting();
+    }
+
+    private class CachedModel implements IBakedModel {
+
+        public List<IBakedModelPart> baked;
+
+        public List<IBakedModelPart> getBaked() {
+            return baked;
+        }
+
+        public void setBaked(List<IBakedModelPart> baked) {
+
+            this.baked = baked;
+        }
+
+        @Override
+        public List<BakedQuad> getFaceQuads(EnumFacing side) {
+            List<BakedQuad> list = new LinkedList<>();
+            baked.stream().forEach(c -> list.addAll(c.getFaceQuads(side)));
+            return list;
+        }
+
+        @Override
+        public List<BakedQuad> getGeneralQuads() {
+            List<BakedQuad> list = new LinkedList<>();
+            baked.stream().forEach(c -> list.addAll(c.getGeneralQuads()));
+            return list;
+        }
+
+        @Override
+        public boolean isAmbientOcclusion() {
+            return false;
+        }
+
+        @Override
+        public boolean isGui3d() {
+            return false;
+        }
+
+        @Override
+        public boolean isBuiltInRenderer() {
+            return false;
+        }
+
+        @Override
+        public TextureAtlasSprite getParticleTexture() {
+            return null;
+        }
+
+        @Override
+        public ItemCameraTransforms getItemCameraTransforms() {
+            return null;
+        }
     }
 }

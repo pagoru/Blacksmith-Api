@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.mod.render.model;
 
-import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.providers.IBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ public class BakedBlockModel implements ISmartBlockModel {
     @Override
     public IBakedModel handleBlockState(IBlockState state) {
         IBlockModelProvider provider = RenderRegistry.INSTANCE.getBlockModelProvider(state.getBlock());
-        IRenderModel id = provider.getModelForVariant(MCInterface.fromIBlockState(state));
+        IStaticModel id = provider.getModelForBlockData(MCInterface.fromBlockState(state));
         return RenderRegistry.INSTANCE.getBakedModel(id);
     }
 
@@ -66,7 +66,7 @@ public class BakedBlockModel implements ISmartBlockModel {
     @Override
     public TextureAtlasSprite getParticleTexture() {
         IBlockModelProvider provider = RenderRegistry.INSTANCE.getBlockModelProvider(block);
-        IRenderModel id = provider.getModelForVariant(MCInterface.fromIBlockState(block.getDefaultState()));
+        IStaticModel id = provider.getModelForBlockData(MCInterface.fromBlockState(block.getDefaultState()));
         IBakedModel model = RenderRegistry.INSTANCE.getBakedModel(id);
         return model.getParticleTexture();
     }

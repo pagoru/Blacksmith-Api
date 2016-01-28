@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.mod.modloader;
 
 import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -8,6 +9,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.modloader.ModSidedProxy;
+import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.registry.InterModRegistry;
 import net.darkaqua.blacksmith.mod.util.Log;
 import net.minecraftforge.fml.common.*;
@@ -90,10 +92,12 @@ public class BlacksmithModContainer implements ModContainer {
             }
 
             CustomProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
-
             InterModRegistry.onModConstructs(event.getASMHarvestedData());
-        } catch (InstantiationException | MalformedURLException | ClassNotFoundException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("=========================================================================================");
+            System.out.println("Error trying to construct mod: "+modClass);
+            System.out.println("=========================================================================================");
+            Throwables.propagate(new BlacksmithInternalException(e));
         }
     }
 

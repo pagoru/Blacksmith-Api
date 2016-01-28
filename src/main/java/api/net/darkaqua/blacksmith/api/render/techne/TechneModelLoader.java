@@ -1,13 +1,17 @@
 package net.darkaqua.blacksmith.api.render.techne;
 
+import com.google.common.collect.Lists;
+import net.darkaqua.blacksmith.api.registry.IRenderManager;
 import net.darkaqua.blacksmith.api.registry.IResourceManager;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
+import net.darkaqua.blacksmith.api.render.model.IDynamicModel;
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
+import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IModelQuad;
-import net.darkaqua.blacksmith.api.render.model.defaults.ModelPartTechneCube;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 import net.darkaqua.blacksmith.api.util.Vect3d;
+import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -24,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
@@ -33,10 +38,14 @@ import java.util.zip.ZipInputStream;
  */
 public class TechneModelLoader {
 
-    public static final java.util.List<String> cubeTypes = Arrays.asList(
+    public static final List<String> cubeTypes = Arrays.asList(
             "d9e621f7-957f-4b77-b1ae-20dcd0da7751",
             "de81aa14-bd60-4228-8d8d-5238bcd3caaa"
     );
+
+    public static TechneModel loadDynamicModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
+        return new TechneModel(loadModel(file, textureReference));
+    }
 
     public static TechneModelPart loadModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
 
@@ -196,6 +205,8 @@ public class TechneModelLoader {
                     cube.setTextureOffset(cubeTextureOffset);
                     cube.setTextureMirrored(mirrored);
                     cube.setTextureSize((int) Math.max(textureDims != null ? textureDims.getWidth() : 32, textureDims != null ? textureDims.getHeight() : 32));
+                    cube.setName(shapeName);
+                    cube.getQuads();
 
                     parts.add(cube);
                 } catch (NumberFormatException e) {
@@ -235,6 +246,74 @@ public class TechneModelLoader {
                 list.addAll(part.getQuads());
             }
             return list;
+        }
+    }
+
+    public static class TechneModel implements IDynamicModel {
+
+        protected TechneModelPart model;
+        protected Map<String, IModelPartIdentifier> parts;
+        protected WorldRef ref;
+        protected Vect3d offset;
+
+        public TechneModel(TechneModelPart model) {
+            this.model = model;
+            parts = new HashMap<>();
+            for (ModelPartTechneCube c : model.getModelParts()) {
+                IModelPartIdentifier id = StaticAccess.GAME.getRenderRegistry().getModelRegistry().registerModelPart(c);
+                parts.put(c.getName(), id);
+            }
+        }
+
+        public TechneModelPart getModel() {
+            return model;
+        }
+
+        public Collection<IModelPartIdentifier> getModelParts(){
+            return parts.values();
+        }
+
+        @Override
+        public Set<String> getParts() {
+            return parts.keySet();
+        }
+
+        @Override
+        public void setRenderData(WorldRef ref, Vect3d offset) {
+            this.ref = ref;
+            this.offset = offset;
+        }
+
+        @Override
+        public void renderAll() {
+            IRenderManager rm = StaticAccess.GAME.getRenderManager();
+            rm.renderModelParts(parts.values(), ref, offset);
+        }
+
+        @Override
+        public void renderParts(String... names) {
+            IRenderManager rm = StaticAccess.GAME.getRenderManager();
+            List<String> namesL = Lists.newArrayList(names);
+            List<IModelPartIdentifier> ids = parts.entrySet().stream().filter(e -> namesL.contains(e.getKey())).map(Map.Entry::getValue).collect(Collectors.toCollection(LinkedList::new));
+            if (!ids.isEmpty())
+                rm.renderModelParts(ids, ref, offset);
+        }
+
+        @Override
+        public void renderPartsThatContains(String text) {
+            IRenderManager rm = StaticAccess.GAME.getRenderManager();
+            List<IModelPartIdentifier> ids = parts.entrySet().stream().filter(e -> e.getKey().contains(text)).map(Map.Entry::getValue).collect(Collectors.toCollection(LinkedList::new));
+            if (!ids.isEmpty())
+                rm.renderModelParts(ids, ref, offset);
+        }
+
+        @Override
+        public void renderAllExcludingParts(String... names) {
+            IRenderManager rm = StaticAccess.GAME.getRenderManager();
+            List<String> namesL = Lists.newArrayList(names);
+            List<IModelPartIdentifier> ids = parts.entrySet().stream().filter(e -> !namesL.contains(e.getKey())).map(Map.Entry::getValue).collect(Collectors.toCollection(LinkedList::new));
+            if (!ids.isEmpty())
+                rm.renderModelParts(ids, ref, offset);
         }
     }
 }

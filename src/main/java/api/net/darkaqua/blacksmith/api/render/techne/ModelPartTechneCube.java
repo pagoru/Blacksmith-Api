@@ -1,4 +1,4 @@
-package net.darkaqua.blacksmith.api.render.model.defaults;
+package net.darkaqua.blacksmith.api.render.techne;
 
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.render.model.IModelQuad;
@@ -13,6 +13,7 @@ import java.util.List;
 public class ModelPartTechneCube implements IModelPart {
 
     protected ResourceReference texture;
+    protected String name;
     protected List<IModelQuad> quads;
     protected Vect3d size;
     protected Vect3d pos;
@@ -96,6 +97,29 @@ public class ModelPartTechneCube implements IModelPart {
 
     public void setTextureMirrored(boolean mirrored) {
         this.mirrored = mirrored;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "ModelPartTechneCube{" +
+                "texture=" + texture +
+                ", name='" + name + '\'' +
+                ", size=" + size +
+                ", pos=" + pos +
+                ", offset=" + offset +
+                ", rotation=" + rotation +
+                ", textureSize=" + textureSize +
+                ", textureOffset=" + textureOffset +
+                ", mirrored=" + mirrored +
+                '}';
     }
 
     private static class Quad implements IModelQuad {

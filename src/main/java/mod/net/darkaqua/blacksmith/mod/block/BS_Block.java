@@ -47,8 +47,14 @@ public class BS_Block extends Block {
         setBlockBounds(0, 0, 0, 1, 1, 1);
         useNeighborBrightness = false;
         blockstate = MCInterface.fromBlockDataGenerator(definition.getBlockDataGenerator());
-        IBlockData data = def.onCreateDefaultBlockData(MCInterface.fromIBlockState(blockstate.getBaseState()));
-        this.setDefaultState(MCInterface.toIBlockState(data));
+        IBlockData data = def.onCreateDefaultBlockData(MCInterface.fromBlockState(blockstate.getBaseState()));
+        this.setDefaultState(MCInterface.toBlockState(data));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return MCInterface.fromCreativeTab(definition.getCreativeTab());
     }
 
     public int getLightValue(IBlockAccess world, BlockPos pos) {
@@ -93,12 +99,12 @@ public class BS_Block extends Block {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return MCInterface.toIBlockState(definition.translateMetadataToVariant(meta));
+        return MCInterface.toBlockState(definition.translateMetadataToVariant(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return definition.translateVariantToMetadata(MCInterface.fromIBlockState(state));
+        return definition.translateVariantToMetadata(MCInterface.fromBlockState(state));
     }
 
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
@@ -134,7 +140,7 @@ public class BS_Block extends Block {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (definition instanceof BlockMethod.OnActivated) {
-            return ((BlockMethod.OnActivated) definition).onActivated(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(state), MCInterface.toPlayer(playerIn), MCInterface.fromEnumFacing(side), new Vect3d(hitX, hitY, hitZ));
+            return ((BlockMethod.OnActivated) definition).onActivated(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromBlockState(state), MCInterface.toPlayer(playerIn), MCInterface.fromEnumFacing(side), new Vect3d(hitX, hitY, hitZ));
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
     }
@@ -142,7 +148,7 @@ public class BS_Block extends Block {
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         if (definition instanceof BlockMethod.OnAdded) {
-            ((BlockMethod.OnAdded) definition).onAdded(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(state));
+            ((BlockMethod.OnAdded) definition).onAdded(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromBlockState(state));
         } else {
             super.onBlockAdded(worldIn, pos, state);
         }
@@ -152,7 +158,7 @@ public class BS_Block extends Block {
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 
         if (definition instanceof BlockMethod.OnBreaks) {
-            ((BlockMethod.OnBreaks) definition).onBreaks(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(state));
+            ((BlockMethod.OnBreaks) definition).onBreaks(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromBlockState(state));
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -176,7 +182,7 @@ public class BS_Block extends Block {
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
         if (definition instanceof BlockMethod.OnHarvested) {
-            ((BlockMethod.OnHarvested) definition).onHarvested(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(state), MCInterface.toPlayer(player));
+            ((BlockMethod.OnHarvested) definition).onHarvested(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromBlockState(state), MCInterface.toPlayer(player));
         }
         super.onBlockHarvested(worldIn, pos, state, player);
     }
@@ -184,7 +190,7 @@ public class BS_Block extends Block {
     @Override
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
         if (definition instanceof BlockMethod.OnNeighborChange) {
-            ((BlockMethod.OnNeighborChange) definition).onNeighborBlockChange(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(state), MCInterface.fromBlock(neighborBlock));
+            ((BlockMethod.OnNeighborChange) definition).onNeighborBlockChange(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromBlockState(state), MCInterface.fromBlock(neighborBlock));
         }
         super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
     }
@@ -192,7 +198,7 @@ public class BS_Block extends Block {
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         if (definition instanceof BlockMethod.OnPlaced) {
-            return MCInterface.toIBlockState(((BlockMethod.OnPlaced) definition).onPlaced(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromEnumFacing(facing), MCInterface.toLivingEntity(placer), new Vect3d(hitX, hitY, hitZ), meta));
+            return MCInterface.toBlockState(((BlockMethod.OnPlaced) definition).onPlaced(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromEnumFacing(facing), MCInterface.toLivingEntity(placer), new Vect3d(hitX, hitY, hitZ), meta));
         }
         return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
     }
@@ -200,7 +206,7 @@ public class BS_Block extends Block {
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         if (definition instanceof BlockMethod.OnPlacedBy) {
-            ((BlockMethod.OnPlacedBy) definition).onPlacedBy(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromIBlockState(state), MCInterface.toLivingEntity(placer), MCInterface.fromItemStack(stack));
+            ((BlockMethod.OnPlacedBy) definition).onPlacedBy(new WorldRef(MCInterface.fromWorld(worldIn), MCInterface.fromBlockPos(pos)), MCInterface.fromBlockState(state), MCInterface.toLivingEntity(placer), MCInterface.fromItemStack(stack));
         }
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }

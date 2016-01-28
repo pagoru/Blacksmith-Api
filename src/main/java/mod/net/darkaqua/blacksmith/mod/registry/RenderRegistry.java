@@ -4,9 +4,9 @@ import net.darkaqua.blacksmith.api.block.IBlockDefinition;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
-import net.darkaqua.blacksmith.api.render.model.IBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IItemModelProvider;
-import net.darkaqua.blacksmith.api.render.model.IRenderModel;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
+import net.darkaqua.blacksmith.api.render.model.providers.IBlockModelProvider;
+import net.darkaqua.blacksmith.api.render.model.providers.IItemModelProvider;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
@@ -18,10 +18,12 @@ import net.darkaqua.blacksmith.mod.render.model.ItemBlockModelProvider;
 import net.darkaqua.blacksmith.mod.render.model.RenderModelWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,7 +44,7 @@ public class RenderRegistry implements IRenderRegistry {
     private static Map<ModelResourceLocation, IBakedModel> locationToBakedModel = new HashMap<>();
     private static Map<Block, IBlockModelProvider> registeredBlockModelProviders = new HashMap<>();
     private static Map<Item, IItemModelProvider> registeredItemModelProviders = new HashMap<>();
-    private static Map<IRenderModel, IBakedModel> modelCache = new HashMap<>();
+    private static Map<IStaticModel, IBakedModel> modelCache = new HashMap<>();
 
     private RenderRegistry() {
     }
@@ -76,7 +78,12 @@ public class RenderRegistry implements IRenderRegistry {
 
 
         //Item
-        ModelLoader.setCustomMeshDefinition(reg.getItemBlock(), stack -> new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "inventory"));
+        ModelLoader.setCustomMeshDefinition(reg.getItemBlock(), new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "inventory");
+            }
+        });
 
         locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItemBlock()), "inventory"), new BakedItemModel());
         registeredItemModelProviders.put(reg.getItemBlock(), new ItemBlockModelProvider(provider));
@@ -102,7 +109,12 @@ public class RenderRegistry implements IRenderRegistry {
         if (reg == null)
             return false;
 
-        ModelLoader.setCustomMeshDefinition(reg.getItem(), stack -> new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "normal"));
+        ModelLoader.setCustomMeshDefinition(reg.getItem(), new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "normal");
+            }
+        });
 
         locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItem()), "normal"), new BakedItemModel());
         registeredItemModelProviders.put(reg.getItem(), provider);
@@ -146,7 +158,7 @@ public class RenderRegistry implements IRenderRegistry {
         return registeredItemModelProviders.get(item);
     }
 
-    public IBakedModel getBakedModel(IRenderModel id) {
+    public IBakedModel getBakedModel(IStaticModel id) {
         if (id == null) return null;
         if (!modelCache.containsKey(id)) {
             modelCache.put(id, new RenderModelWrapper(id));

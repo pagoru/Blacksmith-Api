@@ -14,14 +14,17 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 
-version = "0.0.1alpha8"
+version = "0.0.2alpha1"
 group= "net.darkaqua.blacksmith.mod"
 archivesBaseName = "blacksmith-api"
 
 minecraft {
     version = "1.8.9-11.15.1.1722"
     runDir = "run"
+	useDepAts = true
     
     mappings = "stable_20"
     makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
@@ -32,7 +35,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'net.darkaqua.blacksmith.mod.Blacksmith',
+        attributes 'FMLCorePlugin': 'net.darkaqua.blacksmith.mod.BlacksmithLoader',
                    'FMLCorePluginContainsFMLMod': 'true'
     }
 }

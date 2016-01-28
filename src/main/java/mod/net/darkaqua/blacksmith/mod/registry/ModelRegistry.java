@@ -9,11 +9,11 @@ import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
 import net.darkaqua.blacksmith.mod.render.ModelPartIdentifier;
+import net.darkaqua.blacksmith.mod.render.model.IBakedModelPart;
 import net.darkaqua.blacksmith.mod.render.model.IModelBuilder;
 import net.darkaqua.blacksmith.mod.render.model.ItemLayerModelBuilder;
 import net.darkaqua.blacksmith.mod.render.model.ModelPartBuilder;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -28,14 +28,14 @@ public class ModelRegistry implements IModelRegistry {
 
     public static final ModelRegistry INSTANCE = new ModelRegistry();
     private static Map<IModelPartIdentifier, IModelBuilder> modelBuilders = new HashMap<>();
-    private static Map<IModelPartIdentifier, IBakedModel> bakedModels = new HashMap<>();
+    private static Map<IModelPartIdentifier, IBakedModelPart> bakedModels = new HashMap<>();
     private static Map<String, Integer> modelNumbers = new HashMap<>();
 
     private ModelRegistry() {
     }
 
     @SubscribeEvent
-    public void onTextureLoad(final TextureStitchEvent.Pre event) {
+    public void onTextureLoad(TextureStitchEvent.Pre event) {
         for (IModelBuilder b : modelBuilders.values()) {
             b.onTexturesLoad(event.map);
         }
@@ -80,10 +80,6 @@ public class ModelRegistry implements IModelRegistry {
         return id;
     }
 
-    public IBakedModel getBakedModel(IModelPartIdentifier id) {
-        return bakedModels.get(id);
-    }
-
     private IModelPartIdentifier generateIdentifier(String modId) {
         int number = 0;
         if (modelNumbers.containsKey(modId)) {
@@ -93,5 +89,9 @@ public class ModelRegistry implements IModelRegistry {
             modelNumbers.put(modId, 0);
         }
         return new ModelPartIdentifier(modId, number);
+    }
+
+    public IBakedModelPart getBakedModelPart(IModelPartIdentifier id) {
+        return bakedModels.get(id);
     }
 }

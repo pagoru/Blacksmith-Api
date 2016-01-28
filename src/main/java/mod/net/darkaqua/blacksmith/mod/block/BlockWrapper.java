@@ -52,7 +52,7 @@ public class BlockWrapper implements IBlock {
     public List<Cube> getCollisionCubes(WorldRef ref, IEntity entity) {
         List<AxisAlignedBB> list = new LinkedList<>();
         block.addCollisionBoxesToList(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
-                MCInterface.toIBlockState(ref.getBlockData()), MCInterface.toAxisAlignedBB(Cube.fullBlock().
+                MCInterface.toBlockState(ref.getBlockData()), MCInterface.toAxisAlignedBB(Cube.fullBlock().
                         translate(ref.getPosition().toVect3d())), list, MCInterface.toEntity(entity));
         return list.stream().map(MCInterface::fromAxisAlignedBB).collect(Collectors.toList());
     }
@@ -108,17 +108,17 @@ public class BlockWrapper implements IBlock {
 
     @Override
     public IBlockData getDefaultBlockData() {
-        return MCInterface.fromIBlockState(block.getDefaultState());
+        return MCInterface.fromBlockState(block.getDefaultState());
     }
 
     @Override
     public IBlockData getBlockDataFromMeta(int meta) {
-        return MCInterface.fromIBlockState(block.getDefaultState());
+        return MCInterface.fromBlockState(block.getDefaultState());
     }
 
     @Override
     public int getMetaFromBlockData(IBlockData variant) {
-        return block.getMetaFromState(MCInterface.toIBlockState(variant));
+        return block.getMetaFromState(MCInterface.toBlockState(variant));
     }
 
     @Override
@@ -128,7 +128,7 @@ public class BlockWrapper implements IBlock {
 
     @Override
     public boolean canBeReplacedByOreGen(WorldRef ref, final Predicate<IBlockData> target) {
-        return block.isReplaceableOreGen(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), input -> target.apply(MCInterface.fromIBlockState(input)));
+        return block.isReplaceableOreGen(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), input -> target.apply(MCInterface.fromBlockState(input)));
     }
 
     @Override
@@ -139,17 +139,17 @@ public class BlockWrapper implements IBlock {
     @Override
     public boolean onActivated(WorldRef ref, IBlockData state, IPlayer player, Direction side, Vect3d v) {
         return block.onBlockActivated(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()),
-                MCInterface.toIBlockState(state), MCInterface.fromPlayer(player), MCInterface.toEnumFacing(side), (float) v.getX(), (float) v.getY(), (float) v.getZ());
+                MCInterface.toBlockState(state), MCInterface.fromPlayer(player), MCInterface.toEnumFacing(side), (float) v.getX(), (float) v.getY(), (float) v.getZ());
     }
 
     @Override
     public void onAdded(WorldRef ref, IBlockData state) {
-        block.onBlockAdded(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state));
+        block.onBlockAdded(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toBlockState(state));
     }
 
     @Override
     public void onBreaks(WorldRef ref, IBlockData state) {
-        block.breakBlock(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state));
+        block.breakBlock(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toBlockState(state));
     }
 
     @Override
@@ -164,22 +164,22 @@ public class BlockWrapper implements IBlock {
 
     @Override
     public void onHarvested(WorldRef ref, IBlockData variant, IPlayer player) {
-        block.onBlockHarvested(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(variant), MCInterface.fromPlayer(player));
+        block.onBlockHarvested(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toBlockState(variant), MCInterface.fromPlayer(player));
     }
 
     @Override
     public void onNeighborBlockChange(WorldRef ref, IBlockData variant, IBlock neighbor) {
-        block.onNeighborBlockChange(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(variant), MCInterface.toBlock(neighbor));
+        block.onNeighborBlockChange(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toBlockState(variant), MCInterface.toBlock(neighbor));
     }
 
     @Override
     public IBlockData onPlaced(WorldRef ref, Direction side, ILivingEntity entity, Vect3d hit, int metadata) {
-        return MCInterface.fromIBlockState(block.onBlockPlaced(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEnumFacing(side), (float) hit.getX(), (float) hit.getY(), (float) hit.getZ(), metadata, MCInterface.fromLivingEntity(entity)));
+        return MCInterface.fromBlockState(block.onBlockPlaced(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toEnumFacing(side), (float) hit.getX(), (float) hit.getY(), (float) hit.getZ(), metadata, MCInterface.fromLivingEntity(entity)));
     }
 
     @Override
     public void onPlacedBy(WorldRef ref, IBlockData state, ILivingEntity placer, IItemStack stack) {
-        block.onBlockPlacedBy(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toIBlockState(state), MCInterface.fromLivingEntity(placer), MCInterface.toItemStack(stack));
+        block.onBlockPlacedBy(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toBlockState(state), MCInterface.fromLivingEntity(placer), MCInterface.toItemStack(stack));
     }
 
     @Override

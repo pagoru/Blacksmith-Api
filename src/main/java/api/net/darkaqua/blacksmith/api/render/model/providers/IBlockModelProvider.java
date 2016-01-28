@@ -1,8 +1,9 @@
-package net.darkaqua.blacksmith.api.render.model;
+package net.darkaqua.blacksmith.api.render.model.providers;
 
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
+import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 
 /**
@@ -11,9 +12,9 @@ import net.darkaqua.blacksmith.api.util.annotations.Implementable;
 @Implementable
 public interface IBlockModelProvider {
 
-    IRenderModel getModelForVariant(IBlockData variant);
+    IStaticModel getModelForBlockData(IBlockData variant);
 
-    IRenderModel getModelForItemBlock(IItemStack stack);
+    IStaticModel getModelForItemBlock(IItemStack stack);
 
     void registerModels(IModelRegistry registry);
 }
