@@ -7,5 +7,4 @@ import net.darkaqua.blacksmith.api.tileentity.defaults.DefaultTileEntityDefiniti
  */
 public class TileTestBlock extends DefaultTileEntityDefinition {
 
-    public int list = -1;
 }

@@ -28,7 +28,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,10 +90,11 @@ public class RenderManager implements IRenderManager {
     }
 
     @Override
-    public void renderModelParts(Collection<IModelPartIdentifier> parts, WorldRef ref, Vect3d offset) {
+    public void renderModelPartsStaticLight(List<IModelPartIdentifier> parts, WorldRef ref, Vect3d offset) {
         if (parts.isEmpty()) return;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
         RenderHelper.disableStandardItemLighting();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -112,13 +112,62 @@ public class RenderManager implements IRenderManager {
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
         dummyModel.setBaked(parts.stream().map(ModelRegistry.INSTANCE::getBakedModelPart).collect(Collectors.toList()));
-
         Vect3i pos = ref.getPosition();
         worldRenderer.setTranslation(offset.getX() - pos.getX(), offset.getY() - pos.getY(), offset.getZ() - pos.getZ());
         Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer()
                 .renderModel(world, dummyModel, MCInterface.toBlockState(ref.getBlockData()), MCInterface.toBlockPos(ref.getPosition()), worldRenderer, false);
 
         worldRenderer.setTranslation(0, 0, 0);
+        tessellator.draw();
+        RenderHelper.enableStandardItemLighting();
+    }
+
+    @Override
+    public void bindBlocksTexture() {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+    }
+
+    @Override
+    public void bindItemsTexture() {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+    }
+
+    @Override
+    public void renderModelPartsDynamicLight(List<IModelPartIdentifier> parts) {
+        if (parts.isEmpty()) return;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.enableBlend();
+        GlStateManager.disableCull();
+
+        if (Minecraft.isAmbientOcclusionEnabled()) {
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        } else {
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+        }
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.OLDMODEL_POSITION_TEX_NORMAL);
+
+        for (IModelPartIdentifier id : parts) {
+            IBakedModelPart model = ModelRegistry.INSTANCE.getBakedModelPart(id);
+            for (BakedQuad quad : model.getGeneralQuads()) {
+                int[] data = quad.getVertexData();
+                for (int i = 0; i < 4; i++) {
+                    byte bx = (byte) (data[6 + i * 7] & 0xFF);
+                    byte by = (byte) ((data[6 + i * 7] >>> 0x08) & 0xFF);
+                    byte bz = (byte) ((data[6 + i * 7] >>> 0x10) & 0xFF);
+                    float nx = bx / 127f;
+                    float ny = by / 127f;
+                    float nz = bz / 127f;
+
+                    worldRenderer.pos(Float.intBitsToFloat(data[i * 7]), Float.intBitsToFloat(data[1 + i * 7]), Float.intBitsToFloat(data[2 + i * 7]))
+                            .tex(Float.intBitsToFloat(data[4 + i * 7]), Float.intBitsToFloat(data[5 + i * 7])).normal(nx, ny, nz).endVertex();
+                }
+            }
+        }
         tessellator.draw();
         RenderHelper.enableStandardItemLighting();
     }

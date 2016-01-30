@@ -1,7 +1,6 @@
 package net.darkaqua.blacksmith.api.render.model;
 
 import net.darkaqua.blacksmith.api.util.Vect3d;
-import net.darkaqua.blacksmith.api.util.WorldRef;
 
 import java.util.Set;
 
@@ -10,15 +9,25 @@ import java.util.Set;
  */
 public interface IDynamicModel {
 
-    Set<String> getParts();
+    void setOffset(Vect3d offset);
 
-    void setRenderData(WorldRef ref, Vect3d offset);
+    void renderPartSet(IPartSet set);
 
-    void renderAll();
+    default void renderAll(){
+        renderPartSet(getTotalPartSet());
+    }
 
-    void renderParts(String... parts);
+    IPartSet getTotalPartSet();
 
-    void renderPartsThatContains(String text);
+    IPartSet createFromNames(String... parts);
 
-    void renderAllExcludingParts(String... parts);
+    IPartSet createExcludingNames(String... parts);
+
+    IPartSet createAllContains(String text);
+
+    IPartSet createAllNotContains(String text);
+
+    interface IPartSet {
+        Set<String> getPartNames();
+    }
 }

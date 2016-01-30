@@ -66,8 +66,7 @@ public class ModClass {
         StaticAccess.GAME.getTileEntityRegistry().registerTileEntityDefinition(TileTestBlock.class, "TileTestBlock");
 
         if (StaticAccess.GAME.isClient()) {
-
-            TileTestBlockRenderer.model = TechneModelLoader.loadDynamicModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block"));
+            TileTestBlockRenderer.model = new TechneModelLoader.TechneModel(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
             StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
                     new ItemFlatModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
 

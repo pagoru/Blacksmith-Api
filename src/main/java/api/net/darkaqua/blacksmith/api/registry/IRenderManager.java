@@ -1,6 +1,5 @@
 package net.darkaqua.blacksmith.api.registry;
 
-import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
@@ -8,7 +7,7 @@ import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by cout970 on 20/12/2015.
@@ -19,9 +18,11 @@ public interface IRenderManager {
 
     void bindTexture(ResourceReference resourceReference);
 
-    void renderModelParts(Collection<IModelPartIdentifier> parts, WorldRef ref, Vect3d offset);
+    void renderModelPartsDynamicLight(List<IModelPartIdentifier> parts);
 
-    default void renderModelParts(WorldRef ref, Vect3d offset, IModelPartIdentifier... parts){
-        renderModelParts(Lists.newArrayList(parts), ref, offset);
-    }
+    void renderModelPartsStaticLight(List<IModelPartIdentifier> parts, WorldRef ref, Vect3d offset);
+
+    void bindBlocksTexture();
+
+    void bindItemsTexture();
 }

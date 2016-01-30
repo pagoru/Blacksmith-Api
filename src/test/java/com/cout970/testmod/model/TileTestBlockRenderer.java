@@ -1,10 +1,12 @@
 package com.cout970.testmod.model;
 
+import com.cout970.testmod.ModClass;
 import com.cout970.testmod.tile.TileTestBlock;
 import net.darkaqua.blacksmith.api.render.model.IDynamicModel;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRendererHelper;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
+import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import org.lwjgl.opengl.GL11;
 
@@ -14,20 +16,25 @@ import org.lwjgl.opengl.GL11;
 public class TileTestBlockRenderer implements ITileEntityRenderer<TileTestBlock> {
 
     public static IDynamicModel model;
+    public static TestModel techneModel = new TestModel();
 
     @Override
     public void renderTileEntity(ITileEntity tile, TileTestBlock def, ITileEntityRendererHelper helper, Vect3d offset, float partialTick, int breakingProgress) {
-        if (def.list == -1){
-            def.list = GL11.glGenLists(1);
-            GL11.glNewList(def.list, GL11.GL_COMPILE_AND_EXECUTE);
-            model.setRenderData(def.getParent().getWorldRef(), Vect3d.nullVector());
-            model.renderAll();
-            GL11.glEndList();
-        }else{
-            GL11.glPushMatrix();
-            GL11.glTranslated(offset.getX(), offset.getY(), offset.getZ());
-            GL11.glCallList(def.list);
-            GL11.glPopMatrix();
-        }
+        render1(def, offset, helper);
+    }
+
+    private static void render1(TileTestBlock def, Vect3d offset, ITileEntityRendererHelper helper) {
+        model.setOffset(offset);
+        model.renderAll();
+    }
+
+    private static void render2(TileTestBlock def, Vect3d offset, ITileEntityRendererHelper helper) {
+        GL11.glPushMatrix();
+        GL11.glTranslated(offset.getX() + 0.5, offset.getY() + 1.5, offset.getZ() + 0.5);
+        helper.bindTexture(new ResourceReference(ModClass.MOD_ID, "textures/models/test_block.png"));
+        GL11.glRotatef(180, 1, 0, 0);
+        GL11.glRotatef(180, 0, 1, 0);
+        techneModel.render(0.0625f);
+        GL11.glPopMatrix();
     }
 }
