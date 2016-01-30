@@ -1,79 +1,68 @@
 package net.darkaqua.blacksmith.api.gui.defaults.components;
 
-import com.google.common.collect.Lists;
-import net.darkaqua.blacksmith.api.gui.IGui;
-import net.darkaqua.blacksmith.api.gui.IGuiRenderer;
-import net.darkaqua.blacksmith.api.util.Color;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
+import java.util.function.Function;
 
 /**
- * Created by cout970 on 24/01/2016.
+ * Created by cout970 on 30/01/2016.
  */
-public class SimpleButton extends AbstractButton {
+public class SimpleButton extends AbstractStateButton {
 
-    protected String text;
-    protected String tooltip;
-    protected ResourceReference texture;
-    protected Vect2i uv;
-    //TODO add sound
+    protected Function<ButtonState, Vect2i> uvMapper;
 
-    public SimpleButton(Vect2i pos, Vect2i size, String text, ResourceReference texture, Vect2i uv, @Nonnull ButtonListener listener) {
-        super(pos, size, listener);
-        this.text = text;
-        this.texture = texture;
-        this.uv = uv;
+    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, String text, @Nonnull ButtonListener listener, Function<ButtonState, Vect2i> uvMapper) {
+        super(pos, size, texture, text, listener);
+        this.uvMapper = uvMapper;
     }
 
-    public SimpleButton(Vect2i pos, Vect2i size, String text, ResourceReference texture, Vect2i uv, String tooltip, @Nonnull ButtonListener listener) {
-        this(pos, size, text, texture, uv, listener);
-        this.tooltip = tooltip;
+    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, String text, String tooltip, @Nonnull ButtonListener listener, Function<ButtonState, Vect2i> uvMapper) {
+        super(pos, size, texture, text, tooltip, listener);
+        this.uvMapper = uvMapper;
     }
 
-    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, Vect2i uv, @Nonnull ButtonListener listener) {
-        this(pos, size, null, texture, uv, listener);
+    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, @Nonnull ButtonListener listener, Function<ButtonState, Vect2i> uvMapper) {
+        super(pos, size, texture, listener);
+        this.uvMapper = uvMapper;
     }
 
-    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, @Nonnull ButtonListener listener) {
-        this(pos, size, null, texture, null, listener);
-    }
-
-    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, String text, @Nonnull ButtonListener listener) {
-        this(pos, size, text, texture, null, listener);
-    }
-
-    @Override
-    protected void renderButton(IGui gui, IGuiRenderer rend, Vect2i mouse) {
-        rend.bindTexture(texture);
-        if (uv == null) {
-            uv = Vect2i.nullVector();
-        }
-        rend.drawTexturedRectangle(pos, uv, size);
-        String text = getText();
-        if (text != null) {
-            rend.drawCenteredString(text, pos.copy().add(size.toVect2d().multiply(0.5).toVect2i()), getTextColor());
-        }
-    }
-
-    protected String getText() {
-        return text;
+    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, String text, String tooltip, @Nonnull ButtonListener listener, Vect2i offset) {
+        super(pos, size, texture, text, tooltip, listener);
+        Vect2i offset2 = offset.copy();
+        Vect2i offset3 = offset.copy().add(0, size.getY());
+        Vect2i offset4 = offset.copy().add(0, size.getY()*2);
+        this.uvMapper = buttonState -> {
+            switch (buttonState){
+                case NORMAL:
+                    return offset2;
+                case HOVER:
+                    return offset3;
+                case DOWN:
+                    return offset4;
+            }
+            return offset2;
+        };
     }
 
     @Override
-    protected List<String> getButtonTooltip(IGui gui, Vect2i mouse) {
-        return tooltip == null ? Collections.EMPTY_LIST : Lists.newArrayList(tooltip);
+    protected Vect2i getUVFromState(ButtonState state) {
+        return uvMapper.apply(state);
     }
 
     @Override
-    protected void emitPressSound(IGui gui, Vect2i mouse, MouseButton button) {
-        //TODO add sound
+    protected ButtonState onButtonPress() {
+        return ButtonState.DOWN;
     }
 
-    public Color getTextColor() {
-        return new Color(0xFFFFFF);
+    @Override
+    protected ButtonState onButtonRelease() {
+        return ButtonState.NORMAL;
+    }
+
+    @Override
+    protected ButtonState onButtonHovered(boolean hovered) {
+        return pressed ? ButtonState.DOWN : hovered ? ButtonState.HOVER : ButtonState.NORMAL;
     }
 }

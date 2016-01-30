@@ -9,6 +9,7 @@ import net.darkaqua.blacksmith.api.util.Vect3d;
 public abstract class SoundEffectFactory {
 
     protected static SoundEffectFactory INSTANCE;
+    public static final ResourceReference BUTTON_PRESS = new ResourceReference("minecraft", "gui.button.press");
 
     public static ISoundEffect createSoundEffect(ResourceReference soundResource) {
         return INSTANCE.newSoundEffect(soundResource, 1F, 1f, false, 0, ISoundEffect.AttenuationType.NONE, Vect3d.nullVector());

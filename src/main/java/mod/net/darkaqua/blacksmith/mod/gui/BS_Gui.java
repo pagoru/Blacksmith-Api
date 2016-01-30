@@ -10,6 +10,7 @@ import net.darkaqua.blacksmith.api.util.Vect2i;
 import net.darkaqua.blacksmith.mod.registry.RenderManager;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -180,6 +181,19 @@ public class BS_Gui extends GuiContainer implements IGui, IGuiRenderer {
     @Override
     public boolean isCtrlKeyPressed() {
         return isCtrlKeyDown();
+    }
+
+    @Override
+    public boolean isButtonDown(IGuiComponent.MouseButton button) {
+        switch (button){
+            case LEFT:
+                return Mouse.isButtonDown(0);
+            case RIGHT:
+                return Mouse.isButtonDown(1);
+            case MIDDLE:
+                return Mouse.isButtonDown(2);
+        }
+        return false;
     }
 
     @Override

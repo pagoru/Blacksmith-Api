@@ -35,4 +35,6 @@ public interface IGui {
     boolean isShiftKeyPressed();
 
     boolean isCtrlKeyPressed();
+
+    boolean isButtonDown(IGuiComponent.MouseButton button);
 }

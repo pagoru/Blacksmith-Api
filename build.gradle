@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
-version = "0.0.2alpha1"
+version = "0.0.2alpha2"
 group= "net.darkaqua.blacksmith.mod"
 archivesBaseName = "blacksmith-api"
 

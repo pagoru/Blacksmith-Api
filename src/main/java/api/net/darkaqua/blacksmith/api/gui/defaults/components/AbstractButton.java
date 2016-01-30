@@ -6,7 +6,6 @@ import net.darkaqua.blacksmith.api.gui.IGuiRenderer;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * Created by cout970 on 24/01/2016.
@@ -30,17 +29,9 @@ public abstract class AbstractButton implements IGuiComponent {
     }
 
     @Override
-    public void renderForeground(IGui gui, Vect2i mouse) {
-        List<String> toolTip = getButtonTooltip(gui, mouse);
-        if (!toolTip.isEmpty()){
-            gui.getGuiRenderer().drawHoveringText(toolTip, mouse);
-        }
-    }
-
-    @Override
     public void onMouseClick(IGui gui, Vect2i mouse, MouseButton button) {
         boolean sound = false;
-        if (isInside(mouse, pos, size)) {
+        if (isInside(mouse, getPos(gui), size)) {
             sound = listener.onPress(this, mouse, button);
         }
         if (sound){
@@ -53,9 +44,11 @@ public abstract class AbstractButton implements IGuiComponent {
         return false;
     }
 
-    protected abstract void renderButton(IGui gui, IGuiRenderer guiRenderer, Vect2i mouse);
+    protected Vect2i getPos(IGui gui){
+        return pos.copy().add(gui.getGuiStartingPoint());
+    }
 
-    protected abstract List<String> getButtonTooltip(IGui gui, Vect2i mouse);
+    protected abstract void renderButton(IGui gui, IGuiRenderer guiRenderer, Vect2i mouse);
 
     protected abstract void emitPressSound(IGui gui, Vect2i mouse, MouseButton button);
 
