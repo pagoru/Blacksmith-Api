@@ -27,8 +27,9 @@ public class ItemStackWrapper implements IItemStack {
     }
 
     @Override
-    public void setItem(IItem item) {
+    public IItemStack setItem(IItem item) {
         stack.setItem(MCInterface.toItem(item));
+        return this;
     }
 
     @Override
@@ -37,8 +38,9 @@ public class ItemStackWrapper implements IItemStack {
     }
 
     @Override
-    public void setAmount(int amount) {
+    public IItemStack setAmount(int amount) {
         stack.stackSize = amount;
+        return this;
     }
 
     @Override
@@ -52,8 +54,9 @@ public class ItemStackWrapper implements IItemStack {
     }
 
     @Override
-    public void setDamage(int damage) {
+    public IItemStack setDamage(int damage) {
         stack.setItemDamage(damage);
+        return this;
     }
 
     @Override
@@ -67,8 +70,9 @@ public class ItemStackWrapper implements IItemStack {
     }
 
     @Override
-    public void setDataCompound(IDataCompound cmp) {
+    public IItemStack setDataCompound(IDataCompound cmp) {
         stack.setTagCompound(MCInterface.toNBTCompound(cmp));
+        return this;
     }
 
     @Override

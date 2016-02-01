@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
@@ -40,7 +40,7 @@ public class EmptyModel implements IStaticModel {
     }
 
     @Override
-    public List<IModelPartIdentifier> getParts() {
+    public List<IPartIdentifier> getParts() {
         return new ArrayList<>(0);
     }
 }

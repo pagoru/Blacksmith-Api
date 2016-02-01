@@ -1,11 +1,11 @@
 package net.darkaqua.blacksmith.mod.render;
 
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 
 /**
  * Created by cout970 on 14/12/2015.
  */
-public class ModelPartIdentifier implements IModelPartIdentifier {
+public class ModelPartIdentifier implements IPartIdentifier {
 
     protected String modID;
     protected int modelID;

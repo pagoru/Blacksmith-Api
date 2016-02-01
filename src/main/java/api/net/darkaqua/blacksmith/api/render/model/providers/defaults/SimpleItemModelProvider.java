@@ -16,7 +16,7 @@ import java.util.List;
 public class SimpleItemModelProvider implements IItemModelProvider {
 
     protected IModelPart component;
-    protected IModelPartIdentifier identifier;
+    protected IPartIdentifier identifier;
     protected IStaticModel model;
 
     public SimpleItemModelProvider(IModelPart component) {
@@ -43,9 +43,9 @@ public class SimpleItemModelProvider implements IItemModelProvider {
 
     public static class ItemModel implements IStaticModel {
 
-        protected IModelPartIdentifier component;
+        protected IPartIdentifier component;
 
-        public ItemModel(IModelPartIdentifier component) {
+        public ItemModel(IPartIdentifier component) {
             this.component = component;
         }
 
@@ -65,7 +65,7 @@ public class SimpleItemModelProvider implements IItemModelProvider {
         }
 
         @Override
-        public List<IModelPartIdentifier> getParts() {
+        public List<IPartIdentifier> getParts() {
             return Lists.newArrayList(component);
         }
 

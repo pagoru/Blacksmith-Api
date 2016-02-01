@@ -3,7 +3,7 @@ package net.darkaqua.blacksmith.api.render.model.providers.defaults;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 
 /**
@@ -28,7 +28,7 @@ public class SimpleItemBlockModelProvider extends EmptyBlockModelProvider {
         model = fromModelPart(registry.registerModelPart(part));
     }
 
-    public IStaticModel fromModelPart(IModelPartIdentifier id) {
+    public IStaticModel fromModelPart(IPartIdentifier id) {
         return new SimpleItemModelProvider.ItemModel(id);
     }
 }

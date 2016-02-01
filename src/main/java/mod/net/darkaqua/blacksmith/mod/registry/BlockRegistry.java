@@ -94,6 +94,18 @@ public class BlockRegistry implements IBlockRegistry {
         return MCInterface.fromBlock(i);
     }
 
+    @Override
+    public String getBlockDomain(IBlock block) {
+        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(MCInterface.toBlock(block));
+        return id.modId;
+    }
+
+    @Override
+    public String getBlockName(IBlock block) {
+        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(MCInterface.toBlock(block));
+        return id.name;
+    }
+
     public IBlock getBlockFromDefinition(IBlockDefinition def) {
         RegisteredBlock reg = registeredBlocks.get(def);
         if (reg == null) return null;

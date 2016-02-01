@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.registry;
 
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 
 /**
@@ -9,7 +9,7 @@ import net.darkaqua.blacksmith.api.util.ResourceReference;
  */
 public interface IModelRegistry {
 
-    IModelPartIdentifier registerModelPart(IModelPart model);
+    IPartIdentifier registerModelPart(IModelPart model);
 
-    IModelPartIdentifier registerFlatItemModel(ResourceReference... texture);
+    IPartIdentifier registerFlatItemModel(ResourceReference... texture);
 }

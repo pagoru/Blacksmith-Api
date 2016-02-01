@@ -3,7 +3,7 @@ package net.darkaqua.blacksmith.api.render.model.providers.defaults;
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
@@ -21,14 +21,14 @@ public class ItemFlatModelProvider implements IItemModelProvider {
 
     protected ResourceReference texture;
     protected IStaticModel model;
-    protected Function<IModelPartIdentifier, IStaticModel> builder;
+    protected Function<IPartIdentifier, IStaticModel> builder;
 
     public ItemFlatModelProvider(ResourceReference texture) {
         this.texture = texture;
         builder = ItemFlatModel::new;
     }
 
-    public ItemFlatModelProvider(ResourceReference texture, Function<IModelPartIdentifier, IStaticModel> builder) {
+    public ItemFlatModelProvider(ResourceReference texture, Function<IPartIdentifier, IStaticModel> builder) {
         this.texture = texture;
         this.builder = builder;
     }
@@ -45,10 +45,10 @@ public class ItemFlatModelProvider implements IItemModelProvider {
 
     public static class ItemFlatModel implements IStaticModel {
 
-        protected IModelPartIdentifier component;
+        protected IPartIdentifier component;
         protected Function<RenderPlace, RenderTransformation> transform;
 
-        public ItemFlatModel(IModelPartIdentifier component) {
+        public ItemFlatModel(IPartIdentifier component) {
             this.component = component;
             transform = (place) -> {
                 if (place == RenderPlace.THIRD_PERSON) {
@@ -60,7 +60,7 @@ public class ItemFlatModelProvider implements IItemModelProvider {
             };
         }
 
-        public ItemFlatModel(IModelPartIdentifier component, Function<RenderPlace, RenderTransformation> transform) {
+        public ItemFlatModel(IPartIdentifier component, Function<RenderPlace, RenderTransformation> transform) {
             this.component = component;
             this.transform = transform;
         }
@@ -76,7 +76,7 @@ public class ItemFlatModelProvider implements IItemModelProvider {
         }
 
         @Override
-        public List<IModelPartIdentifier> getParts() {
+        public List<IPartIdentifier> getParts() {
             return Lists.newArrayList(component);
         }
 

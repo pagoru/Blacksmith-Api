@@ -132,6 +132,11 @@ public class BlockWrapper implements IBlock {
     }
 
     @Override
+    public boolean isPassable(WorldRef ref) {
+        return block.isPassable(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()));
+    }
+
+    @Override
     public Object getInternalBlock() {
         return block;
     }

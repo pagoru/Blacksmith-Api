@@ -7,23 +7,23 @@ public interface IItemStack {
 
     IItem getItem();
 
-    void setItem(IItem item);
+    IItemStack setItem(IItem item);
 
     int getAmount();
 
-    void setAmount(int amount);
+    IItemStack setAmount(int amount);
 
     int getMaxAmount();
 
     int getDamage();
 
-    void setDamage(int damage);
+    IItemStack setDamage(int damage);
 
     int getMaxDamage();
 
     IDataCompound getDataCompound();
 
-    void setDataCompound(IDataCompound cmp);
+    IItemStack setDataCompound(IDataCompound cmp);
 
     String getUnlocalizedName();
 

@@ -15,7 +15,7 @@ public interface IStaticModel {
 
     RenderTransformation getTransformation(RenderPlace place);
 
-    List<IModelPartIdentifier> getParts();
+    List<IPartIdentifier> getParts();
 
     boolean useAmbientOcclusion();
 

@@ -16,7 +16,9 @@ public interface IItemRegistry {
 
     List<IItemDefinition> getRegisteredItemDefinitions();
 
-    IItem getItemFromDefinition(IItemDefinition def);
-
     IItem findItem(String domain, String name);
+
+    String getItemDomain(IItem item);
+
+    String getItemName(IItem item);
 }

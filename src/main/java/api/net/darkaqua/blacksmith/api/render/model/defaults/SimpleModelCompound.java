@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.render.model.defaults;
 
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
@@ -15,13 +15,13 @@ import java.util.List;
  */
 public class SimpleModelCompound implements IStaticModel {
 
-    private List<IModelPartIdentifier> parts;
+    private List<IPartIdentifier> parts;
 
     public SimpleModelCompound() {
         parts = new LinkedList<>();
     }
 
-    public void addModelPart(IModelPartIdentifier part) {
+    public void addModelPart(IPartIdentifier part) {
         if (part == null) {
             throw new NullPointerException("null model component");
         }
@@ -34,7 +34,7 @@ public class SimpleModelCompound implements IStaticModel {
     }
 
     @Override
-    public List<IModelPartIdentifier> getParts() {
+    public List<IPartIdentifier> getParts() {
         return parts;
     }
 

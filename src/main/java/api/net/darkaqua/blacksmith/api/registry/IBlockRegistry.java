@@ -16,7 +16,9 @@ public interface IBlockRegistry {
 
     List<IBlockDefinition> getRegisteredBlockDefinitions();
 
-    IBlock getBlockFromDefinition(IBlockDefinition def);
-
     IBlock findBlock(String domain, String name);
+
+    String getBlockDomain(IBlock block);
+
+    String getBlockName(IBlock block);
 }

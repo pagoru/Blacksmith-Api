@@ -1,7 +1,7 @@
 package net.darkaqua.blacksmith.api.registry;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
@@ -18,9 +18,9 @@ public interface IRenderManager {
 
     void bindTexture(ResourceReference resourceReference);
 
-    void renderModelPartsDynamicLight(List<IModelPartIdentifier> parts);
+    void renderModelPartsDynamicLight(List<IPartIdentifier> parts);
 
-    void renderModelPartsStaticLight(List<IModelPartIdentifier> parts, WorldRef ref, Vect3d offset);
+    void renderModelPartsStaticLight(List<IPartIdentifier> parts, WorldRef ref, Vect3d offset);
 
     void bindBlocksTexture();
 

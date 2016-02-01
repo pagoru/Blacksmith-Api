@@ -3,7 +3,7 @@ package net.darkaqua.blacksmith.mod.registry;
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class ModelRegistry implements IModelRegistry {
 
     public static final ModelRegistry INSTANCE = new ModelRegistry();
-    private static Map<IModelPartIdentifier, IModelBuilder> modelBuilders = new HashMap<>();
-    private static Map<IModelPartIdentifier, IBakedModelPart> bakedModels = new HashMap<>();
+    private static Map<IPartIdentifier, IModelBuilder> modelBuilders = new HashMap<>();
+    private static Map<IPartIdentifier, IBakedModelPart> bakedModels = new HashMap<>();
     private static Map<String, Integer> modelNumbers = new HashMap<>();
 
     private ModelRegistry() {
@@ -43,13 +43,13 @@ public class ModelRegistry implements IModelRegistry {
 
     public static void bakeModels() {
         bakedModels.clear();
-        for (Map.Entry<IModelPartIdentifier, IModelBuilder> e : modelBuilders.entrySet()) {
+        for (Map.Entry<IPartIdentifier, IModelBuilder> e : modelBuilders.entrySet()) {
             bakedModels.put(e.getKey(), e.getValue().build());
         }
     }
 
     @Override
-    public IModelPartIdentifier registerModelPart(IModelPart model) {
+    public IPartIdentifier registerModelPart(IModelPart model) {
         if (model == null)
             throw new NullPointerException("Attempt to register a null IModelPart");
         if (ModLoaderManager.getLoadingState() != ModLoaderManager.LoadingState.PREINIT) {
@@ -59,13 +59,13 @@ public class ModelRegistry implements IModelRegistry {
         if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in IModelRegistry.registerModelPart: null");
 
-        IModelPartIdentifier id = generateIdentifier(mod.getModId());
+        IPartIdentifier id = generateIdentifier(mod.getModId());
         modelBuilders.put(id, new ModelPartBuilder(model));
         return id;
     }
 
     @Override
-    public IModelPartIdentifier registerFlatItemModel(ResourceReference... texture) {
+    public IPartIdentifier registerFlatItemModel(ResourceReference... texture) {
         if (texture.length == 0)
             throw new IllegalArgumentException("Attempt to register 0 textures in IModelRegistry.registerFlatItemModel");
         if (ModLoaderManager.getLoadingState() != ModLoaderManager.LoadingState.PREINIT) {
@@ -75,12 +75,12 @@ public class ModelRegistry implements IModelRegistry {
         if (mod == null)
             throw new BlacksmithInternalException("Invalid mod container in IModelRegistry.registerFlatItemModel: null");
 
-        IModelPartIdentifier id = generateIdentifier(mod.getModId());
+        IPartIdentifier id = generateIdentifier(mod.getModId());
         modelBuilders.put(id, new ItemLayerModelBuilder(Lists.newArrayList(texture).stream().map(MCInterface::toResourceLocation).collect(Collectors.toList())));
         return id;
     }
 
-    private IModelPartIdentifier generateIdentifier(String modId) {
+    private IPartIdentifier generateIdentifier(String modId) {
         int number = 0;
         if (modelNumbers.containsKey(modId)) {
             number = modelNumbers.get(modId) + 1;
@@ -91,7 +91,7 @@ public class ModelRegistry implements IModelRegistry {
         return new ModelPartIdentifier(modId, number);
     }
 
-    public IBakedModelPart getBakedModelPart(IModelPartIdentifier id) {
+    public IBakedModelPart getBakedModelPart(IPartIdentifier id) {
         return bakedModels.get(id);
     }
 }

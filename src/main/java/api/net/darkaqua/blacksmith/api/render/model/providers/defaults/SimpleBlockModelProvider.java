@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class SimpleBlockModelProvider implements IBlockModelProvider {
 
-    protected IModelPartIdentifier identifier;
+    protected IPartIdentifier identifier;
     protected IModelPart component;
     protected IStaticModel model;
 
@@ -43,9 +43,9 @@ public class SimpleBlockModelProvider implements IBlockModelProvider {
 
     public static class BlockModel implements IStaticModel {
 
-        protected IModelPartIdentifier component;
+        protected IPartIdentifier component;
 
-        public BlockModel(IModelPartIdentifier component) {
+        public BlockModel(IPartIdentifier component) {
             this.component = component;
         }
 
@@ -63,7 +63,7 @@ public class SimpleBlockModelProvider implements IBlockModelProvider {
         }
 
         @Override
-        public List<IModelPartIdentifier> getParts() {
+        public List<IPartIdentifier> getParts() {
             return Lists.newArrayList(component);
         }
 

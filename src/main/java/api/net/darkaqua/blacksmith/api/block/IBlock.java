@@ -129,8 +129,17 @@ public interface IBlock extends BlockMethod.AllBlockMethods {
 	boolean canBeReplacedByOreGen(WorldRef ref, final Predicate<IBlockData> target);
 
     /**
+     * Checks if entities can be inside the block
+     * @param ref the block reference
+     * @return true if entities can be inside the block, false otherwise
+     */
+    boolean isPassable(WorldRef ref);
+
+    /**
      * The internal minecraft block
-     * Useful to check interfaces and apis outside Blacksmith
+     * Useful to check interfaces and APIs outside Blacksmith
      */
     Object getInternalBlock();
+
+
 }

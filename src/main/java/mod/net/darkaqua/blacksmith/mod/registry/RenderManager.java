@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.registry.IRenderManager;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
@@ -27,6 +27,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -90,7 +91,7 @@ public class RenderManager implements IRenderManager {
     }
 
     @Override
-    public void renderModelPartsStaticLight(List<IModelPartIdentifier> parts, WorldRef ref, Vect3d offset) {
+    public void renderModelPartsStaticLight(List<IPartIdentifier> parts, WorldRef ref, Vect3d offset) {
         if (parts.isEmpty()) return;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
@@ -133,25 +134,15 @@ public class RenderManager implements IRenderManager {
     }
 
     @Override
-    public void renderModelPartsDynamicLight(List<IModelPartIdentifier> parts) {
+    public void renderModelPartsDynamicLight(List<IPartIdentifier> parts) {
         if (parts.isEmpty()) return;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.enableBlend();
-        GlStateManager.disableCull();
-
-        if (Minecraft.isAmbientOcclusionEnabled()) {
-            GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        } else {
-            GlStateManager.shadeModel(GL11.GL_FLAT);
-        }
 
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.OLDMODEL_POSITION_TEX_NORMAL);
 
-        for (IModelPartIdentifier id : parts) {
+        for (IPartIdentifier id : parts) {
             IBakedModelPart model = ModelRegistry.INSTANCE.getBakedModelPart(id);
             for (BakedQuad quad : model.getGeneralQuads()) {
                 int[] data = quad.getVertexData();
@@ -162,14 +153,15 @@ public class RenderManager implements IRenderManager {
                     float nx = bx / 127f;
                     float ny = by / 127f;
                     float nz = bz / 127f;
+                    Vector3f norm = new Vector3f(nx, ny, nz);
+                    norm.normalise();
 
                     worldRenderer.pos(Float.intBitsToFloat(data[i * 7]), Float.intBitsToFloat(data[1 + i * 7]), Float.intBitsToFloat(data[2 + i * 7]))
-                            .tex(Float.intBitsToFloat(data[4 + i * 7]), Float.intBitsToFloat(data[5 + i * 7])).normal(nx, ny, nz).endVertex();
+                            .tex(Float.intBitsToFloat(data[4 + i * 7]), Float.intBitsToFloat(data[5 + i * 7])).normal(norm.getX(), norm.getY(), norm.getZ()).endVertex();
                 }
             }
         }
         tessellator.draw();
-        RenderHelper.enableStandardItemLighting();
     }
 
     private class CachedModel implements IBakedModel {

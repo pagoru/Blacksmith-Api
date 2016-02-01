@@ -1,17 +1,13 @@
 package net.darkaqua.blacksmith.api.render.techne;
 
-import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.registry.IResourceManager;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.render.model.IDynamicModel;
 import net.darkaqua.blacksmith.api.render.model.IModelPart;
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IModelQuad;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2i;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 import net.darkaqua.blacksmith.mod.util.Log;
-import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -41,10 +37,9 @@ public class TechneModelLoader {
             "de81aa14-bd60-4228-8d8d-5238bcd3caaa"
     );
 
-
     public static TechneModelPart loadModel(ResourceReference file, ResourceReference textureReference) throws ModelFormatException {
 
-        List<ModelPartTechneCube> parts = new LinkedList<>();
+        List<TechneCube> parts = new LinkedList<>();
         InputStream stream;
         try {
             IResourceManager.IResourceFile res = StaticAccess.GAME.getResourceManager().getResource(file);
@@ -191,16 +186,14 @@ public class TechneModelLoader {
                             Math.toRadians(Float.parseFloat(rotation[1])),
                             Math.toRadians(Float.parseFloat(rotation[2])));
 
-                    ModelPartTechneCube cube = new ModelPartTechneCube(textureReference);
 
-                    cube.setSize(cubeSize.multiply(1 / 16d));
-                    cube.setPosition(cubePosition.multiply(1 / 16d).add(0.5, -0.5, 0.5));
+                    TechneCube cube = new TechneCube(shapeName, cubePosition.multiply(1 / 16d).add(0.5, -0.5, 0.5),
+                            cubeSize, textureReference, cubeTextureOffset.toVect2d(),
+                            (int) Math.max(textureDims != null ? textureDims.getWidth() : 32, textureDims != null ? textureDims.getHeight() : 32));
+
                     cube.setOffset(cubeOffset.multiply(1 / 16d));
                     cube.setRotation(cubeRotation);
-                    cube.setTextureOffset(cubeTextureOffset);
-                    cube.setTextureMirrored(mirrored);
-                    cube.setTextureSize((int) Math.max(textureDims != null ? textureDims.getWidth() : 32, textureDims != null ? textureDims.getHeight() : 32));
-                    cube.setName(shapeName);
+                    cube.setFlipped(mirrored);
                     cube.getQuads();
 
                     parts.add(cube);
@@ -224,13 +217,13 @@ public class TechneModelLoader {
 
     public static class TechneModelPart implements IModelPart {
 
-        protected List<ModelPartTechneCube> modelParts;
+        protected List<TechneCube> modelParts;
 
-        public TechneModelPart(List<ModelPartTechneCube> modelParts) {
+        public TechneModelPart(List<TechneCube> modelParts) {
             this.modelParts = modelParts;
         }
 
-        public List<ModelPartTechneCube> getModelParts() {
+        public List<TechneCube> getModelParts() {
             return modelParts;
         }
 
@@ -241,108 +234,6 @@ public class TechneModelLoader {
                 list.addAll(part.getQuads());
             }
             return list;
-        }
-    }
-
-    public static class TechneModel implements IDynamicModel {
-
-        protected TechneModelPart model;
-        protected PartSet total;
-        protected Vect3d offset;
-
-        public TechneModel(TechneModelPart model) {
-            this.model = model;
-            Map<String, IModelPartIdentifier> parts = new HashMap<>();
-            for (ModelPartTechneCube c : model.getModelParts()) {
-                parts.put(c.getName(), StaticAccess.GAME.getRenderRegistry().getModelRegistry().registerModelPart(c));
-            }
-            total = new PartSet(parts);
-        }
-
-        public TechneModelPart getModel() {
-            return model;
-        }
-
-
-        @Override
-        public void setOffset(Vect3d offset) {
-            this.offset = offset;
-        }
-
-        @Override
-        public void renderPartSet(IPartSet set) {
-            ((PartSet) set).render(offset);
-        }
-
-        @Override
-        public IPartSet getTotalPartSet() {
-            return total;
-        }
-
-        @Override
-        public IPartSet createFromNames(String... parts) {
-            List<String> names = Lists.newArrayList(parts);
-            Map<String, IModelPartIdentifier> ids = new HashMap<>();
-            total.getParts().entrySet().stream().filter(e -> names.contains(e.getKey())).forEach(e -> ids.put(e.getKey(), e.getValue()));
-            return new PartSet(ids);
-        }
-
-        @Override
-        public IPartSet createExcludingNames(String... parts) {
-            List<String> names = Lists.newArrayList(parts);
-            Map<String, IModelPartIdentifier> ids = new HashMap<>();
-            total.getParts().entrySet().stream().filter(e -> !names.contains(e.getKey())).forEach(e -> ids.put(e.getKey(), e.getValue()));
-            return new PartSet(ids);
-        }
-
-        @Override
-        public IPartSet createAllContains(String text) {
-            Map<String, IModelPartIdentifier> ids = new HashMap<>();
-            total.getParts().entrySet().stream().filter(e -> e.getKey().contains(text)).forEach(e -> ids.put(e.getKey(), e.getValue()));
-            return new PartSet(ids);
-        }
-
-        @Override
-        public IPartSet createAllNotContains(String text) {
-            Map<String, IModelPartIdentifier> ids = new HashMap<>();
-            total.getParts().entrySet().stream().filter(e -> !e.getKey().contains(text)).forEach(e -> ids.put(e.getKey(), e.getValue()));
-            return new PartSet(ids);
-        }
-    }
-
-    private static class PartSet implements IDynamicModel.IPartSet {
-
-        protected Map<String, IModelPartIdentifier> parts;
-        private int displayList;
-        private boolean compiled;
-
-        public PartSet(Map<String, IModelPartIdentifier> parts) {
-            this.parts = parts;
-        }
-
-        public Map<String, IModelPartIdentifier> getParts() {
-            return parts;
-        }
-
-        @Override
-        public Set<String> getPartNames() {
-            return parts.keySet();
-        }
-
-        public void render(Vect3d offset) {
-            if (!compiled) {
-                displayList = GL11.glGenLists(1);
-                GL11.glNewList(displayList, GL11.GL_COMPILE);
-                StaticAccess.GAME.getRenderManager().renderModelPartsDynamicLight(Lists.newArrayList(parts.values()));
-                GL11.glEndList();
-                compiled = true;
-            }
-            GL11.glPushMatrix();
-            if (offset != null)
-                GL11.glTranslated(offset.getX(), offset.getY(), offset.getZ());
-            StaticAccess.GAME.getRenderManager().bindBlocksTexture();
-            GL11.glCallList(displayList);
-            GL11.glPopMatrix();
         }
     }
 }

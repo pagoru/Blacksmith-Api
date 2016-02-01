@@ -73,21 +73,24 @@ public class ItemRegistry implements IItemRegistry {
     }
 
     @Override
-    public IItem getItemFromDefinition(IItemDefinition def) {
-        RegisteredItem reg = registeredItems.get(def);
-        if (reg == null) {
-            return null;
-        }
-        return reg.getIItem();
-    }
-
-    @Override
     public IItem findItem(String domain, String name) {
         Item i = GameRegistry.findItem(domain, name);
         if (i == null) {
             i = Item.itemRegistry.getObject(new ResourceLocation(domain, name));
         }
         return MCInterface.fromItem(i);
+    }
+
+    @Override
+    public String getItemDomain(IItem item) {
+        GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(MCInterface.toItem(item));
+        return ui.modId;
+    }
+
+    @Override
+    public String getItemName(IItem item) {
+        GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(MCInterface.toItem(item));
+        return ui.name;
     }
 
     public RegisteredItem getRegistrationData(IItemDefinition def) {

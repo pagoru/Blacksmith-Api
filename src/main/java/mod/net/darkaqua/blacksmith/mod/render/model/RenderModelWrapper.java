@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.mod.render.model;
 
-import net.darkaqua.blacksmith.api.render.model.IModelPartIdentifier;
+import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
@@ -46,7 +46,7 @@ public class RenderModelWrapper implements IPerspectiveAwareModel {
         }
         generalQuads = new ArrayList<>();
         transformMap = new EnumMap<>(ItemCameraTransforms.TransformType.class);
-        for (IModelPartIdentifier id : model.getParts()) {
+        for (IPartIdentifier id : model.getParts()) {
             IBakedModelPart baked = ModelRegistry.INSTANCE.getBakedModelPart(id);
             if (baked == null) {
                 throw new IllegalStateException("IStaticModel: " + model + ", has a part that was not registered");
