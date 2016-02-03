@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.api.render.techne;
 
 import com.google.common.collect.Lists;
+import net.darkaqua.blacksmith.api.modloader.IModIdentifier;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.render.model.IDynamicModel;
 import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
@@ -18,23 +19,20 @@ import java.util.function.Predicate;
  */
 public class TechneDynamicModel implements IDynamicModel {
 
-    protected TechneModelLoader.TechneModelPart model;
     protected PartSet total;
     protected Vect3d offset;
 
-    public TechneDynamicModel(TechneModelLoader.TechneModelPart model) {
-        this.model = model;
-        Map<String, IPartIdentifier> parts = new HashMap<>();
-        for (TechneCube c : model.getModelParts()) {
-            parts.put(c.getName(), StaticAccess.GAME.getRenderRegistry().getModelRegistry().registerModelPart(c));
-        }
+    public TechneDynamicModel(Map<String, IPartIdentifier> parts) {
         total = new PartSet(parts);
     }
 
-    public TechneModelLoader.TechneModelPart getModel() {
-        return model;
+    public TechneDynamicModel(IModIdentifier mod, TechneModelLoader.TechneModelPart model){
+        Map<String, IPartIdentifier> parts = new HashMap<>();
+        for (TechneCube c : model.getModelParts()) {
+            parts.put(c.getName(), StaticAccess.GAME.getRenderRegistry().getModelRegistry().registerModelPart(mod, c));
+        }
+        total = new PartSet(parts);
     }
-
 
     @Override
     public void setOffset(Vect3d offset) {

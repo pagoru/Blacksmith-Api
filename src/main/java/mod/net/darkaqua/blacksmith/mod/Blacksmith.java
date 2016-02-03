@@ -82,6 +82,7 @@ public class Blacksmith extends DummyModContainer {
                 MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
                 MinecraftForge.EVENT_BUS.register(ModelRegistry.INSTANCE);
                 manager.registerReloadListener(ResourceManager.INSTANCE);
+                manager.registerReloadListener(RenderRegistry.INSTANCE);
                 ClientRegistry.bindTileEntitySpecialRenderer(BS_TileEntity.class, BS_TileEntityRenderer.INSTANCE);
             }
             GameRegistry.registerTileEntity(BS_TileEntity.class, "Blacksmith_TE");
@@ -96,15 +97,13 @@ public class Blacksmith extends DummyModContainer {
     }
 
 
-
     @Subscribe
     public void init(FMLInitializationEvent event) {
-
         try {
-            Log.info("[BLACKSMITH] Starting InitEvent");
             if (Game.INSTANCE.isClient()) {
                 RenderManager.init();
             }
+            Log.info("[BLACKSMITH] Starting InitEvent");
             ModLoaderManager.fireInit(event);
             Log.info("[BLACKSMITH] InitEvent done");
         } catch (Exception e) {
@@ -117,9 +116,9 @@ public class Blacksmith extends DummyModContainer {
     @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
         try {
-        Log.info("Starting PostInitEvent");
-        ModLoaderManager.firePostInit(event);
-        Log.info("PostInitEvent done");
+            Log.info("Starting PostInitEvent");
+            ModLoaderManager.firePostInit(event);
+            Log.info("PostInitEvent done");
         } catch (Exception e) {
             Log.error("Error in Blacksmith postInit, please report this to the authors");
             e.printStackTrace();

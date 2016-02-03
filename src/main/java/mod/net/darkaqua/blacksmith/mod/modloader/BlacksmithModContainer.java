@@ -38,7 +38,6 @@ public class BlacksmithModContainer implements ModContainer {
     public final ModCandidate modCandidate;
     public final Map<String, Object> modDescriptor;
     public final File source;
-    private final String modLanguage;
     private final ILanguageAdapter languageAdapter;
 
     public ModMetadata metadata;
@@ -57,7 +56,7 @@ public class BlacksmithModContainer implements ModContainer {
         //TODO join this class with FMLModContainer
 
         //default FML code, will work for now
-        this.modLanguage = (String) modDescriptor.get("modLanguage");
+        String modLanguage = (String) modDescriptor.get("modLanguage");
         String languageAdapterType = (String) modDescriptor.get("modLanguageAdapter");
         if (Strings.isNullOrEmpty(languageAdapterType)) {
             this.languageAdapter = "scala".equals(modLanguage) ? new ILanguageAdapter.ScalaAdapter() : new ILanguageAdapter.JavaAdapter();
@@ -80,7 +79,7 @@ public class BlacksmithModContainer implements ModContainer {
             modClassLoader.clearNegativeCacheFor(modCandidate.getClassList());
             Class<?> clazz = Class.forName(modClass, true, modClassLoader);
             modInstance = clazz.newInstance();
-            ModLoaderManager.registerPlugin(this, modInstance);
+            ModLoaderManager.registerMod(this, modInstance);
             try {
                 for (Field f : clazz.getDeclaredFields()) {
                     if (f.isAnnotationPresent(ModInstance.class)) {

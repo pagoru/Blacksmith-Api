@@ -1,6 +1,7 @@
 package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.block.IBlockDefinition;
+import net.darkaqua.blacksmith.api.event.EventBus;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.registry.IRenderRegistry;
@@ -9,6 +10,7 @@ import net.darkaqua.blacksmith.api.render.model.providers.IBlockModelProvider;
 import net.darkaqua.blacksmith.api.render.model.providers.IItemModelProvider;
 import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
 import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
+import net.darkaqua.blacksmith.mod.event.render.ModelsRealoadEvent;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
 import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
 import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
@@ -20,6 +22,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -35,7 +39,7 @@ import java.util.Map;
 /**
  * Created by cout970 on 07/12/2015.
  */
-public class RenderRegistry implements IRenderRegistry {
+public class RenderRegistry implements IRenderRegistry, IResourceManagerReloadListener {
 
     public static final RenderRegistry INSTANCE = new RenderRegistry();
     private static ModelRegistry modelRegistry = ModelRegistry.INSTANCE;
@@ -74,7 +78,6 @@ public class RenderRegistry implements IRenderRegistry {
 
         locationToBakedModel.put(new ModelResourceLocation(Block.blockRegistry.getNameForObject(reg.getBlock()), "normal"), new BakedBlockModel(reg.getBlock()));
         registeredBlockModelProviders.put(reg.getBlock(), provider);
-        provider.registerModels(modelRegistry);
 
 
         //Item
@@ -118,7 +121,6 @@ public class RenderRegistry implements IRenderRegistry {
 
         locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItem()), "normal"), new BakedItemModel());
         registeredItemModelProviders.put(reg.getItem(), provider);
-        provider.registerModels(modelRegistry);
         return true;
     }
 
@@ -144,6 +146,15 @@ public class RenderRegistry implements IRenderRegistry {
 
     @SubscribeEvent
     public void onBakedEvent(ModelBakeEvent event) {
+        //TODO move this to a usefull place
+//        try {
+//            for (BlockRegistry.RegisteredBlock reg : BlockRegistry.INSTANCE.getAllRegisteredBlocks()) {
+//                event.modelManager.getBlockModelShapes().registerBuiltInBlocks(reg.getBlock());
+//            }
+//        } catch (Exception e) {
+//            Log.error("Error trying to disable json model loading for blacksmith blocks");
+//            e.printStackTrace();
+//        }
         for (Map.Entry<ModelResourceLocation, IBakedModel> e : locationToBakedModel.entrySet()) {
             event.modelRegistry.putObject(e.getKey(), e.getValue());
         }
@@ -164,5 +175,17 @@ public class RenderRegistry implements IRenderRegistry {
             modelCache.put(id, new RenderModelWrapper(id));
         }
         return modelCache.get(id);
+    }
+
+    @Override
+    public void onResourceManagerReload(IResourceManager resourceManager) {
+        modelRegistry.reloadResources();
+        EventBus.postEvent(new ModelsRealoadEvent(modelRegistry));
+        for (IBlockModelProvider p : registeredBlockModelProviders.values()) {
+            p.reloadModels(modelRegistry);
+        }
+        for (IItemModelProvider p : registeredItemModelProviders.values()) {
+            p.reloadModels(modelRegistry);
+        }
     }
 }

@@ -1,13 +1,12 @@
 package net.darkaqua.blacksmith.api.render.model.providers.defaults;
 
 import com.google.common.collect.Lists;
-import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.modloader.IModIdentifier;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.IPartIdentifier;
 import net.darkaqua.blacksmith.api.render.model.IStaticModel;
 import net.darkaqua.blacksmith.api.render.model.RenderPlace;
 import net.darkaqua.blacksmith.api.render.model.RenderTransformation;
-import net.darkaqua.blacksmith.api.render.model.providers.IItemModelProvider;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 
@@ -17,30 +16,17 @@ import java.util.function.Function;
 /**
  * Created by cout970 on 21/12/2015.
  */
-public class ItemFlatModelProvider implements IItemModelProvider {
+public class PlaneItemModelProvider extends SimpleItemModelProvider {
 
-    protected ResourceReference texture;
     protected IStaticModel model;
-    protected Function<IPartIdentifier, IStaticModel> builder;
+    protected Function<IModelRegistry, IStaticModel> modelGenerator;
 
-    public ItemFlatModelProvider(ResourceReference texture) {
-        this.texture = texture;
-        builder = ItemFlatModel::new;
+    public PlaneItemModelProvider(IModIdentifier mod, ResourceReference texture) {
+        super(reg -> new ItemFlatModel(reg.registerFlatItemModel(mod, texture)));
     }
 
-    public ItemFlatModelProvider(ResourceReference texture, Function<IPartIdentifier, IStaticModel> builder) {
-        this.texture = texture;
-        this.builder = builder;
-    }
-
-    @Override
-    public IStaticModel getModelForVariant(IItemStack stack) {
-        return model;
-    }
-
-    @Override
-    public void registerModels(IModelRegistry registry) {
-        model = builder.apply(registry.registerFlatItemModel(texture));
+    public PlaneItemModelProvider(IModIdentifier mod, ResourceReference texture, Function<RenderPlace, RenderTransformation> transform) {
+        super(reg -> new ItemFlatModel(reg.registerFlatItemModel(mod, texture), transform));
     }
 
     public static class ItemFlatModel implements IStaticModel {

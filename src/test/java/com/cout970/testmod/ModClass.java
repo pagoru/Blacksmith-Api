@@ -4,7 +4,6 @@ import com.cout970.testmod.blocks.StatefullBlock;
 import com.cout970.testmod.blocks.TestBlock;
 import com.cout970.testmod.gui.GuiTestHandler;
 import com.cout970.testmod.items.TestItem;
-import com.cout970.testmod.model.TileTestBlockRenderer;
 import com.cout970.testmod.network.NetworkManager;
 import com.cout970.testmod.tile.TileTestBlock;
 import net.darkaqua.blacksmith.api.block.Blocks;
@@ -22,12 +21,6 @@ import net.darkaqua.blacksmith.api.item.Items;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.render.model.providers.defaults.EmptyBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.model.providers.defaults.ItemFlatModelProvider;
-import net.darkaqua.blacksmith.api.render.model.providers.defaults.SimpleBlockModelProvider;
-import net.darkaqua.blacksmith.api.render.techne.TechneDynamicModel;
-import net.darkaqua.blacksmith.api.render.techne.TechneModelLoader;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.mod.util.Log;
 
 import java.io.File;
@@ -67,13 +60,13 @@ public class ModClass {
         StaticAccess.GAME.getTileEntityRegistry().registerTileEntityDefinition(TileTestBlock.class, "TileTestBlock");
 
         if (StaticAccess.GAME.isClient()) {
-            TileTestBlockRenderer.model = new TechneDynamicModel(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
-            StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
-                    new ItemFlatModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
-
-            SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
-            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
-            StaticAccess.GAME.getRenderRegistry().registerTileEntityRenderer(TileTestBlock.class, new TileTestBlockRenderer());
+//            TileTestBlockRenderer.model = new TechneDynamicModel(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
+//            StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
+//                    new PlaneItemModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
+//
+//            SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
+//            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
+//            StaticAccess.GAME.getRenderRegistry().registerTileEntityRenderer(TileTestBlock.class, new TileTestBlockRenderer());
         }
 
         StaticAccess.GAME.getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);

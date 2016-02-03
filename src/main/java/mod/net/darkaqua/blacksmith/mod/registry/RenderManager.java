@@ -144,6 +144,7 @@ public class RenderManager implements IRenderManager {
 
         for (IPartIdentifier id : parts) {
             IBakedModelPart model = ModelRegistry.INSTANCE.getBakedModelPart(id);
+            if (model == null) continue;
             for (BakedQuad quad : model.getGeneralQuads()) {
                 int[] data = quad.getVertexData();
                 for (int i = 0; i < 4; i++) {

@@ -13,5 +13,5 @@ public interface IItemModelProvider {
 
     IStaticModel getModelForVariant(IItemStack stack);
 
-    void registerModels(IModelRegistry registry);
+    void reloadModels(IModelRegistry registry);
 }

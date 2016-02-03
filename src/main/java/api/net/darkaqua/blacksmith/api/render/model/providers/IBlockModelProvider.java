@@ -16,5 +16,5 @@ public interface IBlockModelProvider {
 
     IStaticModel getModelForItemBlock(IItemStack stack);
 
-    void registerModels(IModelRegistry registry);
+    void reloadModels(IModelRegistry registry);
 }

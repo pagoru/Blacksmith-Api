@@ -23,6 +23,6 @@ public class ItemBlockModelProvider implements IItemModelProvider {
     }
 
     @Override
-    public void registerModels(IModelRegistry registry) {
+    public void reloadModels(IModelRegistry registry) {
     }
 }

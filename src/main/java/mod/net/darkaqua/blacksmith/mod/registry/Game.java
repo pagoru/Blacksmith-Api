@@ -77,6 +77,11 @@ public class Game implements IGame {
     }
 
     @Override
+    public IModManager getModManager() {
+        return ModManager.INSTANCE;
+    }
+
+    @Override
     public IParticleManager getParticleManager() {
         return ParticleManager.INSTANCE;
     }

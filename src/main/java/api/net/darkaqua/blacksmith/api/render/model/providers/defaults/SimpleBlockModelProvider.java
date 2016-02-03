@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.api.render.model.providers.defaults;
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.modloader.IModIdentifier;
 import net.darkaqua.blacksmith.api.registry.IModelRegistry;
 import net.darkaqua.blacksmith.api.render.model.*;
 import net.darkaqua.blacksmith.api.render.model.providers.IBlockModelProvider;
@@ -10,18 +11,22 @@ import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect3d;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Created by cout970 on 14/12/2015.
  */
 public class SimpleBlockModelProvider implements IBlockModelProvider {
 
-    protected IPartIdentifier identifier;
-    protected IModelPart component;
     protected IStaticModel model;
+    protected Function<IModelRegistry, IStaticModel> modelGenerator;
 
-    public SimpleBlockModelProvider(IModelPart component) {
-        this.component = component;
+    public SimpleBlockModelProvider(Function<IModelRegistry, IStaticModel> modelGenerator) {
+        this.modelGenerator = modelGenerator;
+    }
+
+    public SimpleBlockModelProvider(IModIdentifier mod, IModelPart part){
+        this(reg -> new BlockModel(reg.registerModelPart(mod, part)));
     }
 
     @Override
@@ -35,15 +40,14 @@ public class SimpleBlockModelProvider implements IBlockModelProvider {
     }
 
     @Override
-    public void registerModels(IModelRegistry registry) {
-        identifier = registry.registerModelPart(component);
-        model = new BlockModel(identifier);
+    public void reloadModels(IModelRegistry registry) {
+        model = modelGenerator.apply(registry);
     }
-
 
     public static class BlockModel implements IStaticModel {
 
         protected IPartIdentifier component;
+        protected Function<RenderPlace, RenderTransformation> transform;
 
         public BlockModel(IPartIdentifier component) {
             this.component = component;

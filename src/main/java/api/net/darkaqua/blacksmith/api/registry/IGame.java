@@ -29,6 +29,8 @@ public interface IGame {
 
     IInterModRegistry getInterModRegistry();
 
+    IModManager getModManager();
+
     //Server
 
     IServerHandler getServer();

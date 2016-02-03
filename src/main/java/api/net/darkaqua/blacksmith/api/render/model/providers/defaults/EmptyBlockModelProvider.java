@@ -25,6 +25,5 @@ public class EmptyBlockModelProvider implements IBlockModelProvider {
     }
 
     @Override
-    public void registerModels(IModelRegistry registry) {
-    }
+    public void reloadModels(IModelRegistry registry) {}
 }

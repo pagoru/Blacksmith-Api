@@ -7,7 +7,6 @@ import net.darkaqua.blacksmith.api.util.Direction;
 import net.darkaqua.blacksmith.api.util.ResourceReference;
 import net.darkaqua.blacksmith.api.util.Vect2d;
 import net.darkaqua.blacksmith.api.util.Vect3d;
-import net.darkaqua.blacksmith.mod.util.Log;
 
 import java.util.Arrays;
 import java.util.List;
@@ -99,8 +98,6 @@ public class TechneCube implements IModelPart {
 
         double offsetX = textureOffset.getX() * pixel;
         double offsetY = textureOffset.getY() * pixel;
-
-        Log.debug(name + ": pixel = " + pixel + ", width = " + width + ", height = " + height + ", length = " + length + ", offsetX = " + offsetX + ", offsetY = " + offsetY);
 
         quadList[0] = new Quad(new Vertex[]{vertex6.copy(), vertex2.copy(), vertex3.copy(), vertex7.copy()},
                 offsetX + length + width,
