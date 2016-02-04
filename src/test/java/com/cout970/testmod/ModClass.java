@@ -21,6 +21,7 @@ import net.darkaqua.blacksmith.api.item.Items;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
 import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
+import net.darkaqua.blacksmith.api.render.model.providers.defaults.EmptyBlockModelProvider;
 import net.darkaqua.blacksmith.mod.util.Log;
 
 import java.io.File;
@@ -56,10 +57,13 @@ public class ModClass {
         IItemDefinition itemDef = new TestItem();
         testBlock = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
         item = StaticAccess.GAME.getItemRegistry().registerItemDefinition(itemDef, "item_identifier");
-        blockStatefull = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(new StatefullBlock(), "stateFullBlock");
+        IBlockDefinition statefull = new StatefullBlock();
+        blockStatefull = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(statefull, "stateFullBlock");
         StaticAccess.GAME.getTileEntityRegistry().registerTileEntityDefinition(TileTestBlock.class, "TileTestBlock");
 
         if (StaticAccess.GAME.isClient()) {
+            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
+            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(statefull, new EmptyBlockModelProvider());
 //            TileTestBlockRenderer.model = new TechneDynamicModel(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
 //            StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
 //                    new PlaneItemModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));

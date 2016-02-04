@@ -115,11 +115,11 @@ public class RenderRegistry implements IRenderRegistry, IResourceManagerReloadLi
         ModelLoader.setCustomMeshDefinition(reg.getItem(), new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "normal");
+                return new ModelResourceLocation(Item.itemRegistry.getNameForObject(stack.getItem()), "inventory");
             }
         });
 
-        locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItem()), "normal"), new BakedItemModel());
+        locationToBakedModel.put(new ModelResourceLocation(Item.itemRegistry.getNameForObject(reg.getItem()), "inventory"), new BakedItemModel());
         registeredItemModelProviders.put(reg.getItem(), provider);
         return true;
     }
@@ -146,15 +146,6 @@ public class RenderRegistry implements IRenderRegistry, IResourceManagerReloadLi
 
     @SubscribeEvent
     public void onBakedEvent(ModelBakeEvent event) {
-        //TODO move this to a usefull place
-//        try {
-//            for (BlockRegistry.RegisteredBlock reg : BlockRegistry.INSTANCE.getAllRegisteredBlocks()) {
-//                event.modelManager.getBlockModelShapes().registerBuiltInBlocks(reg.getBlock());
-//            }
-//        } catch (Exception e) {
-//            Log.error("Error trying to disable json model loading for blacksmith blocks");
-//            e.printStackTrace();
-//        }
         for (Map.Entry<ModelResourceLocation, IBakedModel> e : locationToBakedModel.entrySet()) {
             event.modelRegistry.putObject(e.getKey(), e.getValue());
         }
