@@ -25,7 +25,7 @@ public class SimpleBlockModelProvider implements IBlockModelProvider {
         this.modelGenerator = modelGenerator;
     }
 
-    public SimpleBlockModelProvider(IModIdentifier mod, IModelPart part){
+    public SimpleBlockModelProvider(IModIdentifier mod, IModelPart part) {
         this(reg -> new BlockModel(reg.registerModelPart(mod, part)));
     }
 
@@ -51,19 +51,22 @@ public class SimpleBlockModelProvider implements IBlockModelProvider {
 
         public BlockModel(IPartIdentifier component) {
             this.component = component;
+            transform = place -> {
+                if (place == RenderPlace.THIRD_PERSON || place == RenderPlace.THIRD_PERSON_LEFT_HAND || place == RenderPlace.THIRD_PERSON_RIGHT_HAND) {
+                    return new RenderTransformation(new Vect3d(0, 1.5, -2.75).multiply(0.0625F), new Vect3d(10.0, -45.0, 170.0), new Vect3d(0.375f, 0.375f, 0.375f));
+                }
+                return null;
+            };
         }
 
-        @Override
-        public String getName() {
-            return "BlockModel";
+        public BlockModel(IPartIdentifier component, Function<RenderPlace, RenderTransformation> transform){
+            this(component);
+            this.transform = transform;
         }
 
         @Override
         public RenderTransformation getTransformation(RenderPlace place) {
-            if (place == RenderPlace.THIRD_PERSON || place == RenderPlace.THIRD_PERSON_LEFT_HAND || place == RenderPlace.THIRD_PERSON_RIGHT_HAND) {
-                return new RenderTransformation(new Vect3d(0, 1.5, -2.75).multiply(0.0625F), new Vect3d(10.0, -45.0, 170.0), new Vect3d(0.375f, 0.375f, 0.375f));
-            }
-            return null;
+            return transform.apply(place);
         }
 
         @Override

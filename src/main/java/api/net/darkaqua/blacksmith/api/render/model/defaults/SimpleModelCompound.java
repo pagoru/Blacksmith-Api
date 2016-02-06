@@ -29,11 +29,6 @@ public class SimpleModelCompound implements IStaticModel {
     }
 
     @Override
-    public String getName() {
-        return "ModelCompound";
-    }
-
-    @Override
     public List<IPartIdentifier> getParts() {
         return parts;
     }

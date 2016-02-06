@@ -68,11 +68,6 @@ public class SimpleItemModelProvider implements IItemModelProvider {
         }
 
         @Override
-        public String getName() {
-            return "ItemModel";
-        }
-
-        @Override
         public RenderTransformation getTransformation(RenderPlace place) {
 
             return transform.apply(place);

@@ -15,11 +15,6 @@ import java.util.List;
 public class EmptyModel implements IStaticModel {
 
     @Override
-    public String getName() {
-        return "empty";
-    }
-
-    @Override
     public boolean useAmbientOcclusion() {
         return false;
     }

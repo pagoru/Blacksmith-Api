@@ -52,11 +52,6 @@ public class PlaneItemModelProvider extends SimpleItemModelProvider {
         }
 
         @Override
-        public String getName() {
-            return "FlatItemModel";
-        }
-
-        @Override
         public RenderTransformation getTransformation(RenderPlace place) {
             return transform.apply(place);
         }

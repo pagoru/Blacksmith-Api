@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import net.darkaqua.blacksmith.api.modloader.ModIdentifier;
 import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.modloader.ModSidedProxy;
 import net.darkaqua.blacksmith.mod.exceptions.BlacksmithInternalException;
@@ -53,7 +54,7 @@ public class BlacksmithModContainer implements ModContainer {
         this.modCandidate = candidate;
         this.modDescriptor = descriptor;
         source = candidate.getModContainer();
-        //TODO join this class with FMLModContainer
+        //TODO join this class with FMLModContainerWrapper
 
         //default FML code, will work for now
         String modLanguage = (String) modDescriptor.get("modLanguage");
@@ -83,18 +84,35 @@ public class BlacksmithModContainer implements ModContainer {
             try {
                 for (Field f : clazz.getDeclaredFields()) {
                     if (f.isAnnotationPresent(ModInstance.class)) {
-                        f.set(modInstance, modInstance);
+                        ModInstance ann = f.getAnnotation(ModInstance.class);
+                        if (ann.value().equals("")) {
+                            f.set(modInstance, modInstance);
+                        } else {
+                            if (Loader.isModLoaded(ann.value())) {
+                                ModContainer mc = Loader.instance().getIndexedModList().get(ann.value());
+                                f.set(modInstance, mc.getMod());
+                            }
+                        }
                     }
                 }
             } catch (ReflectiveOperationException e) {
                 Log.warn("Error trying to place a mod instance in a field marked with @ModInstance: " + clazz);
+            }
+            try {
+                for (Field f : clazz.getDeclaredFields()) {
+                    if (f.isAnnotationPresent(ModIdentifier.class)) {
+                        f.set(modInstance, ModLoaderManager.getModIdentifier(modInstance));
+                    }
+                }
+            } catch (ReflectiveOperationException e) {
+                Log.warn("Error trying to place a mod identifier in a field marked with @ModIdentifier: " + clazz);
             }
 
             CustomProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), languageAdapter);
             InterModRegistry.onModConstructs(event.getASMHarvestedData());
         } catch (Exception e) {
             System.out.println("=========================================================================================");
-            System.out.println("Error trying to construct mod: "+modClass);
+            System.out.println("Error trying to construct mod: " + modClass);
             System.out.println("=========================================================================================");
             Throwables.propagate(new BlacksmithInternalException(e));
         }

@@ -79,7 +79,7 @@ public enum Direction {
         return offsets.equals(offset);
     }
 
-    public AxisDirection getAxisDirection(){
+    public AxisDirection getAxisDirection() {
         return axisDir;
     }
 
@@ -90,20 +90,36 @@ public enum Direction {
 
         private int negative;
 
-        Axis(int neg){
+        Axis(int neg) {
             this.negative = neg;
         }
 
-        public Direction getPositiveDir(){
+        public Direction getPositiveDir() {
             return getDirection(negative).opposite();
         }
 
-        public Direction getNegativeDir(){
+        public Direction getNegativeDir() {
             return getDirection(negative);
         }
 
-        public Direction getDirectionByAxisDirection(AxisDirection a){
+        public Direction getDirectionByAxisDirection(AxisDirection a) {
             return a == AxisDirection.POSITIVE ? getPositiveDir() : getNegativeDir();
+        }
+
+        public Direction[] getParallelDirections() {
+            return new Direction[]{getNegativeDir(), getPositiveDir()};
+        }
+
+        public Direction[] getPerpendicularDirections() {
+            Direction[] dirs = new Direction[4];
+            int index = 0;
+            for (Direction dir : Direction.values()) {
+                if (dir.getAxis() != this) {
+                    dirs[index] = dir;
+                    index++;
+                }
+            }
+            return dirs;
         }
     }
 
@@ -113,11 +129,11 @@ public enum Direction {
 
         private int direction;
 
-        AxisDirection(int direction){
+        AxisDirection(int direction) {
             this.direction = direction;
         }
 
-        public Direction getDirectionByAxis(Axis a){
+        public Direction getDirectionByAxis(Axis a) {
             return this == POSITIVE ? a.getPositiveDir() : a.getNegativeDir();
         }
     }

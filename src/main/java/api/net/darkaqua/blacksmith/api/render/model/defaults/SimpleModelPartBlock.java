@@ -10,6 +10,7 @@ import net.darkaqua.blacksmith.api.util.Vect3d;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Created by cout970 on 19/12/2015.
@@ -27,8 +28,11 @@ public class SimpleModelPartBlock implements IModelPart {
         generateQuads();
     }
 
-    public SimpleModelPartBlock(EnumMap<Direction, ResourceReference> textures) {
-        this.textures = new EnumMap<>(textures);
+    public SimpleModelPartBlock(Function<Direction, ResourceReference> tex) {
+        this.textures = new EnumMap<>(Direction.class);
+        for(Direction d : Direction.values()){
+            textures.put(d, tex.apply(d));
+        }
         generateQuads();
     }
 

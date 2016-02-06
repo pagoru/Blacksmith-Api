@@ -11,11 +11,9 @@ import java.util.List;
 @Implementable
 public interface IStaticModel {
 
-    String getName();
+    List<IPartIdentifier> getParts();
 
     RenderTransformation getTransformation(RenderPlace place);
-
-    List<IPartIdentifier> getParts();
 
     boolean useAmbientOcclusion();
 

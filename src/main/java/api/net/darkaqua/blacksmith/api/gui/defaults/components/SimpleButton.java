@@ -28,6 +28,10 @@ public class SimpleButton extends AbstractStateButton {
         this.uvMapper = uvMapper;
     }
 
+    public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, @Nonnull ButtonListener listener, Vect2i offset) {
+        this(pos, size, texture, null, null, listener, offset);
+    }
+
     public SimpleButton(Vect2i pos, Vect2i size, ResourceReference texture, String text, String tooltip, @Nonnull ButtonListener listener, Vect2i offset) {
         super(pos, size, texture, text, tooltip, listener);
         Vect2i offset2 = offset.copy();
