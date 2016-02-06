@@ -4,6 +4,7 @@ import net.darkaqua.blacksmith.api.command.ICommandExecutor;
 import net.darkaqua.blacksmith.api.intermod.IInterfaceProvider;
 import net.darkaqua.blacksmith.api.inventory.IInventoryHandler;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
+import net.darkaqua.blacksmith.api.modloader.IModIdentifier;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.Vect3i;
 import net.darkaqua.blacksmith.api.util.WorldRef;
@@ -22,11 +23,11 @@ public interface IPlayer extends ILivingEntity, ICommandExecutor, IInterfaceProv
 
     boolean isSneaking();
 
-    default void openGui(Object mod, int guiId, IWorld world, Vect3i pos) {
+    default void openGui(IModIdentifier mod, int guiId, IWorld world, Vect3i pos) {
         openGui(mod, guiId, new WorldRef(world, pos));
     }
 
-    default void openGui(Object mod, int guiId, WorldRef ref) {
+    default void openGui(IModIdentifier mod, int guiId, WorldRef ref) {
         StaticAccess.GAME.getGuiRegistry().openGui(this, ref, guiId, mod);
     }
 }

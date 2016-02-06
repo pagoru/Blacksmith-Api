@@ -46,7 +46,7 @@ public class TestBlock extends DefaultBlockDefinition implements IBlockContainer
 
     @Override
     public boolean onActivated(WorldRef ref, IBlockData data, IPlayer player, Direction side, Vect3d ray) {
-        player.openGui(ModClass.instance, 0, ref);
+        player.openGui(ModClass.MOD_IDENTIFIER, 0, ref);
         return false;
     }
 }

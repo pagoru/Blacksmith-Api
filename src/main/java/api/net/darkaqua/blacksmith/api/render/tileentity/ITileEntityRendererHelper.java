@@ -16,4 +16,8 @@ public interface ITileEntityRendererHelper {
     IFontRenderer getFontRenderer();
 
     IWorld getWorld();
+
+    void disableStandardItemLighting();
+
+    void enableStandardItemLighting();
 }

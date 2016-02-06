@@ -36,7 +36,7 @@ public class ModLoaderManager {
         if (plugin == null)
             return null;
         for (BlacksmithModContainer o : loadedMods) {
-            if (plugin.equals(o.modInstance)) {
+            if (plugin.equals(o.getMod())) {
                 return o.getModId();
             }
         }

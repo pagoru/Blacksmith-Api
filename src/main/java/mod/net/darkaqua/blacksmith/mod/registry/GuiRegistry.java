@@ -2,6 +2,7 @@ package net.darkaqua.blacksmith.mod.registry;
 
 import net.darkaqua.blacksmith.api.entity.IPlayer;
 import net.darkaqua.blacksmith.api.gui.IGuiCreationHandler;
+import net.darkaqua.blacksmith.api.modloader.IModIdentifier;
 import net.darkaqua.blacksmith.api.registry.IGuiRegistry;
 import net.darkaqua.blacksmith.api.util.WorldRef;
 import net.darkaqua.blacksmith.mod.gui.BS_GuiHandler;
@@ -27,7 +28,7 @@ public class GuiRegistry implements IGuiRegistry {
     }
 
     @Override
-    public void openGui(IPlayer player, WorldRef ref, int id, Object modInstance) {
-        MCInterface.fromPlayer(player).openGui(modInstance, id, MCInterface.toWorld(ref.getWorld()), ref.getPosition().getX(), ref.getPosition().getY(), ref.getPosition().getZ());
+    public void openGui(IPlayer player, WorldRef ref, int id, IModIdentifier modInstance) {
+        MCInterface.fromPlayer(player).openGui(modInstance.getModInstance(), id, MCInterface.toWorld(ref.getWorld()), ref.getPosition().getX(), ref.getPosition().getY(), ref.getPosition().getZ());
     }
 }

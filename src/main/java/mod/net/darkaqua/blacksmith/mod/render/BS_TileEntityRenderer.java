@@ -10,6 +10,7 @@ import net.darkaqua.blacksmith.mod.registry.RenderRegistry;
 import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
 import net.darkaqua.blacksmith.mod.tileentity.TileEntityWrapper;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 
@@ -61,6 +62,16 @@ public class BS_TileEntityRenderer extends TileEntitySpecialRenderer<BS_TileEnti
         @Override
         public IWorld getWorld() {
             return MCInterface.fromWorld(INSTANCE.getWorld());
+        }
+
+        @Override
+        public void disableStandardItemLighting() {
+            RenderHelper.disableStandardItemLighting();
+        }
+
+        @Override
+        public void enableStandardItemLighting() {
+            RenderHelper.enableStandardItemLighting();
         }
     }
 }

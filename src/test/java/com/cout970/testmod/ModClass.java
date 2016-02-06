@@ -19,6 +19,8 @@ import net.darkaqua.blacksmith.api.item.IItem;
 import net.darkaqua.blacksmith.api.item.IItemDefinition;
 import net.darkaqua.blacksmith.api.item.Items;
 import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
+import net.darkaqua.blacksmith.api.modloader.IModIdentifier;
+import net.darkaqua.blacksmith.api.modloader.ModIdentifier;
 import net.darkaqua.blacksmith.api.modloader.ModInstance;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.render.model.providers.defaults.EmptyBlockModelProvider;
@@ -36,8 +38,11 @@ public class ModClass {
     public static final String MOD_NAME = "mod_name";
     public static final String MOD_VERSION = "mod_version";
 
+
     @ModInstance
     public static ModClass instance;
+    @ModIdentifier
+    public static IModIdentifier MOD_IDENTIFIER;
 
     public static IBlock testBlock;
     public static IBlock blockStatefull;
