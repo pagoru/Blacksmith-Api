@@ -46,7 +46,7 @@ public class BS_Block extends Block {
         setLightLevel((int)(def.getLightEmitted()* 15));
         setBlockBounds(0, 0, 0, 1, 1, 1);
         useNeighborBrightness = false;
-        blockstate = MCInterface.fromBlockDataGenerator(definition.getBlockDataGenerator());
+        blockstate = MCInterface.fromBlockDataHandler(definition.getBlockDataGenerator());
         IBlockData data = def.onCreateDefaultBlockData(MCInterface.fromBlockState(blockstate.getBaseState()));
         this.setDefaultState(MCInterface.toBlockState(data));
     }

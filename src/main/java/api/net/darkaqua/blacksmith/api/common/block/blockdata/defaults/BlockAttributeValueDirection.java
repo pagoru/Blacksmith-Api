@@ -8,7 +8,7 @@ import net.darkaqua.blacksmith.api.common.util.Direction;
 /**
  * Created by cout970 on 15/01/2016.
  */
-public class BlockAttributeValueDirection implements IBlockAttributeValue {
+public class BlockAttributeValueDirection implements IBlockAttributeValue<Direction> {
 
     public static final BlockAttributeValueDirection DOWN = new BlockAttributeValueDirection(Direction.DOWN);
     public static final BlockAttributeValueDirection UP = new BlockAttributeValueDirection(Direction.UP);
@@ -29,33 +29,29 @@ public class BlockAttributeValueDirection implements IBlockAttributeValue {
         this.value = value;
     }
 
-    public Direction getDirection(){
-        return value;
-    }
-
     @Override
-    public String getName() {
+    public String getValueName() {
         return value.name();
     }
 
     @Override
-    public String toString(){
-        return getName();
-    }
-
-    @Override
-    public Object getValue() {
+    public Direction getValue() {
         return value;
     }
 
     @Override
-    public IBlockAttributeValue getCanonicalValue() {
+    public String toString(){
+        return getValueName();
+    }
+
+    @Override
+    public IBlockAttributeValue<Direction> getCanonicalValue() {
         return VALUES[value.ordinal()];
     }
 
     @Override
-    public int compareTo(IBlockAttributeValue o) {
-        return o instanceof BlockAttributeValueDirection ? ((BlockAttributeValueDirection) o).value.compareTo(value) : -1;
+    public int compareTo(Direction o) {
+        return value.compareTo(o);
     }
 
     @Override

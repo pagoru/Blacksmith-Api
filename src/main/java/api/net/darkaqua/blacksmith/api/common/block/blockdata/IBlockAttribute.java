@@ -1,13 +1,13 @@
 package net.darkaqua.blacksmith.api.common.block.blockdata;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by cout970 on 15/01/2016.
  */
-public interface IBlockAttribute {
+public interface IBlockAttribute<T extends IBlockAttributeValue<T>> {
 
-    String getName();
+    String getAttributeName();
 
-    List<IBlockAttributeValue> getValidValues();
+    Set<T> getValidValues();
 }

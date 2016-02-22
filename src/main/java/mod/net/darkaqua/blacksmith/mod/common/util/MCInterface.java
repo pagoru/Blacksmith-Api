@@ -4,8 +4,8 @@ import net.darkaqua.blacksmith.api.common.block.IBlock;
 import net.darkaqua.blacksmith.api.common.block.IBlockMaterial;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
-import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.client.creativetab.ICreativeTab;
+import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
 import net.darkaqua.blacksmith.api.common.entity.IEntity;
 import net.darkaqua.blacksmith.api.common.entity.ILivingEntity;
 import net.darkaqua.blacksmith.api.common.entity.IPlayer;
@@ -31,7 +31,6 @@ import net.darkaqua.blacksmith.api.common.util.vectors.Vect3i;
 import net.darkaqua.blacksmith.api.common.world.*;
 import net.darkaqua.blacksmith.mod.common.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.common.block.MaterialWrapper;
-import net.darkaqua.blacksmith.mod.common.block.blockdata.BlockPropertyWrapper;
 import net.darkaqua.blacksmith.mod.common.block.blockdata.BlockStateWrapper;
 import net.darkaqua.blacksmith.mod.common.block.blockdata.IBlockStateWrapper;
 import net.darkaqua.blacksmith.mod.client.creativetab.CreativeTabWrapper;
@@ -433,9 +432,10 @@ public class MCInterface {
         if (attr instanceof IProperty) {
             return (IProperty) attr;
         }
-        if (attr instanceof BlockPropertyWrapper) {
-            return ((BlockPropertyWrapper) attr).getProperty();
-        }
+        //TODO
+//        if (attr instanceof BlockPropertyWrapper) {
+//            return ((BlockPropertyWrapper) attr).getProperty();
+//        }
         return null;
     }
 
@@ -444,15 +444,17 @@ public class MCInterface {
         if (p instanceof IBlockAttribute) {
             return (IBlockAttribute) p;
         }
-        return new BlockPropertyWrapper(p);
+        //TODO
+//        return new BlockPropertyWrapper(p);
+        return null;
     }
 
-    public static IBlockDataGenerator toBlockDataGenerator(BlockState gen) {
+    public static IBlockDataHandler toBlockDataHandler(BlockState gen) {
         if (gen == null) return null;
         return new BlockStateWrapper(gen);
     }
 
-    public static BlockState fromBlockDataGenerator(IBlockDataGenerator gen) {
+    public static BlockState fromBlockDataHandler(IBlockDataHandler gen) {
         if (gen instanceof BlockStateWrapper) {
             return ((BlockStateWrapper) gen).getBlockState();
         }

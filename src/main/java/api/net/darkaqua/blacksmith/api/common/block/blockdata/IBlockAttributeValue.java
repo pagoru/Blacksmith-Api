@@ -6,11 +6,11 @@ import net.darkaqua.blacksmith.api.common.util.annotations.Implementable;
  * Created by cout970 on 15/01/2016.
  */
 @Implementable
-public interface IBlockAttributeValue extends Comparable<IBlockAttributeValue> {
+public interface IBlockAttributeValue<T> extends Comparable<T> {
 
-    String getName();
+    String getValueName();
 
-    Object getValue();
+    T getValue();
 
-    IBlockAttributeValue getCanonicalValue();
+    IBlockAttributeValue<T> getCanonicalValue();
 }

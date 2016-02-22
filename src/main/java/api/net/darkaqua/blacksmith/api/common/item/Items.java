@@ -205,7 +205,7 @@ public enum Items {
     }
 
     /**
-     * @return the unique identifier of the block, usually used on "minecraft:" + getName()
+     * @return the unique identifier of the block, usually used on "minecraft:" + getAttributeName()
      */
     public String getName() {
         return name;

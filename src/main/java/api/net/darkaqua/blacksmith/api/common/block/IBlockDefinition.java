@@ -3,8 +3,8 @@ package net.darkaqua.blacksmith.api.common.block;
 import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.common.block.blockdata.BlockDataFactory;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
-import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataGenerator;
 import net.darkaqua.blacksmith.api.client.creativetab.ICreativeTab;
+import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
 import net.darkaqua.blacksmith.api.common.entity.IEntity;
 import net.darkaqua.blacksmith.api.common.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.common.inventory.ItemStackFactory;
@@ -54,8 +54,8 @@ public interface IBlockDefinition {
      * Creates a new IBlockDataGenerator that will create the default IBlockData
      * using the block and an array of attributes
      */
-    default IBlockDataGenerator getBlockDataGenerator() {
-        return BlockDataFactory.createBlockDataGenerator(getBlock());
+    default IBlockDataHandler getBlockDataGenerator() {
+        return BlockDataFactory.createBlockDataHandler(getBlock());
     }
 
     /**

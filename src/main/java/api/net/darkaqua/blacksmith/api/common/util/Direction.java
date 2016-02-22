@@ -2,7 +2,7 @@ package net.darkaqua.blacksmith.api.common.util;
 
 import net.darkaqua.blacksmith.api.common.util.vectors.Vect3i;
 
-public enum Direction {
+public enum Direction{
 
     DOWN(0, -1, 0, Axis.Y, AxisDirection.NEGATIVE),
     UP(0, 1, 0, Axis.Y, AxisDirection.POSITIVE),

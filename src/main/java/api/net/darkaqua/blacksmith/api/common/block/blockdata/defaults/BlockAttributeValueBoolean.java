@@ -18,7 +18,7 @@ public class BlockAttributeValueBoolean implements IBlockAttributeValue {
     }
 
     @Override
-    public String getName() {
+    public String getValueName() {
         return ""+value;
     }
 
@@ -39,7 +39,7 @@ public class BlockAttributeValueBoolean implements IBlockAttributeValue {
 
     @Override
     public String toString(){
-        return getName();
+        return getValueName();
     }
 
     @Override

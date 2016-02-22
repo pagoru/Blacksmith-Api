@@ -9,39 +9,24 @@ import java.util.*;
 /**
  * Created by cout970 on 15/01/2016.
  */
-public class BlockAttribute implements IBlockAttribute, IProperty<IBlockAttributeValue> {
+public class BlockAttribute<T extends IBlockAttributeValue<T>> implements IBlockAttribute<T>, IProperty<T> {
 
     private String name;
-    private List<IBlockAttributeValue> values;
+    private Set<T> values;
 
-    public BlockAttribute(String name, List<IBlockAttributeValue> values) {
+    public BlockAttribute(String name, Set<T> values) {
         this.name = name;
-        this.values = new ArrayList<>(values);
+        this.values = new HashSet<>(values);
     }
 
     @Override
-    public String getName() {
+    public String getAttributeName() {
         return name;
     }
 
     @Override
-    public Collection<IBlockAttributeValue> getAllowedValues() {
-        return new ArrayList<>(values);
-    }
-
-    @Override
-    public Class<IBlockAttributeValue> getValueClass() {
-        return IBlockAttributeValue.class;
-    }
-
-    @Override
-    public String getName(IBlockAttributeValue value) {
-        return value.getName();
-    }
-
-    @Override
-    public List<IBlockAttributeValue> getValidValues() {
-        return new ArrayList<>(values);
+    public Set<T> getValidValues() {
+        return new HashSet<>(values);
     }
 
     @Override
@@ -68,5 +53,25 @@ public class BlockAttribute implements IBlockAttribute, IProperty<IBlockAttribut
         return "BlockAttribute{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getName() {
+        return getAttributeName();
+    }
+
+    @Override
+    public Collection<T> getAllowedValues() {
+        return getValidValues();
+    }
+
+    @Override
+    public Class<T> getValueClass() {
+        return (Class<T>) values.stream().findFirst().get().getValue().getClass();
+    }
+
+    @Override
+    public String getName(T value) {
+        return values.contains(value) ? value.getValueName() : null;
     }
 }

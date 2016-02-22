@@ -4,12 +4,9 @@ import net.darkaqua.blacksmith.api.common.block.IBlock;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
 import net.darkaqua.blacksmith.mod.common.util.MCInterface;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static net.darkaqua.blacksmith.mod.common.util.MCInterface.fromBlockAttribute;
 
@@ -34,47 +31,13 @@ public class IBlockStateWrapper implements IBlockData {
     }
 
     @Override
-    public IBlockAttributeValue getValue(IBlockAttribute attr) {
-        Comparable o = state.getValue(fromBlockAttribute(attr));
-        if (o instanceof IBlockAttributeValue){
-            return (IBlockAttributeValue) o;
-        }
-        return new BlockPropertyValueWrapper(o);
+    public IBlockDataHandler getBlockDataHandler() {
+        return MCInterface.toBlockDataHandler(state.getBlock().getBlockState());
     }
 
     @Override
-    public Set<IBlockAttribute> getAttributes() {
-        return state.getPropertyNames().stream().map(MCInterface::toBlockAttribute).collect(Collectors.toSet());
-    }
-
-    @Override
-    public IBlockData getCycleValue(IBlockAttribute attr) {
-        return MCInterface.fromBlockState(state.cycleProperty(fromBlockAttribute(attr)));
-    }
-
-    @Override
-    public IBlockData setValue(IBlockAttribute attr, IBlockAttributeValue value) {
-        IBlockAttributeValue value2 = value.getCanonicalValue();
-        if (value2 == null) {
-            for (IBlockAttributeValue val : attr.getValidValues()) {
-                if (val.equals(value)) {
-                    value2 = val;
-                    break;
-                }
-            }
-        }
-
-        IProperty property = fromBlockAttribute(attr);
-        if(!state.getPropertyNames().contains(property))
-            throw new IllegalArgumentException("BlockData: {"+this+"}, do not have the attribute: {"+attr+"}, so the value: {"+value+"} cannot be set");
-        IBlockState st;
-        if (value2 instanceof BlockPropertyValueWrapper){
-            st = state.withProperty(property, ((BlockPropertyValueWrapper) value2).value);
-        }else {
-            st = state.withProperty(property, value2);
-        }
-
-        return MCInterface.fromBlockState(st);
+    public <T extends IBlockAttributeValue<T>> T getValue(IBlockAttribute<T> attr) {
+        return (T) new VanillaBlockAttributeValue(fromBlockAttribute(attr), state.getValue(fromBlockAttribute(attr)));
     }
 
     @Override

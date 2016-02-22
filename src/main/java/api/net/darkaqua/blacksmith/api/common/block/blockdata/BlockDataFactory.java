@@ -13,11 +13,11 @@ public abstract class BlockDataFactory {
         return INSTANCE.newBlockAttribute(name, attr);
     }
 
-    public static IBlockDataGenerator createBlockDataGenerator(IBlock block, IBlockAttribute... attr) {
-        return INSTANCE.newBlockDataGenerator(block, attr);
+    public static IBlockDataHandler createBlockDataHandler(IBlock block, IBlockAttribute... attr) {
+        return INSTANCE.newBlockDataHandler(block, attr);
     }
 
-    protected abstract IBlockDataGenerator newBlockDataGenerator(IBlock block, IBlockAttribute[] attr);
+    protected abstract IBlockDataHandler newBlockDataHandler(IBlock block, IBlockAttribute[] attr);
 
     protected abstract IBlockAttribute newBlockAttribute(String name, IBlockAttributeValue[] attr);
 }
