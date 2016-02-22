@@ -37,18 +37,18 @@ public class SimpleInventoryHandler implements IInternalInventoryHandler {
         if (stack == null)
             return null;
 
-        if (inventory[slot] == null) {
+        if (getStackInSlot(slot) == null) {
             int capacity = Math.min(maxStackSize, stack.getItem().getMaxStackSize(stack));
             if (capacity >= stack.getAmount()) {
                 if (!simulated) {
-                    inventory[slot] = stack.copy();
+                    setStackInSlot(slot, stack.copy());
                 }
                 return null;
             } else {
                 if (!simulated) {
                     IItemStack insert = stack.copy();
                     insert.setAmount(capacity);
-                    inventory[slot] = insert;
+                    setStackInSlot(slot, insert);
                     IItemStack copy = stack.copy();
                     copy.setAmount(copy.getAmount() - capacity);
                     return copy;
@@ -58,21 +58,21 @@ public class SimpleInventoryHandler implements IInternalInventoryHandler {
                     return copy;
                 }
             }
-        } else if (InventoryUtils.areEqual(inventory[slot], stack)) {
+        } else if (InventoryUtils.areEqual(getStackInSlot(slot), stack)) {
             int capacity = Math.min(maxStackSize, stack.getItem().getMaxStackSize(stack));
-            int space = capacity - inventory[slot].getAmount();
+            int space = capacity - getStackInSlot(slot).getAmount();
             if (space >= stack.getAmount()) {
                 if (!simulated) {
                     IItemStack copy = stack.copy();
-                    copy.setAmount(copy.getAmount() + inventory[slot].getAmount());
-                    inventory[slot] = copy;
+                    copy.setAmount(copy.getAmount() + getStackInSlot(slot).getAmount());
+                    setStackInSlot(slot, copy);
                 }
                 return null;
             } else {
                 if (!simulated) {
                     IItemStack copy = stack.copy();
                     copy.setAmount(copy.getAmount() - space);
-                    inventory[slot].setAmount(capacity);
+                    getStackInSlot(slot).setAmount(capacity);
                     return copy;
                 } else {
                     IItemStack copy = stack.copy();
@@ -86,7 +86,7 @@ public class SimpleInventoryHandler implements IInternalInventoryHandler {
 
     @Override
     public IItemStack extractItemStack(int slot, int amount, boolean simulated) {
-        IItemStack storage = inventory[slot];
+        IItemStack storage = getStackInSlot(slot);
         if (storage == null || amount <= 0) {
             return null;
         }
@@ -99,7 +99,7 @@ public class SimpleInventoryHandler implements IInternalInventoryHandler {
             return ret;
         } else {
             if (!simulated) {
-                inventory[slot] = null;
+                setStackInSlot(slot, null);
             }
             return storage.copy();
         }
@@ -110,19 +110,19 @@ public class SimpleInventoryHandler implements IInternalInventoryHandler {
         for (int i = 0; i < list.getSize(); i++) {
             IDataCompound cmp = list.getDataCompound(i);
             int slot = cmp.getByte("Slot") & 0xFF;
-            if (slot >= 0 && slot < inventory.length) {
-                inventory[slot] = ItemStackFactory.loadItemStack(cmp);
+            if (slot >= 0 && slot < getSlots()) {
+                setStackInSlot(slot, ItemStackFactory.loadItemStack(cmp));
             }
         }
     }
 
     public void save(IDataCompound tag, String key) {
         IDataList list = DataElementFactory.createDataList();
-        for (int i = 0; i < inventory.length; i++) {
-            if (inventory[i] != null) {
+        for (int i = 0; i < getSlots(); i++) {
+            if (getStackInSlot(i) != null) {
                 IDataCompound data = DataElementFactory.createDataCompound();
                 data.setByte("Slot", (byte) i);
-                ItemStackFactory.saveItemStack(data, inventory[i]);
+                ItemStackFactory.saveItemStack(data, getStackInSlot(i));
                 list.addDataCompound(data);
             }
         }

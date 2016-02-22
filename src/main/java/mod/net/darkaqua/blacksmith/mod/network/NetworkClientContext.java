@@ -12,6 +12,11 @@ import net.minecraft.client.Minecraft;
 public class NetworkClientContext implements INetworkContext.IClientContext {
 
     @Override
+    public void addScheduledTask(Runnable task) {
+        Minecraft.getMinecraft().addScheduledTask(task);
+    }
+
+    @Override
     public IPlayer getPlayer() {
         return MCInterface.toPlayer(Minecraft.getMinecraft().thePlayer);
     }

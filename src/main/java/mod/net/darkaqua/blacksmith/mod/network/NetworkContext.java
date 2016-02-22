@@ -3,7 +3,6 @@ package net.darkaqua.blacksmith.mod.network;
 import net.darkaqua.blacksmith.api.network.INetworkContext;
 import net.darkaqua.blacksmith.api.registry.StaticAccess;
 import net.darkaqua.blacksmith.api.util.GameSide;
-import net.minecraft.client.Minecraft;
 
 /**
  * Created by cout970 on 17/01/2016.
@@ -25,8 +24,4 @@ public class NetworkContext implements INetworkContext {
         return new NetworkServerContext();
     }
 
-    @Override
-    public void addScheduledTask(Runnable task) {
-        Minecraft.getMinecraft().addScheduledTask(task);
-    }
 }

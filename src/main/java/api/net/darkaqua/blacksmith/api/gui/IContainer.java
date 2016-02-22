@@ -18,6 +18,8 @@ public interface IContainer {
 
     void removeListener(IContainerListener listener);
 
+    void sendToAllListeners(int id, short value);
+
     List<ISlotDefinition> getSlots();
 
     int getSlotCount();

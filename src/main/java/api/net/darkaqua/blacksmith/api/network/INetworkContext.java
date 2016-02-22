@@ -16,9 +16,9 @@ public interface INetworkContext {
 
     IServerContext getServerContext();
 
-    void addScheduledTask(Runnable task);
-
     interface IClientContext {
+
+        void addScheduledTask(Runnable task);
 
         IPlayer getPlayer();
 
@@ -26,6 +26,8 @@ public interface INetworkContext {
     }
 
     interface IServerContext {
+
+        void addScheduledTask(Runnable task);
 
         IWorld getWorld(int dimension);
 

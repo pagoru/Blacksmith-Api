@@ -49,4 +49,8 @@ public class WorldRef {
     public ITileEntity getTileEntity() {
         return world.getTileEntity(position);
     }
+
+    public long getWorldTime() {
+        return world.getWorldTime();
+    }
 }

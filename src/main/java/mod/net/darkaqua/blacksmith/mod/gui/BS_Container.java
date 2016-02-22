@@ -5,8 +5,13 @@ import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 /**
  * Created by cout970 on 27/12/2015.
@@ -44,7 +49,21 @@ public class BS_Container extends Container {
         //TODO
     }
 
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        def.detectAndSendChanges();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int data) {
+        def.receivedUpdate(id, (short) data);
+    }
+
     public IGuiDefinition getGuiDefinition() {
         return def;
+    }
+
+    public List<ICrafting> getCrafters() {
+        return crafters;
     }
 }

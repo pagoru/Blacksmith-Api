@@ -24,7 +24,7 @@ public interface IGuiDefinition {
 
     void detectAndSendChanges();
 
-    void updateProgressBar(int id, int data);
+    void receivedUpdate(int id, short data);
 
     boolean canInteractWith(IPlayer playerIn);
 }

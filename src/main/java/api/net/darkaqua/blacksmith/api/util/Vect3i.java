@@ -3,10 +3,12 @@ package net.darkaqua.blacksmith.api.util;
 import net.darkaqua.blacksmith.api.storage.DataElementFactory;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 
+import java.io.Serializable;
+
 /**
  * @author cout970
  */
-public class Vect3i {
+public class Vect3i implements Comparable<Vect3i>, Cloneable, Serializable {
 
     protected int x;
     protected int y;
@@ -38,28 +40,6 @@ public class Vect3i {
         return new Vect3i(-x, -y, -z);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (!(obj instanceof Vect3i)) {
-            return false;
-        } else {
-            Vect3i vecInt = (Vect3i) obj;
-            return this.getX() == vecInt.getX() && (this.getY() == vecInt.getY() && this.getZ() == vecInt.getZ());
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return (this.getY() + this.getZ() * 31) * 31 + this.getX();
-    }
-
-    public int compareTo(Vect3i vec) {
-        return this.getY() == vec.getY() ? (this.getZ() == vec.getZ() ? this.getX() - vec.getX() : this
-                .getZ() - vec.getZ()) : this.getY() - vec.getY();
-    }
-
     public int getX() {
         return this.x;
     }
@@ -72,6 +52,18 @@ public class Vect3i {
         return this.z;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
+    }
+
     @Override
     public String toString() {
         return "Vect3i: x: " + getX() + ", y: " + getY() + ", z: " + getZ();
@@ -82,10 +74,6 @@ public class Vect3i {
         y *= i;
         z *= i;
         return this;
-    }
-
-    public boolean isDirectionalOffset() {
-        return ((Math.abs(x) + Math.abs(y) + Math.abs(z)) == 1) && ((Math.abs(x) == 1) || (Math.abs(y) == 1) || (Math.abs(z) == 1));
     }
 
     public Vect3i add(Vect3i v) {
@@ -106,10 +94,6 @@ public class Vect3i {
         return this;
     }
 
-    public Vect3i add(Direction dir) {
-        return add(dir.getOffsetX(), dir.getOffsetY(), dir.getOffsetZ());
-    }
-
     public Vect3i copy() {
         return new Vect3i(x, y, z);
     }
@@ -124,6 +108,14 @@ public class Vect3i {
 
     public Vect3d toVect3d() {
         return new Vect3d(getX(), getY(), getZ());
+    }
+
+    public boolean isDirectionalOffset() {
+        return ((Math.abs(x) + Math.abs(y) + Math.abs(z)) == 1) && ((Math.abs(x) == 1) || (Math.abs(y) == 1) || (Math.abs(z) == 1));
+    }
+
+    public Vect3i add(Direction dir) {
+        return add(dir.getOffsetX(), dir.getOffsetY(), dir.getOffsetZ());
     }
 
     public Vect3i move(Direction dir, int times) {
@@ -192,5 +184,38 @@ public class Vect3i {
                 return d;
         }
         return null;
+    }
+
+    @Override
+    public int compareTo(Vect3i vec) {
+        if (vec == null) return -1;
+        return this.getY() == vec.getY() ? (this.getZ() == vec.getZ() ? this.getX() - vec.getX() : this
+                .getZ() - vec.getZ()) : this.getY() - vec.getY();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vect3i)) return false;
+
+        Vect3i vect3i = (Vect3i) o;
+
+        if (x != vect3i.x) return false;
+        if (y != vect3i.y) return false;
+        return z == vect3i.z;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        result = 31 * result + z;
+        return result;
+    }
+
+    @Override
+    public Vect3i clone(){
+        return copy();
     }
 }

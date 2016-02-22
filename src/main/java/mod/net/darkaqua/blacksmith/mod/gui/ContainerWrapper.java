@@ -7,6 +7,7 @@ import net.darkaqua.blacksmith.api.gui.IGuiDefinition;
 import net.darkaqua.blacksmith.api.gui.ISlotDefinition;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.minecraft.inventory.ICrafting;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +47,13 @@ public class ContainerWrapper implements IContainer {
     @Override
     public void removeListener(IContainerListener listener) {
         cont.removeListener(listener);
+    }
+
+    @Override
+    public void sendToAllListeners(int id, short value) {
+        for (ICrafting c : cont.getCrafters()){
+            c.sendProgressBarUpdate(cont, id, value);
+        }
     }
 
     @Override

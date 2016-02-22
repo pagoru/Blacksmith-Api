@@ -60,4 +60,12 @@ public class EntityRotation {
         }
         throw new IllegalStateException("Invalid yaw: " + yaw);
     }
+
+    public Vect3d getLookVector(){
+        double cos0 = Math.cos(-yaw * 0.017453292F - Math.PI);
+        double sin0 = Math.sin(-yaw * 0.017453292F - Math.PI);
+        double cos1 = -Math.cos(-pitch * 0.017453292F);
+        double sin1 = Math.sin(-pitch * 0.017453292F);
+        return new Vect3d(sin0 * cos1, sin1, cos0 * cos1);
+    }
 }

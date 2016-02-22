@@ -31,5 +31,17 @@ public interface IGuiComponent {
             }
             return null;
         }
+
+        public int getID(){
+            switch (this){
+                case LEFT:
+                    return 0;
+                case RIGHT:
+                    return 1;
+                case MIDDLE:
+                    return 2;
+            }
+            return 0;
+        }
     }
 }

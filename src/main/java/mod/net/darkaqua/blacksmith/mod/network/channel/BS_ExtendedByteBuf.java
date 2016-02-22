@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.mod.network.channel;
 
+import io.netty.buffer.ByteBuf;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.network.ExtendedByteBuf;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
@@ -19,6 +20,11 @@ public class BS_ExtendedByteBuf implements ExtendedByteBuf {
 
     public BS_ExtendedByteBuf(PacketBuffer buff) {
         this.buff = buff;
+    }
+
+    @Override
+    public ByteBuf getByteBuf() {
+        return buff;
     }
 
     @Override

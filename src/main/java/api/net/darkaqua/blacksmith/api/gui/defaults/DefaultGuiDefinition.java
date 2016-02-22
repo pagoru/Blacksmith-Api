@@ -38,12 +38,10 @@ public abstract class DefaultGuiDefinition implements IGuiDefinition {
     }
 
     @Override
-    public void detectAndSendChanges() {
-    }
+    public void detectAndSendChanges() {}
 
     @Override
-    public void updateProgressBar(int id, int data) {
-    }
+    public void receivedUpdate(int id, short data) {}
 
     @Override
     public boolean canInteractWith(IPlayer playerIn) {

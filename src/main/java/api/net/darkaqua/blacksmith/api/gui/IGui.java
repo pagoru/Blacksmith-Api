@@ -37,4 +37,6 @@ public interface IGui {
     boolean isCtrlKeyPressed();
 
     boolean isButtonDown(IGuiComponent.MouseButton button);
+
+    boolean isKeyPressed(int pressedKeyNum);
 }

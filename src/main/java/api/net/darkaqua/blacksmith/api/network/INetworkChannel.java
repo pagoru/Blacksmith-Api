@@ -9,7 +9,7 @@ import net.darkaqua.blacksmith.api.util.Vect3d;
  */
 public interface INetworkChannel {
 
-    <REQ extends INetworkMessage, REPLY extends INetworkMessage> void registerMessage(INetworkMessageHandler<? super REQ, ? extends REPLY> handler, Class<REQ> messageType, int discriminator, GameSide gameSide);
+    <REQ extends INetworkMessage, REPLY extends INetworkMessage> void registerMessage(INetworkMessageHandler<? super REQ, ? extends REPLY> handler, Class<REQ> messageType, int discriminator, GameSide processSide);
 
     void sendToAll(INetworkMessage message);
 

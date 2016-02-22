@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.network;
 
+import io.netty.buffer.ByteBuf;
 import net.darkaqua.blacksmith.api.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.storage.IDataCompound;
 import net.darkaqua.blacksmith.api.util.Vect3i;
@@ -11,6 +12,8 @@ import java.util.UUID;
  * Created by cout970 on 09/01/2016.
  */
 public interface ExtendedByteBuf {
+
+    ByteBuf getByteBuf();
 
     void writeByteArray(byte[] array);
 

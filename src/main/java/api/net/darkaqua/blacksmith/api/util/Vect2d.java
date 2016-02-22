@@ -1,9 +1,14 @@
 package net.darkaqua.blacksmith.api.util;
 
+import net.darkaqua.blacksmith.api.storage.DataElementFactory;
+import net.darkaqua.blacksmith.api.storage.IDataCompound;
+
+import java.io.Serializable;
+
 /**
  * Created by cout970 on 15/12/2015.
  */
-public class Vect2d {
+public class Vect2d implements Comparable<Vect2d>, Cloneable, Serializable {
 
     protected double x;
     protected double y;
@@ -18,8 +23,17 @@ public class Vect2d {
         this.y = y;
     }
 
+    public Vect2d(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public Vect2d(Vect2d vec) {
         this(vec.getX(), vec.getY());
+    }
+
+    public Vect2d(IDataCompound pos) {
+        this(pos.getDouble("x"), pos.getDouble("y"));
     }
 
     public static Vect2d nullVector() {
@@ -60,15 +74,17 @@ public class Vect2d {
         return this.y;
     }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     @Override
     public String toString() {
         return String.format("Vect2d: x: %.3f, y: %.3f", getX(), getY());
-    }
-
-    public Vect2d multiply(double i) {
-        x *= i;
-        y *= i;
-        return this;
     }
 
     public Vect2d add(Vect2d v) {
@@ -83,6 +99,17 @@ public class Vect2d {
         return this;
     }
 
+    public Vect2d multiply(Vect2d i) {
+        x *= i.getX();
+        y *= i.getY();
+        return this;
+    }
+
+    public Vect2d div(Vect2d i) {
+        x /= i.getX();
+        y /= i.getY();
+        return this;
+    }
 
     public Vect2d add(double a, double b) {
         x += a;
@@ -93,6 +120,18 @@ public class Vect2d {
     public Vect2d sub(double a, double b) {
         x -= a;
         y -= b;
+        return this;
+    }
+
+    public Vect2d multiply(double i) {
+        x *= i;
+        y *= i;
+        return this;
+    }
+
+    public Vect2d div(double i) {
+        x /= i;
+        y /= i;
         return this;
     }
 
@@ -134,7 +173,7 @@ public class Vect2d {
     }
 
     /**
-     * Creates a new vector3d with magnitude equals 0
+     * Creates a new vector2d with magnitude equals 0
      */
     public Vect2d unitVector() {
         if (isNullVector())
@@ -154,9 +193,56 @@ public class Vect2d {
         return x == 0 && y == 0;
     }
 
+    public boolean isNullVector(double tolerance) {
+        return Math.abs(x) <= tolerance && Math.abs(y) <= tolerance;
+    }
+
     public double angle(Vect2d vec) {
-        if (mag() * vec.mag() == 0)
+        double aux = mag() * vec.mag();
+        if (aux == 0)
             return 0;
-        return Math.acos(copy().dotProduct(vec) / (mag() * vec.mag()));
+        return Math.acos(dotProduct(vec) / aux);
+    }
+
+    public IDataCompound save() {
+        IDataCompound list = DataElementFactory.createDataCompound();
+        list.setDouble("x", x);
+        list.setDouble("y", y);
+        return list;
+    }
+
+    @Override
+    public int compareTo(Vect2d vec) {
+        if (vec == null) return -1;
+        return (getY() == vec.getY() ? getX() - vec.getX() : getY() - vec.getY()) > 0 ? 1 : -1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (!(o instanceof Vect2d)) return false;
+
+        Vect2d vect2d = (Vect2d) o;
+
+        if (Double.compare(vect2d.x, x) != 0) return false;
+        return Double.compare(vect2d.y, y) == 0;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public Vect2d clone() {
+        return copy();
     }
 }
