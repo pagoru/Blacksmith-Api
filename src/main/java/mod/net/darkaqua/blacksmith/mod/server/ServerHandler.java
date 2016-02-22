@@ -1,8 +1,8 @@
 package net.darkaqua.blacksmith.mod.server;
 
 import net.darkaqua.blacksmith.api.server.IServerHandler;
-import net.darkaqua.blacksmith.api.world.IWorld;
-import net.darkaqua.blacksmith.mod.util.MCInterface;
+import net.darkaqua.blacksmith.api.common.world.IWorld;
+import net.darkaqua.blacksmith.mod.common.util.MCInterface;
 import net.minecraftforge.common.DimensionManager;
 
 /**

@@ -2,18 +2,18 @@ package com.cout970.testmod.blocks;
 
 import com.cout970.testmod.ModClass;
 import com.cout970.testmod.tile.TileTestBlock;
-import net.darkaqua.blacksmith.api.block.BlockMaterialFactory;
-import net.darkaqua.blacksmith.api.block.IBlockContainerDefinition;
-import net.darkaqua.blacksmith.api.block.IBlockMaterial;
-import net.darkaqua.blacksmith.api.block.blockdata.IBlockData;
-import net.darkaqua.blacksmith.api.block.defaults.DefaultBlockDefinition;
-import net.darkaqua.blacksmith.api.block.methods.BlockMethod;
-import net.darkaqua.blacksmith.api.entity.IPlayer;
-import net.darkaqua.blacksmith.api.tileentity.ITileEntityDefinition;
-import net.darkaqua.blacksmith.api.util.Direction;
-import net.darkaqua.blacksmith.api.util.Vect3d;
-import net.darkaqua.blacksmith.api.util.WorldRef;
-import net.darkaqua.blacksmith.api.world.IWorld;
+import net.darkaqua.blacksmith.api.common.block.BlockMaterialFactory;
+import net.darkaqua.blacksmith.api.common.block.IBlockContainerDefinition;
+import net.darkaqua.blacksmith.api.common.block.IBlockMaterial;
+import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.common.block.defaults.DefaultBlockDefinition;
+import net.darkaqua.blacksmith.api.common.block.methods.BlockMethod;
+import net.darkaqua.blacksmith.api.common.entity.IPlayer;
+import net.darkaqua.blacksmith.api.common.tileentity.ITileEntityDefinition;
+import net.darkaqua.blacksmith.api.common.util.Direction;
+import net.darkaqua.blacksmith.api.common.util.vectors.Vect3d;
+import net.darkaqua.blacksmith.api.common.util.WorldRef;
+import net.darkaqua.blacksmith.api.common.world.IWorld;
 
 /**
  * Created by cout970 on 24/11/2015.

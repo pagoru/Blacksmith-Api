@@ -1,8 +1,8 @@
 package com.cout970.testmod.network;
 
 import io.netty.buffer.ByteBuf;
-import net.darkaqua.blacksmith.api.network.ExtendedByteBuf;
-import net.darkaqua.blacksmith.api.network.INetworkMessage;
+import net.darkaqua.blacksmith.api.common.network.ExtendedByteBuf;
+import net.darkaqua.blacksmith.api.common.network.INetworkMessage;
 
 /**
  * Created by cout970 on 24/12/2015.

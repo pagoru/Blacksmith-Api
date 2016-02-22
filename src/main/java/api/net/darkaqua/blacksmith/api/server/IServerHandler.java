@@ -1,6 +1,6 @@
 package net.darkaqua.blacksmith.api.server;
 
-import net.darkaqua.blacksmith.api.world.IWorld;
+import net.darkaqua.blacksmith.api.common.world.IWorld;
 
 /**
  * Created by cout970 on 09/01/2016.

@@ -1,6 +1,6 @@
 package com.cout970.testmod;
 
-import net.darkaqua.blacksmith.api.config.util.ConfigValue;
+import net.darkaqua.blacksmith.api.common.config.util.ConfigValue;
 
 /**
  * Created by cout970 on 09/01/2016.

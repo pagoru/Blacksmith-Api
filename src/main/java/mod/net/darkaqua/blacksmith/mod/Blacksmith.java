@@ -1,27 +1,27 @@
 package net.darkaqua.blacksmith.mod;
 
 import com.google.common.eventbus.Subscribe;
-import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
-import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.mod.block.BS_BlockMaterialFactory;
-import net.darkaqua.blacksmith.mod.block.blockdata.BS_BlockDataFactory;
-import net.darkaqua.blacksmith.mod.config.BS_ConfigurationFactory;
-import net.darkaqua.blacksmith.mod.creativetab.BS_CreativeTabFactory;
-import net.darkaqua.blacksmith.mod.entity.BS_EntityFactory;
-import net.darkaqua.blacksmith.mod.event.BS_EventBus;
-import net.darkaqua.blacksmith.mod.event.FMLEventRedirect;
-import net.darkaqua.blacksmith.mod.fluid.BS_FluidStackFactory;
-import net.darkaqua.blacksmith.mod.inventory.BS_ItemStackFactory;
-import net.darkaqua.blacksmith.mod.modloader.ModLoaderManager;
-import net.darkaqua.blacksmith.mod.modloader.BlacksmithModContainer;
-import net.darkaqua.blacksmith.mod.network.BS_NetworkChannelFactory;
-import net.darkaqua.blacksmith.mod.registry.*;
-import net.darkaqua.blacksmith.mod.render.BS_TileEntityRenderer;
-import net.darkaqua.blacksmith.mod.sound.BS_SoundEffectFactory;
-import net.darkaqua.blacksmith.mod.storage.BS_DataElementFactory;
-import net.darkaqua.blacksmith.mod.tileentity.BS_TileEntity;
-import net.darkaqua.blacksmith.mod.util.BS_ObjectScanner;
-import net.darkaqua.blacksmith.mod.util.Log;
+import net.darkaqua.blacksmith.api.Game;
+import net.darkaqua.blacksmith.api.common.modloader.BlacksmithMod;
+import net.darkaqua.blacksmith.mod.client.creativetab.BS_CreativeTabFactory;
+import net.darkaqua.blacksmith.mod.client.render.BS_TileEntityRenderer;
+import net.darkaqua.blacksmith.mod.client.sound.BS_SoundEffectFactory;
+import net.darkaqua.blacksmith.mod.common.block.BS_BlockMaterialFactory;
+import net.darkaqua.blacksmith.mod.common.block.blockdata.BS_BlockDataFactory;
+import net.darkaqua.blacksmith.mod.common.config.BS_ConfigurationFactory;
+import net.darkaqua.blacksmith.mod.common.entity.BS_EntityFactory;
+import net.darkaqua.blacksmith.mod.common.event.BS_EventBus;
+import net.darkaqua.blacksmith.mod.common.event.FMLEventRedirect;
+import net.darkaqua.blacksmith.mod.common.fluid.BS_FluidStackFactory;
+import net.darkaqua.blacksmith.mod.common.inventory.BS_ItemStackFactory;
+import net.darkaqua.blacksmith.mod.common.modloader.BlacksmithModContainer;
+import net.darkaqua.blacksmith.mod.common.modloader.ModLoaderManager;
+import net.darkaqua.blacksmith.mod.common.network.BS_NetworkChannelFactory;
+import net.darkaqua.blacksmith.mod.common.registry.*;
+import net.darkaqua.blacksmith.mod.common.storage.BS_DataElementFactory;
+import net.darkaqua.blacksmith.mod.common.tileentity.BS_TileEntity;
+import net.darkaqua.blacksmith.mod.common.util.BS_ObjectScanner;
+import net.darkaqua.blacksmith.mod.common.util.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -53,7 +53,7 @@ public class Blacksmith extends DummyModContainer {
         System.out.println("Blacksmith instance created");
         ModContainerFactory.instance().registerContainerType(Type.getType(BlacksmithMod.class), BlacksmithModContainer.class);
         BS_EventBus.init();
-        StaticAccess.GAME = Game.INSTANCE;
+        BSGame.init();
     }
 
     //  Events code
@@ -77,7 +77,7 @@ public class Blacksmith extends DummyModContainer {
             BS_NetworkChannelFactory.init();
             Log.info("[BLACKSMITH] Starting done.");
 
-            if (Game.INSTANCE.isClient()) {
+            if (Game.isClient()) {
                 IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
                 MinecraftForge.EVENT_BUS.register(RenderRegistry.INSTANCE);
                 MinecraftForge.EVENT_BUS.register(ModelRegistry.INSTANCE);
@@ -100,7 +100,7 @@ public class Blacksmith extends DummyModContainer {
     @Subscribe
     public void init(FMLInitializationEvent event) {
         try {
-            if (Game.INSTANCE.isClient()) {
+            if (Game.isClient()) {
                 RenderManager.init();
             }
             Log.info("[BLACKSMITH] Starting InitEvent");

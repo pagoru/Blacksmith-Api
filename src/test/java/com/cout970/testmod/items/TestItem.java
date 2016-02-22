@@ -1,6 +1,6 @@
 package com.cout970.testmod.items;
 
-import net.darkaqua.blacksmith.api.item.defaults.DefaultItemDefinition;
+import net.darkaqua.blacksmith.api.common.item.defaults.DefaultItemDefinition;
 
 /**
  * Created by cout970 on 19/12/2015.

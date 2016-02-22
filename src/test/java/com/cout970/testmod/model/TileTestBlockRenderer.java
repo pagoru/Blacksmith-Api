@@ -2,12 +2,12 @@ package com.cout970.testmod.model;
 
 import com.cout970.testmod.ModClass;
 import com.cout970.testmod.tile.TileTestBlock;
-import net.darkaqua.blacksmith.api.render.model.IDynamicModel;
-import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRenderer;
-import net.darkaqua.blacksmith.api.render.tileentity.ITileEntityRendererHelper;
-import net.darkaqua.blacksmith.api.tileentity.ITileEntity;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
-import net.darkaqua.blacksmith.api.util.Vect3d;
+import net.darkaqua.blacksmith.api.client.render.model.IDynamicModel;
+import net.darkaqua.blacksmith.api.client.render.tileentity.ITileEntityRenderer;
+import net.darkaqua.blacksmith.api.client.render.tileentity.ITileEntityRendererHelper;
+import net.darkaqua.blacksmith.api.common.tileentity.ITileEntity;
+import net.darkaqua.blacksmith.api.common.util.ResourceReference;
+import net.darkaqua.blacksmith.api.common.util.vectors.Vect3d;
 import org.lwjgl.opengl.GL11;
 
 /**

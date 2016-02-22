@@ -1,16 +1,16 @@
 package com.cout970.testmod.gui;
 
 import com.cout970.testmod.ModClass;
-import net.darkaqua.blacksmith.api.entity.IPlayer;
-import net.darkaqua.blacksmith.api.gui.IContainer;
-import net.darkaqua.blacksmith.api.gui.IGui;
-import net.darkaqua.blacksmith.api.gui.defaults.DefaultGuiDefinition;
-import net.darkaqua.blacksmith.api.gui.defaults.components.BackgroundComponent;
-import net.darkaqua.blacksmith.api.gui.defaults.components.ToggleButton;
-import net.darkaqua.blacksmith.api.util.ResourceReference;
-import net.darkaqua.blacksmith.api.util.Vect2i;
-import net.darkaqua.blacksmith.api.util.WorldRef;
-import net.darkaqua.blacksmith.mod.util.Log;
+import net.darkaqua.blacksmith.api.common.entity.IPlayer;
+import net.darkaqua.blacksmith.api.common.gui.IContainer;
+import net.darkaqua.blacksmith.api.common.gui.IGui;
+import net.darkaqua.blacksmith.api.common.gui.defaults.DefaultGuiDefinition;
+import net.darkaqua.blacksmith.api.common.gui.defaults.components.BackgroundComponent;
+import net.darkaqua.blacksmith.api.common.gui.defaults.components.ToggleButton;
+import net.darkaqua.blacksmith.api.common.util.ResourceReference;
+import net.darkaqua.blacksmith.api.common.util.vectors.Vect2i;
+import net.darkaqua.blacksmith.api.common.util.WorldRef;
+import net.darkaqua.blacksmith.mod.common.util.Log;
 
 /**
  * Created by cout970 on 28/12/2015.

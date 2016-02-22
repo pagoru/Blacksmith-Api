@@ -1,8 +1,8 @@
 package com.cout970.testmod.network;
 
-import net.darkaqua.blacksmith.api.network.INetworkChannel;
-import net.darkaqua.blacksmith.api.network.NetworkChannelFactory;
-import net.darkaqua.blacksmith.api.util.GameSide;
+import net.darkaqua.blacksmith.api.common.network.INetworkChannel;
+import net.darkaqua.blacksmith.api.common.network.NetworkChannelFactory;
+import net.darkaqua.blacksmith.api.common.util.GameSide;
 
 /**
  * Created by cout970 on 24/12/2015.

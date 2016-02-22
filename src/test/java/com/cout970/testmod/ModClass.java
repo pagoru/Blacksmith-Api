@@ -6,25 +6,25 @@ import com.cout970.testmod.gui.GuiTestHandler;
 import com.cout970.testmod.items.TestItem;
 import com.cout970.testmod.network.NetworkManager;
 import com.cout970.testmod.tile.TileTestBlock;
-import net.darkaqua.blacksmith.api.block.Blocks;
-import net.darkaqua.blacksmith.api.block.IBlock;
-import net.darkaqua.blacksmith.api.block.IBlockDefinition;
-import net.darkaqua.blacksmith.api.config.ConfigurationFactory;
-import net.darkaqua.blacksmith.api.config.IConfiguration;
-import net.darkaqua.blacksmith.api.config.util.ConfigHandler;
-import net.darkaqua.blacksmith.api.event.EventSubscribe;
-import net.darkaqua.blacksmith.api.event.modloader.IInitEvent;
-import net.darkaqua.blacksmith.api.event.modloader.IPreInitEvent;
-import net.darkaqua.blacksmith.api.item.IItem;
-import net.darkaqua.blacksmith.api.item.IItemDefinition;
-import net.darkaqua.blacksmith.api.item.Items;
-import net.darkaqua.blacksmith.api.modloader.BlacksmithMod;
-import net.darkaqua.blacksmith.api.modloader.IModIdentifier;
-import net.darkaqua.blacksmith.api.modloader.ModIdentifier;
-import net.darkaqua.blacksmith.api.modloader.ModInstance;
-import net.darkaqua.blacksmith.api.registry.StaticAccess;
-import net.darkaqua.blacksmith.api.render.model.providers.defaults.EmptyBlockModelProvider;
-import net.darkaqua.blacksmith.mod.util.Log;
+import net.darkaqua.blacksmith.api.Game;
+import net.darkaqua.blacksmith.api.client.render.block.defaults.EmptyBlockModelProvider;
+import net.darkaqua.blacksmith.api.common.block.Blocks;
+import net.darkaqua.blacksmith.api.common.block.IBlock;
+import net.darkaqua.blacksmith.api.common.block.IBlockDefinition;
+import net.darkaqua.blacksmith.api.common.config.ConfigurationFactory;
+import net.darkaqua.blacksmith.api.common.config.IConfiguration;
+import net.darkaqua.blacksmith.api.common.config.util.ConfigHandler;
+import net.darkaqua.blacksmith.api.common.event.EventSubscribe;
+import net.darkaqua.blacksmith.api.common.event.modloader.IInitEvent;
+import net.darkaqua.blacksmith.api.common.event.modloader.IPreInitEvent;
+import net.darkaqua.blacksmith.api.common.item.IItem;
+import net.darkaqua.blacksmith.api.common.item.IItemDefinition;
+import net.darkaqua.blacksmith.api.common.item.Items;
+import net.darkaqua.blacksmith.api.common.modloader.BlacksmithMod;
+import net.darkaqua.blacksmith.api.common.modloader.IModIdentifier;
+import net.darkaqua.blacksmith.api.common.modloader.ModIdentifier;
+import net.darkaqua.blacksmith.api.common.modloader.ModInstance;
+import net.darkaqua.blacksmith.mod.common.util.Log;
 
 import java.io.File;
 
@@ -60,25 +60,25 @@ public class ModClass {
 
         IBlockDefinition blockDef = new TestBlock();
         IItemDefinition itemDef = new TestItem();
-        testBlock = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
-        item = StaticAccess.GAME.getItemRegistry().registerItemDefinition(itemDef, "item_identifier");
+        testBlock = Game.getCommonHandler().getBlockRegistry().registerBlockDefinition(blockDef, "block_identifier");
+        item = Game.getCommonHandler().getItemRegistry().registerItemDefinition(itemDef, "item_identifier");
         IBlockDefinition statefull = new StatefullBlock();
-        blockStatefull = StaticAccess.GAME.getBlockRegistry().registerBlockDefinition(statefull, "stateFullBlock");
-        StaticAccess.GAME.getTileEntityRegistry().registerTileEntityDefinition(TileTestBlock.class, "TileTestBlock");
+        blockStatefull = Game.getCommonHandler().getBlockRegistry().registerBlockDefinition(statefull, "stateFullBlock");
+        Game.getCommonHandler().getTileEntityRegistry().registerTileEntityDefinition(TileTestBlock.class, "TileTestBlock");
 
-        if (StaticAccess.GAME.isClient()) {
-            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
-            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(statefull, new EmptyBlockModelProvider());
+        if (Game.isClient()) {
+            Game.getClientHandler().getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
+            Game.getClientHandler().getRenderRegistry().registerBlockModelProvider(statefull, new EmptyBlockModelProvider());
 //            TileTestBlockRenderer.model = new TechneDynamicModel(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
-//            StaticAccess.GAME.getRenderRegistry().registerItemModelProvider(itemDef,
+//            Game.getclientHandler().getRenderRegistry().registerItemModelProvider(itemDef,
 //                    new PlaneItemModelProvider(new ResourceReference(MOD_ID, "items/texture_name")));
 //
 //            SimpleBlockModelProvider blockProvider = new SimpleBlockModelProvider(TechneModelLoader.loadModel(new ResourceReference(MOD_ID, "models/test_block.tcn"), new ResourceReference(MOD_ID, "models/test_block")));
-//            StaticAccess.GAME.getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
-//            StaticAccess.GAME.getRenderRegistry().registerTileEntityRenderer(TileTestBlock.class, new TileTestBlockRenderer());
+//            Game.getclientHandler().getRenderRegistry().registerBlockModelProvider(blockDef, new EmptyBlockModelProvider());
+//            Game.getclientHandler().getRenderRegistry().registerTileEntityRenderer(TileTestBlock.class, new TileTestBlockRenderer());
         }
 
-        StaticAccess.GAME.getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);
+        Game.getCommonHandler().getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);
         NetworkManager.init();
 
         Log.debug("TestMod preinit done");
@@ -87,7 +87,7 @@ public class ModClass {
     @EventSubscribe
     public void init(IInitEvent event) {
         Log.debug("TestMod init");
-        StaticAccess.GAME.getGuiRegistry().registerGuiCreationHandler(new GuiTestHandler());
+        Game.getCommonHandler().getGuiRegistry().registerGuiCreationHandler(new GuiTestHandler());
         Log.debug("TestMod init done");
     }
 

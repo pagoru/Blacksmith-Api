@@ -1,0 +1,125 @@
+package net.darkaqua.blacksmith.mod.common.tileentity;
+
+import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
+import net.darkaqua.blacksmith.api.common.storage.IDataCompound;
+import net.darkaqua.blacksmith.api.common.tileentity.ITileEntity;
+import net.darkaqua.blacksmith.api.common.tileentity.ITileEntityDefinition;
+import net.darkaqua.blacksmith.api.common.util.raytrace.Cube;
+import net.darkaqua.blacksmith.api.common.util.WorldRef;
+import net.darkaqua.blacksmith.mod.common.util.MCInterface;
+import net.minecraft.network.Packet;
+import net.minecraft.tileentity.TileEntity;
+
+/**
+ * Created by cout970 on 14/11/2015.
+ */
+public class TileEntityWrapper implements ITileEntity {
+
+    private TileEntity tile;
+
+    public TileEntityWrapper(TileEntity t) {
+        this.tile = t;
+    }
+
+    public TileEntity getTileEntity() {
+        return tile;
+    }
+
+    @Override
+    public WorldRef getWorldRef() {
+        return new WorldRef(MCInterface.fromWorld(tile.getWorld()), MCInterface.fromBlockPos(tile.getPos()));
+    }
+
+    @Override
+    public void setWorldRef(WorldRef ref) {
+        tile.setWorldObj(MCInterface.toWorld(ref.getWorld()));
+        tile.setPos(MCInterface.toBlockPos(ref.getPosition()));
+    }
+
+    @Override
+    public boolean isValid() {
+        return !tile.isInvalid();
+    }
+
+    @Override
+    public void setValid(boolean valid) {
+        if (valid) {
+            tile.validate();
+        } else {
+            tile.invalidate();
+        }
+    }
+
+    @Override
+    public void setModified() {
+        tile.markDirty();
+    }
+
+    @Override
+    public void loadData(IDataCompound tag) {
+        tile.readFromNBT(MCInterface.toNBTCompound(tag));
+    }
+
+    @Override
+    public void saveData(IDataCompound tag) {
+        tile.writeToNBT(MCInterface.toNBTCompound(tag));
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        return tile.getDescriptionPacket();
+    }
+
+    @Override
+    public void onChunkUnload() {
+        tile.onChunkUnload();
+    }
+
+    @Override
+    public boolean shouldRecreate(WorldRef ref, IBlockData oldState, IBlockData newSate) {
+        return tile.shouldRefresh(MCInterface.toWorld(ref.getWorld()), MCInterface.toBlockPos(ref.getPosition()), MCInterface.toBlockState(oldState), MCInterface.toBlockState(newSate));
+    }
+
+    @Override
+    public void onBlockChange() {
+        tile.updateContainingBlockInfo();
+    }
+
+    @Override
+    public void onClientDataArrive(int id, int data) {
+        tile.receiveClientEvent(id, data);
+    }
+
+    @Override
+    public ITileEntityDefinition getTileEntityDefinition() {
+        if (tile instanceof BS_TileEntity) {
+            return ((BS_TileEntity) tile).getTileEntityDefinition();
+        }
+        return null;
+    }
+
+    @Override
+    public double getRenderDistance() {
+        return Math.sqrt(tile.getMaxRenderDistanceSquared());
+    }
+
+    @Override
+    public boolean canRenderInPass(int pass) {
+        return tile.shouldRenderInPass(pass);
+    }
+
+    @Override
+    public Cube getRenderBox() {
+        return MCInterface.fromAxisAlignedBB(tile.getRenderBoundingBox());
+    }
+
+    @Override
+    public boolean canRenderBreaking() {
+        return tile.canRenderBreaking();
+    }
+
+    @Override
+    public Object getInternalTileEntity() {
+        return tile;
+    }
+}
