@@ -50,11 +50,6 @@ public class BlockAttributeValueDirection implements IBlockAttributeValue<Direct
     }
 
     @Override
-    public int compareTo(Direction o) {
-        return value.compareTo(o);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BlockAttributeValueDirection)) return false;
@@ -73,4 +68,5 @@ public class BlockAttributeValueDirection implements IBlockAttributeValue<Direct
     public static BlockAttributeValueDirection fromDirection(Direction direction) {
         return VALUES[direction.ordinal()];
     }
+
 }

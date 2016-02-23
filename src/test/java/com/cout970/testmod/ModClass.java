@@ -81,6 +81,11 @@ public class ModClass {
         Game.getCommonHandler().getRecipeRegistry().addShapedCraftingRecipe(Blocks.ANVIL.newItemStack(1), "MMM", " T ", "III", 'M', Blocks.LOG, 'T', Items.STICK, 'I', Blocks.PLANKS);
         NetworkManager.init();
 
+
+        Log.debug("Starting debug");
+        Log.debug(Blocks.ANVIL.getBlock().getDefaultBlockData().getBlockDataHandler().getAttributes());
+        Log.debug("Ending debug");
+
         Log.debug("TestMod preinit done");
     }
 

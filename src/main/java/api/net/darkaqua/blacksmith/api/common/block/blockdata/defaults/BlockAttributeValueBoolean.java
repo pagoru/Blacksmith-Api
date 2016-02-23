@@ -5,7 +5,7 @@ import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 /**
  * Created by cout970 on 15/01/2016.
  */
-public class BlockAttributeValueBoolean implements IBlockAttributeValue {
+public class BlockAttributeValueBoolean implements IBlockAttributeValue<Boolean> {
 
     public static final BlockAttributeValueBoolean TRUE = new BlockAttributeValueBoolean(true);
     public static final BlockAttributeValueBoolean FALSE = new BlockAttributeValueBoolean(false);
@@ -19,22 +19,17 @@ public class BlockAttributeValueBoolean implements IBlockAttributeValue {
 
     @Override
     public String getValueName() {
-        return ""+value;
+        return String.valueOf(value);
     }
 
     @Override
-    public Object getValue() {
+    public Boolean getValue() {
         return value;
     }
 
     @Override
-    public IBlockAttributeValue getCanonicalValue() {
+    public IBlockAttributeValue<Boolean> getCanonicalValue() {
         return value ? TRUE : FALSE;
-    }
-
-    @Override
-    public int compareTo(IBlockAttributeValue o) {
-        return o instanceof BlockAttributeValueBoolean ? ((BlockAttributeValueBoolean) o).value == value ? 0 : 1 : -1;
     }
 
     @Override
@@ -46,15 +41,12 @@ public class BlockAttributeValueBoolean implements IBlockAttributeValue {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BlockAttributeValueBoolean)) return false;
-
         BlockAttributeValueBoolean that = (BlockAttributeValueBoolean) o;
-
-        return !(value != null ? !value.equals(that.value) : that.value != null);
-
+        return value.equals(that.value);
     }
 
     @Override
     public int hashCode() {
-        return value != null ? value.hashCode() : 0;
+        return value.hashCode();
     }
 }

@@ -3,6 +3,7 @@ package net.darkaqua.blacksmith.mod.common.util;
 import net.darkaqua.blacksmith.api.common.block.IBlock;
 import net.darkaqua.blacksmith.api.common.block.IBlockMaterial;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
+import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.client.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
@@ -31,8 +32,7 @@ import net.darkaqua.blacksmith.api.common.util.vectors.Vect3i;
 import net.darkaqua.blacksmith.api.common.world.*;
 import net.darkaqua.blacksmith.mod.common.block.BlockWrapper;
 import net.darkaqua.blacksmith.mod.common.block.MaterialWrapper;
-import net.darkaqua.blacksmith.mod.common.block.blockdata.BlockStateWrapper;
-import net.darkaqua.blacksmith.mod.common.block.blockdata.IBlockStateWrapper;
+import net.darkaqua.blacksmith.mod.common.block.blockdata.*;
 import net.darkaqua.blacksmith.mod.client.creativetab.CreativeTabWrapper;
 import net.darkaqua.blacksmith.mod.common.entity.BS_EntityFactory;
 import net.darkaqua.blacksmith.mod.common.entity.EntityLivingWrapper;
@@ -428,25 +428,29 @@ public class MCInterface {
         return new Vec3(vec.getX(), vec.getY(), vec.getZ());
     }
 
-    public static IProperty fromBlockAttribute(IBlockAttribute attr) {
+    public static <T extends IBlockAttributeValue<T>> IProperty<T> fromBlockAttribute(IBlockAttribute<T> attr) {
+        if (attr == null) return null;
         if (attr instanceof IProperty) {
-            return (IProperty) attr;
+            return (IProperty<T>) attr;
         }
-        //TODO
-//        if (attr instanceof BlockPropertyWrapper) {
-//            return ((BlockPropertyWrapper) attr).getProperty();
-//        }
-        return null;
+        if (attr instanceof VanillaBlockAttribute) {
+            return ((VanillaBlockAttribute<T>) attr).getProperty();
+        }
+        return new BlockPropertyWrapper<>(attr);
     }
 
-    public static IBlockAttribute toBlockAttribute(IProperty p) {
+    public static <T extends IBlockAttributeValue<T>> IBlockAttribute<T> toBlockAttribute(IProperty<T> p) {
         if (p == null) return null;
         if (p instanceof IBlockAttribute) {
-            return (IBlockAttribute) p;
+            return (IBlockAttribute<T>) p;
         }
-        //TODO
-//        return new BlockPropertyWrapper(p);
-        return null;
+        if (p instanceof BlockAttribute) {
+            return (BlockAttribute<T>) p;
+        }
+        if (p instanceof BlockPropertyWrapper) {
+            return ((BlockPropertyWrapper) p).getAttribute();
+        }
+        return new VanillaBlockAttribute<>(p);
     }
 
     public static IBlockDataHandler toBlockDataHandler(BlockState gen) {
@@ -511,10 +515,10 @@ public class MCInterface {
         return res;
     }
 
-    public static MovingObjectPosition toMOP(RayTraceResult res){
+    public static MovingObjectPosition toMOP(RayTraceResult res) {
         if (res == null) return null;
         MovingObjectPosition mop = null;
-        switch (res.getType()){
+        switch (res.getType()) {
             case MISS:
                 mop = new MovingObjectPosition(MovingObjectPosition.MovingObjectType.MISS, MCInterface.toVec3(res.getHit()), MCInterface.toEnumFacing(res.getSide()), MCInterface.toBlockPos(res.getPosition()));
                 break;
@@ -530,7 +534,7 @@ public class MCInterface {
     }
 
     public static ISound toSound(ISoundEffect sound) {
-        if (sound instanceof SoundWrapper){
+        if (sound instanceof SoundWrapper) {
             return ((SoundWrapper) sound).getSound();
         }
         return null;
@@ -540,5 +544,12 @@ public class MCInterface {
         if (sound == null) return null;
         return new SoundWrapper(sound);
 
+    }
+
+    public static <T extends Comparable<T>, R extends IBlockAttributeValue<R>> T fromBlockAttributeValue(R r) {
+        if (r instanceof VanillaBlockAttributeValue) {
+            return (T) r.getValue();
+        }
+        return (T) r;
     }
 }

@@ -6,8 +6,11 @@ import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
 import net.darkaqua.blacksmith.mod.common.util.MCInterface;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,7 +47,11 @@ public class BlockStateWrapper implements IBlockDataHandler {
 
     @Override
     public Set<IBlockAttribute> getAttributes() {
-        return state.getProperties().stream().map(MCInterface::toBlockAttribute).collect(Collectors.toSet());
+        List<IBlockAttribute> list = new LinkedList<>();
+        for(IProperty p : state.getBlock().getDefaultState().getPropertyNames()){
+            list.add(MCInterface.toBlockAttribute(p));
+        }
+        return new HashSet<>(list);
     }
 
     @Override

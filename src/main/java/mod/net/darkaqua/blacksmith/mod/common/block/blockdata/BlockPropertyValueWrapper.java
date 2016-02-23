@@ -5,32 +5,27 @@ import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 /**
  * Created by cout970 on 15/01/2016.
  */
-public class BlockPropertyValueWrapper implements IBlockAttributeValue {
+public class BlockPropertyValueWrapper<T extends Comparable<T>> implements IBlockAttributeValue<T> {
 
-    public final Comparable value;
+    private T value;
 
-    public BlockPropertyValueWrapper(Comparable value) {
+    public BlockPropertyValueWrapper(T value) {
         this.value = value;
     }
 
     @Override
     public String getValueName() {
-        return ""+value;
+        return String.valueOf(value);
     }
 
     @Override
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 
     @Override
-    public IBlockAttributeValue getCanonicalValue() {
+    public IBlockAttributeValue<T> getCanonicalValue() {
         return this;
-    }
-
-    @Override
-    public int compareTo(IBlockAttributeValue o) {
-        return o instanceof BlockPropertyValueWrapper ? ((BlockPropertyValueWrapper) o).value.compareTo(value) : -1;
     }
 
     @Override
@@ -53,4 +48,5 @@ public class BlockPropertyValueWrapper implements IBlockAttributeValue {
     public int hashCode() {
         return value != null ? value.hashCode() : 0;
     }
+
 }

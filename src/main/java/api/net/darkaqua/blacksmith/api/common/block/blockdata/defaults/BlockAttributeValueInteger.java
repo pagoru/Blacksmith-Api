@@ -5,7 +5,7 @@ import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 /**
  * Created by cout970 on 15/01/2016.
  */
-public class BlockAttributeValueInteger implements IBlockAttributeValue {
+public class BlockAttributeValueInteger implements IBlockAttributeValue<Integer> {
 
     public static final BlockAttributeValueInteger[] VALUES;
     public final Integer value;
@@ -27,22 +27,17 @@ public class BlockAttributeValueInteger implements IBlockAttributeValue {
 
     @Override
     public String getValueName() {
-        return ""+value;
+        return String.valueOf(value);
     }
 
     @Override
-    public Object getValue() {
+    public Integer getValue() {
         return value;
     }
 
     @Override
-    public IBlockAttributeValue getCanonicalValue() {
+    public IBlockAttributeValue<Integer> getCanonicalValue() {
         return VALUES[value];
-    }
-
-    @Override
-    public int compareTo(IBlockAttributeValue o) {
-        return o instanceof BlockAttributeValueInteger ? ((BlockAttributeValueInteger) o).value.compareTo(value) : -1;
     }
 
     @Override
