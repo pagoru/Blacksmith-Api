@@ -1,7 +1,6 @@
 package net.darkaqua.blacksmith.mod.common.block.blockdata;
 
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
-import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.minecraft.block.properties.IProperty;
 
 import java.util.HashSet;
@@ -10,11 +9,11 @@ import java.util.Set;
 /**
  * Created by cout970 on 23/02/2016.
  */
-public class VanillaBlockAttribute<T extends IBlockAttributeValue<T>> implements IBlockAttribute<T> {
+public class BlockAttributeWrapper<T extends Comparable<T>> implements IBlockAttribute<T> {
 
     private IProperty<T> property;
 
-    public VanillaBlockAttribute(IProperty<T> property) {
+    public BlockAttributeWrapper(IProperty<T> property) {
         this.property = property;
     }
 
@@ -28,14 +27,17 @@ public class VanillaBlockAttribute<T extends IBlockAttributeValue<T>> implements
     }
 
     @Override
-    public Set<T> getValidValues() {
-        return new HashSet<>(property.getAllowedValues());
+    public String getValueName(T value) {
+        return property.getName(value);
     }
 
     @Override
-    public String toString() {
-        return "VanillaBlockAttribute{" +
-                "property=" + property +
-                '}';
+    public Class<T> getValueClass() {
+        return property.getValueClass();
+    }
+
+    @Override
+    public Set<T> getValidValues() {
+        return new HashSet<>(property.getAllowedValues());
     }
 }

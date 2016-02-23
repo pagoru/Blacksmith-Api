@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.common.util;
 
+import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
 import net.darkaqua.blacksmith.api.common.util.vectors.Vect3i;
 
 public enum Direction{
@@ -11,7 +12,8 @@ public enum Direction{
     WEST(-1, 0, 0, Axis.X, AxisDirection.NEGATIVE),
     EAST(1, 0, 0, Axis.X, AxisDirection.POSITIVE);
 
-    public static final Direction[] VALID_DIRECTIONS = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
+    public static final Direction[] ALL_DIRECTIONS = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
+    public static final Direction[] HORIZONTAL_DIRECTIONS = {NORTH, SOUTH, WEST, EAST};
     public static final Direction[] OPPOSITES = {UP, DOWN, SOUTH, NORTH, EAST, WEST};
     public static final int[][] rotation = {
             {0, 1, 5, 4, 2, 3},
@@ -53,7 +55,7 @@ public enum Direction{
     }
 
     public static Direction getDirection(int i) {
-        return values()[i % VALID_DIRECTIONS.length];
+        return values()[i % ALL_DIRECTIONS.length];
     }
 
     public Vect3i toVect3i() {

@@ -3,7 +3,6 @@ package net.darkaqua.blacksmith.mod.common.util;
 import net.darkaqua.blacksmith.api.common.block.IBlock;
 import net.darkaqua.blacksmith.api.common.block.IBlockMaterial;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
-import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.client.creativetab.ICreativeTab;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
@@ -428,29 +427,22 @@ public class MCInterface {
         return new Vec3(vec.getX(), vec.getY(), vec.getZ());
     }
 
-    public static <T extends IBlockAttributeValue<T>> IProperty<T> fromBlockAttribute(IBlockAttribute<T> attr) {
-        if (attr == null) return null;
-        if (attr instanceof IProperty) {
-            return (IProperty<T>) attr;
+    public static <T extends Comparable<T>> IProperty<T> fromBlockAttribute(IBlockAttribute<T> attr) {
+        if (attr instanceof BlockAttribute) {
+            return ((BlockAttribute<T>) attr).getProperty();
         }
-        if (attr instanceof VanillaBlockAttribute) {
-            return ((VanillaBlockAttribute<T>) attr).getProperty();
+        if (attr instanceof BlockAttributeWrapper){
+            return ((BlockAttributeWrapper<T>) attr).getProperty();
         }
-        return new BlockPropertyWrapper<>(attr);
+        return null;
     }
 
-    public static <T extends IBlockAttributeValue<T>> IBlockAttribute<T> toBlockAttribute(IProperty<T> p) {
+    public static <T extends Comparable<T>> IBlockAttribute<T> toBlockAttribute(IProperty<T> p) {
         if (p == null) return null;
-        if (p instanceof IBlockAttribute) {
-            return (IBlockAttribute<T>) p;
+        if (p instanceof BlockAttribute.Property){
+            return ((BlockAttribute.Property<T>) p).getAttribute();
         }
-        if (p instanceof BlockAttribute) {
-            return (BlockAttribute<T>) p;
-        }
-        if (p instanceof BlockPropertyWrapper) {
-            return ((BlockPropertyWrapper) p).getAttribute();
-        }
-        return new VanillaBlockAttribute<>(p);
+        return new BlockAttributeWrapper<>(p);
     }
 
     public static IBlockDataHandler toBlockDataHandler(BlockState gen) {
@@ -544,12 +536,5 @@ public class MCInterface {
         if (sound == null) return null;
         return new SoundWrapper(sound);
 
-    }
-
-    public static <T extends Comparable<T>, R extends IBlockAttributeValue<R>> T fromBlockAttributeValue(R r) {
-        if (r instanceof VanillaBlockAttributeValue) {
-            return (T) r.getValue();
-        }
-        return (T) r;
     }
 }

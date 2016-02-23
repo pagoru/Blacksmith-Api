@@ -4,8 +4,8 @@ import com.google.common.collect.Sets;
 import net.darkaqua.blacksmith.api.common.block.IBlock;
 import net.darkaqua.blacksmith.api.common.block.blockdata.BlockDataFactory;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
-import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
+import net.darkaqua.blacksmith.api.common.util.Direction;
 import net.darkaqua.blacksmith.mod.common.util.MCInterface;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -20,6 +20,8 @@ public class BS_BlockDataFactory extends BlockDataFactory{
 
     public static void init(){
         INSTANCE = new BS_BlockDataFactory();
+        ATTRIBUTE_ALL_DIRECTIONS = createBlockAttribute("direction", Direction.class, Direction.ALL_DIRECTIONS);
+        ATTRIBUTE_HORIZONTAL_DIRECTIONS = createBlockAttribute("horizontal_direction", Direction.class, Direction.HORIZONTAL_DIRECTIONS);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class BS_BlockDataFactory extends BlockDataFactory{
     }
 
     @Override
-    protected IBlockAttribute newBlockAttribute(String name, IBlockAttributeValue[] attr) {
-        return new BlockAttribute<>(name, Sets.newHashSet(attr));
+    protected <T extends Comparable<T>> IBlockAttribute<T> newBlockAttribute(String name, Class<T> clazz, T[] attr) {
+        return new BlockAttribute<>(name, clazz, Sets.newHashSet(attr));
     }
 }

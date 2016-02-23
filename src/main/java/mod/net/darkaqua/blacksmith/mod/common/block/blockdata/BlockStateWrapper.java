@@ -2,7 +2,6 @@ package net.darkaqua.blacksmith.mod.common.block.blockdata;
 
 import net.darkaqua.blacksmith.api.common.block.IBlock;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
-import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
 import net.darkaqua.blacksmith.mod.common.util.MCInterface;
@@ -36,7 +35,7 @@ public class BlockStateWrapper implements IBlockDataHandler {
     }
 
     @Override
-    public IBlockData getDefaultData() {
+    public IBlockData getDefaultBlockData() {
         return MCInterface.fromBlockState(state.getBaseState());
     }
 
@@ -55,16 +54,12 @@ public class BlockStateWrapper implements IBlockDataHandler {
     }
 
     @Override
-    public <T extends IBlockAttributeValue<T>> IBlockData withValue(IBlockData data, IBlockAttribute<T> attr, T value) {
-        T val = value;
-        if (val instanceof VanillaBlockAttributeValue){
-            val = val.getValue();
-        }
-        return MCInterface.fromBlockState(MCInterface.toBlockState(data).withProperty(MCInterface.fromBlockAttribute(attr), val));
+    public <T extends Comparable<T>> IBlockData setValue(IBlockData data, IBlockAttribute<T> attr, T value) {
+        return MCInterface.fromBlockState(MCInterface.toBlockState(data).withProperty(MCInterface.fromBlockAttribute(attr), value));
     }
 
     @Override
-    public <T extends IBlockAttributeValue<T>> IBlockData getCycleValue(IBlockData data, IBlockAttribute<T> attr) {
+    public <T extends Comparable<T>> IBlockData cycleValue(IBlockData data, IBlockAttribute<T> attr) {
         return MCInterface.fromBlockState(MCInterface.toBlockState(data).cycleProperty(MCInterface.fromBlockAttribute(attr)));
     }
 }

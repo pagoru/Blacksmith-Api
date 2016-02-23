@@ -12,13 +12,13 @@ public interface IBlockDataHandler {
 
     IBlock getBlock();
 
-    IBlockData getDefaultData();
+    IBlockData getDefaultBlockData();
 
     List<IBlockData> getAllStates();
 
     Set<IBlockAttribute> getAttributes();
 
-    <T extends IBlockAttributeValue<T>> IBlockData withValue(IBlockData data, IBlockAttribute<T> attr, T value);
+    <T extends Comparable<T>> IBlockData setValue(IBlockData data, IBlockAttribute<T> attr, T value);
 
-    <T extends IBlockAttributeValue<T>> IBlockData getCycleValue(IBlockData data, IBlockAttribute<T> attr);
+    <T extends Comparable<T>> IBlockData cycleValue(IBlockData data, IBlockAttribute<T> attr);
 }

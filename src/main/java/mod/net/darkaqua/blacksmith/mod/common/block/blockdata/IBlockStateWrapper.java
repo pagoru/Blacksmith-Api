@@ -2,7 +2,6 @@ package net.darkaqua.blacksmith.mod.common.block.blockdata;
 
 import net.darkaqua.blacksmith.api.common.block.IBlock;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttribute;
-import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockAttributeValue;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockData;
 import net.darkaqua.blacksmith.api.common.block.blockdata.IBlockDataHandler;
 import net.darkaqua.blacksmith.mod.common.util.MCInterface;
@@ -36,8 +35,8 @@ public class IBlockStateWrapper implements IBlockData {
     }
 
     @Override
-    public <T extends IBlockAttributeValue<T>> T getValue(IBlockAttribute<T> attr) {
-        return (T) new VanillaBlockAttributeValue(fromBlockAttribute(attr), state.getValue(fromBlockAttribute(attr)));
+    public <T extends Comparable<T>> T getValue(IBlockAttribute<T> attr) {
+        return state.getValue(fromBlockAttribute(attr));
     }
 
     @Override
