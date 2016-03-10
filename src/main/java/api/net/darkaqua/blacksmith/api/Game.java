@@ -42,6 +42,7 @@ public abstract class Game {
     protected abstract ICommonHandler abstractGetCommonHandler();
     protected abstract IClientHandler abstractGetClientHandler();
     protected abstract IServerHandler abstractGetServerHandler();
+
     protected abstract boolean abstractIsClient();
     protected abstract boolean abstractIsServer();
     protected abstract boolean abstractIsDedicatedServer();

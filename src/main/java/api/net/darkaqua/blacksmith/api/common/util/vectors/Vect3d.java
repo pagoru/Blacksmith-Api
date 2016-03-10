@@ -312,6 +312,20 @@ public class Vect3d implements Comparable<Vect3d>, Cloneable, Serializable {
         return this;
     }
 
+    public Vect3d toDegrees() {
+        x = Math.toDegrees(x);
+        y = Math.toDegrees(y);
+        z = Math.toDegrees(z);
+        return this;
+    }
+
+    public Vect3d toRadians() {
+        x = Math.toRadians(x);
+        y = Math.toRadians(y);
+        z = Math.toRadians(z);
+        return this;
+    }
+
     public static Vect3d randomVector() {
         Random r = new Random();
         return new Vect3d(r.nextDouble(), r.nextDouble(), r.nextDouble()).normalize();
