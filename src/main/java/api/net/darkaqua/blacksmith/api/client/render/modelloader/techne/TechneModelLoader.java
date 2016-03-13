@@ -212,15 +212,17 @@ public class TechneModelLoader {
             throw new ModelFormatException("Model " + file + " contains invalid XML", e);
         }
 
-        return new TechneModelPart(parts);
+        return new TechneModelPart(parts, textureReference);
     }
 
     public static class TechneModelPart implements IModelPart {
 
         protected List<TechneCube> modelParts;
+        protected ResourceReference texture;
 
-        public TechneModelPart(List<TechneCube> modelParts) {
+        public TechneModelPart(List<TechneCube> modelParts, ResourceReference texture) {
             this.modelParts = modelParts;
+            this.texture = texture;
         }
 
         public List<TechneCube> getModelParts() {
@@ -234,6 +236,16 @@ public class TechneModelLoader {
                 list.addAll(part.getQuads());
             }
             return list;
+        }
+
+        @Override
+        public ResourceReference getTexture() {
+            return texture;
+        }
+
+        @Override
+        public boolean useShade() {
+            return false;
         }
     }
 }

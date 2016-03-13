@@ -41,13 +41,13 @@ public class ModelPartBuilder {
                 vertexArray[i] = tempVertex[i].getVextex();
                 uv[i] = tempVertex[i].getUV();
             }
-            ModelQuad mQuad = new ModelQuad(vertexArray, uv, side, texture, useShade);
+            ModelQuad mQuad = new ModelQuad(vertexArray, uv, side);
             quads.add(mQuad);
         }
     }
 
     public void addVertex(double x, double y, double z) {
-
+        this.addVertex(new Vect3d(x, y, z));
     }
 
     public void addUV(Vect2d uv) {
@@ -71,7 +71,7 @@ public class ModelPartBuilder {
         if (vertex != 0) {
             throw new IllegalStateException("ModelPartBuilder cannot build an IModelPart because there are missing vertex, stored vertex: " + vertex + " of 4");
         }
-        ModelPart part = new ModelPart(Lists.newArrayList(quads));
+        ModelPart part = new ModelPart(Lists.newArrayList(quads), texture, useShade);
         quads.clear();
         return part;
     }
@@ -121,14 +121,28 @@ public class ModelPartBuilder {
     public static class ModelPart implements IModelPart {
 
         protected List<IModelQuad> quads;
+        protected ResourceReference texture;
+        protected boolean useShade;
 
-        public ModelPart(List<IModelQuad> quads) {
+        public ModelPart(List<IModelQuad> quads, ResourceReference texture, boolean useShade) {
             this.quads = quads;
+            this.texture = texture;
+            this.useShade = useShade;
         }
 
         @Override
         public List<IModelQuad> getQuads() {
             return quads;
+        }
+
+        @Override
+        public ResourceReference getTexture() {
+            return texture;
+        }
+
+        @Override
+        public boolean useShade() {
+            return useShade;
         }
     }
 
@@ -137,15 +151,11 @@ public class ModelPartBuilder {
         protected Vect3d[] vextex;
         protected Vect2d[] uv;
         protected Direction side;
-        protected ResourceReference texture;
-        protected boolean useShade;
 
-        public ModelQuad(Vect3d[] vextex, Vect2d[] uv, Direction side, ResourceReference texture, boolean useShade) {
+        public ModelQuad(Vect3d[] vextex, Vect2d[] uv, Direction side) {
             this.vextex = vextex;
             this.uv = uv;
             this.side = side;
-            this.texture = texture;
-            this.useShade = useShade;
         }
 
         @Override
@@ -161,16 +171,6 @@ public class ModelPartBuilder {
         @Override
         public Direction getSide() {
             return side;
-        }
-
-        @Override
-        public ResourceReference getTexture() {
-            return texture;
-        }
-
-        @Override
-        public boolean useShade() {
-            return useShade;
         }
     }
 }

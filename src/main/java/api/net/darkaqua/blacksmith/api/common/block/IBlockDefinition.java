@@ -201,7 +201,7 @@ public interface IBlockDefinition {
 
     /**
      * This method check is this block is a opaque, full, and non transparent cube
-     * if the return is true then the adjacent block will not render the side that
+     * if the return is true then the adjacent block will not render the sides that
      * is hidden by this block
      */
     default boolean isFullCube() {

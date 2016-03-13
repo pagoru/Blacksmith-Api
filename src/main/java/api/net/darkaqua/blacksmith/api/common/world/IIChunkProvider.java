@@ -13,7 +13,7 @@ public interface IIChunkProvider {
     boolean chunkExists(Vect2i pos);
 
     /**
-     * Gets the chunk in the specific location, if the chunk doesn't exist and is in the server side, this will generate a new one
+     * Gets the chunk in the specific location, if the chunk doesn't exist and is in the server sides, this will generate a new one
      */
     IChunk provideChunk(Vect2i pos);
 

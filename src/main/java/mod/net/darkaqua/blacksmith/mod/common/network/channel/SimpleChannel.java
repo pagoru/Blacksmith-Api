@@ -30,12 +30,12 @@ public class SimpleChannel {
 
     /**
      * Register a message and it's associated handler. The message will have the supplied discriminator byte. The message handler will
-     * be registered on the supplied side (this is the side where you want the message to be processed and acted upon).
+     * be registered on the supplied sides (this is the sides where you want the message to be processed and acted upon).
      *
      * @param messageHandler     the message handler type
      * @param requestMessageType the message type
      * @param discriminator      a discriminator byte
-     * @param side               the side for the handler
+     * @param side               the sides for the handler
      */
     public <REQ extends INetworkMessage, REPLY extends INetworkMessage> void registerMessage(Class<? extends INetworkMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, int discriminator, Side side) {
         registerMessage(instantiate(messageHandler), requestMessageType, discriminator, side);
@@ -51,12 +51,12 @@ public class SimpleChannel {
 
     /**
      * Register a message and it's associated handler. The message will have the supplied discriminator byte. The message handler will
-     * be registered on the supplied side (this is the side where you want the message to be processed and acted upon).
+     * be registered on the supplied sides (this is the sides where you want the message to be processed and acted upon).
      *
      * @param messageHandler     the message handler instance
      * @param requestMessageType the message type
      * @param discriminator      a discriminator byte
-     * @param side               the side for the handler
+     * @param side               the sides for the handler
      */
     public <REQ extends INetworkMessage, REPLY extends INetworkMessage> void registerMessage(INetworkMessageHandler<? super REQ, ? extends REPLY> messageHandler, Class<REQ> requestMessageType, int discriminator, Side side) {
         packetCodec.addDiscriminator(discriminator, requestMessageType);
@@ -96,7 +96,7 @@ public class SimpleChannel {
 
     /**
      * Send this message to everyone.
-     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT side.
+     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT sides.
      *
      * @param message The message to send
      */
@@ -107,7 +107,7 @@ public class SimpleChannel {
 
     /**
      * Send this message to the specified player.
-     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT side.
+     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT sides.
      *
      * @param message The message to send
      * @param player  The player to send it to
@@ -120,7 +120,7 @@ public class SimpleChannel {
 
     /**
      * Send this message to everyone within a certain range of a point.
-     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT side.
+     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT sides.
      *
      * @param message The message to send
      * @param point   The {@link NetworkRegistry.TargetPoint} around which to send
@@ -133,7 +133,7 @@ public class SimpleChannel {
 
     /**
      * Send this message to everyone within the supplied dimension.
-     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT side.
+     * The {@link INetworkMessageHandler} for this message type should be on the CLIENT sides.
      *
      * @param message     The message to send
      * @param dimensionId The dimension id to target
@@ -146,7 +146,7 @@ public class SimpleChannel {
 
     /**
      * Send this message to the server.
-     * The {@link INetworkMessageHandler} for this message type should be on the SERVER side.
+     * The {@link INetworkMessageHandler} for this message type should be on the SERVER sides.
      *
      * @param message The message to send
      */

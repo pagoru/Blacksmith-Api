@@ -1,6 +1,5 @@
 package net.darkaqua.blacksmith.api.client.render.model;
 
-import net.darkaqua.blacksmith.api.common.util.ResourceReference;
 import net.darkaqua.blacksmith.api.common.util.annotations.Implementable;
 
 import java.util.List;
@@ -15,9 +14,5 @@ public interface IStaticModel {
 
     RenderTransformation getTransformation(RenderPlace place);
 
-    boolean useAmbientOcclusion();
-
-    ResourceReference getParticleTexture();
-
-    boolean needsInventoryRotation();
+    IModelProperties getProperties();
 }

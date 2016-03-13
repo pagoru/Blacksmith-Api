@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.client.render.model;
 
+import net.darkaqua.blacksmith.api.common.util.ResourceReference;
 import net.darkaqua.blacksmith.api.common.util.annotations.Implementable;
 
 import java.util.List;
@@ -11,4 +12,8 @@ import java.util.List;
 public interface IModelPart {
 
     List<IModelQuad> getQuads();
+
+    ResourceReference getTexture();
+
+    boolean useShade();
 }

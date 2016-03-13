@@ -81,12 +81,12 @@ public class RenderModelWrapper implements IPerspectiveAwareModel {
 
     @Override
     public boolean isAmbientOcclusion() {
-        return model.useAmbientOcclusion();
+        return model.getProperties().useAmbientOcclusion();
     }
 
     @Override
     public boolean isGui3d() {
-        return model.needsInventoryRotation();
+        return model.getProperties().needsInventoryRotation();
     }
 
     @Override

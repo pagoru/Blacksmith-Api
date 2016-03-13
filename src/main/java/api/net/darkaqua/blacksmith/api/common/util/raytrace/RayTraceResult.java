@@ -100,7 +100,7 @@ public class RayTraceResult {
                 "type=" + type +
                 ", hit=" + hit +
                 ", position=" + position +
-                ", side=" + side +
+                ", sides=" + side +
                 ", entity=" + entity +
                 ", extraData=" + extraData +
                 '}';

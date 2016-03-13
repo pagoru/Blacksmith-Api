@@ -19,5 +19,5 @@ public interface IRotableBlock {
 
     IBlockData stepRotation(IBlockData data);
 
-    IBlockData setRotation(Direction dir);
+    IBlockData withRotation(IBlockData data, Direction dir);
 }

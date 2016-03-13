@@ -1,5 +1,6 @@
 package net.darkaqua.blacksmith.api.client.render.model.defaults;
 
+import com.google.common.collect.Lists;
 import net.darkaqua.blacksmith.api.client.render.model.IModelPart;
 import net.darkaqua.blacksmith.api.client.render.model.IModelQuad;
 import net.darkaqua.blacksmith.api.common.util.Direction;
@@ -7,33 +8,43 @@ import net.darkaqua.blacksmith.api.common.util.ResourceReference;
 import net.darkaqua.blacksmith.api.common.util.vectors.Vect2d;
 import net.darkaqua.blacksmith.api.common.util.vectors.Vect3d;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 19/12/2015.
  */
-public class SimpleModelPartBlock implements IModelPart {
+public class ModelPartBlockSide implements IModelPart {
 
-    protected EnumMap<Direction, ResourceReference> textures;
+    protected ResourceReference texture;
+    protected Set<Direction> sides;
     protected List<IModelQuad> quads;
 
-    public SimpleModelPartBlock(ResourceReference all) {
-        this.textures = new EnumMap<>(Direction.class);
-        for (Direction dir : Direction.values()) {
-            textures.put(dir, all);
-        }
+    public ModelPartBlockSide(Direction dir, ResourceReference texture) {
+        this.texture = texture;
+        this.sides.add(dir);
         generateQuads();
     }
 
-    public SimpleModelPartBlock(Function<Direction, ResourceReference> tex) {
-        this.textures = new EnumMap<>(Direction.class);
-        for(Direction d : Direction.values()){
-            textures.put(d, tex.apply(d));
-        }
+    public ModelPartBlockSide(List<Direction> dir, ResourceReference texture) {
+        this.texture = texture;
+        this.sides.addAll(dir);
         generateQuads();
+    }
+
+    public ModelPartBlockSide(Direction[] dir, ResourceReference texture) {
+        this(Lists.newArrayList(dir), texture);
+    }
+
+    @Override
+    public ResourceReference getTexture() {
+        return texture;
+    }
+
+    @Override
+    public boolean useShade() {
+        return true;
     }
 
     @Override
@@ -42,11 +53,7 @@ public class SimpleModelPartBlock implements IModelPart {
     }
 
     private void generateQuads() {
-        quads = new ArrayList<>(6);
-        for (Direction dir : Direction.values()) {
-            Quad quad = new Quad(dir, textures.get(dir));
-            quads.add(quad);
-        }
+        quads.addAll(sides.stream().map(Quad::new).collect(Collectors.toList()));
     }
 
     private static class Quad implements IModelQuad {
@@ -70,13 +77,11 @@ public class SimpleModelPartBlock implements IModelPart {
         };
 
         private Direction side;
-        private ResourceReference texture;
         private Vect3d[] vertex;
         private Vect2d[] uv;
 
-        public Quad(Direction side, ResourceReference texture) {
+        public Quad(Direction side) {
             this.side = side;
-            this.texture = texture;
             vertex = new Vect3d[4];
             uv = new Vect2d[4];
             for (int i = 0; i < 4; i++) {
@@ -98,16 +103,6 @@ public class SimpleModelPartBlock implements IModelPart {
         @Override
         public Direction getSide() {
             return side;
-        }
-
-        @Override
-        public ResourceReference getTexture() {
-            return texture;
-        }
-
-        @Override
-        public boolean useShade() {
-            return true;
         }
     }
 }

@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by cout970 on 27/12/2015.
@@ -33,13 +32,8 @@ public class ModelPartBuilder implements IModelBuilder {
 
     @Override
     public void onTexturesLoad(TextureMap textureGetter) {
-        Set<ResourceReference> differentTextures = new HashSet<>();
-        differentTextures.addAll(model.getQuads().stream().map(IModelQuad::getTexture).collect(Collectors.toList()));
-
-        for (ResourceReference res : differentTextures) {
-            TextureAtlasSprite tex = textureGetter.registerSprite(MCInterface.toResourceLocation(res));
-            textures.put(res, tex);
-        }
+            TextureAtlasSprite tex = textureGetter.registerSprite(MCInterface.toResourceLocation(model.getTexture()));
+            textures.put(model.getTexture(), tex);
     }
 
     @Override
@@ -55,9 +49,9 @@ public class ModelPartBuilder implements IModelBuilder {
                 UnBakedQuad uQuad = new UnBakedQuad(MCInterface.toEnumFacing(s.getSide()));
                 boolean textureError = false;
 
-                TextureAtlasSprite sprite = textures.get(s.getTexture());
+                TextureAtlasSprite sprite = textures.get(model.getTexture());
                 if (sprite == null)
-                    throw new IllegalStateException("Some IModelQuad(" + s + ") uses a texture(" + s.getTexture() + ") that is not provided by IModelPart(" + model + ")");
+                    throw new IllegalStateException("Some IModelQuad(" + s + ") uses a texture(" + model.getTexture() + ") that is not provided by IModelPart(" + model + ")");
 
                 if (particles == null) {
                     particles = sprite;
@@ -81,9 +75,9 @@ public class ModelPartBuilder implements IModelBuilder {
                     uQuad.addVertex(vertex, uv);
                 }
                 if (textureError) {
-                    Log.warn("Founded incorrect texture: TextureReference: " + s.getTexture() + ", TextureAtlasSprite: " + sprite + ", ModelQuad class: "+s.getClass()+", Model: "+model);
+                    Log.warn("Founded incorrect texture: TextureReference: " + model.getTexture() + ", TextureAtlasSprite: " + sprite + ", ModelQuad class: "+s.getClass()+", Model: "+model);
                 }
-                uQuad.setShade(s.useShade());
+                uQuad.setShade(model.useShade());
                 if (s.getSide() == null) {
                     generalQuads.add(uQuad.bake());
                 } else {

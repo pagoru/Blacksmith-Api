@@ -1,12 +1,9 @@
 package net.darkaqua.blacksmith.api.client.render.item.defaults;
 
 import com.google.common.collect.Lists;
+import net.darkaqua.blacksmith.api.client.render.model.*;
 import net.darkaqua.blacksmith.api.common.modloader.IModIdentifier;
 import net.darkaqua.blacksmith.api.common.registry.IModelRegistry;
-import net.darkaqua.blacksmith.api.client.render.model.IPartIdentifier;
-import net.darkaqua.blacksmith.api.client.render.model.IStaticModel;
-import net.darkaqua.blacksmith.api.client.render.model.RenderPlace;
-import net.darkaqua.blacksmith.api.client.render.model.RenderTransformation;
 import net.darkaqua.blacksmith.api.common.util.ResourceReference;
 import net.darkaqua.blacksmith.api.common.util.vectors.Vect3d;
 
@@ -56,24 +53,30 @@ public class PlaneItemModelProvider extends SimpleItemModelProvider {
             return transform.apply(place);
         }
 
+
         @Override
         public List<IPartIdentifier> getParts() {
             return Lists.newArrayList(component);
         }
 
         @Override
-        public boolean useAmbientOcclusion() {
-            return true;
-        }
+        public IModelProperties getProperties() {
+            return new IModelProperties() {
+                @Override
+                public boolean useAmbientOcclusion() {
+                    return true;
+                }
 
-        @Override
-        public ResourceReference getParticleTexture() {
-            return null;
-        }
+                @Override
+                public ResourceReference getParticleTexture() {
+                    return null;
+                }
 
-        @Override
-        public boolean needsInventoryRotation() {
-            return false;
+                @Override
+                public boolean needsInventoryRotation() {
+                    return false;
+                }
+            };
         }
     }
 }

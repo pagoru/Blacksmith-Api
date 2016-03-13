@@ -46,7 +46,7 @@ public interface BlockMethod {
          * @param ref    the block reference
          * @param data   the block data
          * @param player the player who click the block
-         * @param side   the side of the block clicked
+         * @param side   the sides of the block clicked
          * @param ray    the the point where the player hit the block
          * @return true if the player should not try to do more stuff before calling this method, like placing a block or use an item
          */

@@ -1,11 +1,11 @@
 package net.darkaqua.blacksmith.api.client.render.item.defaults;
 
 import com.google.common.collect.Lists;
+import net.darkaqua.blacksmith.api.client.render.item.IItemModelProvider;
+import net.darkaqua.blacksmith.api.client.render.model.*;
 import net.darkaqua.blacksmith.api.common.inventory.IItemStack;
 import net.darkaqua.blacksmith.api.common.modloader.IModIdentifier;
 import net.darkaqua.blacksmith.api.common.registry.IModelRegistry;
-import net.darkaqua.blacksmith.api.client.render.model.*;
-import net.darkaqua.blacksmith.api.client.render.item.IItemModelProvider;
 import net.darkaqua.blacksmith.api.common.util.ResourceReference;
 import net.darkaqua.blacksmith.api.common.util.vectors.Vect3d;
 
@@ -74,23 +74,28 @@ public class SimpleItemModelProvider implements IItemModelProvider {
         }
 
         @Override
+        public IModelProperties getProperties() {
+            return new IModelProperties() {
+                @Override
+                public boolean useAmbientOcclusion() {
+                    return true;
+                }
+
+                @Override
+                public ResourceReference getParticleTexture() {
+                    return null;
+                }
+
+                @Override
+                public boolean needsInventoryRotation() {
+                    return rotation;
+                }
+            };
+        }
+
+        @Override
         public List<IPartIdentifier> getParts() {
             return Lists.newArrayList(component);
-        }
-
-        @Override
-        public boolean useAmbientOcclusion() {
-            return true;
-        }
-
-        @Override
-        public ResourceReference getParticleTexture() {
-            return null;
-        }
-
-        @Override
-        public boolean needsInventoryRotation() {
-            return rotation;
         }
     }
 

@@ -58,6 +58,11 @@ public class TechneCube implements IModelPart {
         return texture;
     }
 
+    @Override
+    public boolean useShade() {
+        return true;
+    }
+
     public Vect2d getTextureOffset() {
         return textureOffset;
     }
@@ -268,16 +273,6 @@ public class TechneCube implements IModelPart {
         @Override
         public Direction getSide() {
             return null;
-        }
-
-        @Override
-        public ResourceReference getTexture() {
-            return texture;
-        }
-
-        @Override
-        public boolean useShade() {
-            return true;
         }
 
         @Override
